@@ -7,6 +7,8 @@ package ff.controller;
 import ff.model.RolesPrivilegeDetail;
 import ff.model.User;
 import ff.service.RoleService;
+import ff.service.SysActionService;
+import ff.service.SysControllerService;
 import ff.service.UserService;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -31,6 +33,8 @@ public class AdminController extends MultiActionController {
 
     private UserService userService;
     private RoleService roleService;
+    private SysControllerService sysControllerService;
+    private SysActionService sysActionService;
 
     public void setUserService(UserService userService) {
         this.userService = userService;
@@ -40,6 +44,16 @@ public class AdminController extends MultiActionController {
         this.roleService = roleService;
     }
 
+    public void setSysActionService(SysActionService sysActionService) {
+        this.sysActionService = sysActionService;
+    }
+
+    public void setSysControllerService(SysControllerService sysControllerService) {
+        this.sysControllerService = sysControllerService;
+    }
+
+    
+    
     /**
      *作者：joey
      *描述：得到角色列表
@@ -64,7 +78,26 @@ public class AdminController extends MultiActionController {
      *描述：得到所有控制器
      */
     public void getAllSysControllers(HttpServletRequest request, HttpServletResponse response) {
-        String jsonStr = roleService.getAllRoles();
+        String jsonStr = sysControllerService.getAllSysControllers();
+        logger.info(jsonStr);
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
+    
+    /**
+     *作者：jerry
+     *描述：得到所有控制器
+     */
+    public void getAllSysActions(HttpServletRequest request, HttpServletResponse response) {
+        String jsonStr = sysActionService.getAllSysActions();
         logger.info(jsonStr);
         PrintWriter pw;
         try {

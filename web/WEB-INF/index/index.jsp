@@ -278,7 +278,7 @@
                     model : 'SysAction',
                     proxy : {
                         type : 'ajax',
-                        url : '<%=basePath%>admin/getAllSysActions',
+                        url : '<%=basePath%>admin/getAllSysActions.htm',
                         reader : {
                             type : 'json',
                             root : 'root',// JSON数组对象名
@@ -300,7 +300,7 @@
                     model : 'SysController',
                     proxy : {
                         type : 'ajax',
-                        url : '<%=basePath%>admin/getAllSysControllers',
+                        url : '<%=basePath%>admin/getAllSysControllers.htm',
                         reader : {
                             type : 'json',
                             root : 'root',// JSON数组对象名
@@ -357,7 +357,7 @@
                     model : 'Privilege',
                     proxy : {
                         type : 'ajax',
-                        url : '<%=basePath%>admin/getAllModules',
+                        url : '<%=basePath%>admin/getAllModules.htm',
                         reader : {
                             type : 'json',
                             root : 'root',// JSON数组对象名
