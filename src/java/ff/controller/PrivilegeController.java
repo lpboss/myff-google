@@ -18,12 +18,13 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
  * @author jerry
  */
 public class PrivilegeController extends MultiActionController {
+
     private PrivilegeService privilegeService;
 
     public void setPrivilegeService(PrivilegeService privilegeService) {
         this.privilegeService = privilegeService;
     }
-    
+
     /**
      *作者：jerry
      *描述：系统权限页面
@@ -33,7 +34,7 @@ public class PrivilegeController extends MultiActionController {
         ModelAndView mav = new ModelAndView();
         return mav;
     }
-    
+
     /**
      *作者：jerry
      *描述：得到某个节点的权限树结构。
@@ -52,6 +53,4 @@ public class PrivilegeController extends MultiActionController {
             logger.info(e);
         }
     }
-    
-    
 }

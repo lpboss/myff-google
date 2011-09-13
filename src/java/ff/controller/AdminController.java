@@ -30,7 +30,6 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 public class AdminController extends MultiActionController {
 
     private UserService userService;
-    
     private RoleService roleService;
 
     public void setUserService(UserService userService) {
@@ -40,9 +39,8 @@ public class AdminController extends MultiActionController {
     public void setRoleService(RoleService roleService) {
         this.roleService = roleService;
     }
-   
-    
-        /**
+
+    /**
      *作者：joey
      *描述：得到角色列表
      */
@@ -60,5 +58,4 @@ public class AdminController extends MultiActionController {
             logger.info(e);
         }
     }
-
 }
