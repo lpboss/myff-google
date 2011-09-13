@@ -28,4 +28,9 @@ public class PrivilegeDaoHImpl extends HibernateDaoSupport implements PrivilegeD
         Privilege privilege = (Privilege) this.getHibernateTemplate().get(Privilege.class, id);
         return privilege;
     }
+
+    @Override
+    public String getSysPrivilegeChildrenById(Long id) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

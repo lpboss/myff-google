@@ -25,4 +25,16 @@ public class PrivilegeController extends MultiActionController {
         ModelAndView mav = new ModelAndView();
         return mav;
     }
+    
+    /**
+     *作者：jerry
+     *描述：得到某个节点的权限树结构。
+     */
+    public ModelAndView getSysPrivilegeChildrenById(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("systemPrivilege page");
+        ModelAndView mav = new ModelAndView();
+        return mav;
+    }
+    
+    
 }

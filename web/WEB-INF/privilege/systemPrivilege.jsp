@@ -5,10 +5,15 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+%>
 <!DOCTYPE html>
 <html>
   <head>
     <title>系统权限</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script type="text/javascript">
       var currentNode;
       var nodeId;
