@@ -19,7 +19,7 @@ import javax.persistence.ManyToOne;
  * @author jerry
  */
 @Entity
-@Table(name = "privileges")
+@Table(name = "privilege_details")
 public class PrivilegeDetail implements java.io.Serializable {
 
     private Long id;

@@ -39,6 +39,16 @@ public class PrivilegeController extends MultiActionController {
         ModelAndView mav = new ModelAndView();
         return mav;
     }
+    
+    /**
+     *作者：jerry
+     *描述：添加权限细节的页面
+     */
+    public ModelAndView newPrivilegeDetail(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("newPrivilegeDetail page");
+        ModelAndView mav = new ModelAndView();
+        return mav;
+    }
 
     /**
      *作者：jerry
