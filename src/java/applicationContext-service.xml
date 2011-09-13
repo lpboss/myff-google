@@ -6,5 +6,5 @@
     <!-- Service配置于此 -->
     <bean id="userService" class="ff.service.impl.UserServiceImpl" />
     <bean id="roleService" class="ff.service.impl.RoleServiceImpl" />
-
+    <bean id="privilegeService" class="ff.service.impl.PrivilegeServiceImpl" />
 </beans>
