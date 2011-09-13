@@ -7,6 +7,7 @@ package ff.dao.impl;
 import ff.dao.SysControllerDao;
 import ff.model.SysController;
 
+import java.util.List;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
@@ -17,6 +18,11 @@ public class SysControllerDaoHImpl extends HibernateDaoSupport implements SysCon
 
     @Override
     public SysController getSysControllerById(Long id) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<SysController> getAllSysControllers() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

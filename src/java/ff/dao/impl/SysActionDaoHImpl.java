@@ -7,6 +7,7 @@ package ff.dao.impl;
 import ff.dao.SysActionDao;
 import ff.model.SysAction;
 
+import java.util.List;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
@@ -17,6 +18,11 @@ public class SysActionDaoHImpl extends HibernateDaoSupport implements SysActionD
 
     @Override
     public SysAction getSysActionById(Long id) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<SysAction> getAllSysActions() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
