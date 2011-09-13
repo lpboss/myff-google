@@ -23,7 +23,8 @@ public class SysActionDaoHImpl extends HibernateDaoSupport implements SysActionD
 
     @Override
     public List<SysAction> getAllSysActions() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<SysAction> sysActions = this.getHibernateTemplate().find("from SysAction");
+        return sysActions;
     }
 
 }
