@@ -9,4 +9,5 @@
     <bean id="sysActionDao" class="ff.dao.impl.SysActionDaoHImpl" />
     <bean id="sysControllerDao" class="ff.dao.impl.SysControllerDaoHImpl" />
     <bean id="privilegeDao" class="ff.dao.impl.PrivilegeDaoHImpl" />
+    <bean id="privilegeDetailDao" class="ff.dao.impl.PrivilegeDetailDaoHImpl" />
 </beans>
