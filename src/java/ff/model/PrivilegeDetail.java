@@ -26,6 +26,7 @@ public class PrivilegeDetail implements java.io.Serializable {
     private String name;
     private String params;
     private String description;
+    private Long privilegeId;
     private Long sortId;
     private Long isLocked;
     private Long version;
@@ -45,6 +46,17 @@ public class PrivilegeDetail implements java.io.Serializable {
         this.id = id;
     }
 
+    @Column(name = "privilege_id")
+    public Long getPrivilegeId() {
+        return privilegeId;
+    }
+
+    public void setPrivilegeId(Long privilegeId) {
+        this.privilegeId = privilegeId;
+    }
+
+    
+    
     @Column(name = "is_locked")
     public Long getIsLocked() {
         return isLocked;
