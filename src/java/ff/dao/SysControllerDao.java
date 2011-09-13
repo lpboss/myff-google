@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface SysControllerDao {
 
-
+    List<SysController> getAllSysControllers();
     SysController getSysControllerById(Long id);
     
 }

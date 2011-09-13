@@ -8,4 +8,6 @@
     <bean id="roleService" class="ff.service.impl.RoleServiceImpl" />
     <bean id="privilegeService" class="ff.service.impl.PrivilegeServiceImpl" />
     <bean id="privilegeDetailService" class="ff.service.impl.PrivilegeDetailServiceImpl" />
+    <bean id="sysActionervice" class="ff.service.impl.SysActionServiceImpl" />
+    <bean id="sysControllerService" class="ff.service.impl.SysControllerServiceImpl" />
 </beans>

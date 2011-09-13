@@ -87,4 +87,25 @@ public class PrivilegeController extends MultiActionController {
             logger.info(e);
         }
     }
+    
+    /**
+     *作者：jerry
+     *描述：创建系统权限细节。
+     */
+    public void createSysPrivilegeDetail(HttpServletRequest request, HttpServletResponse response) {
+        String privilegeId = request.getParameter("privilege_id");
+        String jsonStr = privilegeDetailService.getPrivilegeDetailsById(Long.parseLong(privilegeId));
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
+    
+    
 }

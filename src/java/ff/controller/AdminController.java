@@ -58,4 +58,25 @@ public class AdminController extends MultiActionController {
             logger.info(e);
         }
     }
+    
+    /**
+     *作者：jerry
+     *描述：得到所有控制器
+     */
+    public void getAllSysControllers(HttpServletRequest request, HttpServletResponse response) {
+        String jsonStr = roleService.getAllRoles();
+        logger.info(jsonStr);
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
+    
+    
 }

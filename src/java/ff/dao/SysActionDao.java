@@ -13,6 +13,8 @@ import java.util.List;
  */
 public interface SysActionDao {
 
+    List<SysAction> getAllSysActions();
+    
     SysAction getSysActionById(Long id);
 
     //List<Role> getRoleList();
