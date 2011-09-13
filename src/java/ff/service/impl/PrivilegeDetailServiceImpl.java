@@ -5,6 +5,7 @@
 package ff.service.impl;
 
 import ff.dao.PrivilegeDao;
+import ff.dao.PrivilegeDetailDao;
 import ff.dao.RoleDao;
 import ff.dao.UserDao;
 import ff.model.PrivilegeDetail;
@@ -26,16 +27,28 @@ import org.apache.log4j.Logger;
  * @author jerry
  */
 public class PrivilegeDetailServiceImpl implements PrivilegeDetailService {
+
     private PrivilegeDetail privilegeDetail;
+    private PrivilegeDetailDao privilegeDetailDao;
 
     public void setPrivilegeDetail(PrivilegeDetail privilegeDetail) {
         this.privilegeDetail = privilegeDetail;
+    }
+
+    public void setPrivilegeDetailDao(PrivilegeDetailDao privilegeDetailDao) {
+        this.privilegeDetailDao = privilegeDetailDao;
     }
     
     
     @Override
     public String getPrivilegeDetailsById(Long privilegeId) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<PrivilegeDetail> privilegeDetails = privilegeDetailDao.getPrivilegeDetailsById(privilegeId);
+        JsonConfig jsonConfig = new JsonConfig();
+        //这是需要过滤掉的变量名。
+        //jsonConfig.setExcludes(new String[]{"videos", "users", "role_monitors"});
+        jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm"));
+        JSONArray privilegeDetailsJS = JSONArray.fromObject(privilegeDetails, jsonConfig);
+        String jsonStr = "{totalProperty:" + privilegeDetails.size() + ",root:" + privilegeDetailsJS.toString() + "}";
+        return jsonStr;
     }
-
 }
