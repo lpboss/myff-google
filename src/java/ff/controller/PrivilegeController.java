@@ -4,6 +4,7 @@
  */
 package ff.controller;
 
+import ff.service.PrivilegeService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -15,6 +16,11 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
  * @author jerry
  */
 public class PrivilegeController extends MultiActionController {
+    private PrivilegeService privilegeService;
+
+    public void setPrivilegeService(PrivilegeService privilegeService) {
+        this.privilegeService = privilegeService;
+    }
     
     /**
      *作者：jerry

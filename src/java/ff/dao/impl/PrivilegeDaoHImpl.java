@@ -22,7 +22,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
  * @author Joey
  */
 public class PrivilegeDaoHImpl extends HibernateDaoSupport implements PrivilegeDao {
-    
+
     @Override
     public Privilege getPrivilegeById(Long id) {
         Privilege privilege = (Privilege) this.getHibernateTemplate().get(Privilege.class, id);
@@ -30,7 +30,28 @@ public class PrivilegeDaoHImpl extends HibernateDaoSupport implements PrivilegeD
     }
 
     @Override
-    public String getSysPrivilegeChildrenById(Long id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public String getSysPrivilegeChildrenById(Long nodeId) {
+        List<Privilege> privileges = this.getHibernateTemplate().findByNamedParam("from Privilege where parent_id=:parent_id", new String[]{"parent_id"}, new Long[]{nodeId});
+        String treeData = "";
+        if (privileges.size() > 0) {
+            treeData = "[";
+            for (Privilege privilege : privileges) {
+                treeData += "{id:" + privilege.getId() + ",text:\"" + privilege.getName() + "\"";
+                if (privilege.getLevel() == 0) {
+                    treeData += ",leaf:false";
+                } else {
+                    treeData += ",leaf:true";
+                }
+
+                if (privilege.getIsLocked() == 1) {
+                    treeData += ",checked:true},";
+                } else {
+                    treeData += ",checked:false},";
+                }
+            }
+            treeData = treeData.substring(0, treeData.length() - 2);
+            treeData += "]";
+        }
+        return treeData;
     }
 }
