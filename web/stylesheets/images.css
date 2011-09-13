@@ -1,0 +1,58 @@
+/**********************************************************************
+ * images definition
+ **********************************************************************/
+.xls { background-image:url(/images/system/xls.png) !important;}
+.lock { background-image:url(/images/system/lock.gif) !important;}
+.unlock { background-image:url(/images/system/unlock.gif) !important;}
+.accordion {background-image:url(../../images/window/accordian.gif) !important;}
+.msg {background-image:url(../../images/system/msg.png) !important;}
+.addItem { background-image:url(../images/system/add.gif) !important;}
+.bogus { background-image: url( ../../images/window/bogus.png ) !important;}
+.calendar { background-image: url( ../../images/icons/calendar.png ) !important;}
+.careConn_icon{background-image:url(../../images/icons/chart_organisation.png) !important;}ext
+.comments{background-image:url(../../images/icons/comments.png) !important;}
+.contactUs {background-image:url(../../images/icons/telephone.png) !important;}
+.demo { background-image:url(../../images/icons/demo.png) !important;}
+.document{background-image:url(../../images/icons/page.png) !important;}
+.donate{background-image:url(../../images/icons/money_dollar.png) !important;}
+.download{background-image:url(../../images/icons/download.png) !important;}
+.editItem { background-image:url(../images/system/edit.png) !important;}
+.feedback{background-image:url(../../images/icons/feed.png) !important;}
+.feya_icon {background-image:url(../../images/icons/page_white_flash.png) !important;}
+.group {background-image:url(../../images/icons/group.png) !important;}
+.displayconf {background-image:url(../../images/icons/wrench_orange.png) !important;}
+.paintbrush {background-image:url(../../images/icons/paintbrush.png) !important;}
+.project {background-image:url(../../images/icons/book_open.png) !important;}
+.remove { background-image:url(../images/system/delete.gif) !important;}
+.cancel { background-image:url(../images/system/cancel.png) !important;}
+.icon-save { background-image:url(../images/system/save.gif) !important;}
+.temp-save { background-image:url(../images/system/disk.png) !important;}
+.record { background-image:url(../images/system/record.gif) !important;}
+.recorder { background-image:url(../images/system/recorder.gif) !important;}
+.script {background-image:url(../../images/icons/script.png) !important;}
+.server{background-image:url(../../images/icons/server.png) !important;}
+.sourceCode {background-image:url(../../images/icons/page_white_c.png) !important;}
+.start { background-image: url( ../../images/taskbar/black/startbutton-icon.gif ) !important;}
+.tabs {background-image:url(../../images/icons/table_multiple.png) !important;}
+.technology {background-image:url(../../images/icons/wrench.png) !important;}
+.tutorials {background-image:url(../../images/icons/page_edit.png) !important;}
+.customers { background-image:url(/images/system/customers.gif) !important;}
+.exit { background-image:url(../images/system/exit.gif) !important;}
+.heart { background-image:url(/images/system/heart.gif) !important;}
+.print { background-image:url(/images/system/print.gif) !important;}
+.finding { background-image:url(/images/system/find.png) !important;}
+.yes { background-image:url(/images/system/yes.gif) !important;}
+.gold { background-image:url(/images/system/gold.gif) !important;}
+.mobil { background-image:url(/images/system/mobil.gif) !important;}
+.phone { background-image:url(/images/system/phone.gif) !important;}
+.album { background-image:url(/images/system/album.gif) !important;}
+.blue_triangle { background-image:url(/images/system/blue_triangle.gif) !important;}
+.blue_point { background-image:url(/images/system/blue_point.gif) !important;}
+.user { background-image:url(/images/system/user.gif) !important;}
+.refresh { background-image:url(/images/system/refresh.gif) !important;}
+.arrow_up { background-image:url(/images/system/arrow_up.png) !important;}
+.arrow_down { background-image:url(/images/system/arrow_down.png) !important;}
+.page-first { background-image:url(/images/system/page-first.gif) !important;}
+.page-prev { background-image:url(/images/system/page-prev.gif) !important;}
+.page-next { background-image:url(/images/system/page-next.gif) !important;}
+.page-last { background-image:url(/images/system/page-last.gif) !important;}
