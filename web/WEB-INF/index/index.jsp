@@ -7,7 +7,7 @@
 %>
 <html>
     <head>
-        <title>HappyERP</title>
+        <title>Fire Proofing</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="<%=basePath%>stylesheets/images.css" media="screen" rel="stylesheet" type="text/css" />
         <link href="<%=basePath%>javascripts/ext4/resources/css/ext-all.css" media="screen" rel="stylesheet" type="text/css" />

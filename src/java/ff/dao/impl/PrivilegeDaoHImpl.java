@@ -19,7 +19,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
  *
- * @author Joey
+ * @author Jerry
  */
 public class PrivilegeDaoHImpl extends HibernateDaoSupport implements PrivilegeDao {
 
@@ -49,7 +49,7 @@ public class PrivilegeDaoHImpl extends HibernateDaoSupport implements PrivilegeD
                     treeData += ",checked:false},";
                 }
             }
-            treeData = treeData.substring(0, treeData.length() - 2);
+            treeData = treeData.substring(0, treeData.length() - 1);
             treeData += "]";
         }
         return treeData;
