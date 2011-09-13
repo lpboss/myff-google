@@ -22,7 +22,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
  * @author Joey
  */
 public class PrivilegeDaoHImpl extends HibernateDaoSupport implements PrivilegeDao {
-
+    
     @Override
     public Privilege getPrivilegeById(Long id) {
         Privilege privilege = (Privilege) this.getHibernateTemplate().get(Privilege.class, id);
