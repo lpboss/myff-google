@@ -35,6 +35,7 @@
                 <value>ff.model.Role</value>
                 <value>ff.model.RolesPrivilegeDetail</value>
                 <value>ff.model.Privilege</value>
+                <value>ff.model.PrivilegeDetail</value>                
                 <value>ff.model.SysAction</value>
                 <value>ff.model.SysController</value>
                 <!--<value>ff.model.UserPsycholTestResult</value>
