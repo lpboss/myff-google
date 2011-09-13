@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  *
- * @author Joey
+ * @author Jerry
  */
 public interface PrivilegeDetailDao {
     

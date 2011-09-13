@@ -6,14 +6,9 @@ package ff.service.impl;
 
 import ff.dao.PrivilegeDao;
 import ff.dao.PrivilegeDetailDao;
-import ff.dao.RoleDao;
-import ff.dao.UserDao;
 import ff.model.PrivilegeDetail;
-import ff.model.Role;
-import ff.model.User;
 import ff.service.PrivilegeDetailService;
 import ff.service.PrivilegeService;
-import ff.service.UserService;
 import ff.util.DateJsonValueProcessor;
 import java.sql.Timestamp;
 import java.util.List;
