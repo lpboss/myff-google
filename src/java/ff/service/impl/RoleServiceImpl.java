@@ -121,8 +121,9 @@ public class RoleServiceImpl implements RoleService {
             moduleMap.put("leaf", "false");
             //得到某模块下的所有菜单
             List<Integer> menuIdList = roleDao.getRoleModuleMenus(roleId, Long.parseLong(module[0].toString()));
-
-
+            logger.info("menuIdList.size():" + menuIdList.size());
+            //保存某个模块下的所有菜单
+            List menusList = new ArrayList();
             for (Integer menuId : menuIdList) {
                 Privilege privilege = privilegeDao.getPrivilegeById(Long.parseLong(menuId.toString()));
                 LinkedHashMap menuMap = new LinkedHashMap();
@@ -131,8 +132,9 @@ public class RoleServiceImpl implements RoleService {
                 menuMap.put("id", privilege.getSysController().getName() + "/" + privilege.getSysAction().getName() + ".htm");
                 menuMap.put("icon", "/images/system/plugin.gif");
                 menuMap.put("leaf", true);
-                moduleMap.put("children", menuMap);
+                menusList.add(menuMap);                
             }
+            moduleMap.put("children", menusList);
             allMenusList.add(moduleMap);
         }
         JsonConfig jsonConfig = new JsonConfig();

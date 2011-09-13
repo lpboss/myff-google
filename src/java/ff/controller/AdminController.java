@@ -44,7 +44,7 @@ public class AdminController extends MultiActionController {
     
         /**
      *作者：joey
-     *描述：得到用户列表
+     *描述：得到角色列表
      */
     public void getAllRoles(HttpServletRequest request, HttpServletResponse response) {
         String jsonStr = roleService.getAllRoles();
