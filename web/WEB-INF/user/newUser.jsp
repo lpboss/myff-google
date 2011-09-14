@@ -188,7 +188,7 @@
                                 if (newUserForm.form.isValid()) {
                                     this.disable();
                                     newUserForm.form.submit({
-                                        method: 'GET',
+                                        method : 'POST',
                                         success: function(result, response){
                                             if (response.result.info == "success") {
                                                 //添加成功后，隐藏窗口，并刷新Grid

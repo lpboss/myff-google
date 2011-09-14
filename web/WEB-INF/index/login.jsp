@@ -109,7 +109,7 @@
                     },
                     url:'<%=basePath%>index/validateUser.htm',
                     frame:true,
-                    method: 'GET',
+                    method : 'POST',
                     width: 440,
                     layout: 'anchor',
                     buttonAlign: 'center',
