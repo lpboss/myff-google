@@ -4,6 +4,7 @@
  */
 package ff.service;
 
+import ff.model.Role;
 import ff.model.RolesPrivilegeDetail;
 import java.util.List;
 
@@ -25,5 +26,7 @@ public interface RoleService {
     
     //得到生成的角色菜单
     String getRoleAllMenus(Long roleId);
+    
+    Role getRoleById(Long id);
     
 }

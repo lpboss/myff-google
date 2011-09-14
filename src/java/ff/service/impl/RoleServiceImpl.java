@@ -132,7 +132,7 @@ public class RoleServiceImpl implements RoleService {
                 menuMap.put("id", privilege.getSysController().getName() + "/" + privilege.getSysAction().getName() + ".htm");
                 menuMap.put("icon", "/images/system/plugin.gif");
                 menuMap.put("leaf", true);
-                menusList.add(menuMap);                
+                menusList.add(menuMap);
             }
             moduleMap.put("children", menusList);
             allMenusList.add(moduleMap);
@@ -148,5 +148,11 @@ public class RoleServiceImpl implements RoleService {
 
     public void setPrivilegeDao(PrivilegeDao privilegeDao) {
         this.privilegeDao = privilegeDao;
+    }
+
+    @Override
+    public Role getRoleById(Long id) {
+        Role role = roleDao.getRoleById(id);
+        return role;
     }
 }

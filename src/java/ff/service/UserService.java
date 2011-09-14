@@ -4,6 +4,7 @@
  */
 package ff.service;
 
+import ff.model.Role;
 import ff.model.User;
 
 /**
@@ -25,17 +26,13 @@ public interface UserService {
 //    User findUser(String name, String password, String admin);
 
     /* 新的方法 */
-    String createUser(String name, String password);
-
-    String createUser(String name, String password, Long roleId, String priority);
+    String create(User user);
 
     String deleteUser(Long id);
 
     String getUserById(Long id);
 
-    String updateUser(Long id, String name, String password);                   //编辑不含有role_id的用户
-
-    String updateUser(Long id, String name, String password, Long roleId);      //编辑含有role_id的用户
+    String update(User user);
 
     String getUserList();
 
@@ -52,4 +49,6 @@ public interface UserService {
      * 通过用户名得到角色id
      */
     String getRoleIdByUserId(Long id);
+    
+    
 }

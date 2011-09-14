@@ -1,5 +1,7 @@
 package ff.controller;
 
+import ff.model.User;
+import ff.service.RoleService;
 import ff.service.UserService;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,9 +18,14 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 public class UserController extends MultiActionController {
 
     private UserService userService;
+    private RoleService roleService;
 
     public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+
+    public void setRoleService(RoleService roleService) {
+        this.roleService = roleService;
     }
 
     /**
@@ -84,8 +91,11 @@ public class UserController extends MultiActionController {
         String name = request.getParameter("name");
         String password = request.getParameter("password");
         Long roleId = Long.valueOf(request.getParameter("role_id"));
-        String priority = request.getParameter("priority");
-        String jsonStr = userService.createUser(name, password, roleId, priority);
+        User user = new User();
+        user.setName(name);
+        user.setPassword(password);
+        user.setRole(roleService.getRoleById(roleId));
+        String jsonStr = userService.create(user);
         PrintWriter pw;
         try {
             response.setContentType("text/json; charset=utf-8");
@@ -146,11 +156,16 @@ public class UserController extends MultiActionController {
         String name = request.getParameter("name");
         String password = request.getParameter("password");
         Long roleId = Long.valueOf(request.getParameter("roleId"));
+        User user = new User();
+        user.setName(name);
+        user.setPassword(password);
+        user.setRole(roleService.getRoleById(roleId));
+        
         logger.info(roleId);
         PrintWriter pw;
         try {
             logger.info("user update..............................................Begin..........");
-            String jsonStr = userService.updateUser(id, name, password, roleId);
+            String jsonStr = userService.update(user);
             logger.info("user update..............................................");
             logger.info(jsonStr);
 

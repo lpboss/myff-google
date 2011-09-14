@@ -46,30 +46,9 @@ public class UserServiceImpl implements UserService {
 
     /* 新的方法 */
     @Override
-    public String createUser(String name, String password) {
-        User user = new User();
+    public String create(User user) {
         String info = null;
-        if (userDao.getUserByName(name) == null) {
-            user.setName(name);
-            user.setPassword(password);
-            userDao.saveOrUpdate(user);
-            info = "success";
-        } else {
-            info = "该用户名已使用，请更换！";
-        }
-        String jsonStr = "{success:true,info:'" + info + "'}";
-        return jsonStr;
-    }
-
-    @Override
-    public String createUser(String name, String password, Long roleId, String priority) {
-        User user = new User();
-        String info = null;
-        if (userDao.getUserByName(name) == null) {
-            Role role = roleDao.getRoleById(roleId);
-            user.setRole(role);
-            user.setName(name);
-            user.setPassword(password);
+        if (userDao.getUserByName(user.getName()) == null) {
             userDao.saveOrUpdate(user);
             info = "success";
         } else {
@@ -105,41 +84,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String updateUser(Long id, String name, String password) {
-        User user = userDao.getUserById(id);
+    public String update(User user) {
         String info = null;
         if (user == null) {
             info = "没有该用户，不能编辑！";
         } else {
-            User userDB = userDao.getUserByName(name);
-            if (userDB != null && userDB.getId() != id) {
+            User userDB = userDao.getUserByName(user.getName());
+            if (userDB != null && userDB.getId() != user.getId()) {
                 info = "该用户名已使用，请更换！";
             } else {
-                user.setName(name);
-                user.setPassword(password);
-                userDao.saveOrUpdate(user);
-                info = "success";
-            }
-        }
-        String jsonStr = "{success:true,info:'" + info + "'}";
-        return jsonStr;
-    }
-
-    @Override
-    public String updateUser(Long id, String name, String password, Long roleId) {
-        User user = userDao.getUserById(id);
-        String info = null;
-        if (user == null) {
-            info = "没有该用户，不能编辑！";
-        } else {
-            User userDB = userDao.getUserByName(name);
-            if (userDB != null && userDB.getId() != id) {
-                info = "该用户名已使用，请更换！";
-            } else {
-                Role role = roleDao.getRoleById(roleId);
-                user.setRole(role);
-                user.setName(name);
-                user.setPassword(password);
                 userDao.saveOrUpdate(user);
                 info = "success";
             }
@@ -190,4 +143,6 @@ public class UserServiceImpl implements UserService {
     public String getRoleIdByUserId(Long id) {
         return String.valueOf(userDao.getUserById(id).getRole().getId());   //通过用户名得到user对象，通过user对象得到role对象，最后得到roleId
     }
+
+   
 }
