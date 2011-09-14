@@ -34,6 +34,7 @@ public class loginFilter implements Filter {
         System.out.println(hreq.getQueryString());
         System.out.println(hreq.getMethod());
         System.out.println(hreq.getContentType());
+        System.out.println("Name:"+hreq.getParameter("name"));
         System.out.println("hreq.getSession().getAttribute(userId):" + hreq.getSession().getAttribute("userId"));
         System.out.println("loginFilter++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++End");
         /*if (hreq.getSession().getAttribute("userId") == null) {

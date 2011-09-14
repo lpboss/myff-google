@@ -5,6 +5,9 @@ import ff.service.RoleService;
 import ff.service.UserService;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -88,6 +91,7 @@ public class UserController extends MultiActionController {
      *描述：创建用户
      */
     public void create(HttpServletRequest request, HttpServletResponse response) {
+
         String name = request.getParameter("name");
         String password = request.getParameter("password");
         Long roleId = Long.valueOf(request.getParameter("role_id"));
@@ -153,14 +157,16 @@ public class UserController extends MultiActionController {
      */
     public void update(HttpServletRequest request, HttpServletResponse response) {
         Long id = Long.valueOf(request.getParameter("id"));
+        
         String name = request.getParameter("name");
         String password = request.getParameter("password");
         Long roleId = Long.valueOf(request.getParameter("roleId"));
         User user = new User();
-        user.setName(name);
+        user.setId(id);
+        user.setName("打哈哈1");
         user.setPassword(password);
         user.setRole(roleService.getRoleById(roleId));
-        
+
         logger.info(roleId);
         PrintWriter pw;
         try {

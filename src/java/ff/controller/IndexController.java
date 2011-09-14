@@ -47,6 +47,8 @@ public class IndexController extends MultiActionController {
         String path = request.getContextPath();
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
         
+        
+        logger.info("你好。。。。。。。。。。。。。。。。。。。。。。。。。。。Begin Index");
         String menusJSON = roleService.getRoleAllMenus(Long.parseLong("1"));
         /*List<Object[]> moduleIdList = roleService.getRoleAllMenus((long)1);
         logger.info("Menu Module Ready....................................");
