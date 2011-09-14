@@ -219,7 +219,7 @@
                                 if (editUserForm.form.isValid()) {
                                     this.disable();
                                     editUserForm.form.submit({
-                                        method: 'GET',
+                                        method: 'POST',
                                         success: function(result, response){
                                             if (response.result.info == "success") {
                                                 //添加成功后，隐藏窗口，并刷新Grid
@@ -254,7 +254,7 @@
                         if(success){
                             editUserForm.form.load({
                                 url: '<%=basePath%>user/getUserById.htm?id=' + userId,
-                                method : 'GET',
+                                method : 'POST',
                                 waitMsg: '正在载入数据...',
                                 success: function(form, action){
                                 },

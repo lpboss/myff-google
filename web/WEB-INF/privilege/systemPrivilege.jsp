@@ -41,7 +41,7 @@
               icon: Ext.MessageBox.WARNING
             });
           },
-          method : 'GET',
+          method : 'POST',
           params : {
             id : id
           }
@@ -376,7 +376,7 @@
                   icon: Ext.MessageBox.WARNING
                 });
               },
-              method : 'GET',
+              method : 'POST',
               params : {
                 id : currentNode.get('id')
               }
@@ -397,7 +397,7 @@
                   icon: Ext.MessageBox.WARNING
                 });
               },
-              method : 'GET',
+              method : 'POST',
               params : {
                 id : currentNode.get('id')
               }

@@ -132,7 +132,7 @@
           width: '345',
           frame : true,
           url: '<%=basePath%>privilege/createSysPrivilegeDetail.htm',
-          method: 'POST',
+          method: 'post',
           items: [privilegeId,name,sysController,sysAction,subType,params,desc],
           buttons: [submitButton,{
               text: '关闭',

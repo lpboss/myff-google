@@ -92,7 +92,7 @@
                                     icon: Ext.MessageBox.WARNING
                                 });
                             },
-                            method : 'GET'
+                            method : 'POST'
                         });
                     }
                 })

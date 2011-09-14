@@ -33,7 +33,7 @@
               icon: Ext.MessageBox.WARNING
             });
           },
-          method : 'GET',
+          method : 'POST',
           params : {
             id : id
           }
