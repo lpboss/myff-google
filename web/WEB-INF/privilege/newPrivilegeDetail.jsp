@@ -12,7 +12,6 @@
 <html>
   <head>
     <title>新权限细节添加</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   </head>
   <body>
     <script type="text/javascript">
@@ -133,7 +132,7 @@
           width: '345',
           frame : true,
           url: '<%=basePath%>privilege/createSysPrivilegeDetail.htm',
-          method: 'GET',
+          method: 'POST',
           items: [privilegeId,name,sysController,sysAction,subType,params,desc],
           buttons: [submitButton,{
               text: '关闭',

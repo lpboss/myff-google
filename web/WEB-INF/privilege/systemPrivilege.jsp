@@ -13,7 +13,6 @@
 <html>
   <head>
     <title>系统权限</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script type="text/javascript">
       var currentNode;
       var nodeId;

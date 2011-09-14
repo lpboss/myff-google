@@ -135,7 +135,7 @@ public class UserController extends MultiActionController {
      *作者：joey
      *描述：编辑用户
      */
-    public void getUserJSONById(HttpServletRequest request, HttpServletResponse response) {
+    public void getUserById(HttpServletRequest request, HttpServletResponse response) {
         Long id = Long.valueOf(request.getParameter("id"));
         String jsonStr = userService.getUserJSONById(id);
         logger.info(jsonStr);
@@ -157,13 +157,16 @@ public class UserController extends MultiActionController {
      */
     public void update(HttpServletRequest request, HttpServletResponse response) {
         Long id = Long.valueOf(request.getParameter("id"));
-        
+
         String name = request.getParameter("name");
+        logger.info("FK.Name:" + name);
+        logger.info("FK.name" + "打哈哈4");
         String password = request.getParameter("password");
         Long roleId = Long.valueOf(request.getParameter("roleId"));
         User user = userService.getUserById(id);
         user.setId(id);
-        user.setName("打哈哈2");
+        user.setName(name);
+
         user.setPassword(password);
         user.setRole(roleService.getRoleById(roleId));
 

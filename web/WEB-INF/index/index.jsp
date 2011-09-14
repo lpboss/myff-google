@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<%@ page language="java" import="java.util.*,ff.model.*" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     String path = request.getContextPath();
@@ -8,7 +8,6 @@
 <html>
     <head>
         <title>Fire Proofing</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="<%=basePath%>stylesheets/images.css" media="screen" rel="stylesheet" type="text/css" />
         <link href="<%=basePath%>javascripts/ext4/resources/css/ext-all.css" media="screen" rel="stylesheet" type="text/css" />
         <script src="<%=basePath%>javascripts/ext4/ext-all.js" type="text/javascript"></script>
@@ -29,8 +28,8 @@
             ]);
 
             Ext.QuickTips.init();
-            Ext.Ajax.defaultPostHeader += ";charset=UTF-8";
-            Ext.data.Connection.prototype.method = 'GET';
+            //Ext.Ajax.defaultPostHeader += ";charset=UTF-8";
+            Ext.data.Connection.prototype.method = 'POST';
             //这是一个小补丁，阻止在IE下按Backspce引起乱跳转页面
 
 
