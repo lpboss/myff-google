@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String getUserById(Long id) {
+    public String getUserJSONById(Long id) {
         User user = userDao.getUserById(id);
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.setExcludes(new String[]{"videos", "users"});
@@ -142,6 +142,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public String getRoleIdByUserId(Long id) {
         return String.valueOf(userDao.getUserById(id).getRole().getId());   //通过用户名得到user对象，通过user对象得到role对象，最后得到roleId
+    }
+
+    @Override
+    public User getUserById(Long id) {
+        return userDao.getUserById(id);
     }
 
    

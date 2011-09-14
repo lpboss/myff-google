@@ -30,8 +30,10 @@ public interface UserService {
 
     String deleteUser(Long id);
 
-    String getUserById(Long id);
+    String getUserJSONById(Long id);
 
+    User getUserById(Long id);
+    
     String update(User user);
 
     String getUserList();
