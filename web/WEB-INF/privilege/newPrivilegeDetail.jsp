@@ -24,6 +24,7 @@
 
         var name = Ext.create('Ext.form.field.Text', {
           fieldLabel: '权限名称',
+          allowBlank: false,
           name: 'name',
           anchor: '90%'
         });
@@ -43,6 +44,7 @@
         });
 
         sysController.on('select', function() {
+          sysAction.reset();
           sysActionStore.removeAll();
           sysActionStore.proxy.extraParams = {'sys_controller_id':sysController.getValue()};
           sysActionStore.load();

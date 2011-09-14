@@ -46,4 +46,12 @@ public class PrivilegeDetailServiceImpl implements PrivilegeDetailService {
         String jsonStr = "{totalProperty:" + privilegeDetails.size() + ",root:" + privilegeDetailsJS.toString() + "}";
         return jsonStr;
     }
+    
+    @Override
+    public String create(PrivilegeDetail privilegeDetail) {
+        privilegeDetailDao.saveOrUpdate(privilegeDetail);
+        String info = "success";
+        String jsonStr = "{success:true,info:'" + info + "'}";
+        return jsonStr;
+    }
 }

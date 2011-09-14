@@ -24,7 +24,7 @@ public class SysActionDaoHImpl extends HibernateDaoSupport implements SysActionD
     @Override
     public List<SysAction> getAllSysActions(Long sysControllerId) {
         List<SysAction> sysActions = this.getHibernateTemplate().findByNamedParam(
-                "from SysAction where sys_controller_id:sys_controller_id", new String[]{"sys_controller_id"}, new Long[]{sysControllerId});
+                "from SysAction where sys_controller_id=:sys_controller_id", new String[]{"sys_controller_id"}, new Long[]{sysControllerId});
         return sysActions;
     }
 }

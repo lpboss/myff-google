@@ -14,4 +14,6 @@ import java.util.List;
 public interface PrivilegeDetailDao {
     
      List<PrivilegeDetail> getPrivilegeDetailsById(Long privilegeId);
+     
+     PrivilegeDetail saveOrUpdate(PrivilegeDetail privilegeDetail);
 }

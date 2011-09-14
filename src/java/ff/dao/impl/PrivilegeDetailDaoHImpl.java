@@ -31,5 +31,15 @@ public class PrivilegeDetailDaoHImpl extends HibernateDaoSupport implements Priv
         return privilegeDetails;
     }
 
-    
+    @Override
+    public PrivilegeDetail saveOrUpdate(PrivilegeDetail privilegeDetail) {
+        if (privilegeDetail.getId() == null) {
+            privilegeDetail.setCreatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
+        }
+        privilegeDetail.setUpdatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
+        this.getHibernateTemplate().save(privilegeDetail);
+        this.getHibernateTemplate().flush();
+        this.getHibernateTemplate().clear();
+        return privilegeDetail;
+    }
 }

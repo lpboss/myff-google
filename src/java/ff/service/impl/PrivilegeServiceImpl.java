@@ -6,6 +6,7 @@ package ff.service.impl;
 
 import ff.dao.PrivilegeDao;
 
+import ff.model.PrivilegeDetail;
 import ff.service.PrivilegeService;
 import org.apache.log4j.Logger;
 
@@ -27,4 +28,6 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     public String getSysPrivilegeChildrenById(Long nodeId) {
         return privilegeDao.getSysPrivilegeChildrenById(nodeId);
     }
+
+    
 }
