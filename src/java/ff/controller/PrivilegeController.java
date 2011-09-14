@@ -25,7 +25,7 @@ public class PrivilegeController extends MultiActionController {
     private PrivilegeService privilegeService;
     private PrivilegeDetailService privilegeDetailService;
     private SysControllerService sysControllerService;
-    private SysActionService SysActionService;
+    private SysActionService sysActionService;
 
     public void setPrivilegeService(PrivilegeService privilegeService) {
         this.privilegeService = privilegeService;
@@ -35,14 +35,15 @@ public class PrivilegeController extends MultiActionController {
         this.privilegeDetailService = privilegeDetailService;
     }
 
-    public void setSysActionService(SysActionService SysActionService) {
-        this.SysActionService = SysActionService;
+    public void setSysActionService(SysActionService sysActionService) {
+        this.sysActionService = sysActionService;
     }
 
     public void setSysControllerService(SysControllerService sysControllerService) {
         this.sysControllerService = sysControllerService;
     }
 
+    
     /**
      *作者：jerry
      *描述：系统权限页面
@@ -111,14 +112,15 @@ public class PrivilegeController extends MultiActionController {
         String sysControllerId = request.getParameter("sys_controller_id");
         String sysActionId = request.getParameter("sys_action_id");
         String description = request.getParameter("description");
-        PrivilegeDetail PrivilegeDetail = new PrivilegeDetail();
-        PrivilegeDetail.setName(name);
+        PrivilegeDetail privilegeDetail = new PrivilegeDetail();
+        privilegeDetail.setName(name);
+        privilegeDetail.setSysController(sysControllerService.getSysControllerById(Long.parseLong(sysControllerId)));
+        privilegeDetail.setSysAction(sysActionService.getSysActionById(Long.parseLong(sysActionId)));
+        privilegeDetail.setPrivilegeId(Long.parseLong(privilegeId));
+        privilegeDetail.setDescription(description);
         
         
-        PrivilegeDetail.setPrivilegeId(Long.parseLong(privilegeId));
-        
-        
-        String jsonStr = privilegeDetailService.getPrivilegeDetailsById(Long.parseLong(privilegeId));
+        String jsonStr = privilegeDetailService.create(privilegeDetail);
         PrintWriter pw;
         try {
             response.setContentType("text/json; charset=utf-8");
