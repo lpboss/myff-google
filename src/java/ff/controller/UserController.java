@@ -83,7 +83,7 @@ public class UserController extends MultiActionController {
     public void create(HttpServletRequest request, HttpServletResponse response) {
         String name = request.getParameter("name");
         String password = request.getParameter("password");
-        Long roleId = Long.valueOf(request.getParameter("roleId"));
+        Long roleId = Long.valueOf(request.getParameter("role_id"));
         String priority = request.getParameter("priority");
         String jsonStr = userService.createUser(name, password, roleId, priority);
         PrintWriter pw;

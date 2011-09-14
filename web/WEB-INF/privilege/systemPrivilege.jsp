@@ -348,7 +348,7 @@
                   method:'GET',
                   success:function(response,opts){
                     var backInfo = Ext.JSON.decode(response.responseText).info;
-                    if(backInfo === '成功') {
+                    if(backInfo === 'success') {
                       Ext.MessageBox.alert('提示信息', backInfo);
                       treeStore.load();
                     } else {

@@ -12,6 +12,7 @@
 <html>
     <head>
         <title>编辑用户</title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
         <script type="text/javascript">
             Ext.onReady(function(){
                 var userId = <%=request.getParameter("id")%>;

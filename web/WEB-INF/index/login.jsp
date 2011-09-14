@@ -7,7 +7,8 @@
 %>
 <html>
     <head>
-        <title>Fire Proofing</title>
+        <title>Fire Proofing</title>        
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
         <link href="<%=basePath%>javascripts/ext4/resources/css/ext-all.css" media="screen" rel="stylesheet" type="text/css" />
         <script src="<%=basePath%>javascripts/ext4/ext-all.js" type="text/javascript"></script>
         <script src="<%=basePath%>javascripts/ext4/locale/ext-lang-zh_CN.js" type="text/javascript"></script>

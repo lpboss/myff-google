@@ -29,7 +29,7 @@
             ]);
 
             Ext.QuickTips.init();
-            //Ext.lib.Ajax.defaultPostHeader += ";charset=UTF-8";
+            Ext.Ajax.defaultPostHeader += ";charset=UTF-8";
             Ext.data.Connection.prototype.method = 'GET';
             //这是一个小补丁，阻止在IE下按Backspce引起乱跳转页面
 

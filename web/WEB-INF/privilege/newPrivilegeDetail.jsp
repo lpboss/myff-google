@@ -96,7 +96,7 @@
             if (newPrivilegeFormPanel.form.isValid()) {
               newPrivilegeFormPanel.form.submit({
                 success: function(result, resp){
-                  if (resp.result.info.indexOf("成功") >= 0) {
+                  if (resp.result.info.indexOf("success") >= 0) {
                     newPrivilegeDetailWin.destroy();
                   } else {
                     Ext.MessageBox.show({
@@ -132,7 +132,7 @@
           },
           width: '345',
           frame : true,
-          url: '<%=basePath%>privilege/createSysPrivilegeDetail',
+          url: '<%=basePath%>privilege/createSysPrivilegeDetail.htm',
           method: 'GET',
           items: [privilegeId,name,sysController,sysAction,subType,params,desc],
           buttons: [submitButton,{

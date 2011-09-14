@@ -109,6 +109,7 @@ public class PrivilegeController extends MultiActionController {
     public void createSysPrivilegeDetail(HttpServletRequest request, HttpServletResponse response) {
         String privilegeId = request.getParameter("privilege_id");
         String name = request.getParameter("name");
+        logger.info("name:"+name);
         String sysControllerId = request.getParameter("sys_controller_id");
         String sysActionId = request.getParameter("sys_action_id");
         String description = request.getParameter("description");
