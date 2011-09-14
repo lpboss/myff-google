@@ -312,7 +312,7 @@
               //modal: true,
               title: '编辑权限',
               autoLoad: {
-                url: "<%=basePath%>/privilege/editPrivilegeMenu.htm?id=" + currentNode.get('id'),
+                url: "<%=basePath%>privilege/editPrivilegeMenu.htm?id=" + currentNode.get('id'),
                 scripts: true
               }
             });

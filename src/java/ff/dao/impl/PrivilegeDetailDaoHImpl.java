@@ -42,4 +42,10 @@ public class PrivilegeDetailDaoHImpl extends HibernateDaoSupport implements Priv
         this.getHibernateTemplate().clear();
         return privilegeDetail;
     }
+
+    @Override
+    public PrivilegeDetail getPrivilegeDetailById(Long id) {
+        PrivilegeDetail privilegeDetail = (PrivilegeDetail) this.getHibernateTemplate().get(PrivilegeDetail.class, id);
+        return privilegeDetail;
+    }
 }

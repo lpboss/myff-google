@@ -54,4 +54,9 @@ public class PrivilegeDetailServiceImpl implements PrivilegeDetailService {
         String jsonStr = "{success:true,info:'" + info + "'}";
         return jsonStr;
     }
+
+    @Override
+    public PrivilegeDetail getPrivilegeDetailById(Long id) {
+        return privilegeDetailDao.getPrivilegeDetailById(id);
+    }
 }

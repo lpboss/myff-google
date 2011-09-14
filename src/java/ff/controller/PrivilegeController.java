@@ -63,6 +63,18 @@ public class PrivilegeController extends MultiActionController {
         ModelAndView mav = new ModelAndView();
         return mav;
     }
+    
+    /**
+     *作者：jerry
+     *描述：编辑权限细节的页面
+     */
+    public ModelAndView editPrivilegeDetail(HttpServletRequest request, HttpServletResponse response) {
+        PrivilegeDetail privilegeDetail = privilegeDetailService.getPrivilegeDetailById(Long.parseLong(request.getParameter("id")));
+        logger.info("newPrivilegeDetail page");
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("sysControllerId", privilegeDetail.getSysController().getId());
+        return mav;
+    }
 
     /**
      *作者：jerry
