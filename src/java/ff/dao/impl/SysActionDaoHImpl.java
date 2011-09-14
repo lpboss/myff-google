@@ -18,7 +18,8 @@ public class SysActionDaoHImpl extends HibernateDaoSupport implements SysActionD
 
     @Override
     public SysAction getSysActionById(Long id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        SysAction sysAction = (SysAction) this.getHibernateTemplate().get(SysAction.class, id);
+        return sysAction;
     }
 
     @Override

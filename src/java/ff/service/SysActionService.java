@@ -5,6 +5,7 @@
 package ff.service;
 
 import ff.model.RolesPrivilegeDetail;
+import ff.model.SysAction;
 import java.util.List;
 
 /**
@@ -15,4 +16,5 @@ public interface SysActionService {
     
     String getAllSysActions(Long sysControllerId);
     
+    SysAction getSysActionById(Long id);
 }

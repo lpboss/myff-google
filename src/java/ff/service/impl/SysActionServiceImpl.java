@@ -42,5 +42,10 @@ public class SysActionServiceImpl implements SysActionService {
         String jsonStr = "{totalProperty:" + sysActions.size() + ",root:" + sysActionsJS.toString() + "}";
         return jsonStr;
     }
+
+    @Override
+    public SysAction getSysActionById(Long id) {
+        return sysActionDao.getSysActionById(id);
+    }
     
 }

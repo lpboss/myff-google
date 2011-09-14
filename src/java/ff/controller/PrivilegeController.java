@@ -4,8 +4,11 @@
  */
 package ff.controller;
 
+import ff.model.PrivilegeDetail;
 import ff.service.PrivilegeDetailService;
 import ff.service.PrivilegeService;
+import ff.service.SysActionService;
+import ff.service.SysControllerService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +24,8 @@ public class PrivilegeController extends MultiActionController {
 
     private PrivilegeService privilegeService;
     private PrivilegeDetailService privilegeDetailService;
+    private SysControllerService sysControllerService;
+    private SysActionService SysActionService;
 
     public void setPrivilegeService(PrivilegeService privilegeService) {
         this.privilegeService = privilegeService;
@@ -28,6 +33,14 @@ public class PrivilegeController extends MultiActionController {
 
     public void setPrivilegeDetailService(PrivilegeDetailService privilegeDetailService) {
         this.privilegeDetailService = privilegeDetailService;
+    }
+
+    public void setSysActionService(SysActionService SysActionService) {
+        this.SysActionService = SysActionService;
+    }
+
+    public void setSysControllerService(SysControllerService sysControllerService) {
+        this.sysControllerService = sysControllerService;
     }
 
     /**
@@ -94,6 +107,17 @@ public class PrivilegeController extends MultiActionController {
      */
     public void createSysPrivilegeDetail(HttpServletRequest request, HttpServletResponse response) {
         String privilegeId = request.getParameter("privilege_id");
+        String name = request.getParameter("name");
+        String sysControllerId = request.getParameter("sys_controller_id");
+        String sysActionId = request.getParameter("sys_action_id");
+        String description = request.getParameter("description");
+        PrivilegeDetail PrivilegeDetail = new PrivilegeDetail();
+        PrivilegeDetail.setName(name);
+        
+        
+        PrivilegeDetail.setPrivilegeId(Long.parseLong(privilegeId));
+        
+        
         String jsonStr = privilegeDetailService.getPrivilegeDetailsById(Long.parseLong(privilegeId));
         PrintWriter pw;
         try {
@@ -106,6 +130,4 @@ public class PrivilegeController extends MultiActionController {
             logger.info(e);
         }
     }
-    
-    
 }

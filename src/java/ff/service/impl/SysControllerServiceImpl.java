@@ -47,5 +47,10 @@ public class SysControllerServiceImpl implements SysControllerService {
         String jsonStr = "{totalProperty:" + sysControllers.size() + ",root:" + sysControllersJS.toString() + "}";
         return jsonStr;
     }
+
+    @Override
+    public SysController getSysControllerById(Long id) {
+        return SysControllerDao.getSysControllerById(id);
+    }
     
 }

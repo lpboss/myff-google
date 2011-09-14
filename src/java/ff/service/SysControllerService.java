@@ -5,6 +5,7 @@
 package ff.service;
 
 import ff.model.RolesPrivilegeDetail;
+import ff.model.SysController;
 import java.util.List;
 
 /**
@@ -14,5 +15,7 @@ import java.util.List;
 public interface SysControllerService {
 
     String getAllSysControllers();
+    
+    SysController getSysControllerById(Long id);
     
 }

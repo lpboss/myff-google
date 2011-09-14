@@ -18,7 +18,8 @@ public class SysControllerDaoHImpl extends HibernateDaoSupport implements SysCon
 
     @Override
     public SysController getSysControllerById(Long id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        SysController sysController = (SysController) this.getHibernateTemplate().get(SysController.class, id);
+        return sysController;
     }
 
     @Override
