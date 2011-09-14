@@ -190,7 +190,7 @@
                                     newUserForm.form.submit({
                                         method: 'GET',
                                         success: function(result, response){
-                                            if (response.result.info == "成功") {
+                                            if (response.result.info == "success") {
                                                 //添加成功后，隐藏窗口，并刷新Grid
                                                 newUserWin.destroy();
                                             }
