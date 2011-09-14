@@ -13,6 +13,6 @@ import java.util.List;
  */
 public interface SysActionService {
     
-    String getAllSysActions();
+    String getAllSysActions(Long sysControllerId);
     
 }

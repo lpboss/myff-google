@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface SysActionDao {
 
-    List<SysAction> getAllSysActions();
+    List<SysAction> getAllSysActions(Long sysControllerId);
     
     SysAction getSysActionById(Long id);
 

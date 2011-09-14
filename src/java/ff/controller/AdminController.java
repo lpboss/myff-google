@@ -52,8 +52,6 @@ public class AdminController extends MultiActionController {
         this.sysControllerService = sysControllerService;
     }
 
-    
-    
     /**
      *作者：joey
      *描述：得到角色列表
@@ -72,7 +70,7 @@ public class AdminController extends MultiActionController {
             logger.info(e);
         }
     }
-    
+
     /**
      *作者：jerry
      *描述：得到所有控制器
@@ -91,13 +89,18 @@ public class AdminController extends MultiActionController {
             logger.info(e);
         }
     }
-    
+
     /**
      *作者：jerry
      *描述：得到所有控制器
      */
     public void getAllSysActions(HttpServletRequest request, HttpServletResponse response) {
-        String jsonStr = sysActionService.getAllSysActions();
+        String sysControllerId = request.getParameter("sys_controller_id");
+        //免于作复杂判断，所有为null的值，设置为0
+        if (sysControllerId == null) {
+            sysControllerId = "0";
+        }
+        String jsonStr = sysActionService.getAllSysActions(Long.parseLong(sysControllerId));
         logger.info(jsonStr);
         PrintWriter pw;
         try {
@@ -110,6 +113,4 @@ public class AdminController extends MultiActionController {
             logger.info(e);
         }
     }
-    
-    
 }

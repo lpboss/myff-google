@@ -3,7 +3,10 @@
     Created on : 2011-9-13, 18:01:42
     Author     : jerry
 --%>
-
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -127,7 +130,7 @@
           },
           width: '345',
           frame : true,
-          url: '/privilege/createSysPrivilegeDetail',
+          url: '<%=basePath%>privilege/createSysPrivilegeDetail',
           method: 'GET',
           items: [privilegeId,name,sysController,sysAction,subType,params,desc],
           buttons: [submitButton,{

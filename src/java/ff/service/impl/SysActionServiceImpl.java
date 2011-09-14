@@ -32,8 +32,8 @@ public class SysActionServiceImpl implements SysActionService {
     
     
     @Override
-    public String getAllSysActions() {
-        List<SysAction> sysActions = sysActionDao.getAllSysActions();
+    public String getAllSysActions(Long sysControllerId) {
+        List<SysAction> sysActions = sysActionDao.getAllSysActions(sysControllerId);
         JsonConfig jsonConfig = new JsonConfig();
         //这是需要过滤掉的变量名。
         //jsonConfig.setExcludes(new String[]{"videos", "users", "role_monitors"});
