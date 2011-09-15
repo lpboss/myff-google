@@ -19,4 +19,7 @@ public interface SysActionDao {
 
     //List<Role> getRoleList();
     
+    //根据控制器名和controllerId得到sysAction
+    SysAction getSysActionByNameCId(String name,Long CId);
+    
 }

@@ -28,4 +28,9 @@ public class SysActionDaoHImpl extends HibernateDaoSupport implements SysActionD
                 "from SysAction where sys_controller_id=:sys_controller_id", new String[]{"sys_controller_id"}, new Long[]{sysControllerId});
         return sysActions;
     }
+
+    @Override
+    public SysAction getSysActionByNameCId(String name, Long CId) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

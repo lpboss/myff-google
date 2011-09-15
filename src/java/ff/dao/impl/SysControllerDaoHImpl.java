@@ -27,5 +27,17 @@ public class SysControllerDaoHImpl extends HibernateDaoSupport implements SysCon
         List<SysController> sysControllers = this.getHibernateTemplate().find("from SysController");
         return sysControllers;
     }
+
+    @Override
+    public SysController getSysControllerByName(String name) {
+        List<SysController> sysControllers = this.getHibernateTemplate().findByNamedParam(
+                "from SysController where name=:name", new String[]{"name"},
+                new String[]{name});
+        if (sysControllers.size() > 0) {
+            return sysControllers.get(0);
+        } else {
+            return null;
+        }
+    }
     
 }

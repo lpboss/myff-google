@@ -17,4 +17,10 @@ public interface SysControllerDao {
     
     SysController getSysControllerById(Long id);
     
+    /**
+     * 根据控制器名得到控制器
+     * @param name
+     * @return 
+     */
+    SysController getSysControllerByName(String name);
 }
