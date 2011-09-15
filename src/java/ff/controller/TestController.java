@@ -4,6 +4,10 @@
  */
 package ff.controller;
 
+import ff.dao.SysActionDao;
+import ff.dao.SysControllerDao;
+import ff.model.SysAction;
+import ff.model.SysController;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,6 +22,9 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
  * @author jerry
  */
 public class TestController extends MultiActionController {
+    private SysControllerDao sysControllerDao;
+    private SysActionDao sysActionDao;
+    
     //把控制器中的所有方法插入到privilege_details表中
 
     public ModelAndView doAllControllerMethods(HttpServletRequest request, HttpServletResponse response) {
@@ -34,14 +41,28 @@ public class TestController extends MultiActionController {
                 logger.info(key);
                 Class cls = Class.forName(cMap.get(key));
                 logger.info(cls.getName());
+                //查看表中有无此控制器记录，如果没有则插入记录
+                SysController sysController = sysControllerDao.getSysControllerByName(key);
+                if (sysController==null){
+                    sysController = new SysController();
+                    sysController.setName(key);
+                    sysControllerDao.saveOrUpdate(sysController);
+                }
+                
                 Method[] methods = cls.getMethods();//得到某类的所有Public方法
                 for (Method method : methods) {
                     logger.info(method.getName() + "  " + method.getReturnType().getName() + " " + method.getModifiers());
+                    SysAction sysAction = sysActionDao.getSysActionByNameCId(method.getName(), sysController.getId());
+                    if (sysAction == null){
+                        sysAction = new SysAction();
+                        sysAction.setName(method.getName());
+                        sysAction.setSysControllerId(sysController.getId());
+                        sysActionDao.saveOrUpdate(sysAction);
+                    }                    
                 }
             } catch (ClassNotFoundException ex) {
                 logger.info(ex);
             }
-
         }
         logger.info("My Class +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         ModelAndView mav = new ModelAndView();

@@ -7,6 +7,8 @@ package ff.dao.impl;
 import ff.dao.SysControllerDao;
 import ff.model.SysController;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.List;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -39,5 +41,16 @@ public class SysControllerDaoHImpl extends HibernateDaoSupport implements SysCon
             return null;
         }
     }
-    
+
+    @Override
+    public SysController saveOrUpdate(SysController sysController) {
+        if (sysController.getId() == null) {
+            sysController.setCreatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
+        }
+        sysController.setUpdatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
+        this.getHibernateTemplate().save(sysController);
+        this.getHibernateTemplate().flush();
+        this.getHibernateTemplate().clear();
+        return sysController;
+    }
 }

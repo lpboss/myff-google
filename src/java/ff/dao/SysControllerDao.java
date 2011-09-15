@@ -23,4 +23,6 @@ public interface SysControllerDao {
      * @return 
      */
     SysController getSysControllerByName(String name);
+    
+    SysController saveOrUpdate(SysController sysController);
 }
