@@ -101,7 +101,6 @@ public class AdminController extends MultiActionController {
             pw.close();
         } catch (IOException e) {
             logger.info(e);
-        }
+        }        
     }
-
 }

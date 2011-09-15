@@ -47,5 +47,10 @@ public class SysActionServiceImpl implements SysActionService {
     public SysAction getSysActionById(Long id) {
         return sysActionDao.getSysActionById(id);
     }
+
+    @Override
+    public SysAction saveOrUpdate(SysAction sysAction) {
+        return sysActionDao.saveOrUpdate(sysAction);
+    }
     
 }

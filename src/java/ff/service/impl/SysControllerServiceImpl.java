@@ -52,5 +52,10 @@ public class SysControllerServiceImpl implements SysControllerService {
     public SysController getSysControllerById(Long id) {
         return SysControllerDao.getSysControllerById(id);
     }
+
+    @Override
+    public SysController saveOrUpdate(SysController sysController) {
+        return SysControllerDao.saveOrUpdate(sysController);
+    }
     
 }

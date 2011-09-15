@@ -18,4 +18,6 @@ public interface SysControllerService {
     
     SysController getSysControllerById(Long id);
     
+    SysController saveOrUpdate(SysController sysController);
+    
 }

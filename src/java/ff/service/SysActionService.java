@@ -17,4 +17,6 @@ public interface SysActionService {
     String getAllSysActions(Long sysControllerId);
     
     SysAction getSysActionById(Long id);
+    
+    SysAction saveOrUpdate(SysAction sysAction);
 }
