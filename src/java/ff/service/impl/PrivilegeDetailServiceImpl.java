@@ -59,4 +59,24 @@ public class PrivilegeDetailServiceImpl implements PrivilegeDetailService {
     public PrivilegeDetail getPrivilegeDetailById(Long id) {
         return privilegeDetailDao.getPrivilegeDetailById(id);
     }
+
+    @Override
+    public String getPrivilegeDetailJSONById(Long id) {
+        PrivilegeDetail privilegeDetail = privilegeDetailDao.getPrivilegeDetailById(id);
+        JsonConfig jsonConfig = new JsonConfig();
+        //这是需要过滤掉的变量名。
+        //jsonConfig.setExcludes(new String[]{"videos", "users", "role_monitors"});
+        jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm"));
+        JSONArray privilegeDetailJS = JSONArray.fromObject(privilegeDetail, jsonConfig);
+        String jsonStr = "{root:" + privilegeDetailJS.toString() + "}";
+        return jsonStr;
+    }
+
+    @Override
+    public String update(PrivilegeDetail privilegeDetail) {
+        privilegeDetailDao.saveOrUpdate(privilegeDetail);
+        String info = "success";
+        String jsonStr = "{success:true,info:'" + info + "'}";
+        return jsonStr;
+    }
 }

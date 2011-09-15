@@ -18,4 +18,5 @@ public interface PrivilegeDetailDao {
      PrivilegeDetail saveOrUpdate(PrivilegeDetail privilegeDetail);
      
      PrivilegeDetail getPrivilegeDetailById(Long id);
+     
 }

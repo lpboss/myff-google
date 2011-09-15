@@ -159,8 +159,6 @@ public class UserController extends MultiActionController {
         Long id = Long.valueOf(request.getParameter("id"));
 
         String name = request.getParameter("name");
-        logger.info("FK.Name:" + name);
-        logger.info("FK.name" + "打哈哈4");
         String password = request.getParameter("password");
         Long roleId = Long.valueOf(request.getParameter("roleId"));
         User user = userService.getUserById(id);

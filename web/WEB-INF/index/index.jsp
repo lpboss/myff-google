@@ -260,8 +260,8 @@
                     fields : [{name: 'id'},
                         { name: 'number'},
                         { name: 'name'},
-                        {name: 'created_at'},
-                        {name: 'updated_at'}
+                        {name: 'createdAt'},
+                        {name: 'updatedAt'}
                     ]
                 });
 
@@ -313,15 +313,29 @@
                     extend : 'Ext.data.Model',
                     fields : [{name: 'id',type:'int'},
                         {name: 'name'},
-                        {name: 'sys_controller_id',type:'int'},
-                        {name: 'sys_action_id',type:'int'},
+                        {name: 'sysControllerId',type:'int',mapping:'sysController',convert:function(value,record){
+                                if(value == ""){
+                                    return "";
+                                }else{
+                                    return value.id;
+                                }
+                            }
+                        },
+                        {name: 'sysActionId',type:'int',mapping:'sysAction',convert:function(value,record){
+                                if(value == ""){
+                                    return "";
+                                }else{
+                                    return value.id;
+                                }
+                            }},
                         {name: 'controller_name',mapping: 'sys_controller',convert:function(value,record){
                                 if(value == ""){
                                     return "";
                                 }else{
                                     return value.name;
                                 }
-                            }},
+                            }
+                        },
                         {name: 'action_name',mapping: 'sys_action',convert:function(value,record){
                                 if(value == ""){
                                     return "";
@@ -332,8 +346,8 @@
                         {name: 'params'},
                         {name: 'sub_type'},
                         {name: 'description'},
-                        {name: 'created_at'},
-                        {name: 'is_locked'}
+                        {name: 'createdAt'},
+                        {name: 'isLocked'}
                     ]
                 });
 
@@ -343,11 +357,11 @@
                     fields : [{name: 'id'},
                         {name: 'name'},
                         {name: 'number'},
-                        {name: 'sys_controller_id',type:'int'},
-                        {name: 'sys_action_id',type:'int'},
+                        {name: 'sysControllerId',type:'int'},
+                        {name: 'sysActionId',type:'int'},
                         {name: 'description'},
-                        {name: 'parent_id',type:'int'},
-                        {name: 'module_id',mapping: 'parent_id'}
+                        {name: 'parentId',type:'int'},
+                        {name: 'moduleId',mapping: 'parentId'}
                     ]
                 });
 

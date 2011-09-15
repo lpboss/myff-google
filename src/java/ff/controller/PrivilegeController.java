@@ -75,6 +75,25 @@ public class PrivilegeController extends MultiActionController {
         mav.addObject("sysControllerId", privilegeDetail.getSysController().getId());
         return mav;
     }
+    
+    /**
+     *作者：jerry
+     *描述：得到某个节点的权限树结构。
+     */
+    public void getPrivilegeDetailById(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("id");
+        String jsonStr = privilegeDetailService.getPrivilegeDetailJSONById(Long.parseLong(request.getParameter("id")));
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
 
     /**
      *作者：jerry
@@ -145,4 +164,34 @@ public class PrivilegeController extends MultiActionController {
             logger.info(e);
         }
     }
+    
+    /**
+     *作者：jerry
+     *描述：创建系统权限细节。
+     */
+    public void updateSysPrivilegeDetail(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("id");
+        String name = request.getParameter("name");
+        String sysControllerId = request.getParameter("sys_controller_id");
+        String sysActionId = request.getParameter("sys_action_id");
+        String description = request.getParameter("description");
+        PrivilegeDetail privilegeDetail = privilegeDetailService.getPrivilegeDetailById(Long.parseLong(id));
+        privilegeDetail.setName(name);
+        privilegeDetail.setSysController(sysControllerService.getSysControllerById(Long.parseLong(sysControllerId)));
+        privilegeDetail.setSysAction(sysActionService.getSysActionById(Long.parseLong(sysActionId)));
+        privilegeDetail.setDescription(description);        
+        
+        String jsonStr = privilegeDetailService.update(privilegeDetail);
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
+    
 }

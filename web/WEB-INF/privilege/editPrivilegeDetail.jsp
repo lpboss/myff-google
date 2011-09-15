@@ -130,7 +130,7 @@
           },
           width: '345',
           frame : true,
-          url: '<%=basePath%>privilege/updateSysPrivilegeDetail',
+          url: '<%=basePath%>privilege/updateSysPrivilegeDetail.htm',
           method: 'GET',
           reader: Ext.create('Ext.data.reader.Json',{
             model: 'SysPrivilegeDetail',
@@ -151,7 +151,7 @@
               sysActionStore.load({callback: function(record, options, success){
                   if(success){
                     editPrivilegeFormPanel.form.load({
-                      url: '/privilege/getPrivilegeDetailById?id=' + pdId.getValue(),
+                      url: '<%=basePath%>privilege/getPrivilegeDetailById.htm?id=' + pdId.getValue(),
                       method : 'GET',
                       waitMsg: '正在载入数据...',
                       success: function(form, action){
