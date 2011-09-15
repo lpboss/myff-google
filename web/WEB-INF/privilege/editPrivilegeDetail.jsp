@@ -93,7 +93,7 @@
             if (editPrivilegeFormPanel.form.isValid()) {
               editPrivilegeFormPanel.form.submit({
                 success: function(result, resp){
-                  if (resp.result.info.indexOf("成功") >= 0) {
+                  if (resp.result.info.indexOf("success") >= 0) {
                     editPrivilegeDetailWin.destroy();
                   } else {
                     Ext.MessageBox.show({
@@ -131,7 +131,7 @@
           width: '345',
           frame : true,
           url: '<%=basePath%>privilege/updateSysPrivilegeDetail.htm',
-          method: 'GET',
+          method: 'POST',
           reader: Ext.create('Ext.data.reader.Json',{
             model: 'SysPrivilegeDetail',
             root: 'root'

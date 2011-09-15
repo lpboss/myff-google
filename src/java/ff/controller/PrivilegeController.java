@@ -43,7 +43,6 @@ public class PrivilegeController extends MultiActionController {
         this.sysControllerService = sysControllerService;
     }
 
-    
     /**
      *作者：jerry
      *描述：系统权限页面
@@ -53,7 +52,7 @@ public class PrivilegeController extends MultiActionController {
         ModelAndView mav = new ModelAndView();
         return mav;
     }
-    
+
     /**
      *作者：jerry
      *描述：添加权限细节的页面
@@ -63,7 +62,7 @@ public class PrivilegeController extends MultiActionController {
         ModelAndView mav = new ModelAndView();
         return mav;
     }
-    
+
     /**
      *作者：jerry
      *描述：编辑权限细节的页面
@@ -75,7 +74,7 @@ public class PrivilegeController extends MultiActionController {
         mav.addObject("sysControllerId", privilegeDetail.getSysController().getId());
         return mav;
     }
-    
+
     /**
      *作者：jerry
      *描述：得到某个节点的权限树结构。
@@ -132,7 +131,7 @@ public class PrivilegeController extends MultiActionController {
             logger.info(e);
         }
     }
-    
+
     /**
      *作者：jerry
      *描述：创建系统权限细节。
@@ -140,7 +139,7 @@ public class PrivilegeController extends MultiActionController {
     public void createSysPrivilegeDetail(HttpServletRequest request, HttpServletResponse response) {
         String privilegeId = request.getParameter("privilege_id");
         String name = request.getParameter("name");
-        logger.info("name:"+name);
+        logger.info("name:" + name);
         String sysControllerId = request.getParameter("sys_controller_id");
         String sysActionId = request.getParameter("sys_action_id");
         String description = request.getParameter("description");
@@ -150,8 +149,8 @@ public class PrivilegeController extends MultiActionController {
         privilegeDetail.setSysAction(sysActionService.getSysActionById(Long.parseLong(sysActionId)));
         privilegeDetail.setPrivilegeId(Long.parseLong(privilegeId));
         privilegeDetail.setDescription(description);
-        
-        
+
+
         String jsonStr = privilegeDetailService.create(privilegeDetail);
         PrintWriter pw;
         try {
@@ -164,23 +163,23 @@ public class PrivilegeController extends MultiActionController {
             logger.info(e);
         }
     }
-    
+
     /**
      *作者：jerry
-     *描述：创建系统权限细节。
+     *描述：更新系统权限细节。
      */
     public void updateSysPrivilegeDetail(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("id");
         String name = request.getParameter("name");
-        String sysControllerId = request.getParameter("sys_controller_id");
-        String sysActionId = request.getParameter("sys_action_id");
+        String sysControllerId = request.getParameter("sysControllerId");
+        String sysActionId = request.getParameter("sysActionId");
         String description = request.getParameter("description");
         PrivilegeDetail privilegeDetail = privilegeDetailService.getPrivilegeDetailById(Long.parseLong(id));
         privilegeDetail.setName(name);
         privilegeDetail.setSysController(sysControllerService.getSysControllerById(Long.parseLong(sysControllerId)));
         privilegeDetail.setSysAction(sysActionService.getSysActionById(Long.parseLong(sysActionId)));
-        privilegeDetail.setDescription(description);        
-        
+        privilegeDetail.setDescription(description);
+
         String jsonStr = privilegeDetailService.update(privilegeDetail);
         PrintWriter pw;
         try {
@@ -193,5 +192,30 @@ public class PrivilegeController extends MultiActionController {
             logger.info(e);
         }
     }
-    
+
+    /**
+     *作者：jerry
+     *描述：锁定系统权限细节。
+     */
+    public void privilegeDetailLock(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("id");
+        PrivilegeDetail privilegeDetail = privilegeDetailService.getPrivilegeDetailById(Long.parseLong(id));
+        logger.info("privilegeDetail.getIsLocked():"+privilegeDetail.getIsLocked());
+        if (privilegeDetail.getIsLocked() == null || privilegeDetail.getIsLocked() == 0) {
+            privilegeDetail.setIsLocked((long) 1);
+        } else {
+            privilegeDetail.setIsLocked((long) 0);
+        }
+        String jsonStr = privilegeDetailService.update(privilegeDetail);
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
 }

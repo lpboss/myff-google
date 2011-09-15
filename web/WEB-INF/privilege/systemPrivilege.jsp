@@ -437,7 +437,7 @@
         
         //锁定用户
         function renderIsLucked(value, cellmeta, record, index, columnIndex, store){
-          if (record.get("is_locked")=="1"){
+          if (record.get("isLocked")=="1"){
             return "<a style=cursor:pointer onclick=lockPrivilegeDetailFn(" + store.getAt(index).get('id')+")><font color=red>锁定</font></a>";
           }else{
             return "<a style=cursor:pointer onclick=lockPrivilegeDetailFn(" + store.getAt(index).get('id')+")><font color=green>未锁定</font></a>";
