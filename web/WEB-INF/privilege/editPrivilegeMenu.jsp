@@ -142,7 +142,7 @@
           },
           width: '345',
           frame : true,
-          url: '<%=basePath%>privilege/updateSysPrivilege',
+          url: '<%=basePath%>privilege/updateSysPrivilege.htm',
           method: 'GET',
           reader: Ext.create('Ext.data.reader.Json',{
             model: 'Privilege',

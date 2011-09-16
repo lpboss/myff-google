@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface SysActionService {
     
-    String getAllSysActions(Long sysControllerId);
+    String getAllSysActions(Long sysActionId);
     
     SysAction getSysActionById(Long id);
     

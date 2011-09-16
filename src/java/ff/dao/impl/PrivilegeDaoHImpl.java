@@ -60,4 +60,16 @@ public class PrivilegeDaoHImpl extends HibernateDaoSupport implements PrivilegeD
         List<Privilege> privileges = this.getHibernateTemplate().findByNamedParam("from Privilege where parent_id =:parent_id", new String[]{"parent_id"}, new Object[]{0});
         return privileges;
     }
+
+    @Override
+    public Privilege saveOrUpdate(Privilege privilege) {
+        if (privilege.getId() == null) {
+            privilege.setCreatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
+        }
+        privilege.setUpdatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
+        this.getHibernateTemplate().save(privilege);
+        this.getHibernateTemplate().flush();
+        this.getHibernateTemplate().clear();
+        return privilege;
+    }
 }

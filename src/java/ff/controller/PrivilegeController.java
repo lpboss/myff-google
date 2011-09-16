@@ -6,6 +6,8 @@ package ff.controller;
 
 import ff.model.Privilege;
 import ff.model.PrivilegeDetail;
+import ff.model.SysAction;
+import ff.model.SysController;
 import ff.service.PrivilegeDetailService;
 import ff.service.PrivilegeService;
 import ff.service.SysActionService;
@@ -75,7 +77,7 @@ public class PrivilegeController extends MultiActionController {
         mav.addObject("sysControllerId", privilegeDetail.getSysController().getId());
         return mav;
     }
-    
+
     /**
      *作者：jerry
      *描述：编辑菜单的页面
@@ -87,7 +89,7 @@ public class PrivilegeController extends MultiActionController {
         mav.addObject("sysControllerId", privilege.getSysController().getId());
         return mav;
     }
-    
+
     /**
      *作者：jerry
      *描述：得到某个节点的权限树结构。
@@ -213,7 +215,7 @@ public class PrivilegeController extends MultiActionController {
     public void privilegeDetailLock(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("id");
         PrivilegeDetail privilegeDetail = privilegeDetailService.getPrivilegeDetailById(Long.parseLong(id));
-        logger.info("privilegeDetail.getIsLocked():"+privilegeDetail.getIsLocked());
+        logger.info("privilegeDetail.getIsLocked():" + privilegeDetail.getIsLocked());
         if (privilegeDetail.getIsLocked() == null || privilegeDetail.getIsLocked() == 0) {
             privilegeDetail.setIsLocked((long) 1);
         } else {
@@ -231,7 +233,7 @@ public class PrivilegeController extends MultiActionController {
             logger.info(e);
         }
     }
-    
+
     /**
      *作者：jerry
      *描述：得到某个系统权限。
@@ -250,7 +252,7 @@ public class PrivilegeController extends MultiActionController {
             logger.info(e);
         }
     }
-    
+
     /**
      *作者：jerry
      *描述：得到所有模块
@@ -269,14 +271,29 @@ public class PrivilegeController extends MultiActionController {
             logger.info(e);
         }
     }
-    
+
     /**
      *作者：jerry
      *描述：更新菜单
      */
     public void updateSysPrivilege(HttpServletRequest request, HttpServletResponse response) {
-        String jsonStr = privilegeService.getAllModulesJSON();
-        logger.info(jsonStr);
+        String id = request.getParameter("id");
+        Privilege privilege = privilegeService.getPrivilegeById(Long.parseLong(id));
+        String moduleId = request.getParameter("moudleId");
+        String sysControllerId = request.getParameter("sysControllerId");
+        String sysActionId = request.getParameter("sysActionId");
+
+        privilege.setParentId(Long.parseLong(moduleId));
+        SysController sysController = sysControllerService.getSysControllerById(Long.parseLong(sysControllerId));
+        SysAction sysAction = sysActionService.getSysActionById(Long.parseLong(sysActionId));
+        privilege.setSysController(sysController);
+        privilege.setSysAction(sysAction);
+        privilege.setName(request.getParameter("name"));
+        privilege.setDescription(request.getParameter("description"));
+        privilegeService.saveOrUpdate(privilege);
+        String info = "success";
+        String jsonStr = "{success:true,info:'" + info + "'}";
+        
         PrintWriter pw;
         try {
             response.setContentType("text/json; charset=utf-8");
@@ -288,6 +305,4 @@ public class PrivilegeController extends MultiActionController {
             logger.info(e);
         }
     }
-    
-    
 }

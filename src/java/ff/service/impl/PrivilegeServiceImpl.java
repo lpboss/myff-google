@@ -64,4 +64,9 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         return jsonStr;
     }
 
+    @Override
+    public Privilege saveOrUpdate(Privilege privilege) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

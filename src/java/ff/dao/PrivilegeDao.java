@@ -19,4 +19,5 @@ public interface PrivilegeDao {
     
     List<Privilege> getAllModules();
   
+    Privilege saveOrUpdate(Privilege privilege);
 }

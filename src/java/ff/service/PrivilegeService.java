@@ -18,4 +18,5 @@ public interface PrivilegeService {
     Privilege getPrivilegeById(Long id);
     String getPrivilegeJSONById(Long id);
     String getAllModulesJSON();
+    Privilege saveOrUpdate(Privilege privilege);
 }
