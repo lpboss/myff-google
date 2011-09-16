@@ -75,6 +75,7 @@ public class PrivilegeController extends MultiActionController {
         mav.addObject("sysControllerId", privilegeDetail.getSysController().getId());
         return mav;
     }
+    
     /**
      *作者：jerry
      *描述：编辑菜单的页面
@@ -87,8 +88,6 @@ public class PrivilegeController extends MultiActionController {
         return mav;
     }
     
-    
-
     /**
      *作者：jerry
      *描述：得到某个节点的权限树结构。
@@ -239,14 +238,7 @@ public class PrivilegeController extends MultiActionController {
      */
     public void getSysPrivilegeById(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("id");
-        PrivilegeDetail privilegeDetail = privilegeDetailService.getPrivilegeDetailById(Long.parseLong(id));
-        logger.info("privilegeDetail.getIsLocked():"+privilegeDetail.getIsLocked());
-        if (privilegeDetail.getIsLocked() == null || privilegeDetail.getIsLocked() == 0) {
-            privilegeDetail.setIsLocked((long) 1);
-        } else {
-            privilegeDetail.setIsLocked((long) 0);
-        }
-        String jsonStr = privilegeDetailService.update(privilegeDetail);
+        String jsonStr = privilegeService.getPrivilegeJSONById(Long.parseLong(id));
         PrintWriter pw;
         try {
             response.setContentType("text/json; charset=utf-8");
@@ -282,5 +274,4 @@ public class PrivilegeController extends MultiActionController {
             logger.info(e);
         }
     }
-    
 }

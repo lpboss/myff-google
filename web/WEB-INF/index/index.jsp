@@ -327,7 +327,8 @@
                                 }else{
                                     return value.id;
                                 }
-                            }},
+                            }
+                        },
                         {name: 'controller_name',mapping: 'sys_controller',convert:function(value,record){
                                 if(value == ""){
                                     return "";
@@ -357,8 +358,22 @@
                     fields : [{name: 'id'},
                         {name: 'name'},
                         {name: 'number'},
-                        {name: 'sysControllerId',type:'int'},
-                        {name: 'sysActionId',type:'int'},
+                        {name: 'sysControllerId',type:'int',mapping:'sysController',convert:function(value,record){
+                                if(value == ""){
+                                    return "";
+                                }else{
+                                    return value.id;
+                                }
+                            }
+                        },
+                        {name: 'sysActionId',type:'int',mapping:'sysAction',convert:function(value,record){
+                                if(value == ""){
+                                    return "";
+                                }else{
+                                    return value.id;
+                                }
+                            }
+                        },
                         {name: 'description'},
                         {name: 'parentId',type:'int'},
                         {name: 'moduleId',mapping: 'parentId'}

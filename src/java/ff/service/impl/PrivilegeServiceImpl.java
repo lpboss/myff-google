@@ -11,6 +11,7 @@ import ff.model.PrivilegeDetail;
 import ff.service.PrivilegeService;
 import ff.util.DateJsonValueProcessor;
 import java.sql.Timestamp;
+import java.util.List;
 import net.sf.json.JSONArray;
 import net.sf.json.JsonConfig;
 import org.apache.log4j.Logger;
@@ -48,6 +49,18 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm"));
         JSONArray privilegeJS = JSONArray.fromObject(privilege, jsonConfig);
         String jsonStr = "{root:" + privilegeJS.toString() + "}";
+        return jsonStr;
+    }
+
+    @Override
+    public String getAllModulesJSON() {
+        List<Privilege> privileges = privilegeDao.getAllModules();
+        JsonConfig jsonConfig = new JsonConfig();
+        //这是需要过滤掉的变量名。
+        //jsonConfig.setExcludes(new String[]{"videos", "users", "role_monitors"});
+        jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm"));
+        JSONArray privilegesJS = JSONArray.fromObject(privileges, jsonConfig);
+        String jsonStr = "{totalProperty:" + privileges.size() + ",root:" + privilegesJS.toString() + "}";
         return jsonStr;
     }
 

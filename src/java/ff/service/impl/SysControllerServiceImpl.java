@@ -4,21 +4,13 @@
  */
 package ff.service.impl;
 
-import ff.dao.PrivilegeDao;
-import ff.dao.RoleDao;
 import ff.dao.SysControllerDao;
-import ff.model.Privilege;
-import ff.model.Role;
 import ff.model.SysController;
-import ff.service.RoleService;
 import ff.service.SysControllerService;
 import ff.util.DateJsonValueProcessor;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 import org.apache.log4j.Logger;
 

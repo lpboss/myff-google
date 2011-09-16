@@ -22,7 +22,7 @@
         });
         
         var parentId = Ext.create('Ext.form.field.Hidden', {
-          name: 'parent_id'
+          name: 'parentId'
         });
 
         var name = Ext.create('Ext.form.field.Text', {
@@ -38,7 +38,7 @@
           blankText: "上级模块必须选择",
           valueField: 'id',
           displayField: 'name',
-          name: 'module_id',//如果不想提交displayField，则在这儿指定要提交的Key，value就是valueField．
+          name: 'moduleId',//如果不想提交displayField，则在这儿指定要提交的Key，value就是valueField．
           emptyText: '请选择...',          
           loadingText: '搜索中...',
           anchor: '90%',
@@ -55,7 +55,7 @@
           blankText: "控制器必须选择",
           valueField: 'id',
           displayField: 'name',
-          name: 'sys_controller_id',//如果不想提交displayField，则在这儿指定要提交的Key，value就是valueField．
+          name: 'sysControllerId',//如果不想提交displayField，则在这儿指定要提交的Key，value就是valueField．
           emptyText: '请选择...',          
           loadingText: '搜索中...',
           anchor: '90%',
@@ -78,7 +78,7 @@
           blankText: "行为方法必须选择",
           valueField: 'id',
           displayField: 'name',
-          name: 'sys_action_id',//如果不想提交displayField，则在这儿指定要提交的Key，value就是valueField．
+          name: 'sysActionId',//如果不想提交displayField，则在这儿指定要提交的Key，value就是valueField．
           emptyText: '请选择...',
           loadingText: '搜索中...',
           anchor: '90%',
@@ -142,7 +142,7 @@
           },
           width: '345',
           frame : true,
-          url: '/privilege/updateSysPrivilege',
+          url: '<%=basePath%>privilege/updateSysPrivilege',
           method: 'GET',
           reader: Ext.create('Ext.data.reader.Json',{
             model: 'Privilege',
@@ -166,7 +166,7 @@
                     sysActionStore.load({callback: function(record, options, success){
                         if(success){
                           editPrivilegeFormPanel.form.load({
-                            url: '/privilege/getSysPrivilegeById?id=' + moduleId.getValue(),
+                            url: '<%=basePath%>privilege/getSysPrivilegeById.htm?id=' + moduleId.getValue(),
                             method : 'GET',
                             waitMsg: '正在载入数据...',
                             success: function(form, action){

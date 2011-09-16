@@ -54,4 +54,10 @@ public class PrivilegeDaoHImpl extends HibernateDaoSupport implements PrivilegeD
         }
         return treeData;
     }
+
+    @Override
+    public List<Privilege> getAllModules() {
+        List<Privilege> privileges = this.getHibernateTemplate().findByNamedParam("from Privilege where parent_id =:parent_id", new String[]{"parent_id"}, new Object[]{0});
+        return privileges;
+    }
 }

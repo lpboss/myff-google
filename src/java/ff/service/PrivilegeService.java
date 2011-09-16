@@ -17,4 +17,5 @@ public interface PrivilegeService {
     String getSysPrivilegeChildrenById(Long nodeId);
     Privilege getPrivilegeById(Long id);
     String getPrivilegeJSONById(Long id);
+    String getAllModulesJSON();
 }
