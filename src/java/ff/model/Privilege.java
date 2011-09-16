@@ -25,7 +25,7 @@ public class Privilege implements java.io.Serializable {
     private Long id;
     private String name;
     private String params;
-    private Long level;
+    private Integer level;
     private Long isMenu;
     private String leaf;
     private String description;
@@ -80,11 +80,11 @@ public class Privilege implements java.io.Serializable {
     }
 
     @Column(name = "level")
-    public Long getLevel() {
+    public Integer getLevel() {
         return level;
     }
 
-    public void setLevel(Long level) {
+    public void setLevel(Integer level) {
         this.level = level;
     }
 

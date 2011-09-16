@@ -159,6 +159,48 @@ public class PrivilegeController extends MultiActionController {
 
     /**
      *作者：jerry
+     *描述：创建系统菜单或模块
+     */
+    public void createSysPrivilege(HttpServletRequest request, HttpServletResponse response) {
+        String parentId = request.getParameter("parent_id");
+        String name = request.getParameter("name");
+        String sysControllerId = request.getParameter("sys_controller_id");
+        String sysActionId = request.getParameter("sys_action_id");
+        String description = request.getParameter("description");
+        Privilege privilege = new Privilege();
+        privilege.setName(name);
+        privilege.setParentId(Long.parseLong(parentId));
+        if (privilege.getParentId() == 0) {
+            privilege.setLevel(0);
+            privilege.setLeaf("false");
+        } else {
+            privilege.setLevel(1);
+            privilege.setLeaf("true");
+            privilege.setSysController(sysControllerService.getSysControllerById(Long.parseLong(sysControllerId)));
+            privilege.setSysAction(sysActionService.getSysActionById(Long.parseLong(sysActionId)));
+        }
+
+        privilege.setDescription(description);
+
+        privilegeService.saveOrUpdate(privilege);
+
+        String info = "success";
+        String jsonStr = "{success:true,info:'" + info + "'}";
+
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
+
+    /**
+     *作者：jerry
      *描述：创建系统权限细节。
      */
     public void createSysPrivilegeDetail(HttpServletRequest request, HttpServletResponse response) {

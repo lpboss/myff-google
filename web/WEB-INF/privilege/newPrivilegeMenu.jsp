@@ -120,7 +120,7 @@
           },
           width: '345',
           frame : true,
-          url: '<%=basePath%>privilege/createSysPrivilege',
+          url: '<%=basePath%>privilege/createSysPrivilege.htm',
           method: 'GET',
           items: [parentId,name,sysController,sysAction,desc],
           buttons: [submitButton,{

@@ -13,6 +13,7 @@ import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 /**
@@ -104,5 +105,15 @@ public class AdminController extends MultiActionController {
         }
     }
 
+    /**
+     *作者：jerry
+     *描述：角色列表页面
+     */
+    public ModelAndView rolePrivilege(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("rolePrivilege page");
+        ModelAndView mav = new ModelAndView();
+        return mav;
+    }
+    
     
 }
