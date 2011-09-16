@@ -66,7 +66,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 
     @Override
     public Privilege saveOrUpdate(Privilege privilege) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return privilegeDao.saveOrUpdate(privilege);
     }
 
 }

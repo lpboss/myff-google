@@ -279,7 +279,7 @@ public class PrivilegeController extends MultiActionController {
     public void updateSysPrivilege(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("id");
         Privilege privilege = privilegeService.getPrivilegeById(Long.parseLong(id));
-        String moduleId = request.getParameter("moudleId");
+        String moduleId = request.getParameter("moduleId");
         String sysControllerId = request.getParameter("sysControllerId");
         String sysActionId = request.getParameter("sysActionId");
 
