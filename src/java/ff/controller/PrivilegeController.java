@@ -58,6 +58,16 @@ public class PrivilegeController extends MultiActionController {
 
     /**
      *作者：jerry
+     *描述：添加权限菜单
+     */
+    public ModelAndView newPrivilegeMenu(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("newPrivilegeDetail page");
+        ModelAndView mav = new ModelAndView();
+        return mav;
+    }
+
+    /**
+     *作者：jerry
      *描述：添加权限细节的页面
      */
     public ModelAndView newPrivilegeDetail(HttpServletRequest request, HttpServletResponse response) {
@@ -293,7 +303,7 @@ public class PrivilegeController extends MultiActionController {
         privilegeService.saveOrUpdate(privilege);
         String info = "success";
         String jsonStr = "{success:true,info:'" + info + "'}";
-        
+
         PrintWriter pw;
         try {
             response.setContentType("text/json; charset=utf-8");
