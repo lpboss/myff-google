@@ -4,6 +4,7 @@
  */
 package ff.service;
 
+import ff.model.Privilege;
 import ff.model.PrivilegeDetail;
 import ff.model.User;
 
@@ -14,5 +15,6 @@ import ff.model.User;
 public interface PrivilegeService {
    //得到某个节点下，第一层的，所有的权限列表。
     String getSysPrivilegeChildrenById(Long nodeId);
-    
+    Privilege getPrivilegeById(Long id);
+    String getPrivilegeJSONById(Long id);
 }

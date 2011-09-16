@@ -370,7 +370,7 @@
                     model : 'Privilege',
                     proxy : {
                         type : 'ajax',
-                        url : '<%=basePath%>admin/getAllModules.htm',
+                        url : '<%=basePath%>privilege/getAllModules.htm',
                         reader : {
                             type : 'json',
                             root : 'root',// JSON数组对象名

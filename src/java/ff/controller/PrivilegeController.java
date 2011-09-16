@@ -4,6 +4,7 @@
  */
 package ff.controller;
 
+import ff.model.Privilege;
 import ff.model.PrivilegeDetail;
 import ff.service.PrivilegeDetailService;
 import ff.service.PrivilegeService;
@@ -74,6 +75,19 @@ public class PrivilegeController extends MultiActionController {
         mav.addObject("sysControllerId", privilegeDetail.getSysController().getId());
         return mav;
     }
+    /**
+     *作者：jerry
+     *描述：编辑菜单的页面
+     */
+    public ModelAndView editPrivilegeMenu(HttpServletRequest request, HttpServletResponse response) {
+        Privilege privilege = privilegeService.getPrivilegeById(Long.parseLong(request.getParameter("id")));
+        logger.info("newPrivilegeDetail page");
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("sysControllerId", privilege.getSysController().getId());
+        return mav;
+    }
+    
+    
 
     /**
      *作者：jerry
@@ -218,4 +232,55 @@ public class PrivilegeController extends MultiActionController {
             logger.info(e);
         }
     }
+    
+    /**
+     *作者：jerry
+     *描述：得到某个系统权限。
+     */
+    public void getSysPrivilegeById(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("id");
+        PrivilegeDetail privilegeDetail = privilegeDetailService.getPrivilegeDetailById(Long.parseLong(id));
+        logger.info("privilegeDetail.getIsLocked():"+privilegeDetail.getIsLocked());
+        if (privilegeDetail.getIsLocked() == null || privilegeDetail.getIsLocked() == 0) {
+            privilegeDetail.setIsLocked((long) 1);
+        } else {
+            privilegeDetail.setIsLocked((long) 0);
+        }
+        String jsonStr = privilegeDetailService.update(privilegeDetail);
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
+    
+    /**
+     *作者：jerry
+     *描述：得到所有模块
+     */
+    public void getAllModules(HttpServletRequest request, HttpServletResponse response) {
+        String sysControllerId = request.getParameter("sys_controller_id");
+        //免于作复杂判断，所有为null的值，设置为0
+        if (sysControllerId == null) {
+            sysControllerId = "0";
+        }
+        String jsonStr = sysActionService.getAllSysActions(Long.parseLong(sysControllerId));
+        logger.info(jsonStr);
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
+    
 }
