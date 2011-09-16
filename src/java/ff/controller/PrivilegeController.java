@@ -256,12 +256,7 @@ public class PrivilegeController extends MultiActionController {
      *描述：得到所有模块
      */
     public void getAllModules(HttpServletRequest request, HttpServletResponse response) {
-        String sysControllerId = request.getParameter("sys_controller_id");
-        //免于作复杂判断，所有为null的值，设置为0
-        if (sysControllerId == null) {
-            sysControllerId = "0";
-        }
-        String jsonStr = sysActionService.getAllSysActions(Long.parseLong(sysControllerId));
+        String jsonStr = privilegeService.getAllModulesJSON();
         logger.info(jsonStr);
         PrintWriter pw;
         try {
@@ -274,4 +269,25 @@ public class PrivilegeController extends MultiActionController {
             logger.info(e);
         }
     }
+    
+    /**
+     *作者：jerry
+     *描述：更新菜单
+     */
+    public void updateSysPrivilege(HttpServletRequest request, HttpServletResponse response) {
+        String jsonStr = privilegeService.getAllModulesJSON();
+        logger.info(jsonStr);
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
+    
+    
 }

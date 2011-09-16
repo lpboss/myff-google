@@ -367,7 +367,7 @@
                             }
                         },
                         {name: 'sysActionId',type:'int',mapping:'sysAction',convert:function(value,record){
-                                if(value == ""){
+                                if(value == ""||value == null){
                                     return "";
                                 }else{
                                     return value.id;
