@@ -29,7 +29,7 @@ public class RoleDaoHImpl extends HibernateDaoSupport implements RoleDao {
         role.setUpdatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
 
         //正式开始存储数据
-        this.getHibernateTemplate().save(role);
+        this.getHibernateTemplate().saveOrUpdate(role);
         this.getHibernateTemplate().flush();
         this.getHibernateTemplate().clear();
         return role;

@@ -48,7 +48,7 @@ public class SysControllerDaoHImpl extends HibernateDaoSupport implements SysCon
             sysController.setCreatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
         }
         sysController.setUpdatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
-        this.getHibernateTemplate().save(sysController);
+        this.getHibernateTemplate().saveOrUpdate(sysController);
         this.getHibernateTemplate().flush();
         this.getHibernateTemplate().clear();
         return sysController;

@@ -50,7 +50,7 @@ public class SysActionDaoHImpl extends HibernateDaoSupport implements SysActionD
             sysAction.setCreatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
         }
         sysAction.setUpdatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
-        this.getHibernateTemplate().save(sysAction);
+        this.getHibernateTemplate().saveOrUpdate(sysAction);
         this.getHibernateTemplate().flush();
         this.getHibernateTemplate().clear();
         return sysAction;

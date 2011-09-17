@@ -55,7 +55,7 @@ public class UserDaoHImpl extends HibernateDaoSupport implements UserDao {
             user.setCreatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
         }
         user.setUpdatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
-        this.getHibernateTemplate().save(user);
+        this.getHibernateTemplate().saveOrUpdate(user);
         this.getHibernateTemplate().flush();
         this.getHibernateTemplate().clear();
         return user;

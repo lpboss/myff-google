@@ -37,7 +37,7 @@ public class PrivilegeDetailDaoHImpl extends HibernateDaoSupport implements Priv
             privilegeDetail.setCreatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
         }
         privilegeDetail.setUpdatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
-        this.getHibernateTemplate().save(privilegeDetail);
+        this.getHibernateTemplate().saveOrUpdate(privilegeDetail);
         this.getHibernateTemplate().flush();
         this.getHibernateTemplate().clear();
         return privilegeDetail;
