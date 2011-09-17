@@ -182,6 +182,15 @@ public class PrivilegeController extends MultiActionController {
 
         privilege.setDescription(description);
 
+        //如果在非根节点添加了权限，要把上一级权限的CSS设定为leaf=false
+        Privilege parentPrivilege;
+        if (privilege.getParentId() != 0) {
+            parentPrivilege = privilegeService.getPrivilegeById(Long.parseLong(parentId));
+            parentPrivilege.setLeaf("false");
+            privilegeService.saveOrUpdate(parentPrivilege);
+        }
+
+        //得到sortId最大值
         Integer maxSortId = privilegeService.getMaxSortIdByParentId(Long.parseLong(parentId));
         privilege.setSortId(maxSortId + 1);
         privilegeService.saveOrUpdate(privilege);

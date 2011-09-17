@@ -246,7 +246,7 @@
               //modal: true,
               title: '添加模块(权限)',
               autoLoad: {
-                url: "/privilege/newPrivilegeModule?parent_id=" + currentNode.get('id'),
+                url: "<%=basePath%>privilege/newPrivilegeModule.htm?parent_id=" + currentNode.get('id'),
                 scripts: true
               }
             });
@@ -268,7 +268,7 @@
               //modal: true,
               title: '编辑模块(权限)',
               autoLoad: {
-                url: "/privilege/editPrivilegeModule?id=" + currentNode.get('id'),
+                url: "<%=basePath%>privilege/editPrivilegeModule.htm?id=" + currentNode.get('id'),
                 scripts: true
               }
             });

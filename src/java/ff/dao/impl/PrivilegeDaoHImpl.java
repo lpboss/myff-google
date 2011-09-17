@@ -86,7 +86,7 @@ public class PrivilegeDaoHImpl extends HibernateDaoSupport implements PrivilegeD
     @Override
     public Integer getMaxSortIdByParentId(Long parentId) {
         HQLCallBackUtil callBack = new HQLCallBackUtil();
-        callBack.setSql("select max(sort_id) as max from Privilege where parent_id = " + parentId);
+        callBack.setSql("select max(sort_id) as max from privileges where parent_id = " + parentId);
         List maxList = this.getHibernateTemplate().executeFind(callBack);
         return (Integer) maxList.get(0);
     }
