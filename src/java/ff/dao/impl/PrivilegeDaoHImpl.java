@@ -31,7 +31,7 @@ public class PrivilegeDaoHImpl extends HibernateDaoSupport implements PrivilegeD
 
     @Override
     public String getSysPrivilegeChildrenById(Long nodeId) {
-        List<Privilege> privileges = this.getHibernateTemplate().findByNamedParam("from Privilege where parent_id=:parent_id", new String[]{"parent_id"}, new Long[]{nodeId});
+        List<Privilege> privileges = this.getHibernateTemplate().findByNamedParam("from Privilege where parent_id=:parent_id order by sort_id", new String[]{"parent_id"}, new Long[]{nodeId});
         String treeData = "";
         if (privileges.size() > 0) {
             treeData = "[";
@@ -81,5 +81,13 @@ public class PrivilegeDaoHImpl extends HibernateDaoSupport implements PrivilegeD
         } else {
             return null;
         }
+    }
+
+    @Override
+    public Integer getMaxSortIdByParentId(Long parentId) {
+        HQLCallBackUtil callBack = new HQLCallBackUtil();
+        callBack.setSql("select max(sort_id) as max from Privilege where parent_id = " + parentId);
+        List maxList = this.getHibernateTemplate().executeFind(callBack);
+        return (Integer) maxList.get(0);
     }
 }

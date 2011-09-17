@@ -182,6 +182,8 @@ public class PrivilegeController extends MultiActionController {
 
         privilege.setDescription(description);
 
+        Integer maxSortId = privilegeService.getMaxSortIdByParentId(Long.parseLong(parentId));
+        privilege.setSortId(maxSortId + 1);
         privilegeService.saveOrUpdate(privilege);
 
         String info = "success";
@@ -374,7 +376,7 @@ public class PrivilegeController extends MultiActionController {
         previousPrivilege = privilegeService.getPrivilegeByParentIdSortId(parentId, privilege.getSortId() - 1);
 
         logger.info("previousPrivilege:" + previousPrivilege);
-        
+
         if (previousPrivilege != null) {
             privilege.setSortId(privilege.getSortId() - 1);
             privilegeService.saveOrUpdate(privilege);

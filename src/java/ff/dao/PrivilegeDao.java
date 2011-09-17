@@ -23,4 +23,7 @@ public interface PrivilegeDao {
     List<Privilege> getAllModules();
 
     Privilege saveOrUpdate(Privilege privilege);
+    
+    //得到同一parentId下，sortid值最大的那个privilege
+    Integer getMaxSortIdByParentId(Long parentId);
 }

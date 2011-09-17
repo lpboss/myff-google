@@ -10,8 +10,6 @@ import ff.dao.RoleDao;
 import ff.model.Privilege;
 import ff.model.PrivilegeDetail;
 import ff.model.Role;
-import ff.model.RolesPrivilegeDetail;
-import ff.util.HQLCallBackUtil;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;

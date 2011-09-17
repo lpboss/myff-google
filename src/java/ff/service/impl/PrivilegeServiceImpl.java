@@ -74,4 +74,9 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         return privilegeDao.getPrivilegeByParentIdSortId(parentId, sortId);
     }
 
+    @Override
+    public Integer getMaxSortIdByParentId(Long parentId) {
+        return privilegeDao.getMaxSortIdByParentId(parentId);
+    }
+
 }

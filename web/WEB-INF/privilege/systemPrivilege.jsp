@@ -383,7 +383,7 @@
             });
           }else if (item.text=="下移"){
             Ext.Ajax.request({
-              url : '<%=basePath%>privilege/sortDown',
+              url : '<%=basePath%>privilege/sortDown.htm',
               success : function (result, request) {
                 treeStore.load({
                   node: currentNode.parentNode
