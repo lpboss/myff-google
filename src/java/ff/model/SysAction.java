@@ -25,8 +25,8 @@ public class SysAction implements java.io.Serializable {
 
     private String description;
     private Long sysControllerId;
-    private Long isLocked;
-    private Long version;
+    private Long isLocked = new Long(0);
+    private Long version = new Long(0);
     private Timestamp updatedAt;
     private Timestamp createdAt;
 

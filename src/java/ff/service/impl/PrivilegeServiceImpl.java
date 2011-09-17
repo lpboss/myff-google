@@ -69,4 +69,9 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         return privilegeDao.saveOrUpdate(privilege);
     }
 
+    @Override
+    public Privilege getPrivilegeByParentIdSortId(Long parentId, Integer sortId) {
+        return privilegeDao.getPrivilegeByParentIdSortId(parentId, sortId);
+    }
+
 }

@@ -357,4 +357,78 @@ public class PrivilegeController extends MultiActionController {
             logger.info(e);
         }
     }
+
+    /**
+     *作者：jerry
+     *描述：排序上移
+     */
+    public void sortUp(HttpServletRequest request, HttpServletResponse response) {
+        Privilege privilege = privilegeService.getPrivilegeById(Long.parseLong(request.getParameter("id")));
+        Privilege previousPrivilege;
+        Long parentId = new Long(0);
+        //等于0，说明是模块级，非0代表是菜单级
+        if (privilege.getParentId() != 0) {
+            parentId = privilege.getParentId();
+        }
+
+        previousPrivilege = privilegeService.getPrivilegeByParentIdSortId(parentId, privilege.getSortId() - 1);
+        if (previousPrivilege != null) {
+            privilege.setSortId(privilege.getSortId() - 1);
+            privilegeService.saveOrUpdate(privilege);
+            previousPrivilege.setSortId(previousPrivilege.getSortId() + 1);
+            privilegeService.saveOrUpdate(previousPrivilege);
+        }
+
+        String info = "success";
+        String jsonStr = "{success:true,info:'" + info + "'}";
+
+        PrintWriter pw;
+
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
+
+    /**
+     *作者：jerry
+     *描述：排序下移
+     */
+    public void sortDown(HttpServletRequest request, HttpServletResponse response) {
+        Privilege privilege = privilegeService.getPrivilegeById(Long.parseLong(request.getParameter("id")));
+        Privilege previousPrivilege;
+        Long parentId = new Long(0);
+        //等于0，说明是模块级，非0代表是菜单级
+        if (privilege.getParentId() != 0) {
+            parentId = privilege.getParentId();
+        }
+
+        previousPrivilege = privilegeService.getPrivilegeByParentIdSortId(parentId, privilege.getSortId() + 1);
+        if (previousPrivilege != null) {
+            privilege.setSortId(privilege.getSortId() + 1);
+            privilegeService.saveOrUpdate(privilege);
+            previousPrivilege.setSortId(previousPrivilege.getSortId() - 1);
+            privilegeService.saveOrUpdate(previousPrivilege);
+        }
+
+        String info = "success";
+        String jsonStr = "{success:true,info:'" + info + "'}";
+
+        PrintWriter pw;
+
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
 }

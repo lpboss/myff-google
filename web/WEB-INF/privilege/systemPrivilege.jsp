@@ -362,7 +362,7 @@
             });
           }else if (item.text=="上移"){
             Ext.Ajax.request({
-              url : '/privilege/sortUp',
+              url : '<%=basePath%>privilege/sortUp.htm',
               success : function (result, request) {
                 treeStore.load({
                   node: currentNode.parentNode
@@ -383,7 +383,7 @@
             });
           }else if (item.text=="下移"){
             Ext.Ajax.request({
-              url : '/privilege/sortDown',
+              url : '<%=basePath%>privilege/sortDown',
               success : function (result, request) {
                 treeStore.load({
                   node: currentNode.parentNode

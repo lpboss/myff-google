@@ -24,8 +24,8 @@ public class RolesPrivilegeDetail implements java.io.Serializable {
     private Long menuId;
     private Long privilegeDetailId;
     private String description;
-    private Long isLocked;
-    private Long version;
+    private Long isLocked = new Long(0);
+    private Long version = new Long(0);
     private Timestamp updatedAt;
     private Timestamp createdAt;
 

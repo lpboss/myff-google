@@ -13,10 +13,17 @@ import ff.model.User;
  * @author jerry
  */
 public interface PrivilegeService {
-   //得到某个节点下，第一层的，所有的权限列表。
+    //得到某个节点下，第一层的，所有的权限列表。
+
     String getSysPrivilegeChildrenById(Long nodeId);
+
     Privilege getPrivilegeById(Long id);
+
+    Privilege getPrivilegeByParentIdSortId(Long parentId, Integer sortId);
+
     String getPrivilegeJSONById(Long id);
+
     String getAllModulesJSON();
+
     Privilege saveOrUpdate(Privilege privilege);
 }

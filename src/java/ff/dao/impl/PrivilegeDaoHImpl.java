@@ -72,4 +72,14 @@ public class PrivilegeDaoHImpl extends HibernateDaoSupport implements PrivilegeD
         this.getHibernateTemplate().clear();
         return privilege;
     }
+
+    @Override
+    public Privilege getPrivilegeByParentIdSortId(Long parentId, Integer sortId) {
+        List<Privilege> privileges = this.getHibernateTemplate().findByNamedParam("from Privilege where parent_id =:parent_id AND sort_id =:sort_id", new String[]{"parent_id", "sort_id"}, new Object[]{parentId, sortId});
+        if (privileges.size() > 0) {
+            return privileges.get(0);
+        } else {
+            return null;
+        }
+    }
 }

@@ -30,16 +30,13 @@ public class Privilege implements java.io.Serializable {
     private String leaf;
     private String description;
     private Long parentId;
-    private Long sortId;
-    private Long isLocked;
-    private Long version;
+    private Integer sortId = 0;
+    private Long isLocked = new Long(0);
+    private Long version = new Long(0);
     private Timestamp updatedAt;
     private Timestamp createdAt;
-    
     private SysController sysController;
     private SysAction sysAction;
-
-    
 
     @Id
     @GeneratedValue
@@ -125,11 +122,11 @@ public class Privilege implements java.io.Serializable {
     }
 
     @Column(name = "sort_id")
-    public Long getSortId() {
+    public Integer getSortId() {
         return sortId;
     }
 
-    public void setSortId(Long sortId) {
+    public void setSortId(Integer sortId) {
         this.sortId = sortId;
     }
 
@@ -150,7 +147,7 @@ public class Privilege implements java.io.Serializable {
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
-    
+
     @Column(name = "created_at", nullable = false, length = 19)
     public Timestamp getCreatedAt() {
         return createdAt;
@@ -180,6 +177,4 @@ public class Privilege implements java.io.Serializable {
     public void setSysController(SysController sysController) {
         this.sysController = sysController;
     }
-    
-    
 }
