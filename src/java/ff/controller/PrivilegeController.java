@@ -58,6 +58,26 @@ public class PrivilegeController extends MultiActionController {
 
     /**
      *作者：jerry
+     *描述：添加模块菜单
+     */
+    public ModelAndView newPrivilegeModule(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("newPrivilegeModule page");
+        ModelAndView mav = new ModelAndView();
+        return mav;
+    }
+
+    /**
+     *作者：jerry
+     *描述：编辑模块菜单
+     */
+    public ModelAndView editPrivilegeModule(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("newPrivilegeModule page");
+        ModelAndView mav = new ModelAndView();
+        return mav;
+    }
+
+    /**
+     *作者：jerry
      *描述：添加权限菜单
      */
     public ModelAndView newPrivilegeMenu(HttpServletRequest request, HttpServletResponse response) {
@@ -337,23 +357,29 @@ public class PrivilegeController extends MultiActionController {
 
     /**
      *作者：jerry
-     *描述：更新菜单
+     *描述：更新菜单(更新模块等方法，共用此方法)
      */
     public void updateSysPrivilege(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("id");
         Privilege privilege = privilegeService.getPrivilegeById(Long.parseLong(id));
-        String moduleId = request.getParameter("moduleId");
-        String sysControllerId = request.getParameter("sysControllerId");
-        String sysActionId = request.getParameter("sysActionId");
 
-        privilege.setParentId(Long.parseLong(moduleId));
-        SysController sysController = sysControllerService.getSysControllerById(Long.parseLong(sysControllerId));
-        SysAction sysAction = sysActionService.getSysActionById(Long.parseLong(sysActionId));
-        privilege.setSysController(sysController);
-        privilege.setSysAction(sysAction);
         privilege.setName(request.getParameter("name"));
         privilege.setDescription(request.getParameter("description"));
+
+        if (Long.parseLong("parent_id") > 0) {
+            String moduleId = request.getParameter("moduleId");
+            String sysControllerId = request.getParameter("sysControllerId");
+            String sysActionId = request.getParameter("sysActionId");
+            privilege.setParentId(Long.parseLong(moduleId));
+            SysController sysController = sysControllerService.getSysControllerById(Long.parseLong(sysControllerId));
+            SysAction sysAction = sysActionService.getSysActionById(Long.parseLong(sysActionId));
+            privilege.setSysController(sysController);
+            privilege.setSysAction(sysAction);
+            //RolesPrivilegeDetail.update_all("module_id = #{privilege.parent_id}","menu_id = #{privilege.id}")
+        }
+        
         privilegeService.saveOrUpdate(privilege);
+
         String info = "success";
         String jsonStr = "{success:true,info:'" + info + "'}";
 

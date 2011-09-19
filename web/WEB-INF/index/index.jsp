@@ -314,7 +314,7 @@
                     fields : [{name: 'id',type:'int'},
                         {name: 'name'},
                         {name: 'sysControllerId',type:'int',mapping:'sysController',convert:function(value,record){
-                                if(value == ""){
+                                if(value == null){
                                     return "";
                                 }else{
                                     return value.id;
@@ -322,28 +322,13 @@
                             }
                         },
                         {name: 'sysActionId',type:'int',mapping:'sysAction',convert:function(value,record){
-                                if(value == ""){
+                                if(value == null){
                                     return "";
                                 }else{
                                     return value.id;
                                 }
                             }
                         },
-                        {name: 'controller_name',mapping: 'sys_controller',convert:function(value,record){
-                                if(value == ""){
-                                    return "";
-                                }else{
-                                    return value.name;
-                                }
-                            }
-                        },
-                        {name: 'action_name',mapping: 'sys_action',convert:function(value,record){
-                                if(value == ""){
-                                    return "";
-                                }else{
-                                    return value.name;
-                                }
-                            }},
                         {name: 'params'},
                         {name: 'sub_type'},
                         {name: 'description'},
@@ -359,7 +344,7 @@
                         {name: 'name'},
                         {name: 'number'},
                         {name: 'sysControllerId',type:'int',mapping:'sysController',convert:function(value,record){
-                                if(value == ""){
+                                if(value == null){
                                     return "";
                                 }else{
                                     return value.id;

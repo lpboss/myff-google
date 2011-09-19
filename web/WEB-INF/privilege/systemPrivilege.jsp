@@ -296,7 +296,9 @@
             });
             newPrivilegeMenuWin.on("destroy",function(){
               //刷新整个树
-              treeStore.load();
+              treeStore.load({
+                  node: currentNode.parentNode
+                });
             });
             newPrivilegeMenuWin.resizable = false;
             newPrivilegeMenuWin.show();
@@ -318,13 +320,17 @@
             });
             editPrivilegeMenuWin.on("destroy",function(){
               //刷新整个树
-              treeStore.load();
+              treeStore.load({
+                  node: currentNode.parentNode
+                });
             });
             editPrivilegeMenuWin.resizable = false;
             editPrivilegeMenuWin.show();
           }else if (item.text=="刷新"){
             if (currentNode.isLeaf()){
-              alert("是一个Child");
+              treeStore.load({
+                  node: currentNode.parentNode
+                });
             }else{
               //判断是否导入过，就是是否被人点击过，因为这是Ajax的，一但点击，就会导入数据。
               if (currentNode.isLoaded()){
