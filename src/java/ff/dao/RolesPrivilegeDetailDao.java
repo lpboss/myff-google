@@ -13,4 +13,5 @@ import java.util.List;
  */
 public interface RolesPrivilegeDetailDao {
     RolesPrivilegeDetail saveOrUpdate(RolesPrivilegeDetail rolesPrivilegeDetail);
+    void delete(RolesPrivilegeDetail rolesPrivilegeDetail);
 }

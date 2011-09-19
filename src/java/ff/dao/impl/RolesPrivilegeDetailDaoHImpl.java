@@ -27,4 +27,9 @@ public class RolesPrivilegeDetailDaoHImpl extends HibernateDaoSupport implements
         this.getHibernateTemplate().clear();
         return rolesPrivilegeDetail;
     }
+
+    @Override
+    public void delete(RolesPrivilegeDetail rolesPrivilegeDetail) {
+        this.getHibernateTemplate().delete(rolesPrivilegeDetail);
+    }
 }
