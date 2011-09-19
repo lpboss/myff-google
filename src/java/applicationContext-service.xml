@@ -10,4 +10,5 @@
     <bean id="privilegeDetailService" class="ff.service.impl.PrivilegeDetailServiceImpl" />
     <bean id="sysActionService" class="ff.service.impl.SysActionServiceImpl" />
     <bean id="sysControllerService" class="ff.service.impl.SysControllerServiceImpl" />
+    <bean id="adminService" class="ff.service.impl.AdminServiceImpl" />
 </beans>
