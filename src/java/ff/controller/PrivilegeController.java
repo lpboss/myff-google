@@ -373,7 +373,7 @@ public class PrivilegeController extends MultiActionController {
         privilege.setDescription(request.getParameter("description"));
 
         //如果有人修改了菜单的“父节点”
-        if (Long.parseLong("parentId") > 0) {
+        if (request.getParameter("parentId") == "0") {
             String moduleId = request.getParameter("moduleId");
             String sysControllerId = request.getParameter("sysControllerId");
             String sysActionId = request.getParameter("sysActionId");
