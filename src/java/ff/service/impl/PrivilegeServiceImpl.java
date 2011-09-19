@@ -31,8 +31,8 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     }
 
     @Override
-    public String getSysPrivilegeChildrenById(Long nodeId) {
-        return privilegeDao.getSysPrivilegeChildrenById(nodeId);
+    public String getSysPrivilegeChildrenById(Long nodeId,Integer isLocked) {
+        return privilegeDao.getSysPrivilegeChildrenById(nodeId,isLocked);
     }
 
     @Override

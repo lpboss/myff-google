@@ -349,7 +349,7 @@
             Ext.MessageBox.confirm("提示","你确认删除 \""+currentNode.get('text')+"\" 吗？",function(btn){
               if(btn=="yes"){                
                 Ext.Ajax.request({
-                  url : '/privilege/destroySysPrivilege',
+                  url : '<%=basePath%>privilege/destroySysPrivilege.htm',
                   method:'GET',
                   success:function(response,opts){
                     var backInfo = Ext.JSON.decode(response.responseText).info;

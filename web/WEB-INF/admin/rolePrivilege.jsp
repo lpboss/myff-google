@@ -24,8 +24,6 @@
       var sysPrivilegeTree;
       var roleId = 0;
       var roleName = "";
-      var sysRemindForRoleWin;
-      var roleWarehouseWin;
 
       //处理权限锁定
       function lockRolePrivilegeDetailFn(id){
@@ -98,14 +96,6 @@
           }
         }
 
-        function renderFinancialManagement(value){
-          if (value === "否"){
-            return value;
-          }else{
-            return "<font color=red>"+value+"</font>";
-          }
-        }
-
         var roleGrid = Ext.create('Ext.grid.Panel', {
           title:'角色列表',
           store: roleDS,
@@ -119,11 +109,6 @@
               header: '名称',
               dataIndex: 'name',
               width: 80
-            },{
-              header: '财务权',
-              dataIndex: 'financial_management',
-              renderer: renderFinancialManagement,
-              width: 50
             },{
               header: '描述',
               dataIndex: 'description',
@@ -193,76 +178,6 @@
                 });
                 editRoleWin.resizable = false;
                 editRoleWin.show();
-              }
-            },'-',{
-              text: '仓库访问权限',
-              iconCls: 'editItem',
-              handler : function(){
-                var records = roleGrid.getSelectionModel().getSelection();
-                if(records.length==0){
-                  Ext.MessageBox.show({
-                    title: '提示信息',
-                    msg: "请先选中一条记录后，再编辑。",
-                    buttons: Ext.MessageBox.OK,
-                    icon: Ext.MessageBox.WARNING
-                  });
-                }else{
-                  //把表单添加到窗口中
-                  roleWarehouseWin = Ext.create('Ext.window.Window', {
-                    title: '角色仓库设置',
-                    layout:'fit',
-                    width: 340,
-                    height: 300,
-                    closeAction:'destroy',
-                    constrain:true,
-                    plain: true,
-                    modal: true,
-                    autoLoad: {
-                      url: "/admin/roleWarehouse?role_id=" + records[0].get('id'),
-                      scripts: true
-                    }
-                  });
-                }
-                roleWarehouseWin.on("destroy",function(){
-                  roleDS.load();
-                });
-                roleWarehouseWin.resizable = false;
-                roleWarehouseWin.show();
-              }
-            },'-',{
-              text: '订阅系统提醒',
-              iconCls: 'editItem',
-              handler : function(){
-                var records = roleGrid.getSelectionModel().getSelection();
-                if(records.length==0){
-                  Ext.MessageBox.show({
-                    title: '提示信息',
-                    msg: "请先选中一条记录后，再编辑。",
-                    buttons: Ext.MessageBox.OK,
-                    icon: Ext.MessageBox.WARNING
-                  });
-                }else{
-                  //把表单添加到窗口中
-                  sysRemindForRoleWin = Ext.create('Ext.window.Window', {
-                    title: '订阅系统提醒',
-                    layout:'fit',
-                    width: 417,
-                    height: 240,
-                    closeAction:'destroy',
-                    constrain:true,
-                    plain: true,
-                    modal: true,
-                    autoLoad: {
-                      url: "<%=basePath%>admin/sysRemindForRole.htm?id=" + records[0].get('id'),
-                      scripts: true
-                    }
-                  });
-                }
-                sysRemindForRoleWin.on("destroy",function(){
-                  roleDS.load();
-                });
-                sysRemindForRoleWin.resizable = false;
-                sysRemindForRoleWin.show();
               }
             }]
         });

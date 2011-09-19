@@ -4,6 +4,7 @@
  */
 package ff.controller;
 
+import ff.service.PrivilegeService;
 import ff.service.RoleService;
 import ff.service.SysActionService;
 import ff.service.SysControllerService;
@@ -26,6 +27,7 @@ public class AdminController extends MultiActionController {
     private RoleService roleService;
     private SysControllerService sysControllerService;
     private SysActionService sysActionService;
+    private PrivilegeService privilegeService;
 
     public void setUserService(UserService userService) {
         this.userService = userService;
@@ -42,6 +44,12 @@ public class AdminController extends MultiActionController {
     public void setSysControllerService(SysControllerService sysControllerService) {
         this.sysControllerService = sysControllerService;
     }
+
+    public void setPrivilegeService(PrivilegeService privilegeService) {
+        this.privilegeService = privilegeService;
+    }
+    
+    
 
     /**
      *作者：joey
@@ -114,6 +122,62 @@ public class AdminController extends MultiActionController {
         ModelAndView mav = new ModelAndView();
         return mav;
     }
+
+    /**
+     *作者：jerry
+     *描述：新增角色
+     */
+    public void createRole(HttpServletRequest request, HttpServletResponse response) {
+        String jsonStr = sysControllerService.getAllSysControllers();
+        logger.info(jsonStr);
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
     
+    /**
+     *作者：jerry
+     *描述：得到所有角色，可以选择的所有权限。类似系统系统树一样，一层层的取数据。
+     */
+    public void getRolePrivilegeById(HttpServletRequest request, HttpServletResponse response) {
+        String jsonStr = privilegeService.getSysPrivilegeChildrenById(Long.parseLong(request.getParameter("node")), 0);
+        logger.info(jsonStr);
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
     
+    /**
+     *作者：jerry
+     *描述：得到角色权限的详细权限。
+     */
+    public void getRolePrivilegeDetailsById(HttpServletRequest request, HttpServletResponse response) {
+        String jsonStr = privilegeService.getSysPrivilegeChildrenById(Long.parseLong(request.getParameter("node")), 0);
+        logger.info(jsonStr);
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
+            
 }

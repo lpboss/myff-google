@@ -151,7 +151,7 @@ public class PrivilegeController extends MultiActionController {
      */
     public void getSysPrivilegeChildrenById(HttpServletRequest request, HttpServletResponse response) {
         String nodeId = request.getParameter("node");
-        String jsonStr = privilegeService.getSysPrivilegeChildrenById(Long.parseLong(nodeId));
+        String jsonStr = privilegeService.getSysPrivilegeChildrenById(Long.parseLong(nodeId),null);
         PrintWriter pw;
         try {
             response.setContentType("text/json; charset=utf-8");

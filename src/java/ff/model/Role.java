@@ -5,12 +5,19 @@
 package ff.model;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import org.hibernate.annotations.Cascade;
 
 /**
  *
@@ -22,6 +29,7 @@ public class Role implements java.io.Serializable {
 
     private Long id;
     private String name;
+    private Set<RolesPrivilegeDetail> rolesPrivilegeDetails = new HashSet<RolesPrivilegeDetail>(0);
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private Integer version;
@@ -49,6 +57,18 @@ public class Role implements java.io.Serializable {
     public String getName() {
         return this.name;
     }
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "role")
+    @Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
+    @OrderBy("id")
+    public Set<RolesPrivilegeDetail> getRolesPrivilegeDetails() {
+        return rolesPrivilegeDetails;
+    }
+
+    public void setRolesPrivilegeDetails(Set<RolesPrivilegeDetail> rolesPrivilegeDetails) {
+        this.rolesPrivilegeDetails = rolesPrivilegeDetails;
+    }
+
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;

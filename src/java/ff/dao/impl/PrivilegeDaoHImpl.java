@@ -30,8 +30,14 @@ public class PrivilegeDaoHImpl extends HibernateDaoSupport implements PrivilegeD
     }
 
     @Override
-    public String getSysPrivilegeChildrenById(Long nodeId) {
-        List<Privilege> privileges = this.getHibernateTemplate().findByNamedParam("from Privilege where parent_id=:parent_id order by sort_id", new String[]{"parent_id"}, new Long[]{nodeId});
+    public String getSysPrivilegeChildrenById(Long nodeId, Integer isLocked) {
+        List<Privilege> privileges;
+        if (isLocked == null) {
+            privileges = this.getHibernateTemplate().findByNamedParam("from Privilege where parent_id=:parent_id order by sort_id", new String[]{"parent_id"}, new Object[]{nodeId});
+        } else {
+            privileges = this.getHibernateTemplate().findByNamedParam("from Privilege where parent_id=:parent_id AND is_locked=:is_locked order by sort_id", new String[]{"parent_id", "is_locked"}, new Object[]{nodeId, isLocked});
+        }
+
         String treeData = "";
         if (privileges.size() > 0) {
             treeData = "[";

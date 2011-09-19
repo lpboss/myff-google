@@ -7,8 +7,11 @@ package ff.model;
 import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -26,6 +29,7 @@ public class RolesPrivilegeDetail implements java.io.Serializable {
     private String description;
     private Long isLocked = new Long(0);
     private Long version = new Long(0);
+    private Role role;
     private Timestamp updatedAt;
     private Timestamp createdAt;
 
@@ -120,4 +124,16 @@ public class RolesPrivilegeDetail implements java.io.Serializable {
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id")
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+    
+    
 }

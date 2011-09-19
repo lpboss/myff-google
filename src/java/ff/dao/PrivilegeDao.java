@@ -18,7 +18,7 @@ public interface PrivilegeDao {
     Privilege getPrivilegeByParentIdSortId(Long parentId, Integer sortId);
 
     //得到某个节点下，第一层的，所有的权限列表。
-    String getSysPrivilegeChildrenById(Long nodeId);
+    String getSysPrivilegeChildrenById(Long nodeId,Integer isLocked);
 
     List<Privilege> getAllModules();
 
