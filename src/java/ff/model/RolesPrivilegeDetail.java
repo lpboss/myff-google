@@ -125,8 +125,8 @@ public class RolesPrivilegeDetail implements java.io.Serializable {
         this.createdAt = createdAt;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id")
+    //@ManyToOne(fetch = FetchType.LAZY)
+    //@JoinColumn(name = "role_id")
     public Role getRole() {
         return role;
     }
