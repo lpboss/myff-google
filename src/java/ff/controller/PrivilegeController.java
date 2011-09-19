@@ -8,6 +8,7 @@ import ff.model.Privilege;
 import ff.model.PrivilegeDetail;
 import ff.model.SysAction;
 import ff.model.SysController;
+import ff.service.AdminService;
 import ff.service.PrivilegeDetailService;
 import ff.service.PrivilegeService;
 import ff.service.SysActionService;
@@ -29,6 +30,7 @@ public class PrivilegeController extends MultiActionController {
     private PrivilegeDetailService privilegeDetailService;
     private SysControllerService sysControllerService;
     private SysActionService sysActionService;
+    private AdminService adminService;
 
     public void setPrivilegeService(PrivilegeService privilegeService) {
         this.privilegeService = privilegeService;
@@ -44,6 +46,10 @@ public class PrivilegeController extends MultiActionController {
 
     public void setSysControllerService(SysControllerService sysControllerService) {
         this.sysControllerService = sysControllerService;
+    }
+
+    public void setAdminService(AdminService adminService) {
+        this.adminService = adminService;
     }
 
     /**
@@ -367,7 +373,7 @@ public class PrivilegeController extends MultiActionController {
         privilege.setDescription(request.getParameter("description"));
 
         //如果有人修改了菜单的“父节点”
-        if (Long.parseLong("parent_id") > 0) {
+        if (Long.parseLong("parentId") > 0) {
             String moduleId = request.getParameter("moduleId");
             String sysControllerId = request.getParameter("sysControllerId");
             String sysActionId = request.getParameter("sysActionId");
@@ -376,9 +382,11 @@ public class PrivilegeController extends MultiActionController {
             SysAction sysAction = sysActionService.getSysActionById(Long.parseLong(sysActionId));
             privilege.setSysController(sysController);
             privilege.setSysAction(sysAction);
+
+            adminService.executeNativeUpdateSQL("update roles_privilege_details set (module_id = " + privilege.getParentId() + " where menu_id = " + privilege.getId() + ")");
             //RolesPrivilegeDetail.update_all("module_id = #{privilege.parent_id}","menu_id = #{privilege.id}")
         }
-        
+
         privilegeService.saveOrUpdate(privilege);
 
         String info = "success";

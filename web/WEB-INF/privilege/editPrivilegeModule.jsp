@@ -23,7 +23,7 @@
         });
 
         var parentId = Ext.create('Ext.form.field.Hidden', {
-          name: 'parent_id'
+          name: 'parentId'
         });
 
         var name = Ext.create('Ext.form.field.Text', {
