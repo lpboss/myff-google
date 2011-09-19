@@ -4,6 +4,7 @@
  */
 package ff.controller;
 
+import ff.service.AdminService;
 import ff.service.PrivilegeService;
 import ff.service.RoleService;
 import ff.service.SysActionService;
@@ -28,6 +29,7 @@ public class AdminController extends MultiActionController {
     private SysControllerService sysControllerService;
     private SysActionService sysActionService;
     private PrivilegeService privilegeService;
+    private AdminService adminService;
 
     public void setUserService(UserService userService) {
         this.userService = userService;
@@ -48,8 +50,10 @@ public class AdminController extends MultiActionController {
     public void setPrivilegeService(PrivilegeService privilegeService) {
         this.privilegeService = privilegeService;
     }
-    
-    
+
+    public void setAdminService(AdminService adminService) {
+        this.adminService = adminService;
+    }
 
     /**
      *作者：joey
@@ -141,7 +145,7 @@ public class AdminController extends MultiActionController {
             logger.info(e);
         }
     }
-    
+
     /**
      *作者：jerry
      *描述：得到所有角色，可以选择的所有权限。类似系统系统树一样，一层层的取数据。
@@ -160,13 +164,17 @@ public class AdminController extends MultiActionController {
             logger.info(e);
         }
     }
-    
+
     /**
      *作者：jerry
      *描述：得到角色权限的详细权限。
      */
     public void getRolePrivilegeDetailsById(HttpServletRequest request, HttpServletResponse response) {
-        String jsonStr = privilegeService.getSysPrivilegeChildrenById(Long.parseLong(request.getParameter("node")), 0);
+        Long roleId = Long.parseLong(request.getParameter("role_id"));
+        Long privilegeId = Long.parseLong(request.getParameter("privilege_id"));
+        Long parentPrivilegeId = Long.parseLong(request.getParameter("parent_privilege_id"));
+
+        String jsonStr = adminService.getRolePrivilegeDetailsById(roleId, privilegeId, parentPrivilegeId);
         logger.info(jsonStr);
         PrintWriter pw;
         try {
@@ -179,5 +187,4 @@ public class AdminController extends MultiActionController {
             logger.info(e);
         }
     }
-            
 }

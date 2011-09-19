@@ -17,7 +17,6 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
-import org.hibernate.annotations.Cascade;
 
 /**
  *
@@ -59,7 +58,6 @@ public class Role implements java.io.Serializable {
     }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "role")
-    @Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
     @OrderBy("id")
     public Set<RolesPrivilegeDetail> getRolesPrivilegeDetails() {
         return rolesPrivilegeDetails;

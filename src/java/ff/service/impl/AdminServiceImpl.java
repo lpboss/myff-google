@@ -26,6 +26,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public String getRolePrivilegeDetailsById(Long roleId, Long privilegeId, Long parentPrivilegeId) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
+        
+        return null;
     }
 }
