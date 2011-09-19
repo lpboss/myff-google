@@ -12,5 +12,5 @@ import java.util.List;
  * @author jerry
  */
 public interface RolesPrivilegeDetailDao {
-    
+    RolesPrivilegeDetail saveOrUpdate(RolesPrivilegeDetail rolesPrivilegeDetail);
 }

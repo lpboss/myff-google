@@ -6,6 +6,7 @@
     <!-- DAO配置于此 -->
     <bean id="userDao" class="ff.dao.impl.UserDaoHImpl" />
     <bean id="roleDao" class="ff.dao.impl.RoleDaoHImpl" />
+    <bean id="rolesPrivilegeDetailDao" class="ff.dao.impl.RolesPrivilegeDetailDaoHImpl" />
     <bean id="sysActionDao" class="ff.dao.impl.SysActionDaoHImpl" />
     <bean id="sysControllerDao" class="ff.dao.impl.SysControllerDaoHImpl" />
     <bean id="privilegeDao" class="ff.dao.impl.PrivilegeDaoHImpl" />
