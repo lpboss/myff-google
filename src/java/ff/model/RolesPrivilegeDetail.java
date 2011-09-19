@@ -22,7 +22,6 @@ import javax.persistence.Table;
 @Table(name = "roles_privilege_details")
 public class RolesPrivilegeDetail implements java.io.Serializable { 
     private Long id;
-    private Long roleId;
     private Long moduleId;
     private Long menuId;
     private Long privilegeDetailId;
@@ -89,16 +88,7 @@ public class RolesPrivilegeDetail implements java.io.Serializable {
         this.privilegeDetailId = privilegeDetailId;
     }
 
-    @Column(name = "role_id")
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
-
-    @Column(name = "updateed_at")
+    @Column(name = "updated_at")
     public Timestamp getUpdatedAt() {
         return updatedAt;
     }
@@ -125,8 +115,9 @@ public class RolesPrivilegeDetail implements java.io.Serializable {
         this.createdAt = createdAt;
     }
 
-    //@ManyToOne(fetch = FetchType.LAZY)
-    //@JoinColumn(name = "role_id")
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id")
     public Role getRole() {
         return role;
     }

@@ -28,7 +28,7 @@ public class Role implements java.io.Serializable {
 
     private Long id;
     private String name;
-    //private Set<RolesPrivilegeDetail> rolesPrivilegeDetails = new HashSet<RolesPrivilegeDetail>(0);
+    private Set<RolesPrivilegeDetail> rolesPrivilegeDetails = new HashSet<RolesPrivilegeDetail>(0);
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private Integer version;
@@ -57,16 +57,16 @@ public class Role implements java.io.Serializable {
         return this.name;
     }
 
-    //@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "role")
-    //@OrderBy("id")
-    /*
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "role")
+    @OrderBy("id")
+    
     public Set<RolesPrivilegeDetail> getRolesPrivilegeDetails() {
         return rolesPrivilegeDetails;
     }
 
     public void setRolesPrivilegeDetails(Set<RolesPrivilegeDetail> rolesPrivilegeDetails) {
         this.rolesPrivilegeDetails = rolesPrivilegeDetails;
-    }*/
+    }
 
 
     public void setCreatedAt(Timestamp createdAt) {
