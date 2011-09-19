@@ -4,10 +4,13 @@
  */
 package ff.dao;
 
+import ff.model.RolesPrivilegeDetail;
+import java.util.List;
+
 /**
  *
  * @author jerry
  */
-public class RolesPrivilegeDetailDao {
+public interface RolesPrivilegeDetailDao {
     
 }

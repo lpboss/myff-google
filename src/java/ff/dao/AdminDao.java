@@ -4,10 +4,14 @@
  */
 package ff.dao;
 
+import ff.model.RolesPrivilegeDetail;
+import java.util.List;
+
 /**
  *
  * @author jerry
  */
 public interface AdminDao {
-    Integer executeNativeUpdateSQL(String sql);
+    Integer executeNativeUpdateSQL(String sql);    
+    List<RolesPrivilegeDetail> getRolesPrivilegeDetails(Long privilegeId,Long roleId);
 }

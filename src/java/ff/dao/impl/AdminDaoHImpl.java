@@ -32,4 +32,10 @@ public class AdminDaoHImpl extends HibernateDaoSupport implements AdminDao {
         return (Integer) list.size();
     }
 
+    @Override
+    public List<RolesPrivilegeDetail> getRolesPrivilegeDetails(Long privilegeId, Long roleId) {
+        List<RolesPrivilegeDetail> rolesPrivilegeDetails = this.getHibernateTemplate().findByNamedParam(
+                "from RolesPrivilegeDetail where menu_id =:menu_id AND role_id =:role_id", new String[]{"menu_id", "role_id"},new Object[]{privilegeId, roleId});
+        return rolesPrivilegeDetails;
+    }
 }

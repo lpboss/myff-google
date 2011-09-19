@@ -46,4 +46,10 @@ public class PrivilegeDetailDaoHImpl extends HibernateDaoSupport implements Priv
         PrivilegeDetail privilegeDetail = (PrivilegeDetail) this.getHibernateTemplate().get(PrivilegeDetail.class, id);
         return privilegeDetail;
     }
+
+    @Override
+    public List<PrivilegeDetail> getUnlockedSysPrivilegeDetails(Long privilegeId) {
+        List<PrivilegeDetail> privilegeDetails = this.getHibernateTemplate().findByNamedParam("from PrivilegeDetail where privilegeId =:privilege_id AND is_locked = 0", new String[]{"privilege_id"}, new Long[]{privilegeId});
+        return privilegeDetails;
+    }
 }

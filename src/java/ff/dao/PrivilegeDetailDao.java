@@ -15,6 +15,8 @@ public interface PrivilegeDetailDao {
     
      List<PrivilegeDetail> getPrivilegeDetailsById(Long privilegeId);
      
+     List<PrivilegeDetail> getUnlockedSysPrivilegeDetails(Long privilegeId);
+     
      PrivilegeDetail saveOrUpdate(PrivilegeDetail privilegeDetail);
      
      PrivilegeDetail getPrivilegeDetailById(Long id);
