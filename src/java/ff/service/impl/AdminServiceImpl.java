@@ -104,7 +104,7 @@ public class AdminServiceImpl implements AdminService {
         rolesPrivilegeDetails = adminDao.getRolesPrivilegeDetails(privilegeId, roleId);
         JsonConfig jsonConfig = new JsonConfig();
         //这是需要过滤掉的变量名。
-        //jsonConfig.setExcludes(new String[]{"videos", "users", "role_monitors"});
+        jsonConfig.setExcludes(new String[]{"role"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm"));
         JSONArray rolesPrivilegeDetailsJS = JSONArray.fromObject(rolesPrivilegeDetails, jsonConfig);
         String jsonStr = "{totalProperty:" + rolesPrivilegeDetails.size() + ",root:" + rolesPrivilegeDetailsJS.toString() + "}";
