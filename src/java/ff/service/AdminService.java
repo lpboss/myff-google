@@ -9,5 +9,8 @@ package ff.service;
  * @author jerry
  */
 public interface AdminService {
+
     Integer executeNativeUpdateSQL(String sql);
+
+    String getRolePrivilegeDetailsById(Long roleId, Long privilegeId, Long parentPrivilegeId);
 }

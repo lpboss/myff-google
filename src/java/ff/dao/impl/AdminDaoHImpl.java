@@ -28,8 +28,8 @@ public class AdminDaoHImpl extends HibernateDaoSupport implements AdminDao {
     public Integer executeNativeUpdateSQL(String sql) {
         HQLCallBackUtil callBack = new HQLCallBackUtil();
         callBack.setSql(sql);
-        List maxList = this.getHibernateTemplate().executeFind(callBack);
-        return (Integer) maxList.get(0);
+        List list = this.getHibernateTemplate().executeFind(callBack);
+        return (Integer) list.size();
     }
 
 }
