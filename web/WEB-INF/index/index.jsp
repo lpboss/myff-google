@@ -383,8 +383,8 @@
                 Ext.define('RolesPrivilegeDetail', {
                     extend : 'Ext.data.Model',
                     fields : [{name: 'id'},
-                        {name: 'name',mapping:'privilege_detail.name'},
-                        {name: 'description',mapping:'privilege_detail.description'},
+                        {name: 'name',mapping:'privilegeDetail.name'},
+                        {name: 'description',mapping:'privilegeDetail.description'},
                         {name: 'is_locked'}
                     ]
                 });

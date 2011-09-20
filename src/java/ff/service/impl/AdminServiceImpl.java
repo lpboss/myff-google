@@ -60,7 +60,7 @@ public class AdminServiceImpl implements AdminService {
                     RolesPrivilegeDetail rolesPrivilegeDetail = new RolesPrivilegeDetail();
                     rolesPrivilegeDetail.setModuleId(parentPrivilegeId);
                     rolesPrivilegeDetail.setMenuId(privilegeId);
-                    rolesPrivilegeDetail.setPrivilegeDetailId(sysPrivilegeDetail.getId());
+                    rolesPrivilegeDetail.setPrivilegeDetail(privilegeDetailDao.getPrivilegeDetailById(sysPrivilegeDetail.getId()));
                     rolesPrivilegeDetail.setRole(roleDao.getRoleById(roleId));
                     rolesPrivilegeDetailDao.saveOrUpdate(rolesPrivilegeDetail);
                 }
@@ -72,7 +72,7 @@ public class AdminServiceImpl implements AdminService {
                 for (RolesPrivilegeDetail rolesPrivilegeDetail : rolesPrivilegeDetails) {
                     privilegeAction = "remove";
                     for (PrivilegeDetail sysPrivilegeDetail : sysPrivilegeDetails) {
-                        if (rolesPrivilegeDetail.getPrivilegeDetailId() == sysPrivilegeDetail.getId()) {
+                        if (rolesPrivilegeDetail.getPrivilegeDetail().getId() == sysPrivilegeDetail.getId()) {
                             privilegeAction = null;
                         }
                     }
@@ -85,7 +85,7 @@ public class AdminServiceImpl implements AdminService {
                 for (PrivilegeDetail sysPrivilegeDetail : sysPrivilegeDetails) {
                     privilegeAction = "add";
                     for (RolesPrivilegeDetail rolesPrivilegeDetail : rolesPrivilegeDetails) {
-                        if (rolesPrivilegeDetail.getPrivilegeDetailId() == sysPrivilegeDetail.getId()) {
+                        if (rolesPrivilegeDetail.getPrivilegeDetail().getId() == sysPrivilegeDetail.getId()) {
                             privilegeAction = null;
                         }
                     }
@@ -93,7 +93,7 @@ public class AdminServiceImpl implements AdminService {
                         RolesPrivilegeDetail rolesPrivilegeDetail = new RolesPrivilegeDetail();
                         rolesPrivilegeDetail.setModuleId(parentPrivilegeId);
                         rolesPrivilegeDetail.setMenuId(privilegeId);
-                        rolesPrivilegeDetail.setPrivilegeDetailId(sysPrivilegeDetail.getId());
+                        rolesPrivilegeDetail.setPrivilegeDetail(privilegeDetailDao.getPrivilegeDetailById(sysPrivilegeDetail.getId()));
                         rolesPrivilegeDetail.setRole(roleDao.getRoleById(roleId));
                         rolesPrivilegeDetailDao.saveOrUpdate(rolesPrivilegeDetail);
                     }

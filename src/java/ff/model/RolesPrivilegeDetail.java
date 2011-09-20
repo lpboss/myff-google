@@ -24,11 +24,11 @@ public class RolesPrivilegeDetail implements java.io.Serializable {
     private Long id;
     private Long moduleId;
     private Long menuId;
-    private Long privilegeDetailId;
     private String description;
     private Long isLocked = new Long(0);
     private Long version = new Long(0);
     private Role role;
+    private PrivilegeDetail privilegeDetail;
     private Timestamp updatedAt;
     private Timestamp createdAt;
 
@@ -79,15 +79,6 @@ public class RolesPrivilegeDetail implements java.io.Serializable {
         this.moduleId = moduleId;
     }
 
-    @Column(name = "privilege_detail_id")
-    public Long getPrivilegeDetailId() {
-        return privilegeDetailId;
-    }
-
-    public void setPrivilegeDetailId(Long privilegeDetailId) {
-        this.privilegeDetailId = privilegeDetailId;
-    }
-
     @Column(name = "updated_at")
     public Timestamp getUpdatedAt() {
         return updatedAt;
@@ -124,6 +115,17 @@ public class RolesPrivilegeDetail implements java.io.Serializable {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    //设置多对一关系：
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "privilege_detail_id")
+    public PrivilegeDetail getPrivilegeDetail() {
+        return privilegeDetail;
+    }
+
+    public void setPrivilegeDetail(PrivilegeDetail privilegeDetail) {
+        this.privilegeDetail = privilegeDetail;
     }
     
     
