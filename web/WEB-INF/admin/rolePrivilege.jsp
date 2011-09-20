@@ -126,7 +126,7 @@
                 newRoleWin = Ext.create('Ext.window.Window', {
                   layout: 'fit',
                   width: 417,
-                  height: 290,
+                  height: 210,
                   closeAction: 'destroy',
                   plain: true,
                   modal: true,
@@ -162,7 +162,7 @@
                     title: '编辑角色',
                     layout:'fit',
                     width: 417,
-                    height: 290,
+                    height: 210,
                     closeAction:'destroy',
                     constrain:true,
                     plain: true,

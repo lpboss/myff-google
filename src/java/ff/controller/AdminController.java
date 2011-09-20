@@ -207,4 +207,43 @@ public class AdminController extends MultiActionController {
             logger.info(e);
         }
     }
+    
+    /**
+     *作者：jerry
+     *描述：新增加角色页面
+     */
+    public ModelAndView newRole(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("newRole page");
+        ModelAndView mav = new ModelAndView();
+        return mav;
+    }
+    
+    /**
+     *作者：jerry
+     *描述：编辑角色页面
+     */
+    public ModelAndView editRole(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("editRole page");
+        ModelAndView mav = new ModelAndView();
+        return mav;
+    }
+    
+    /**
+     *作者：jerry
+     *描述：锁定角色
+     */
+    public void getRoleById(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("id");
+        String jsonStr = roleService.getRoleJSONById(Long.parseLong(id));
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
 }

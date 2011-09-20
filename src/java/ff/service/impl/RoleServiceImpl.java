@@ -160,4 +160,15 @@ public class RoleServiceImpl implements RoleService {
     public String roleLock(Long roleId) {
         return roleDao.roleLock(roleId);
     }
+
+    @Override
+    public String getRoleJSONById(Long id) {
+        Role role = roleDao.getRoleById(id);
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.setExcludes(new String[]{"rolesPrivilegeDetails", "users"});
+        jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm"));
+        JSONObject roleJS = JSONObject.fromObject(role, jsonConfig);
+        String jsonStr = roleJS.toString();
+        return jsonStr;
+    }
 }

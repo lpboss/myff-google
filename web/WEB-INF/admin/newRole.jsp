@@ -1,17 +1,14 @@
 <%-- 
-    Document   : editRole
-    Created on : 2011-9-20, 16:08:01
+    Document   : newRole
+    Created on : 2011-9-20, 16:18:09
     Author     : jerry
 --%>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
   <head>
-    <title>编辑角色</title>
+    <title>添加权限</title>
   </head>
   <body>
     <script type="text/javascript">
@@ -29,24 +26,19 @@
           height:100,
           name: 'description',
           anchor: '100%'
-        });
-
-        var roleId = Ext.create('Ext.form.field.Hidden', {
-          name: 'id',
-          value: '<%= request.getParameter("id")%>'
-        });
+        });        
         
         //提交按钮
-        var editRoleButton = Ext.create('Ext.Button', {
+        var addRoleButton = Ext.create('Ext.Button', {
           text: '提交',
           iconCls: 'icon-save',
           handler: function(){
-            editRoleButton.setDisabled(true);
-            if (editRoleFormPanel.form.isValid()) {
-              editRoleFormPanel.form.submit({
+            addRoleButton.setDisabled(true);
+            if (newRoleFormPanel.form.isValid()) {
+              newRoleFormPanel.form.submit({
                 success: function(result, resp){
                   if (resp.result.info.indexOf("成功") >= 0) {
-                    editRoleWin.destroy();
+                    newRoleWin.destroy();
                   } else {
                     Ext.MessageBox.show({
                       title: '消息',
@@ -55,10 +47,10 @@
                       icon: Ext.MessageBox.WARNING
                     });                    
                   }
-                  editRoleButton.enable();
+                  addRoleButton.enable();
                 },
                 failure: function(result, request){
-                  editRoleButton.enable();
+                  addRoleButton.enable();
                   Ext.MessageBox.show({
                     title: '消息',
                     msg: "通讯失败，请从新操作",
@@ -69,48 +61,33 @@
               });
             }
             else {
-              editRoleButton.enable();
+              addRoleButton.enable();
               
             }
           }
         })
         
-        var editRoleFormPanel = Ext.create('Ext.form.Panel', {
+        var newRoleFormPanel = Ext.create('Ext.form.Panel', {
           fieldDefaults: {
             labelWidth: 65,
             labelAlign: 'right'
           },
           width: 400,
           frame : true,
-          url: '<%=basePath%>admin/updateRole.htm',
-          method: 'POST',
-          reader: Ext.create('Ext.data.reader.Json',{
-            model: 'Role',
-            root: 'root'
-          }),
-          items: [name,desc,roleId],
-          buttons: [editRoleButton,{
+          url: '/admin/createRole',
+          method: 'GET',
+          items: [name,desc],
+          buttons: [addRoleButton,{
               text: '关闭',
               iconCls: 'exit',
               handler: function(){
-                editRoleWin.destroy();
+                newRoleWin.destroy();
               }
             }]
         });
-
-        editRoleFormPanel.form.load({
-          url: '<%=basePath%>admin/getRoleById.htm?id=' + roleId.getValue(),
-          method : 'GET',
-          waitMsg: '正在载入数据...',
-          success: function(form, action){
-          },
-          failure: function(form, action){
-            Ext.MessageBox.alert('提示信息', '信息加载失败');
-          }
-        });
-        editRoleFormPanel.render('edit_role_form');
+        newRoleFormPanel.render('new_role_form');
       })
     </script>
-    <div id="edit_role_form"></div>
+    <div id="new_role_form"></div>
   </body>
 </html>
