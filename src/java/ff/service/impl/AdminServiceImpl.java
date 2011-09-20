@@ -40,6 +40,10 @@ public class AdminServiceImpl implements AdminService {
         this.roleDao = roleDao;
     }
 
+    public void setRolesPrivilegeDetailDao(RolesPrivilegeDetailDao rolesPrivilegeDetailDao) {
+        this.rolesPrivilegeDetailDao = rolesPrivilegeDetailDao;
+    }
+
     @Override
     public Integer executeNativeUpdateSQL(String sql) {
         return adminDao.executeNativeUpdateSQL(sql);
