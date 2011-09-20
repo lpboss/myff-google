@@ -130,25 +130,6 @@ public class AdminController extends MultiActionController {
 
     /**
      *作者：jerry
-     *描述：新增角色
-     */
-    public void createRole(HttpServletRequest request, HttpServletResponse response) {
-        String jsonStr = sysControllerService.getAllSysControllers();
-        logger.info(jsonStr);
-        PrintWriter pw;
-        try {
-            response.setContentType("text/json; charset=utf-8");
-            response.setHeader("Cache-Control", "no-cache");
-            pw = response.getWriter();
-            pw.write(jsonStr);
-            pw.close();
-        } catch (IOException e) {
-            logger.info(e);
-        }
-    }
-
-    /**
-     *作者：jerry
      *描述：得到所有角色，可以选择的所有权限。类似系统系统树一样，一层层的取数据。
      */
     public void getRolePrivilegeById(HttpServletRequest request, HttpServletResponse response) {
@@ -207,7 +188,7 @@ public class AdminController extends MultiActionController {
             logger.info(e);
         }
     }
-    
+
     /**
      *作者：jerry
      *描述：新增加角色页面
@@ -217,7 +198,7 @@ public class AdminController extends MultiActionController {
         ModelAndView mav = new ModelAndView();
         return mav;
     }
-    
+
     /**
      *作者：jerry
      *描述：编辑角色页面
@@ -227,7 +208,7 @@ public class AdminController extends MultiActionController {
         ModelAndView mav = new ModelAndView();
         return mav;
     }
-    
+
     /**
      *作者：jerry
      *描述：锁定角色
@@ -246,4 +227,54 @@ public class AdminController extends MultiActionController {
             logger.info(e);
         }
     }
+
+    /**
+     *作者：jerry
+     *描述：更新角色
+     */
+    public void updateRole(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("id");
+        Role role = roleService.getRoleById(Long.parseLong(id));
+        role.setName(request.getParameter("name"));
+        role.setDescription(request.getParameter("description"));
+        roleService.saveOrUpdate(role);
+        String info = "success";
+        String jsonStr = "{success:true,info:'" + info + "'}";
+
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
+    
+    /**
+     *作者：jerry
+     *描述：新增角色
+     */
+    public void createRole(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("id");
+        Role role = new Role();
+        role.setName(request.getParameter("name"));
+        role.setDescription(request.getParameter("description"));
+        roleService.saveOrUpdate(role);
+        String info = "success";
+        String jsonStr = "{success:true,info:'" + info + "'}";
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
+    
 }

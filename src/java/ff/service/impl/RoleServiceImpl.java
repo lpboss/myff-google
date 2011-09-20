@@ -171,4 +171,9 @@ public class RoleServiceImpl implements RoleService {
         String jsonStr = roleJS.toString();
         return jsonStr;
     }
+
+    @Override
+    public Role saveOrUpdate(Role role) {
+        return roleDao.saveOrUpdate(role);
+    }
 }

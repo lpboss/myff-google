@@ -32,4 +32,6 @@ public interface RoleService {
     String getRoleJSONById(Long id);
     
     String roleLock(Long roleId);
+    
+    Role saveOrUpdate(Role role);
 }

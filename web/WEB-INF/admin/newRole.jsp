@@ -74,7 +74,7 @@
           },
           width: 400,
           frame : true,
-          url: '/admin/createRole',
+          url: '<%=basePath%>admin/createRole.htm',
           method: 'GET',
           items: [name,desc],
           buttons: [addRoleButton,{

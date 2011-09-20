@@ -45,7 +45,7 @@
             if (editRoleFormPanel.form.isValid()) {
               editRoleFormPanel.form.submit({
                 success: function(result, resp){
-                  if (resp.result.info.indexOf("成功") >= 0) {
+                  if (resp.result.info.indexOf("success") >= 0) {
                     editRoleWin.destroy();
                   } else {
                     Ext.MessageBox.show({
@@ -86,7 +86,7 @@
           method: 'POST',
           reader: Ext.create('Ext.data.reader.Json',{
             model: 'Role',
-            root: 'root'
+            root: ''
           }),
           items: [name,desc,roleId],
           buttons: [editRoleButton,{
