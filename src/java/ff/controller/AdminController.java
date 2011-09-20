@@ -4,6 +4,7 @@
  */
 package ff.controller;
 
+import ff.model.Role;
 import ff.service.AdminService;
 import ff.service.PrivilegeService;
 import ff.service.RoleService;
@@ -176,6 +177,25 @@ public class AdminController extends MultiActionController {
 
         String jsonStr = adminService.doRolePrivilegeDetailsById(roleId, privilegeId, parentPrivilegeId);
         logger.info(jsonStr);
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
+
+    /**
+     *作者：jerry
+     *描述：锁定角色
+     */
+    public void roleLock(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("id");
+        String jsonStr = roleService.roleLock(Long.parseLong(id));
         PrintWriter pw;
         try {
             response.setContentType("text/json; charset=utf-8");

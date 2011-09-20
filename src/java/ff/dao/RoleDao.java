@@ -29,4 +29,6 @@ public interface RoleDao {
     
     //得到模块相关的菜单
     List<Integer> getRoleModuleMenus(Long roleId,Long moduleId);
+    
+    String roleLock(Long roleId);
 }

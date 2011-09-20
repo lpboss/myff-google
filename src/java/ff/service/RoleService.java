@@ -29,4 +29,5 @@ public interface RoleService {
     
     Role getRoleById(Long id);
     
+    String roleLock(Long roleId);
 }

@@ -31,7 +31,8 @@ public class Role implements java.io.Serializable {
     private Set<RolesPrivilegeDetail> rolesPrivilegeDetails = new HashSet<RolesPrivilegeDetail>(0);
     private Timestamp createdAt;
     private Timestamp updatedAt;
-    private Integer version;
+    private Long isLocked = new Long(0);
+    private Long version = new Long(0);
 
     public Role() {
     }
@@ -87,13 +88,24 @@ public class Role implements java.io.Serializable {
         return this.updatedAt;
     }
 
-    public void setVersion(Integer version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
     @Version
     @Column(name = "version")
-    public Integer getVersion() {
+    public Long getVersion() {
         return this.version;
     }
+
+    @Column(name = "is_locked")
+    public Long getIsLocked() {
+        return isLocked;
+    }
+
+    public void setIsLocked(Long isLocked) {
+        this.isLocked = isLocked;
+    }
+    
+    
 }

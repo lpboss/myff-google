@@ -155,4 +155,9 @@ public class RoleServiceImpl implements RoleService {
         Role role = roleDao.getRoleById(id);
         return role;
     }
+
+    @Override
+    public String roleLock(Long roleId) {
+        return roleDao.roleLock(roleId);
+    }
 }
