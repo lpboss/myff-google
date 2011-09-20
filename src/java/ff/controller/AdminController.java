@@ -174,7 +174,7 @@ public class AdminController extends MultiActionController {
         Long privilegeId = Long.parseLong(request.getParameter("privilege_id"));
         Long parentPrivilegeId = Long.parseLong(request.getParameter("parent_privilege_id"));
 
-        String jsonStr = adminService.getRolePrivilegeDetailsById(roleId, privilegeId, parentPrivilegeId);
+        String jsonStr = adminService.doRolePrivilegeDetailsById(roleId, privilegeId, parentPrivilegeId);
         logger.info(jsonStr);
         PrintWriter pw;
         try {

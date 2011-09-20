@@ -50,7 +50,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public String getRolePrivilegeDetailsById(Long roleId, Long privilegeId, Long parentPrivilegeId) {
+    public String doRolePrivilegeDetailsById(Long roleId, Long privilegeId, Long parentPrivilegeId) {
         //在这里，角色中的privilege已经深化为menu_id，是一系列相关权限细节的集合
         //首先得到系统中，此角色当前已经对应的角色权限细节
         List<RolesPrivilegeDetail> rolesPrivilegeDetails = adminDao.getRolesPrivilegeDetails(privilegeId, roleId);
