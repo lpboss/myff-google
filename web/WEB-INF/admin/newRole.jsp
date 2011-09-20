@@ -6,6 +6,10 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+%>
 <html>
   <head>
     <title>添加权限</title>
@@ -37,7 +41,7 @@
             if (newRoleFormPanel.form.isValid()) {
               newRoleFormPanel.form.submit({
                 success: function(result, resp){
-                  if (resp.result.info.indexOf("成功") >= 0) {
+                  if (resp.result.info.indexOf("success") >= 0) {
                     newRoleWin.destroy();
                   } else {
                     Ext.MessageBox.show({
@@ -75,7 +79,7 @@
           width: 400,
           frame : true,
           url: '<%=basePath%>admin/createRole.htm',
-          method: 'GET',
+          method: 'POST',
           items: [name,desc],
           buttons: [addRoleButton,{
               text: '关闭',

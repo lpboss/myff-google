@@ -114,4 +114,18 @@ public class AdminServiceImpl implements AdminService {
         String jsonStr = "{totalProperty:" + rolesPrivilegeDetails.size() + ",root:" + rolesPrivilegeDetailsJS.toString() + "}";
         return jsonStr;
     }
+
+    @Override
+    public String rolePrivilegeDetailLock(Long id) {
+        RolesPrivilegeDetail rolesPrivilegeDetail = rolesPrivilegeDetailDao.getRolesPrivilegeDetailById(id);
+        if (rolesPrivilegeDetail.getIsLocked() == 1) {
+            rolesPrivilegeDetail.setIsLocked((long) 0);
+        } else {
+            rolesPrivilegeDetail.setIsLocked((long) 1);
+        }
+        rolesPrivilegeDetailDao.saveOrUpdate(rolesPrivilegeDetail);
+        String info = "success";
+        String jsonStr = "{success:true,info:'" + info + "'}";
+        return jsonStr;
+    }
 }

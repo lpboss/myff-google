@@ -15,5 +15,6 @@ public interface AdminService {
     //因为有写入操作，方便事务的情况叫，叫do
     String doRolePrivilegeDetailsById(Long roleId, Long privilegeId, Long parentPrivilegeId);
     
+    String rolePrivilegeDetailLock(Long id);
     
 }

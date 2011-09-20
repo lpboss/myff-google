@@ -252,7 +252,7 @@ public class AdminController extends MultiActionController {
             logger.info(e);
         }
     }
-    
+
     /**
      *作者：jerry
      *描述：新增角色
@@ -276,5 +276,24 @@ public class AdminController extends MultiActionController {
             logger.info(e);
         }
     }
-    
+
+    /**
+     *作者：jerry
+     *描述：锁定或解锁角色的权限细节
+     */
+    public void rolePrivilegeDetailLock(HttpServletRequest request, HttpServletResponse response) {
+        String jsonStr = adminService.rolePrivilegeDetailLock(Long.parseLong(request.getParameter("id")));
+
+        PrintWriter pw;
+
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
 }

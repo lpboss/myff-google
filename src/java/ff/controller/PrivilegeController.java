@@ -480,4 +480,5 @@ public class PrivilegeController extends MultiActionController {
             logger.info(e);
         }
     }
+    
 }

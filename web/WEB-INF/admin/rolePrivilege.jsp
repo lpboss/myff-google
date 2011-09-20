@@ -28,7 +28,7 @@
       //处理权限锁定
       function lockRolePrivilegeDetailFn(id){
         Ext.Ajax.request({
-          url : '<%=basePath%>privilege/rolePrivilegeDetailLock.htm',
+          url : '<%=basePath%>admin/rolePrivilegeDetailLock.htm',
           success : function (result, request) {
             rolePrivilegeDetailDS.load();
           },

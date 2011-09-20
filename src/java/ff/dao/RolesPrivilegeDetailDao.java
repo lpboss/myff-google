@@ -12,6 +12,10 @@ import java.util.List;
  * @author jerry
  */
 public interface RolesPrivilegeDetailDao {
+
     RolesPrivilegeDetail saveOrUpdate(RolesPrivilegeDetail rolesPrivilegeDetail);
+
     void delete(RolesPrivilegeDetail rolesPrivilegeDetail);
+
+    RolesPrivilegeDetail getRolesPrivilegeDetailById(Long id);
 }
