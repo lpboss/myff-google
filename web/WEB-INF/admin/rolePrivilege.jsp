@@ -102,7 +102,7 @@
           columns : [Ext.create('Ext.grid.RowNumberer'),
             {
               header: '是否锁定',
-              dataIndex: 'is_locked',
+              dataIndex: 'isLocked',
               renderer: renderRoleIsLucked,
               width: 60
             },{
@@ -296,7 +296,7 @@
           columns : [Ext.create('Ext.grid.RowNumberer'),
             {
               header: '选择',
-              dataIndex: 'is_locked',
+              dataIndex: 'isLocked',
               renderer: renderPrivilegeDetailIsLucked,
               width: 60
             },{

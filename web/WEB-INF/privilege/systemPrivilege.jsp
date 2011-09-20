@@ -461,7 +461,7 @@
               width: 50
             },{
               header: '是否锁定',
-              dataIndex: 'is_locked',
+              dataIndex: 'isLocked',
               renderer: renderIsLucked,
               width: 60
             },{

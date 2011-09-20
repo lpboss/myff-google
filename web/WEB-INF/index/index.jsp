@@ -387,7 +387,7 @@
                     fields : [{name: 'id'},
                         {name: 'name',mapping:'privilegeDetail.name'},
                         {name: 'description',mapping:'privilegeDetail.description'},
-                        {name: 'is_locked'}
+                        {name: 'isLocked'}
                     ]
                 });
         
