@@ -260,6 +260,8 @@
                     fields : [{name: 'id'},
                         { name: 'number'},
                         { name: 'name'},
+                        { name: 'description'},
+                        { name: 'isLocked'},
                         {name: 'createdAt'},
                         {name: 'updatedAt'}
                     ]

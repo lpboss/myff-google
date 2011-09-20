@@ -89,7 +89,7 @@
 
         //锁定角色
         function renderRoleIsLucked(value, cellmeta, record, index, columnIndex, store){
-          if (record.get("is_locked")=="1"){
+          if (record.get("isLocked")=="1"){
             return "<a style=cursor:pointer onclick=lockRoleFn(" + store.getAt(index).get('id')+")><font color=red>锁定</font></a>";
           }else{
             return "<a style=cursor:pointer onclick=lockRoleFn(" + store.getAt(index).get('id')+")><font color=green>未锁定</font></a>";
@@ -281,7 +281,7 @@
         
         //锁定用户
         function renderPrivilegeDetailIsLucked(value, cellmeta, record, index, columnIndex, store){
-          if (record.get("is_locked")=="1"){
+          if (record.get("isLocked")=="1"){
             return "<a style=cursor:pointer onclick=lockRolePrivilegeDetailFn(" + store.getAt(index).get('id')+")><font color=red>未选择</font></a>";
           }else{
             return "<a style=cursor:pointer onclick=lockRolePrivilegeDetailFn(" + store.getAt(index).get('id')+")><font color=green>已经选择</font></a>";
