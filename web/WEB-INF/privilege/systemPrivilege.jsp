@@ -354,8 +354,9 @@
                   success:function(response,opts){
                     var backInfo = Ext.JSON.decode(response.responseText).info;
                     if(backInfo === 'success') {
-                      Ext.MessageBox.alert('提示信息', backInfo);
-                      treeStore.load();
+                      treeStore.load({
+                  node: currentNode.parentNode
+                });
                     } else {
                       Ext.MessageBox.alert('提示信息', backInfo);
                     }
