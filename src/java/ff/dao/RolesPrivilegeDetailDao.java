@@ -18,4 +18,7 @@ public interface RolesPrivilegeDetailDao {
     void delete(RolesPrivilegeDetail rolesPrivilegeDetail);
 
     RolesPrivilegeDetail getRolesPrivilegeDetailById(Long id);
+
+    //在privilege方法删除后，配合此方法，删除所有的角色权限细节。
+    String deleteForSysPrivilegeDelete(Long privilegeId);
 }

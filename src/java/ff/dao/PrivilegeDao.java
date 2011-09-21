@@ -26,4 +26,6 @@ public interface PrivilegeDao {
     
     //得到同一parentId下，sortid值最大的那个privilege
     Integer getMaxSortIdByParentId(Long parentId);
+    
+    String delete(Long id);
 }

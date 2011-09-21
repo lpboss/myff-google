@@ -96,4 +96,15 @@ public class PrivilegeDaoHImpl extends HibernateDaoSupport implements PrivilegeD
         List maxList = this.getHibernateTemplate().executeFind(callBack);
         return (Integer) maxList.get(0);
     }
+
+    @Override
+    public String delete(Long id) {
+        try {
+            Privilege privilege = this.getHibernateTemplate().load(Privilege.class, id);    //先加载特定实例
+            getHibernateTemplate().delete(privilege);                                 //删除特定实例
+        } catch (Exception e) {
+            return e.toString();
+        }
+        return "success";
+    }
 }

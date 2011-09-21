@@ -8,6 +8,7 @@ import ff.dao.RolesPrivilegeDetailDao;
 import ff.model.RolesPrivilegeDetail;
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.List;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
@@ -37,5 +38,14 @@ public class RolesPrivilegeDetailDaoHImpl extends HibernateDaoSupport implements
     public RolesPrivilegeDetail getRolesPrivilegeDetailById(Long id) {
         RolesPrivilegeDetail rolesPrivilegeDetail = (RolesPrivilegeDetail) this.getHibernateTemplate().get(RolesPrivilegeDetail.class, id);
         return rolesPrivilegeDetail;
+    }
+
+    @Override
+    public String deleteForSysPrivilegeDelete(Long privilegeId) {
+        List<RolesPrivilegeDetail> rolesPrivilegeDetails = this.getHibernateTemplate().findByNamedParam("from RolesPrivilegeDetail where module_id =:privilege_id OR menu_id =:privilege_id", new String[]{"privilege_id"}, new Long[]{privilegeId});
+        if (rolesPrivilegeDetails.size() > 0) {
+            this.getHibernateTemplate().deleteAll(rolesPrivilegeDetails);
+        }
+        return "success";
     }
 }

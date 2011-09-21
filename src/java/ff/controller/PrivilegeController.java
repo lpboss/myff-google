@@ -481,4 +481,30 @@ public class PrivilegeController extends MultiActionController {
         }
     }
     
+    /**
+     *作者：jerry
+     *描述：删除权限
+     */
+    public void destroySysPrivilege(HttpServletRequest request, HttpServletResponse response) {
+        privilegeService.delete(Long.parseLong(request.getParameter("id")));
+        //RolesPrivilegeDetail.destroy_all(["module_id = ?" , params[:id]])
+        //RolesPrivilegeDetail.destroy_all(["menu_id = ?" , params[:id]])
+
+        String info = "success";
+        String jsonStr = "{success:true,info:'" + info + "'}";
+
+        PrintWriter pw;
+
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
+    
+    
 }

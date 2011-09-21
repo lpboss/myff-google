@@ -21,4 +21,6 @@ public interface PrivilegeDetailDao {
      
      PrivilegeDetail getPrivilegeDetailById(Long id);
      
+     
+     
 }

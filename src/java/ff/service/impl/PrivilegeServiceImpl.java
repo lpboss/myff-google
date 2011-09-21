@@ -6,6 +6,7 @@ package ff.service.impl;
 
 import ff.dao.PrivilegeDao;
 
+import ff.dao.RolesPrivilegeDetailDao;
 import ff.model.Privilege;
 import ff.model.PrivilegeDetail;
 import ff.service.PrivilegeService;
@@ -25,14 +26,19 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     static Logger logger = Logger.getLogger(PrivilegeServiceImpl.class.getName());
     //注入区：
     private PrivilegeDao privilegeDao;
+    private RolesPrivilegeDetailDao rolesPrivilegeDetailDao;
 
     public void setPrivilegeDao(PrivilegeDao privilegeDao) {
         this.privilegeDao = privilegeDao;
     }
 
+    public void setRolesPrivilegeDetailDao(RolesPrivilegeDetailDao rolesPrivilegeDetailDao) {
+        this.rolesPrivilegeDetailDao = rolesPrivilegeDetailDao;
+    }
+
     @Override
-    public String getSysPrivilegeChildrenById(Long nodeId,Integer isLocked) {
-        return privilegeDao.getSysPrivilegeChildrenById(nodeId,isLocked);
+    public String getSysPrivilegeChildrenById(Long nodeId, Integer isLocked) {
+        return privilegeDao.getSysPrivilegeChildrenById(nodeId, isLocked);
     }
 
     @Override
@@ -79,4 +85,11 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         return privilegeDao.getMaxSortIdByParentId(parentId);
     }
 
+    //同时在删除权限时，要同时删除所有角色的相关权限
+    @Override
+    public String delete(Long id) {
+        privilegeDao.delete(id);
+        rolesPrivilegeDetailDao.deleteForSysPrivilegeDelete(id);
+        return "success";
+    }
 }
