@@ -509,9 +509,7 @@ public class PrivilegeController extends MultiActionController {
      *描述：删除系统权限细节
      */
     public void destroySysPrivilegeDetail(HttpServletRequest request, HttpServletResponse response) {
-        privilegeDetailService .delete(Long.parseLong(request.getParameter("id")));
-        //PrivilegeDetail.destroy(params[:id])
-        //RolesPrivilegeDetail.destroy_all(["privilege_detail_id = ?" , params[:id]])
+        privilegeDetailService.delete(Long.parseLong(request.getParameter("id")));
 
         String info = "success";
         String jsonStr = "{success:true,info:'" + info + "'}";

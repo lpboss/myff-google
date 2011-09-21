@@ -36,6 +36,10 @@ public class PrivilegeDetailServiceImpl implements PrivilegeDetailService {
         this.privilegeDetailDao = privilegeDetailDao;
     }
 
+    public void setRolesPrivilegeDetailDao(RolesPrivilegeDetailDao rolesPrivilegeDetailDao) {
+        this.rolesPrivilegeDetailDao = rolesPrivilegeDetailDao;
+    }
+
     @Override
     public String getPrivilegeDetailsById(Long privilegeId) {
         List<PrivilegeDetail> privilegeDetails = privilegeDetailDao.getPrivilegeDetailsById(privilegeId);

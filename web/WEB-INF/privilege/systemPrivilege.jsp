@@ -138,7 +138,7 @@
         
         //这是一次性展开的非常好的方法
         //sysPrivilegeTree.getRootNode().expand(true);
-        sysPrivilegeTree.render();
+        //sysPrivilegeTree.render();
 
         
         //权限树，右键菜单
