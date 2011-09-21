@@ -48,4 +48,13 @@ public class RolesPrivilegeDetailDaoHImpl extends HibernateDaoSupport implements
         }
         return "success";
     }
+
+    @Override
+    public String deleteForSysPrivilegeDetailDelete(Long privilegeDetailId) {
+        List<RolesPrivilegeDetail> rolesPrivilegeDetails = this.getHibernateTemplate().findByNamedParam("from RolesPrivilegeDetail where privilege_detail_id =:privilege__detail_id", new String[]{"privilege__detail_id"}, new Long[]{privilegeDetailId});
+        if (rolesPrivilegeDetails.size() > 0) {
+            this.getHibernateTemplate().deleteAll(rolesPrivilegeDetails);
+        }
+        return "success";
+    }
 }

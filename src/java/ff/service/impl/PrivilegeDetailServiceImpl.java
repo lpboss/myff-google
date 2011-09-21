@@ -6,6 +6,7 @@ package ff.service.impl;
 
 import ff.dao.PrivilegeDao;
 import ff.dao.PrivilegeDetailDao;
+import ff.dao.RolesPrivilegeDetailDao;
 import ff.model.PrivilegeDetail;
 import ff.service.PrivilegeDetailService;
 import ff.service.PrivilegeService;
@@ -25,6 +26,7 @@ public class PrivilegeDetailServiceImpl implements PrivilegeDetailService {
 
     private PrivilegeDetail privilegeDetail;
     private PrivilegeDetailDao privilegeDetailDao;
+    private RolesPrivilegeDetailDao rolesPrivilegeDetailDao;
 
     public void setPrivilegeDetail(PrivilegeDetail privilegeDetail) {
         this.privilegeDetail = privilegeDetail;
@@ -33,8 +35,7 @@ public class PrivilegeDetailServiceImpl implements PrivilegeDetailService {
     public void setPrivilegeDetailDao(PrivilegeDetailDao privilegeDetailDao) {
         this.privilegeDetailDao = privilegeDetailDao;
     }
-    
-    
+
     @Override
     public String getPrivilegeDetailsById(Long privilegeId) {
         List<PrivilegeDetail> privilegeDetails = privilegeDetailDao.getPrivilegeDetailsById(privilegeId);
@@ -46,7 +47,7 @@ public class PrivilegeDetailServiceImpl implements PrivilegeDetailService {
         String jsonStr = "{totalProperty:" + privilegeDetails.size() + ",root:" + privilegeDetailsJS.toString() + "}";
         return jsonStr;
     }
-    
+
     @Override
     public String create(PrivilegeDetail privilegeDetail) {
         privilegeDetailDao.saveOrUpdate(privilegeDetail);
@@ -78,5 +79,12 @@ public class PrivilegeDetailServiceImpl implements PrivilegeDetailService {
         String info = "success";
         String jsonStr = "{success:true,info:'" + info + "'}";
         return jsonStr;
+    }
+
+    @Override
+    public String delete(Long id) {
+        privilegeDetailDao.delete(id);
+        rolesPrivilegeDetailDao.deleteForSysPrivilegeDetailDelete(id);
+        return "success";
     }
 }

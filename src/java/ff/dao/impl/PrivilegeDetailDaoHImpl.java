@@ -52,4 +52,15 @@ public class PrivilegeDetailDaoHImpl extends HibernateDaoSupport implements Priv
         List<PrivilegeDetail> privilegeDetails = this.getHibernateTemplate().findByNamedParam("from PrivilegeDetail where privilegeId =:privilege_id AND is_locked = 0", new String[]{"privilege_id"}, new Long[]{privilegeId});
         return privilegeDetails;
     }
+
+    @Override
+    public String delete(Long id) {
+        try {
+            PrivilegeDetail privilegeDetail = this.getHibernateTemplate().load(PrivilegeDetail.class, id);    //先加载特定实例
+            getHibernateTemplate().delete(privilegeDetail);                                                   //删除特定实例
+        } catch (Exception e) {
+            return e.toString();
+        }
+        return "success";
+    }
 }

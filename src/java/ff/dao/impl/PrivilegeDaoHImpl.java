@@ -101,7 +101,7 @@ public class PrivilegeDaoHImpl extends HibernateDaoSupport implements PrivilegeD
     public String delete(Long id) {
         try {
             Privilege privilege = this.getHibernateTemplate().load(Privilege.class, id);    //先加载特定实例
-            getHibernateTemplate().delete(privilege);                                 //删除特定实例
+            getHibernateTemplate().delete(privilege);                                       //删除特定实例
         } catch (Exception e) {
             return e.toString();
         }

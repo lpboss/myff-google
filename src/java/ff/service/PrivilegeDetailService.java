@@ -13,10 +13,16 @@ import ff.model.User;
  */
 public interface PrivilegeDetailService {
     //得到某个节点下，第一层的，所有的权限列表。
+
     String getPrivilegeDetailsById(Long privilegeId);
+
     String create(PrivilegeDetail privilegeDetail);
+
     String update(PrivilegeDetail privilegeDetail);
+
     PrivilegeDetail getPrivilegeDetailById(Long id);
-    
+
     String getPrivilegeDetailJSONById(Long id);
+
+    String delete(Long id);
 }
