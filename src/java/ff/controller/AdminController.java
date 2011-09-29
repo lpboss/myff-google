@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 /**
  *
  * @author jerry
+ * 描述：统一处理管理介面多项功能
  */
 public class AdminController extends MultiActionController {
 
