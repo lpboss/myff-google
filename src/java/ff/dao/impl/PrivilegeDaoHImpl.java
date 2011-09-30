@@ -94,7 +94,11 @@ public class PrivilegeDaoHImpl extends HibernateDaoSupport implements PrivilegeD
         HQLCallBackUtil callBack = new HQLCallBackUtil();
         callBack.setSql("select max(sort_id) as max from privileges where parent_id = " + parentId);
         List maxList = this.getHibernateTemplate().executeFind(callBack);
-        return (Integer) maxList.get(0);
+        Integer maxSortId = (Integer) maxList.get(0);
+        if (maxSortId == null) {
+            maxSortId = 0;
+        }
+        return maxSortId;
     }
 
     @Override
