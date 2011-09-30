@@ -9,6 +9,8 @@ package ff.controller;
  * @author jerry
  */
 
+import ff.util.PTZUtil;
+import ff.xsocket.ServerUtil;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +36,9 @@ public class PTZController extends MultiActionController {
      */
     public void ptzAction(HttpServletRequest request, HttpServletResponse response) {
         logger.info("PTZ index page");
+        
+        PTZUtil.PTZAction(request.getParameter("action_type"));
+        
         String info = "success";
         String jsonStr = "{success:true,info:'" + info + "'}";
 
