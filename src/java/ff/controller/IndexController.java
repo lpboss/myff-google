@@ -4,19 +4,10 @@
  */
 package ff.controller;
 
-import ff.model.RolesPrivilegeDetail;
-import ff.model.User;
 import ff.service.RoleService;
 import ff.service.UserService;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.security.CodeSource;
-import java.security.ProtectionDomain;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.sf.json.JSONObject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
