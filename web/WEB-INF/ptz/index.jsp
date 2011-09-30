@@ -76,7 +76,11 @@
                 Ext.Ajax.request({
                     url : '<%=basePath%>/ptz/ptzAction.htm',
                     success : function (result, request) {
-                        
+                        if(ptzActionStr == "stop"){
+                            isTurning = false;
+                        }else{
+                            isTurning = true;
+                        }
                     },
                     failure : function (result, request){
                         Ext.MessageBox.show({
