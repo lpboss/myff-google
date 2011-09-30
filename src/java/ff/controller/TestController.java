@@ -54,6 +54,7 @@ public class TestController extends MultiActionController {
         cMap.put("index", "ff.controller.IndexController");
         cMap.put("privilege", "ff.controller.PrivilegeController");
         cMap.put("user", "ff.controller.UserController");
+        cMap.put("ptz", "ff.controller.PTZController");
         //循环控制器中的所有方法
         Iterator keyIterator = cMap.keySet().iterator();
         while (keyIterator.hasNext()) {
