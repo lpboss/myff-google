@@ -125,7 +125,7 @@
             <tr>                
                 <td>
                     <object id="map" type="application/x-shockwave-flash" data="map.swf" width="600" height="300">
-                        <param name="movie" value="map.swf" />
+                        <param name="movie" value="<%=basePath%>images/map.swf" />
                         <param name="quality" value="high" />
                         <param name="allowScriptAccess" value="sameDomain" />
                         <param name="allowFullScreen" value="true" />

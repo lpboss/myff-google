@@ -74,7 +74,7 @@ public class HeadServerHandler implements IDataHandler, IConnectHandler,
             byte[] b = buffer.array();
 
             String s = ServerUtil.byteArray2HexString(b);
-            System.out.println(".......................onData+s:" + s);
+            //System.out.println(".......................onData+s:" + s);
             if (s.indexOf("FF010059") > -1) {
                 float angle_x = (float) Integer.parseInt(s.substring(8, 12), 16) / 100;
                 ServerUtil.addHeadInfo(ip, angle_x + "");

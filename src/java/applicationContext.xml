@@ -69,7 +69,7 @@
             <tx:method name="*" />
         </tx:attributes>
     </tx:advice>
-    <!-- 把事务用切面的方式配置于service,impl包下的所有类,即配置哪些类的��法要参与到事务中来 -->
+    <!-- 把事务用切面的方式配置于service,impl包下的所有类,即配置哪些类的���法要参与到事务中来 -->
     <aop:config>
         <aop:pointcut id="allService" expression="execution(* ff.service..*.*(..))" />
         <aop:advisor pointcut-ref="allService" advice-ref="txAdvice" />

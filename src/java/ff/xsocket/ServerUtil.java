@@ -20,6 +20,9 @@ public class ServerUtil {
      */
 
     public static void addConnection(String ip, INonBlockingConnection nbc) {
+        System.out.println("addConnection....................................................................." + ip);
+        System.out.println("connectionMap hashcode:" + connectionMap.hashCode());
+        System.out.println("ServerUtil hashcode:" + ServerUtil.class.hashCode());
         connectionMap.put(ip, nbc);
     }
 
@@ -65,6 +68,10 @@ public class ServerUtil {
 
     // 向客户端发送十六进制指令
     public static boolean sendCommand(String ip, String command) throws IOException {
+        //检查connectionMap是否为空
+        System.out.println("connectionMap.isEmpty():" + connectionMap.isEmpty());
+        System.out.println("connectionMap hashcode:" + connectionMap.hashCode());
+        System.out.println("ServerUtil hashcode:" + ServerUtil.class.hashCode());
         INonBlockingConnection connection = connectionMap.get(ip);
         return sendCommand(connection, command);
     }
