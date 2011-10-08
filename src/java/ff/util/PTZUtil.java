@@ -21,21 +21,22 @@ public class PTZUtil {
     public static void PTZAction(String ptzAction) {
         logger.info("ptzAction:" + ptzAction);
         try {
+            boolean connResult;
             if (ptzAction.equals("up")) {
-                ServerUtil.sendCommand("192.168.254.65", "FF 01 00 08 00 3F 48");
-                logger.info("FF 01 00 08 00 3F 48 UP...........................");
+                connResult = ServerUtil.sendCommand("192.168.254.65", "FF 01 00 08 00 3F 48");
+                logger.info("FF 01 00 08 00 3F 48 UP..........................." + connResult);
             } else if (ptzAction.equals("down")) {
-                ServerUtil.sendCommand("192.168.254.65", "FF 01 00 10 00 3F 50");
-                logger.info("FF 01 00 10 00 3F 50 DOWN.........................");
+                connResult = ServerUtil.sendCommand("192.168.254.65", "FF 01 00 10 00 3F 50");
+                logger.info("FF 01 00 10 00 3F 50 DOWN........................." + connResult);
             } else if (ptzAction.equals("right")) {
-                ServerUtil.sendCommand("192.168.254.65", "FF 01 00 02 3F 00 42");
-                logger.info("FF 01 00 02 3F 00 42 RIGHT........................");
+                connResult = ServerUtil.sendCommand("192.168.254.65", "FF 01 00 02 3F 00 42");
+                logger.info("FF 01 00 02 3F 00 42 RIGHT........................" + connResult);
             } else if (ptzAction.equals("left")) {
-                ServerUtil.sendCommand("192.168.254.65", "FF 01 00 04 30 00 35");
-                logger.info("FF 01 00 04 30 00 35 LEFT.........................");
+                connResult = ServerUtil.sendCommand("192.168.254.65", "FF 01 00 04 30 00 35");
+                logger.info("FF 01 00 04 30 00 35 LEFT........................." + connResult);
             } else if (ptzAction.equals("stop")) {
-                ServerUtil.sendCommand("192.168.254.65", "FF 01 00 00 00 00 01");
-                logger.info("FF 01 00 00 00 00 01 STOP.........................");
+                connResult = ServerUtil.sendCommand("192.168.254.65", "FF 01 00 00 00 00 01");
+                logger.info("FF 01 00 00 00 00 01 STOP........................." + connResult);
             }
         } catch (IOException ex) {
             Logger.getLogger(PTZUtil.class.getName()).log(Level.SEVERE, null, ex);
