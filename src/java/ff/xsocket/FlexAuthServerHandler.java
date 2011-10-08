@@ -56,7 +56,7 @@ public class FlexAuthServerHandler implements IDataHandler, IConnectHandler,
 		String data = connection.readStringByDelimiter("\0");
 		if (data.equals("<policy-file-request/>")) {
 			String xml = "<?xml version=\"1.0\"?><cross-domain-policy><site-control permitted-cross-domain-policies=\"all\"/><allow-access-from domain=\"*\" to-ports=\"*\"/></cross-domain-policy>\0";
-			ServerUtil.getInstance().sendMsg(connection, xml);
+			ServerUtil.sendMsg(connection, xml);
 		}
 
 		connection.close();

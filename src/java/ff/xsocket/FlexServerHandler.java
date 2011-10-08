@@ -57,11 +57,11 @@ public class FlexServerHandler implements IDataHandler, IConnectHandler,
 				&& data.indexOf("</headIp>") > -1) {
 
 			String headIp = data.substring(8, data.indexOf("</headIp>"));
-			ServerUtil.getInstance().sendHeadInfo(connection, headIp);
+			ServerUtil.sendHeadInfo(connection, headIp);
 
 			while (connection != null && connection.isOpen()) {
 
-				ServerUtil.getInstance().sendHeadInfo(connection, headIp);
+				ServerUtil.sendHeadInfo(connection, headIp);
 
 				try {
 					Thread.sleep(1000);

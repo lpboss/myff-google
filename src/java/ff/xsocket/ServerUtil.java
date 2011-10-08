@@ -7,50 +7,50 @@ import java.util.Map;
 import org.xsocket.connection.INonBlockingConnection;
 
 public class ServerUtil {
-	private static ServerUtil instance;
-	private Map<String, INonBlockingConnection> connectionMap = new HashMap<String, INonBlockingConnection>();
-	private Map<String, String> headInfoMap = new HashMap<String, String>();
-
+	//private static ServerUtil instance;
+	private static Map<String, INonBlockingConnection> connectionMap = new HashMap<String, INonBlockingConnection>();
+	private static Map<String, String> headInfoMap = new HashMap<String, String>();
+	/*
 	public static ServerUtil getInstance() {
 		if (instance == null)
 			instance = new ServerUtil();
 		return instance;
 	}
-
-	public void addConnection(String ip, INonBlockingConnection nbc) {
+	 */
+	public static void addConnection(String ip, INonBlockingConnection nbc) {
 		connectionMap.put(ip, nbc);
 	}
 
-	public INonBlockingConnection getConnection(String ip) {
+	public static INonBlockingConnection getConnection(String ip) {
 		return connectionMap.get(ip);
 	}
 
-	public void removeConnection(String ip) {
+	public static void removeConnection(String ip) {
 		connectionMap.remove(ip);
 	}
 
-	public void removeConnectionAll() {
+	public static void removeConnectionAll() {
 		connectionMap.clear();
 	}
 
-	public void addHeadInfo(String ip, String headInfo) {
+	public static void addHeadInfo(String ip, String headInfo) {
 		headInfoMap.put(ip, headInfo);
 	}
 
-	public String getHeadInfo(String ip) {
+	public static String getHeadInfo(String ip) {
 		return headInfoMap.get(ip);
 	}
 
-	public void removeHeadInfo(String ip) {
+	public static void removeHeadInfo(String ip) {
 		headInfoMap.remove(ip);
 	}
 
-	public void removeHeadInfoAll() {
+	public static void removeHeadInfoAll() {
 		headInfoMap.clear();
 	}
 
 	// 向客户端发送十六进制指令
-	public boolean sendCommand(INonBlockingConnection connection, String command)
+	public static boolean sendCommand(INonBlockingConnection connection, String command)
 			throws IOException {
 		if (connection != null && connection.isOpen()) {
 			byte[] c = hexString2ByteArray(command);
@@ -62,13 +62,13 @@ public class ServerUtil {
 	}
 
 	// 向客户端发送十六进制指令
-	public boolean sendCommand(String ip, String command) throws IOException {
+	public static boolean sendCommand(String ip, String command) throws IOException {
 		INonBlockingConnection connection = connectionMap.get(ip);
-		return this.sendCommand(connection, command);
+		return sendCommand(connection, command);
 	}
 
 	// 向客户端发送文本信息
-	public boolean sendMsg(INonBlockingConnection connection, String msg)
+	public static boolean sendMsg(INonBlockingConnection connection, String msg)
 			throws IOException {
 		if (connection != null && connection.isOpen()) {
 			connection.write(msg);
@@ -79,13 +79,13 @@ public class ServerUtil {
 	}
 
 	// 向客户端发送文本信息
-	public boolean sendMsg(String ip, String msg) throws IOException {
+	public static boolean sendMsg(String ip, String msg) throws IOException {
 		INonBlockingConnection connection = connectionMap.get(ip);
-		return this.sendMsg(connection, msg);
+		return sendMsg(connection, msg);
 	}
 
 	// 向flex客户端发送云台信息
-	public boolean sendHeadInfo(INonBlockingConnection connection, String headIp)
+	public static boolean sendHeadInfo(INonBlockingConnection connection, String headIp)
 			throws IOException {
 		if (connection != null && connection.isOpen()) {
 			String headInfo = getHeadInfo(headIp);
@@ -100,13 +100,13 @@ public class ServerUtil {
 	}
 
 	// 向flex客户端发送云台信息
-	public boolean sendHeadInfo(String ip, String headIp) throws IOException {
+	public static boolean sendHeadInfo(String ip, String headIp) throws IOException {
 		INonBlockingConnection connection = connectionMap.get(ip);
-		return this.sendHeadInfo(connection, headIp);
+		return sendHeadInfo(connection, headIp);
 	}
 
 	// 将byte[]转换为十六进制字符串
-	public String byteArray2HexString(byte[] b) {
+	public static String byteArray2HexString(byte[] b) {
 		String s = "";
 		if (b != null && b.length > 0) {
 			for (int i : b) {
@@ -127,7 +127,7 @@ public class ServerUtil {
 	}
 
 	// 将十六进制字符串转换为byte[]
-	public byte[] hexString2ByteArray(String s) {
+	public static byte[] hexString2ByteArray(String s) {
 		s = s.replaceAll(" ", "").toUpperCase();
 
 		byte[] b = new byte[s.length() / 2];
