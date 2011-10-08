@@ -19,6 +19,12 @@ import org.xsocket.connection.Server;
 public class HeadServerHandler implements IDataHandler, IConnectHandler,
         IIdleTimeoutHandler, IConnectionTimeoutHandler, IDisconnectHandler {
 
+    private SerialPortCommServer serialPortCommServer;
+
+    public void setSerialPortCommServer(SerialPortCommServer serialPortCommServer) {
+        this.serialPortCommServer = serialPortCommServer;
+    }
+
     /**
      * 即当建立完连接之后可以进行的一些相关操作处理。包括修改连接属性、准备资源、等！ 连接的成功时的操作
      */
@@ -28,18 +34,18 @@ public class HeadServerHandler implements IDataHandler, IConnectHandler,
             MaxReadSizeExceededException {
 
         String ip = connection.getRemoteAddress().getHostAddress();
-        ServerUtil.addConnection(ip, connection);
+        serialPortCommServer.addConnection(ip, connection);
 
         System.out.println("云台控制客户端(" + ip + ":" + connection.getLocalPort()
                 + ")已连接！");
 
         // 发送云台水平角度查询命令
-        // ServerUtil.sendCommand(connection,
+        // serialPortCommServer.sendCommand(connection,
         // "FF 01 00 04 30 00 35");//水平转动
-        //ServerUtil.sendCommand(connection,
+        //serialPortCommServer.sendCommand(connection,
         //  "FF 01 00 00 00 00 01");//停止
         // 发送云台水平角度查询命令
-        ServerUtil.sendCommand(connection, "FF 01 00 51 00 00 52");
+        serialPortCommServer.sendCommand(connection, "FF 01 00 51 00 00 52");
 
         return true;
     }
@@ -52,7 +58,7 @@ public class HeadServerHandler implements IDataHandler, IConnectHandler,
             throws IOException {
         if (connection != null && connection.isOpen()) {
             String ip = connection.getRemoteAddress().getHostAddress();
-            ServerUtil.removeConnection(ip);
+            serialPortCommServer.removeConnection(ip);
             System.out.println("云台控制客户端(" + ip + ":"
                     + connection.getLocalPort() + ")已断开！");
         }
@@ -73,11 +79,11 @@ public class HeadServerHandler implements IDataHandler, IConnectHandler,
             connection.read(buffer);
             byte[] b = buffer.array();
 
-            String s = ServerUtil.byteArray2HexString(b);
+            String s = serialPortCommServer.byteArray2HexString(b);
             //System.out.println(".......................onData+s:" + s);
             if (s.indexOf("FF010059") > -1) {
                 float angle_x = (float) Integer.parseInt(s.substring(8, 12), 16) / 100;
-                ServerUtil.addHeadInfo(ip, angle_x + "");
+                serialPortCommServer.addHeadInfo(ip, angle_x + "");
 
                 //System.out.println(s + "/" + angle_x);
             }
@@ -89,7 +95,7 @@ public class HeadServerHandler implements IDataHandler, IConnectHandler,
             }
 
             // 发送云台水平角度查询命令
-            ServerUtil.sendCommand(connection,
+            serialPortCommServer.sendCommand(connection,
                     "FF 01 00 51 00 00 52");
         }
         return true;

@@ -7,10 +7,11 @@ package ff.xsocket;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.xsocket.connection.IServer;
+import org.xsocket.connection.Server;
 import org.xsocket.connection.INonBlockingConnection;
 
 import java.io.IOException;
-import java.util.Date;
 import org.apache.log4j.Logger;
 
 /**
@@ -18,21 +19,55 @@ import org.apache.log4j.Logger;
  * @author jerry
  * 保持与串口的连接，并发送各种命令
  */
-public class SerialPortCommServer {
+public class SerialPortCommServerBootstratp {
 
-    static Logger logger = Logger.getLogger(SerialPortCommServer.class.getName());
+    static Logger logger = Logger.getLogger(SerialPortCommServerBootstratp.class.getName());
     private static Map<String, INonBlockingConnection> connectionMap = new HashMap<String, INonBlockingConnection>();
     private static Map<String, String> headInfoMap = new HashMap<String, String>();
 
-    public SerialPortCommServer() {
-        System.out.println("SerialPortCommServer已经被初始化。。。。。。。。。。" + new Date() + ",SerialPortCommServer hashCode:" + SerialPortCommServer.class.hashCode() + ",实例HashCode:" + this.hashCode());
+    public SerialPortCommServerBootstratp(int headServerPort, int alertServerPort, int flexServerPort, int flexAuthServerPort, HeadServerHandler headServerHandler, AlertServerHandler alertServerHandler, FlexServerHandler flexServerHandler, FlexAuthServerHandler flexAuthServerHandler) {
+        System.out.println("+++++++++++++++++++++++++++++++++++++ ,AeadServerHandler:" + headServerHandler + ",AlertServerHandler:" + alertServerHandler + ",FlexServerHandler:" + flexServerHandler + ",FlexAuthServerHandler:" + flexAuthServerHandler);
+        System.out.println("+++++++++++++++++++++++++++++++++++++ ,headServerPort:" + headServerPort + ",alertServerPort:" + alertServerPort + ",flexServerPort:" + flexServerPort + ",flexAuthServerPort:" + flexAuthServerPort);
+        IServer serverHead = null;
+        IServer serverAlert = null;
+        IServer serverFlex = null;
+        IServer serverFlexAuth = null;
+
+        try {
+            //启动云台控制服务
+            serverHead = new Server(headServerPort, headServerHandler);
+            serverHead.setConnectionTimeoutMillis(10000);
+            serverHead.setIdleTimeoutMillis(10000);
+            serverHead.start();
+
+            //启动报警检测服务
+            serverAlert = new Server(alertServerPort, alertServerHandler);
+            serverAlert.setConnectionTimeoutMillis(10000);
+            serverAlert.setIdleTimeoutMillis(10000);
+            serverAlert.start();
+
+            //启动flex安全沙箱验证服务
+            serverFlexAuth = new Server(flexAuthServerPort, flexAuthServerHandler);
+            serverFlexAuth.start();
+
+            //启动flex服务
+            serverFlex = new Server(flexServerPort, flexServerHandler);
+            serverFlex.setIdleTimeoutMillis(10000);
+            serverFlex.setConnectionTimeoutMillis(10000);
+            serverFlex.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public SerialPortCommServerBootstratp(HeadServerHandler headServerHandler) {
+        System.out.println("+++++++++++++++++++++++++++++++++++++ , AeadServerHandler:" + headServerHandler);
     }
 
     public void addConnection(String ip, INonBlockingConnection nbc) {
-        System.out.println("++++++++ addConnection.............................................................................................................." + ip);
-        System.out.println("++++++++ connectionMap.isEmpty():" + connectionMap.isEmpty());
-        System.out.println("++++++++ connectionMap hashcode:" + connectionMap.hashCode());
-        System.out.println("++++++++ SerialPortCommServer hashcode:" + SerialPortCommServer.class.hashCode() + ",实例HashCode:" + this.hashCode());
+        System.out.println("addConnection....................................................................." + ip);
+        System.out.println("connectionMap hashcode:" + connectionMap.hashCode());
+        System.out.println("ServerUtil hashcode:" + ServerUtil.class.hashCode());
         connectionMap.put(ip, nbc);
     }
 
@@ -79,10 +114,9 @@ public class SerialPortCommServer {
     // 向客户端发送十六进制指令
     public boolean sendCommand(String ip, String command) throws IOException {
         //检查connectionMap是否为空
-        System.out.println("------------ sendCommand--------------------------");
-        System.out.println("------------ connectionMap.isEmpty():" + connectionMap.isEmpty());
-        System.out.println("------------ connectionMap hashcode:" + connectionMap.hashCode());
-        System.out.println("------------ SerialPortCommServer hashcode:" + SerialPortCommServer.class.hashCode() + ",实例HashCode:" + this.hashCode());
+        System.out.println("connectionMap.isEmpty():" + connectionMap.isEmpty());
+        System.out.println("connectionMap hashcode:" + connectionMap.hashCode());
+        System.out.println("ServerUtil hashcode:" + ServerUtil.class.hashCode());
         INonBlockingConnection connection = connectionMap.get(ip);
         return sendCommand(connection, command);
     }

@@ -8,7 +8,6 @@ package ff.controller;
  *
  * @author jerry
  */
-
 import ff.util.PTZUtil;
 import ff.xsocket.ServerUtil;
 import java.io.IOException;
@@ -19,6 +18,12 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 public class PTZController extends MultiActionController {
+
+    private PTZUtil ptzUtil;
+
+    public void setPtzUtil(PTZUtil ptzUtil) {
+        this.ptzUtil = ptzUtil;
+    }
 
     /**
      *作者：jerry
@@ -36,9 +41,9 @@ public class PTZController extends MultiActionController {
      */
     public void ptzAction(HttpServletRequest request, HttpServletResponse response) {
         logger.info("PTZ index page");
-        
-        PTZUtil.PTZAction(request.getParameter("action_type"));
-        
+
+        ptzUtil.PTZAction(request.getParameter("action_type"));
+
         String info = "success";
         String jsonStr = "{success:true,info:'" + info + "'}";
 
