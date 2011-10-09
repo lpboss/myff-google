@@ -78,9 +78,8 @@ public class SerialPortCommServer {
     // 向客户端发送十六进制指令
     public boolean sendCommand(String ip, String command) throws IOException {
         //检查connectionMap是否为空
-        System.out.println("------------ sendCommand--------------------------");
+        System.out.println("------------ sendCommand--------------------------，" + ip + ",command:" + command + "--------------------------------------------");
         System.out.println("------------ connectionMap.isEmpty():" + connectionMap.isEmpty());
-        System.out.println("------------ connectionMap hashcode:" + connectionMap.hashCode());
         INonBlockingConnection connection = connectionMap.get(ip);
         return sendCommand(connection, command);
     }
