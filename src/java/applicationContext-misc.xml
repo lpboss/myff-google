@@ -8,10 +8,10 @@
     <bean id="serialPortCommServer" scope="singleton" class="ff.xsocket.SerialPortCommServer"/>    
          
      <!--初始化各种Socket服务器的回调实现-->
-    <bean id="headServerHandler" class="ff.xsocket.HeadServerHandler" />
-    <bean id="alertServerHandler" class="ff.xsocket.AlertServerHandler" />    
-    <bean id="flexServerHandler" class="ff.xsocket.FlexServerHandler" />
-    <bean id="flexAuthServerHandler" class="ff.xsocket.FlexAuthServerHandler" />
+    <bean id="headServerHandler" scope="singleton" class="ff.xsocket.HeadServerHandler" />
+    <bean id="alertServerHandler" scope="singleton" class="ff.xsocket.AlertServerHandler" />    
+    <bean id="flexServerHandler" scope="singleton" class="ff.xsocket.FlexServerHandler" />
+    <bean id="flexAuthServerHandler" scope="singleton" class="ff.xsocket.FlexAuthServerHandler" />
     
     <!-- 串口通讯服务器引导程序,经过引导之后，最早被初始化的串口服务器才可以执行串口命令 -->     
     <bean id="serialPortCommServerBootstratp" class="ff.xsocket.SerialPortCommServerBootstratp">
