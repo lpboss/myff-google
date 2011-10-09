@@ -45,7 +45,7 @@ public class HeadServerHandler implements IDataHandler, IConnectHandler,
         //serialPortCommServer.sendCommand(connection,
         //  "FF 01 00 00 00 00 01");//停止
         // 发送云台水平角度查询命令
-        //serialPortCommServer.sendCommand(connection, "FF 01 00 51 00 00 52");
+        serialPortCommServer.sendCommand(connection, "FF 01 00 51 00 00 52");
 
         return true;
     }
@@ -95,7 +95,7 @@ public class HeadServerHandler implements IDataHandler, IConnectHandler,
             }
 
             // 发送云台水平角度查询命令
-            //serialPortCommServer.sendCommand(connection,"FF 01 00 51 00 00 52");
+            serialPortCommServer.sendCommand(connection,"FF 01 00 51 00 00 52");
         }
         return true;
     }
