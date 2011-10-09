@@ -14,20 +14,18 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <script>
+            //当前云台是否转动。
+            var isTurning = false;
+            var turningDirection = "stop";
+            
             Ext.onReady(function() {
-                //当前云台是否转动。
-                var isTurning = false;
                 //按钮
                 var upButton = Ext.create('Ext.Button', {
                     text: '上',
                     iconCls: 'arrow_up',
                     renderTo:'ptz_up',
                     handler: function(){
-                        if (isTurning == false){
-                            ptzAction("up");
-                        }else{
-                            ptzAction("stop");
-                        }
+                        ptzAction("up");
                     }
                 })
                 
@@ -36,11 +34,7 @@
                     iconCls: 'arrow_down',
                     renderTo:'ptz_down',
                     handler: function(){
-                        if (isTurning == false){
-                            ptzAction("down");
-                        }else{
-                            ptzAction("stop");
-                        }
+                        ptzAction("down");
                     }
                 })
                 
@@ -49,11 +43,7 @@
                     iconCls: 'arrow_right',
                     renderTo:'ptz_right',
                     handler: function(){
-                        if (isTurning == false){
-                            ptzAction("right");
-                        }else{
-                            ptzAction("stop");
-                        }
+                        ptzAction("right");
                     }
                 })
                 
@@ -62,25 +52,30 @@
                     iconCls: 'arrow_left',
                     renderTo:'ptz_left',
                     handler: function(){
-                        if (isTurning == false){
-                            ptzAction("left");
-                        }else{
-                            ptzAction("stop");
-                        }
+                        ptzAction("left");
                     }
-                })
-                
+                })                
             });
             
             function ptzAction(ptzActionStr){
+                //如果方向相同，就要停止转动。
+                console.warn("Before:   ptzActionStr:",ptzActionStr,",turningDirection:",turningDirection,",isTurning:"+isTurning);
+                if (ptzActionStr === turningDirection){
+                    isTurning = false;
+                    turningDirection = "stop";
+                    ptzActionStr = "stop";
+                }
+                            
                 Ext.Ajax.request({
-                    url : '<%=basePath%>/ptz/ptzAction.htm',
+                    url : '<%=basePath%>ptz/ptzAction.htm',
                     success : function (result, request) {
+                        turningDirection = ptzActionStr;
                         if(ptzActionStr == "stop"){
                             isTurning = false;
                         }else{
                             isTurning = true;
                         }
+                        console.warn("After :   ptzActionStr:",ptzActionStr,",turningDirection:",turningDirection,",isTurning:"+isTurning);
                     },
                     failure : function (result, request){
                         Ext.MessageBox.show({
@@ -124,7 +119,7 @@
             </tr>
             <tr>                
                 <td>
-                    <object id="map" type="application/x-shockwave-flash" data="map.swf" width="600" height="300">
+                    <object id="map" type="application/x-shockwave-flash" data="<%=basePath%>images/map.swf" width="600" height="300">
                         <param name="movie" value="<%=basePath%>images/map.swf" />
                         <param name="quality" value="high" />
                         <param name="allowScriptAccess" value="sameDomain" />
