@@ -27,7 +27,12 @@ public class PTZUtil {
     public void PTZAction(String ptzAction) {
         logger.info("ptzAction:" + ptzAction);
         try {
+            
             boolean connResult;
+            
+            //先停止再发送新命令。
+            connResult = serialPortCommServer.sendCommand("192.168.254.65", "FF 01 00 00 00 00 01");
+            
             if (ptzAction.equals("up")) {
                 connResult = serialPortCommServer.sendCommand("192.168.254.65", "FF 01 00 08 00 3F 48");
                 logger.info("FF 01 00 08 00 3F 48 UP..........................." + connResult);
