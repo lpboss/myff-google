@@ -51,6 +51,8 @@ public class SerialPortCommServer {
     }
 
     public String getHeadInfo(String ip) {
+        System.out.println("getHeadInfo   +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println(headInfoMap.keySet());
         return headInfoMap.get(ip);
     }
 

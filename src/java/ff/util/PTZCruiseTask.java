@@ -25,7 +25,6 @@ public class PTZCruiseTask {
     
     @Scheduled(fixedDelay = 3000)
     public void testTwoPrint() {
-        
         System.out.println("TestTwo测试打印" + new Date() + ",云台角度：" + serialPortCommServer.getHeadInfo("192.168.254.65"));
     }
 }
