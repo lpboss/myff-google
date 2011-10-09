@@ -34,14 +34,14 @@ public class SerialPortCommServerBootstratp {
         try {
             //启动云台控制服务
             serverHead = new Server(headServerPort, headServerHandler);
-            serverHead.setConnectionTimeoutMillis(10000);
-            serverHead.setIdleTimeoutMillis(10000);
+            //serverHead.setConnectionTimeoutMillis(1000000);
+            //serverHead.setIdleTimeoutMillis(10000);
             serverHead.start();
 
             //启动报警检测服务
             serverAlert = new Server(alertServerPort, alertServerHandler);
-            serverAlert.setConnectionTimeoutMillis(10000);
-            serverAlert.setIdleTimeoutMillis(10000);
+            //serverAlert.setConnectionTimeoutMillis(10000);
+            //serverAlert.setIdleTimeoutMillis(10000);
             serverAlert.start();
 
             //启动flex安全沙箱验证服务
