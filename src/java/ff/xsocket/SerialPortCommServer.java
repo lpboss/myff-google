@@ -31,7 +31,6 @@ public class SerialPortCommServer {
     public void addConnection(String ip, INonBlockingConnection nbc) {
         System.out.println("++++++++ addConnection.............................................................................................................." + ip);
         System.out.println("++++++++ connectionMap.isEmpty():" + connectionMap.isEmpty());
-        System.out.println("++++++++ connectionMap hashcode:" + connectionMap.hashCode());
         connectionMap.put(ip, nbc);
     }
 
@@ -75,7 +74,7 @@ public class SerialPortCommServer {
         return false;
     }
 
-    // 向客户端发送十六进制指令
+    // 向指定的云台，发送十六进制指令
     public boolean sendCommand(String ip, String command) throws IOException {
         //检查connectionMap是否为空
         System.out.println("------------ sendCommand--------------------------，" + ip + ",command:" + command + "--------------------------------------------");

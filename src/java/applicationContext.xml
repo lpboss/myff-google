@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
-       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx" 
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context" xmlns:task="http://www.springframework.org/schema/task" 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/tx 
+       http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd 
+       http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd"
        default-autowire="byName">
 
 
@@ -69,9 +71,13 @@
             <tx:method name="*" />
         </tx:attributes>
     </tx:advice>
-    <!-- 把事务用切面的方式配置于service,impl包下的所有类,即配置哪些类的���法要参与到事务中来 -->
+    <!-- 把事务用切面的方式配置于service,impl包下的所有类,即配置哪些类的����法要参与到事务中来 -->
     <aop:config>
         <aop:pointcut id="allService" expression="execution(* ff.service..*.*(..))" />
         <aop:advisor pointcut-ref="allService" advice-ref="txAdvice" />
     </aop:config>
+    
+    <context:component-scan base-package="ff.util" /><!--需要扫描的包-->
+    <context:annotation-config /><!--开启注解-->
+    <task:annotation-driven/> <!-- 这句是重点 定时器开关-->
 </beans>
