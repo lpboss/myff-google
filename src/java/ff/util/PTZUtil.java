@@ -18,8 +18,7 @@ import java.util.logging.Logger;
 public class PTZUtil {
 
     static Logger logger = Logger.getLogger(PTZUtil.class.getName());
-    
-    private SerialPortCommServer serialPortCommServer ;
+    private SerialPortCommServer serialPortCommServer;
 
     public void setSerialPortCommServer(SerialPortCommServer serialPortCommServer) {
         this.serialPortCommServer = serialPortCommServer;
@@ -27,8 +26,6 @@ public class PTZUtil {
 
     public void PTZAction(String ptzAction) {
         logger.info("ptzAction:" + ptzAction);
-        System.out.println("------------ PTZAction--------------------------");
-        System.out.println("------------ SerialPortCommServer hashcode:" + SerialPortCommServer.class.hashCode() + ",实例HashCode:" + serialPortCommServer.hashCode());
         try {
             boolean connResult;
             if (ptzAction.equals("up")) {

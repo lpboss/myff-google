@@ -25,14 +25,13 @@ public class SerialPortCommServer {
     private static Map<String, String> headInfoMap = new HashMap<String, String>();
 
     public SerialPortCommServer() {
-        System.out.println("SerialPortCommServer已经被初始化。。。。。。。。。。" + new Date() + ",SerialPortCommServer hashCode:" + SerialPortCommServer.class.hashCode() + ",实例HashCode:" + this.hashCode());
+        System.out.println("SerialPortCommServer已经被初始化。。。。。。。。。。" + new Date() + ",SerialPortCommServer hashCode:" + SerialPortCommServer.class.hashCode() + ",实例HashCode:" + this.hashCode() + ",this类名:" + this.getClass().getName());
     }
 
     public void addConnection(String ip, INonBlockingConnection nbc) {
         System.out.println("++++++++ addConnection.............................................................................................................." + ip);
         System.out.println("++++++++ connectionMap.isEmpty():" + connectionMap.isEmpty());
         System.out.println("++++++++ connectionMap hashcode:" + connectionMap.hashCode());
-        System.out.println("++++++++ SerialPortCommServer hashcode:" + SerialPortCommServer.class.hashCode() + ",实例HashCode:" + this.hashCode());
         connectionMap.put(ip, nbc);
     }
 
@@ -82,7 +81,6 @@ public class SerialPortCommServer {
         System.out.println("------------ sendCommand--------------------------");
         System.out.println("------------ connectionMap.isEmpty():" + connectionMap.isEmpty());
         System.out.println("------------ connectionMap hashcode:" + connectionMap.hashCode());
-        System.out.println("------------ SerialPortCommServer hashcode:" + SerialPortCommServer.class.hashCode() + ",实例HashCode:" + this.hashCode());
         INonBlockingConnection connection = connectionMap.get(ip);
         return sendCommand(connection, command);
     }
