@@ -4,11 +4,11 @@
  */
 package ff.util;
 
-import ff.xsocket.SerialPortCommServer;
-import ff.xsocket.ServerUtil;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import ff.xsocket.SerialPortCommServer;
 
 /**
  *
