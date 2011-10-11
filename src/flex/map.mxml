@@ -31,8 +31,9 @@
 			private var socket:Socket=new Socket();//创建Socket对象	
 			private var port:int=8888;//socket服务器端口		
 			private var pointer:Rotate = null;//指针对象			
-			private var angle:Number = 0;//云台指针角度
-			private var angle2:Number = 0;//云台指针角度
+			private var angleX:Number = 0;//云台水平角度
+			private var angleX2:Number = 0;//云台水平角度
+			private var angleY:Number = 0;//云台垂直角度
 			private var centerX:Number;
 			private var centerY:Number;
 			private var pause:Boolean=false;//是否暂停指针旋转
@@ -76,20 +77,22 @@
 					
 				}
 				if(!pause){
-					angle2=Number(msg);
-
-					if (angle != angle2){
-						if(angle<90&&angle2>270){//逆时针旋转，经过零点
-							angle2=angle2-360;
-							rotate(pointer,angle,angle2);
-							angle=angle2+360;
-						}else if(angle>270&&angle2<90){//顺时针旋转，经过零点
-							angle=angle-360;
-							rotate(pointer,angle,angle2);
-							angle=angle2;
+					var arr:Array=new Array();
+                    arr = msg.split(',');
+					angleX2=Number(arr[0].toString());
+					angleY=Number(arr[1].toString());
+					if (angleX != angleX2){
+						if(angleX<90&&angleX2>270){//逆时针旋转，经过零点
+							angleX2=angleX2-360;
+							rotate(pointer,angleX,angleX2);
+							angleX=angleX2+360;
+						}else if(angleX>270&&angleX2<90){//顺时针旋转，经过零点
+							angleX=angleX-360;
+							rotate(pointer,angleX,angleX2);
+							angleX=angleX2;
 						}else{
-							rotate(pointer,angle,angle2);
-							angle=angle2;
+							rotate(pointer,angleX,angleX2);
+							angleX=angleX2;
 						}
 					}
 				}
@@ -153,11 +156,11 @@
 				pointer.originX = Math.round(p.width/2*stage.stageHeight/300);
 				pointer.originY = Math.round(p.height*stage.stageHeight/300-10*stage.stageHeight/300);
 				
-				p.x=centerX+pointer.originY*Math.sin(angle*(Math.PI/180))-pointer.originX*Math.cos(angle*(Math.PI/180));
-				p.y=centerY-pointer.originY*Math.cos(angle*(Math.PI/180))-pointer.originX*Math.sin(angle*(Math.PI/180));
+				p.x=centerX+pointer.originY*Math.sin(angleX*(Math.PI/180))-pointer.originX*Math.cos(angleX*(Math.PI/180));
+				p.y=centerY-pointer.originY*Math.cos(angleX*(Math.PI/180))-pointer.originX*Math.sin(angleX*(Math.PI/180));
 				
 				
-				//status.text =angle+"，"+p.width+"，"+p.height+"，"+p.x+"，"+p.y+"，"+pointer.originX+"，"+pointer.originY;
+				//status.text =angleX+"，"+p.width+"，"+p.height+"，"+p.x+"，"+p.y+"，"+pointer.originX+"，"+pointer.originY;
 				pause=false;//恢复指针旋转		
 			}
 			

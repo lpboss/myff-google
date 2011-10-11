@@ -14,9 +14,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <script>
-        	function setChannel(){
-        		map.setChannel("192.168.254.65","/images/map.png");
-			}
         
             //当前云台是否转动。
             var isTurning = false;
@@ -58,7 +55,15 @@
                     handler: function(){
                         ptzAction("left");
                     }
-                })                
+                })  
+                
+                var leftButton = Ext.create('Ext.Button', {
+                    text: '设置当前监控云台为192.168.254.65',
+                    renderTo:'ptz_setChannel',
+                    handler: function(){
+                    	document.getElementById("map").setChannel("192.168.254.65","/images/map.png");
+                    }
+                })                 
             });
             
             function ptzAction(ptzActionStr){
@@ -123,14 +128,13 @@
             </tr>
             <tr>                
                 <td>
-                    <object id="map" type="application/x-shockwave-flash" data="<%=basePath%>images/map.swf" width="400" height="300">
+                    <object id="map" type="application/x-shockwave-flash" data="<%=basePath%>images/map.swf" width="400" height="400">
                         <param name="movie" value="<%=basePath%>images/map.swf" />
                         <param name="quality" value="high" />
                         <param name="allowScriptAccess" value="sameDomain" />
                         <param name="allowFullScreen" value="true" />
                         <param name="FlashVars" value="port=8004" />
                     </object>
-                    <input type="button" value="选择云台" onclick="setChannel();" />
                 </td>
                 <td>
                     <div id="ptz">
@@ -143,13 +147,18 @@
                             <tr>
                                 <td id="ptz_left"></td>
                                 <td></td>
-                                <td  id="ptz_right"></td>
+                                <td id="ptz_right"></td>
                             </tr>
                             <tr>
                                 <td></td>
-                                <td  id="ptz_down"></td>
+                                <td id="ptz_down"></td>
                                 <td></td>
                             </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td id="ptz_setChannel"></td>
+                            </tr>                            
                         </table>
                     </div>
                 </td>
