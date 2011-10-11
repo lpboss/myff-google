@@ -4,15 +4,9 @@
  */
 package ff.xsocket;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import org.apache.log4j.Logger;
 import org.xsocket.connection.IServer;
 import org.xsocket.connection.Server;
-import org.xsocket.connection.INonBlockingConnection;
-
-import java.io.IOException;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -22,8 +16,6 @@ import org.apache.log4j.Logger;
 public class SerialPortCommServerBootstratp {
 
     static Logger logger = Logger.getLogger(SerialPortCommServerBootstratp.class.getName());
-    private static Map<String, INonBlockingConnection> connectionMap = new HashMap<String, INonBlockingConnection>();
-    private static Map<String, String> headInfoMap = new HashMap<String, String>();
 
     public SerialPortCommServerBootstratp(int headServerPort, int alertServerPort, int flexServerPort, int flexAuthServerPort, HeadServerHandler headServerHandler, AlertServerHandler alertServerHandler, FlexServerHandler flexServerHandler, FlexAuthServerHandler flexAuthServerHandler) {
         IServer serverHead = null;
@@ -34,14 +26,10 @@ public class SerialPortCommServerBootstratp {
         try {
             //启动云台控制服务
             serverHead = new Server(headServerPort, headServerHandler);
-            //serverHead.setConnectionTimeoutMillis(1000000);
-            //serverHead.setIdleTimeoutMillis(10000);
             serverHead.start();
 
             //启动报警检测服务
             serverAlert = new Server(alertServerPort, alertServerHandler);
-            //serverAlert.setConnectionTimeoutMillis(10000);
-            //serverAlert.setIdleTimeoutMillis(10000);
             serverAlert.start();
 
             //启动flex安全沙箱验证服务
@@ -56,9 +44,5 @@ public class SerialPortCommServerBootstratp {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public SerialPortCommServerBootstratp(HeadServerHandler headServerHandler) {
-        System.out.println("+++++++++++++++++++++++++++++++++++++ , AeadServerHandler:" + headServerHandler);
     }
 }

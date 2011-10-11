@@ -4,10 +4,10 @@
  */
 package ff.util;
 
-import ff.xsocket.SerialPortCommServer;
-import java.util.Date;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import ff.xsocket.SerialPortCommServer;
 
 /**
  *
@@ -23,8 +23,13 @@ public class PTZCruiseTask {
         this.serialPortCommServer = serialPortCommServer;
     }
     
-    @Scheduled(fixedDelay = 3000)
+    @Scheduled(fixedDelay = 1000)
     public void testTwoPrint() {
-        System.out.println("TestTwo测试打印" + new Date() + ",云台角度：" + serialPortCommServer.getHeadInfo("192.168.254.65"));
+    	// 发送云台角度查询命令
+        try {
+			serialPortCommServer.sendCommand("192.168.254.65", "FF 01 00 51 00 00 52 FF 01 00 53 00 00 54");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
 }
