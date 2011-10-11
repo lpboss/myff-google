@@ -21,6 +21,15 @@
             
             Ext.onReady(function() {
                 //按钮
+                var cruise = Ext.create('Ext.Button', {
+                    text: '巡航',
+                    //iconCls: 'cruise',
+                    renderTo:'ptz_cruise',
+                    handler: function(){
+                        ptzAction("cruise");
+                    }
+                })
+                
                 var upButton = Ext.create('Ext.Button', {
                     text: '上',
                     iconCls: 'arrow_up',
@@ -146,7 +155,7 @@
                             </tr>
                             <tr>
                                 <td id="ptz_left"></td>
-                                <td></td>
+                                <td id="ptz_cruise"></td>
                                 <td id="ptz_right"></td>
                             </tr>
                             <tr>

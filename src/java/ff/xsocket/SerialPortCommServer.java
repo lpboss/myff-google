@@ -22,7 +22,11 @@ public class SerialPortCommServer {
     private static Map<String, INonBlockingConnection> connectionMap = new HashMap<String, INonBlockingConnection>();
     private static Map<String, String> angleX = new ConcurrentHashMap<String, String>();
     private static Map<String, String> angleY = new ConcurrentHashMap<String, String>();
- 
+    //key为ip,value为true或false，当value为false时，自动巡航方法不再控制巡航
+    private static Map<String, Boolean> allowCruise = new ConcurrentHashMap<String, Boolean>();
+    //key为ip,value为up或down，告知，当前的云台自动巡航是向上还是向下。以方便判断当角度到达359度时，云台是up还是down
+    private static Map<String, String> ptzOrientation = new ConcurrentHashMap<String, String>();
+
     public void addConnection(String ip, INonBlockingConnection nbc) {
         connectionMap.put(ip, nbc);
     }
@@ -40,43 +44,43 @@ public class SerialPortCommServer {
     }
 
     public void setAngleX(String ip, float angle_x) {
-    	angleX.put(ip, angle_x+"");
+        angleX.put(ip, angle_x + "");
     }
 
     public float getAngleX(String ip) {
-    	if(angleX.get(ip)!=null){
-    		return Float.parseFloat(angleX.get(ip));
-    	}else{
-    		return 0;
-    	}
+        if (angleX.get(ip) != null) {
+            return Float.parseFloat(angleX.get(ip));
+        } else {
+            return 0;
+        }
     }
 
     public void removeAngleX(String ip) {
-    	angleX.remove(ip);
+        angleX.remove(ip);
     }
 
     public void removeAngleXAll() {
-    	angleX.clear();
+        angleX.clear();
     }
-    
+
     public void setAngleY(String ip, float angle_y) {
-    	angleY.put(ip, angle_y+"");
+        angleY.put(ip, angle_y + "");
     }
 
     public float getAngleY(String ip) {
-    	if(angleY.get(ip)!=null){
-    		return Float.parseFloat(angleY.get(ip));
-    	}else{
-    		return 0;
-    	}
+        if (angleY.get(ip) != null) {
+            return Float.parseFloat(angleY.get(ip));
+        } else {
+            return 0;
+        }
     }
 
     public void removeAngleY(String ip) {
-    	angleY.remove(ip);
+        angleY.remove(ip);
     }
 
     public void removeAngleYAll() {
-    	angleY.clear();
+        angleY.clear();
     }
 
     // 向客户端发送十六进制指令
@@ -118,8 +122,8 @@ public class SerialPortCommServer {
     public boolean sendHeadInfo(INonBlockingConnection connection, String headIp)
             throws IOException {
         if (connection != null && connection.isOpen()) {
-            String headInfo = getAngleX(headIp)+","+getAngleY(headIp);
-            System.out.println("向flex客户端发送信息("+headIp+"):"+headInfo);
+            String headInfo = getAngleX(headIp) + "," + getAngleY(headIp);
+            System.out.println("向flex客户端发送信息(" + headIp + "):" + headInfo);
             if (headInfo != null) {
                 connection.write(headInfo);
                 connection.flush();
@@ -167,4 +171,14 @@ public class SerialPortCommServer {
         }
         return b;
     }
+
+    public Map<String, Boolean> getAllowCruise() {
+        return allowCruise;
+    }
+
+    public Map<String, String> getPtzOrientation() {
+        return ptzOrientation;
+    }
+    
+    
 }
