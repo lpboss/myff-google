@@ -1,7 +1,6 @@
 package ff.xsocket;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
@@ -13,8 +12,6 @@ import org.xsocket.connection.IDataHandler;
 import org.xsocket.connection.IDisconnectHandler;
 import org.xsocket.connection.IIdleTimeoutHandler;
 import org.xsocket.connection.INonBlockingConnection;
-import org.xsocket.connection.IServer;
-import org.xsocket.connection.Server;
 
 public class HeadServerHandler implements IDataHandler, IConnectHandler,
         IIdleTimeoutHandler, IConnectionTimeoutHandler, IDisconnectHandler {
@@ -38,14 +35,6 @@ public class HeadServerHandler implements IDataHandler, IConnectHandler,
 
         System.out.println("云台控制客户端(" + ip + ":" + connection.getLocalPort()
                 + ")已连接！");
-
-        // 发送云台水平角度查询命令
-        // serialPortCommServer.sendCommand(connection,
-        // "FF 01 00 04 30 00 35");//水平转动
-        //serialPortCommServer.sendCommand(connection,
-        //  "FF 01 00 00 00 00 01");//停止
-        // 发送云台水平角度查询命令
-        serialPortCommServer.sendCommand(connection, "FF 01 00 51 00 00 52");
 
         return true;
     }
@@ -78,24 +67,25 @@ public class HeadServerHandler implements IDataHandler, IConnectHandler,
             ByteBuffer buffer = ByteBuffer.allocate(7);
             connection.read(buffer);
             byte[] b = buffer.array();
-
             String s = serialPortCommServer.byteArray2HexString(b);
-            //System.out.println(".......................onData+s:" + s);
             if (s.indexOf("FF010059") > -1) {
-                float angle_x = (float) Integer.parseInt(s.substring(8, 12), 16) / 100;
-                serialPortCommServer.addHeadInfo(ip, angle_x + "");
+                float angle_x = (float) Integer.parseInt(s.substring(s.indexOf("FF010059")+8, s.indexOf("FF010059")+12), 16) / 100;
+                serialPortCommServer.setAngleX(ip, angle_x);
 
-                //System.out.println(s + "/" + angle_x);
+                System.out.println("云台水平角度：" + serialPortCommServer.getAngleX(ip));
             }
+            if (s.indexOf("FF01005B") > -1) {
+            	float angle_y =0f;
+            	int y= Integer.parseInt(s.substring(s.indexOf("FF01005B")+8, s.indexOf("FF01005B")+12), 16);
+            	if(y<18000){
+            		angle_y= 0-(float) y / 100;
+            	}else if(y>18000){
+            		angle_y= (float) (36000-y) / 100;
+            	}
+                serialPortCommServer.setAngleY(ip, angle_y );
 
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                System.out.println("云台垂直角度："+ serialPortCommServer.getAngleY(ip));
             }
-
-            // 发送云台水平角度查询命令
-            serialPortCommServer.sendCommand(connection,"FF 01 00 51 00 00 52");
         }
         return true;
     }
@@ -130,23 +120,4 @@ public class HeadServerHandler implements IDataHandler, IConnectHandler,
         return false;
     }
 
-    public static void main(String[] args) throws Exception {
-        IServer srv = null;
-        try {
-            IServer server_head = null;
-            //启动云台控制服务
-            server_head = new Server(8002, new HeadServerHandler());
-            server_head.setConnectionTimeoutMillis(10000);
-            server_head.setIdleTimeoutMillis(10000);
-            server_head.start();
-
-//            InetAddress address = InetAddress.getByName("192.168.254.175");
-//            srv = new Server(8002, new HeadServerHandler());
-//            // srv.setConnectionTimeoutMillis(10000);
-//            srv.start();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

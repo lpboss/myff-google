@@ -14,6 +14,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <script>
+        	function setChannel(){
+        		map.setChannel("192.168.254.65","/images/map.png");
+			}
+        
             //当前云台是否转动。
             var isTurning = false;
             var turningDirection = "stop";
@@ -97,35 +101,36 @@
         <table>
             <tr>
                 <td>
-                    <OBJECT classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="600" height="450" id="vlc" events="True">
+                    <OBJECT classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="400" height="300" id="vlc" events="True">
                         <param name="Src" value="rtsp://admin:12345@192.168.254.64/h264/ch1/main/av_stream" />
                         <param name="ShowDisplay" value="True" />
                         <param name="AutoLoop" value="False" />
                         <param name="AutoPlay" value="true" />
-                        <embed id="vlcEmb"  type="application/x-google-vlc-plugin" version="VideoLAN.VLCPlugin.2" autoplay="yes" loop="no" width="600" height="450" target="rtsp://admin:12345@192.168.254.64/h264/ch1/main/av_stream" ></embed>
+                        <embed id="vlcEmb"  type="application/x-google-vlc-plugin" version="VideoLAN.VLCPlugin.2" autoplay="yes" loop="no" width="400" height="300" target="rtsp://admin:12345@192.168.254.64/h264/ch1/main/av_stream" ></embed>
                     </OBJECT>
                 </td>
                 <td>
                     <div id="visible_light_camera">
-                        <OBJECT classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="800" height="450" id="vlc" events="True">
+                        <OBJECT classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="400" height="300" id="vlc" events="True">
                             <param name="Src" value="rtsp://admin:12345@192.168.254.64/h264/ch2/main/av_stream" />
                             <param name="ShowDisplay" value="True" />
                             <param name="AutoLoop" value="False" />
                             <param name="AutoPlay" value="true" />
-                            <embed id="vlcEmb"  type="application/x-google-vlc-plugin" version="VideoLAN.VLCPlugin.2" autoplay="yes" loop="no" width="800" height="450" target="rtsp://admin:12345@192.168.254.64/h264/ch2/main/av_stream" ></embed>
+                            <embed id="vlcEmb"  type="application/x-google-vlc-plugin" version="VideoLAN.VLCPlugin.2" autoplay="yes" loop="no" width="400" height="300" target="rtsp://admin:12345@192.168.254.64/h264/ch2/main/av_stream" ></embed>
                         </OBJECT>
                     </div>
                 </td>
             </tr>
             <tr>                
                 <td>
-                    <object id="map" type="application/x-shockwave-flash" data="<%=basePath%>images/map.swf" width="600" height="300">
+                    <object id="map" type="application/x-shockwave-flash" data="<%=basePath%>images/map.swf" width="400" height="300">
                         <param name="movie" value="<%=basePath%>images/map.swf" />
                         <param name="quality" value="high" />
                         <param name="allowScriptAccess" value="sameDomain" />
                         <param name="allowFullScreen" value="true" />
                         <param name="FlashVars" value="port=8004" />
                     </object>
+                    <input type="button" value="选择云台" onclick="setChannel();" />
                 </td>
                 <td>
                     <div id="ptz">

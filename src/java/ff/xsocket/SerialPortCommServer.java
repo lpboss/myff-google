@@ -4,14 +4,12 @@
  */
 package ff.xsocket;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.xsocket.connection.INonBlockingConnection;
-
 import java.io.IOException;
-import java.util.Date;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.apache.log4j.Logger;
+import org.xsocket.connection.INonBlockingConnection;
 
 /**
  *
@@ -22,15 +20,10 @@ public class SerialPortCommServer {
 
     static Logger logger = Logger.getLogger(SerialPortCommServer.class.getName());
     private static Map<String, INonBlockingConnection> connectionMap = new HashMap<String, INonBlockingConnection>();
-    private static Map<String, String> headInfoMap = new HashMap<String, String>();
-
-    public SerialPortCommServer() {
-        System.out.println("SerialPortCommServer已经被初始化。。。。。。。。。。" + new Date() + ",SerialPortCommServer hashCode:" + SerialPortCommServer.class.hashCode() + ",实例HashCode:" + this.hashCode() + ",this类名:" + this.getClass().getName());
-    }
-
+    private static Map<String, String> angleX = new ConcurrentHashMap<String, String>();
+    private static Map<String, String> angleY = new ConcurrentHashMap<String, String>();
+ 
     public void addConnection(String ip, INonBlockingConnection nbc) {
-        System.out.println("++++++++ addConnection.............................................................................................................." + ip);
-        System.out.println("++++++++ connectionMap.isEmpty():" + connectionMap.isEmpty());
         connectionMap.put(ip, nbc);
     }
 
@@ -46,22 +39,44 @@ public class SerialPortCommServer {
         connectionMap.clear();
     }
 
-    public void addHeadInfo(String ip, String headInfo) {
-        headInfoMap.put(ip, headInfo);
+    public void setAngleX(String ip, float angle_x) {
+    	angleX.put(ip, angle_x+"");
     }
 
-    public String getHeadInfo(String ip) {
-        System.out.println("getHeadInfo   +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        System.out.println(headInfoMap.keySet());
-        return headInfoMap.get(ip);
+    public float getAngleX(String ip) {
+    	if(angleX.get(ip)!=null){
+    		return Float.parseFloat(angleX.get(ip));
+    	}else{
+    		return 0;
+    	}
     }
 
-    public void removeHeadInfo(String ip) {
-        headInfoMap.remove(ip);
+    public void removeAngleX(String ip) {
+    	angleX.remove(ip);
     }
 
-    public void removeHeadInfoAll() {
-        headInfoMap.clear();
+    public void removeAngleXAll() {
+    	angleX.clear();
+    }
+    
+    public void setAngleY(String ip, float angle_y) {
+    	angleY.put(ip, angle_y+"");
+    }
+
+    public float getAngleY(String ip) {
+    	if(angleY.get(ip)!=null){
+    		return Float.parseFloat(angleY.get(ip));
+    	}else{
+    		return 0;
+    	}
+    }
+
+    public void removeAngleY(String ip) {
+    	angleY.remove(ip);
+    }
+
+    public void removeAngleYAll() {
+    	angleY.clear();
     }
 
     // 向客户端发送十六进制指令
@@ -78,9 +93,6 @@ public class SerialPortCommServer {
 
     // 向指定的云台，发送十六进制指令
     public boolean sendCommand(String ip, String command) throws IOException {
-        //检查connectionMap是否为空
-        System.out.println("------------ sendCommand--------------------------，" + ip + ",command:" + command + "--------------------------------------------");
-        System.out.println("------------ connectionMap.isEmpty():" + connectionMap.isEmpty());
         INonBlockingConnection connection = connectionMap.get(ip);
         return sendCommand(connection, command);
     }
@@ -106,8 +118,8 @@ public class SerialPortCommServer {
     public boolean sendHeadInfo(INonBlockingConnection connection, String headIp)
             throws IOException {
         if (connection != null && connection.isOpen()) {
-            String headInfo = getHeadInfo(headIp);
-
+            String headInfo = getAngleX(headIp)+","+getAngleY(headIp);
+            System.out.println("向flex客户端发送信息("+headIp+"):"+headInfo);
             if (headInfo != null) {
                 connection.write(headInfo);
                 connection.flush();
