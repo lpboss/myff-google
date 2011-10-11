@@ -72,7 +72,7 @@ public class AlertServerHandler implements IDataHandler, IConnectHandler,
         System.out.println(s);
         if (s.indexOf("FF010059") > -1) {
             float angle_x = (float) Integer.parseInt(s.substring(8, 12), 16) / 100;
-            serialPortCommServer.addHeadInfo(ip, angle_x + "");
+            serialPortCommServer.setAngleX(ip, angle_x);
 
             System.out.println(angle_x);
         }
