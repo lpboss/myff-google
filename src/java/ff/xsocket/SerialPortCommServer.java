@@ -125,7 +125,7 @@ public class SerialPortCommServer {
             throws IOException {
         if (connection != null && connection.isOpen()) {
             String headInfo = getAngleX(headIp) + "," + getAngleY(headIp);
-            System.out.println("向flex客户端发送信息(" + headIp + "):" + headInfo);
+            //System.out.println("向flex客户端发送信息(" + headIp + "):" + headInfo);
             if (headInfo != null) {
                 connection.write(headInfo);
                 connection.flush();

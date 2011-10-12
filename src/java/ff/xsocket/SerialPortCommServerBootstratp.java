@@ -38,8 +38,8 @@ public class SerialPortCommServerBootstratp {
 
             //启动flex服务
             serverFlex = new Server(flexServerPort, flexServerHandler);
-            serverFlex.setIdleTimeoutMillis(10000);
-            serverFlex.setConnectionTimeoutMillis(10000);
+            serverFlex.setIdleTimeoutMillis(60000);
+            serverFlex.setConnectionTimeoutMillis(3600000);
             serverFlex.start();
         } catch (Exception e) {
             e.printStackTrace();
