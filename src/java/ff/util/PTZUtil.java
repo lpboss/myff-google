@@ -25,7 +25,7 @@ public class PTZUtil {
     }
 
     public void PTZAction(String ptzAction) {
-        logger.info("ptzAction:" + ptzAction);
+        logger.info("ptzAction:" + ptzAction + "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
 
         boolean connResult;
 
@@ -57,6 +57,8 @@ public class PTZUtil {
             serialPortCommServer.getAllowCruise().put("192.168.254.65", Boolean.TRUE);
         }
 
-        serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 51 00 00 52 FF 01 00 53 00 00 54");
+        //存放二条，取云台角度的信息。
+        //serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 51 00 00 52");
+        //serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 53 00 00 54");
     }
 }
