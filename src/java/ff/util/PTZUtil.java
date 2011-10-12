@@ -56,9 +56,5 @@ public class PTZUtil {
         } else if (ptzAction.equals("cruise")) {
             serialPortCommServer.getAllowCruise().put("192.168.254.65", Boolean.TRUE);
         }
-
-        //存放二条，取云台角度的信息。
-        //serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 51 00 00 52");
-        //serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 53 00 00 54");
     }
 }

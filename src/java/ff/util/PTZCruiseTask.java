@@ -89,8 +89,6 @@ public class PTZCruiseTask {
             serialPortCommServer.getAllowCruise().put("192.168.254.65", Boolean.TRUE);
             //在此，说明云台从来没有进行巡航，同时，启动巡航。向右，顺时针。
             serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 02 10 00 42");
-            //发命令，读云台角度
-            //serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 51 00 00 52 FF 01 00 53 00 00 54");
 
         } else {
             //如果云台巡航有相关标志参数。则判断参数的值。
@@ -100,9 +98,6 @@ public class PTZCruiseTask {
 
                 //TODO:如何判断云台当前是否正在转动？因无法判断，当前每次发送转动命令。
                 serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 02 10 00 13");
-                //发命令，读云台角度
-                //serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 51 00 00 52");
-                //serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 53 00 00 54");
             }
         }
         //判断当前云台是否有旋转方向的标记，如果没有则默认设置向下。
