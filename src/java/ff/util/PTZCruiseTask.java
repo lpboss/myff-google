@@ -11,6 +11,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import ff.xsocket.SerialPortCommServer;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
 
 /**
  *
@@ -42,6 +47,27 @@ public class PTZCruiseTask {
 
     /**
      *作者：jerry
+     *描述：发送云台角度查询命令，命令的结果会在HeadServerHandler的回调方法onData中进行分析，然后放入serialPortCommServer的angleX，angleY二个类变量中。
+     */
+    @Scheduled(fixedDelay = 50)
+    public void sendPTZCommand() {
+        // 发送云台角度查询命令
+        try {
+            Map<String, LinkedList> commandMap = serialPortCommServer.getCommandMap();
+            Iterator<String> ips = commandMap.keySet().iterator();
+            while (ips.hasNext()) {
+                String ip = ips.next();
+                LinkedList<String> commandQueue = commandMap.get(ip);
+                serialPortCommServer.sendCommand(ip, commandQueue.getFirst());
+                commandQueue.removeFirst();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     *作者：jerry
      *描述：让所有的云台，按既有模式旋转，比如削苹果皮模式。
      */
     @Scheduled(fixedDelay = 200)
@@ -53,30 +79,22 @@ public class PTZCruiseTask {
         if (serialPortCommServer.getAllowCruise().get("192.168.254.65") == null) {
             System.out.println("serialPortCommServer.getAllowCruise() == null :----------------------------------------------------------------------");
             serialPortCommServer.getAllowCruise().put("192.168.254.65", Boolean.TRUE);
-            try {
-                //在此，说明云台从来没有进行巡航，同时，启动巡航。向右，顺时针。
-                serialPortCommServer.sendCommand("192.168.254.65", "FF 01 00 02 10 00 42");
-                //发命令，读云台角度
-                serialPortCommServer.sendCommand("192.168.254.65", "FF 01 00 51 00 00 52 FF 01 00 53 00 00 54");
-            } catch (IOException ex) {
-                Logger.getLogger(PTZCruiseTask.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            //在此，说明云台从来没有进行巡航，同时，启动巡航。向右，顺时针。
+            serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 02 10 00 42");
+            //发命令，读云台角度
+            serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 51 00 00 52 FF 01 00 53 00 00 54");
+
         } else {
             //如果云台巡航有相关标志参数。则判断参数的值。
-            System.out.println("serialPortCommServer.getAllowCruise() == Boolean.TRUE :" + serialPortCommServer.getAllowCruise().get("192.168.254.65"));
+            System.out.println("serialPortCommServer.getAllowCruise() == " + serialPortCommServer.getAllowCruise().get("192.168.254.65") + ",Time+" + new Date());
             System.out.println("serialPortCommServer.angleX:" + serialPortCommServer.getAngleX("192.168.254.65") + ", angleY :" + serialPortCommServer.getAngleY("192.168.254.65"));
             if (serialPortCommServer.getAllowCruise().get("192.168.254.65") == Boolean.TRUE) {
-                try {
-                    //TODO:如何判断云台当前是否正在转动？因无法判断，当前每次发送转动命令。
-                    //serialPortCommServer.sendCommand("192.168.254.65", "FF 01 00 02 10 00 13");
-                    //serialPortCommServer.sendCommand("192.168.254.65", "FF 01 00 02 10 00 13");
-                    //serialPortCommServer.sendCommand("192.168.254.65", "FF 01 00 02 05 00 08");
-                    serialPortCommServer.sendCommand("192.168.254.65", "FF 01 00 02 10 00 13");
-                    //发命令，读云台角度
-                    serialPortCommServer.sendCommand("192.168.254.65", "FF 01 00 51 00 00 52 FF 01 00 53 00 00 54");
-                } catch (IOException ex) {
-                    Logger.getLogger(PTZCruiseTask.class.getName()).log(Level.SEVERE, null, ex);
-                }
+
+                //TODO:如何判断云台当前是否正在转动？因无法判断，当前每次发送转动命令。
+                serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 02 10 00 13");
+                //发命令，读云台角度
+                serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 51 00 00 52 FF 01 00 53 00 00 54");
+
             }
         }
         //判断当前云台是否有旋转方向的标记，如果没有则默认设置向下。

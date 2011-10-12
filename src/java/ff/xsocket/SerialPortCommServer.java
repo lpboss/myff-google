@@ -26,6 +26,8 @@ public class SerialPortCommServer {
     private static Map<String, Boolean> allowCruise = new ConcurrentHashMap<String, Boolean>();
     //key为ip,value为up或down，告知，当前的云台自动巡航是向上还是向下。以方便判断当角度到达359度时，云台是up还是down
     private static Map<String, String> ptzOrientation = new ConcurrentHashMap<String, String>();
+    //所有云台命令,以IP为Key，以Queue为Value。
+    private static Map<String, LinkedList> commandMap = new ConcurrentHashMap<String, LinkedList>();
 
     public void addConnection(String ip, INonBlockingConnection nbc) {
         connectionMap.put(ip, nbc);
@@ -178,6 +180,24 @@ public class SerialPortCommServer {
 
     public Map<String, String> getPtzOrientation() {
         return ptzOrientation;
+    }
+
+    /**
+     *
+     * @author jerry
+     * 向命令队列中追加命令。
+     */
+    public synchronized void pushCommand(String ip, String ptzCommand) {
+        LinkedList<String> commandQueue = commandMap.get(ip);
+        if (commandQueue == null) {
+            commandQueue = new LinkedList<String>();
+        }
+        commandQueue.addLast(ptzCommand);
+        commandMap.put(ip, commandQueue);
+    }
+
+    public Map<String, LinkedList> getCommandMap() {
+        return commandMap;
     }
     
     
