@@ -55,7 +55,7 @@ public class PTZCruiseTask {
             serialPortCommServer.getAllowCruise().put("192.168.254.65", Boolean.TRUE);
             try {
                 //在此，说明云台从来没有进行巡航，同时，启动巡航。向右，顺时针。
-                serialPortCommServer.sendCommand("192.168.254.65", "FF 01 00 02 3F 00 42");
+                serialPortCommServer.sendCommand("192.168.254.65", "FF 01 00 02 10 00 42");
                 //发命令，读云台角度
                 serialPortCommServer.sendCommand("192.168.254.65", "FF 01 00 51 00 00 52 FF 01 00 53 00 00 54");
             } catch (IOException ex) {
@@ -68,7 +68,10 @@ public class PTZCruiseTask {
             if (serialPortCommServer.getAllowCruise().get("192.168.254.65") == Boolean.TRUE) {
                 try {
                     //TODO:如何判断云台当前是否正在转动？因无法判断，当前每次发送转动命令。
-                    serialPortCommServer.sendCommand("192.168.254.65", "FF 01 00 02 3F 00 42");
+                    //serialPortCommServer.sendCommand("192.168.254.65", "FF 01 00 02 10 00 13");
+                    //serialPortCommServer.sendCommand("192.168.254.65", "FF 01 00 02 10 00 13");
+                    //serialPortCommServer.sendCommand("192.168.254.65", "FF 01 00 02 05 00 08");
+                    serialPortCommServer.sendCommand("192.168.254.65", "FF 01 00 02 10 00 13");
                     //发命令，读云台角度
                     serialPortCommServer.sendCommand("192.168.254.65", "FF 01 00 51 00 00 52 FF 01 00 53 00 00 54");
                 } catch (IOException ex) {
