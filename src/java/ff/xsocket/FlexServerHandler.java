@@ -61,7 +61,6 @@ public class FlexServerHandler implements IDataHandler, IConnectHandler,
         String data = connection.readStringByDelimiter("\n");
         if (data != null && data.indexOf("<headIp>") > -1
                 && data.indexOf("</headIp>") > -1) {
-System.out.println(data);
             String headIp = data.substring(8, data.indexOf("</headIp>"));
             serialPortCommServer.sendHeadInfo(connection, headIp);
 
@@ -70,7 +69,7 @@ System.out.println(data);
                 serialPortCommServer.sendHeadInfo(connection, headIp);
 
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

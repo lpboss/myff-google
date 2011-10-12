@@ -73,8 +73,7 @@ public class HeadServerHandler implements IDataHandler, IConnectHandler,
                 serialPortCommServer.setAngleX(ip, angle_x);
 
                 System.out.println("云台水平角度：" + serialPortCommServer.getAngleX(ip));
-            }
-            if (s.indexOf("FF01005B") > -1) {
+            }else if (s.indexOf("FF01005B") > -1) {
             	float angle_y =0f;
             	int y= Integer.parseInt(s.substring(s.indexOf("FF01005B")+8, s.indexOf("FF01005B")+12), 16);
             	if(y<18000){
