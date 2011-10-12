@@ -13,6 +13,7 @@ import ff.service.SysControllerService;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -102,5 +103,18 @@ public class TestController extends MultiActionController {
         logger.info("test page ++++++++++++++++++++++++++++++++++++++++++++++++++++");
         ModelAndView mav = new ModelAndView();
         return mav;
+    }
+
+    public void testQueue(HttpServletRequest request, HttpServletResponse response) {
+        LinkedList<String> commandQueue = new LinkedList<String>();
+        commandQueue.addLast("1");
+        commandQueue.addLast("2");
+        commandQueue.addLast("3");
+        commandQueue.addLast("4");
+        commandQueue.addLast("5");
+        System.out.println("commandQueue.getFirst():000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+        System.out.println("commandQueue.getFirst():" + commandQueue.getFirst());
+        commandQueue.removeFirst();
+        System.out.println("commandQueue.getFirst():" + commandQueue.getFirst());
     }
 }
