@@ -46,7 +46,7 @@ public class PTZUtil {
                 connResult = serialPortCommServer.sendCommand("192.168.254.65", "FF 01 00 02 3F 00 42");
                 logger.info("FF 01 00 02 3F 00 42 RIGHT........................" + connResult);
             } else if (ptzAction.equals("left")) {
-                connResult = serialPortCommServer.sendCommand("192.168.254.65", "FF 01 00 04 30 00 35");
+                connResult = serialPortCommServer.sendCommand("192.168.254.65", "FF 01 00 04 3F 00 35");
                 logger.info("FF 01 00 04 30 00 35 LEFT........................." + connResult);
             } else if (ptzAction.equals("stop")) {
                 connResult = serialPortCommServer.sendCommand("192.168.254.65", "FF 01 00 00 00 00 01");
