@@ -55,6 +55,7 @@ public class PTZUtil {
             //logger.info("FF 01 00 00 00 00 01 STOP........................." + connResult);
         } else if (ptzAction.equals("cruise")) {
             serialPortCommServer.getAllowCruise().put("192.168.254.65", Boolean.TRUE);
+            serialPortCommServer.getIsCruising().put("192.168.254.65", Boolean.FALSE);
         }
     }
 
@@ -66,7 +67,7 @@ public class PTZUtil {
      *       第6位会由方法计算并自动追加上。即返回的命令会是一个完整的，可执行的命令字符串。同时传送的double参数以16进制表示。
      */
     public static String getPELCODCommandHexString(int address, int command1, int command2, int param1, int param2, String type) {
-        StringBuffer command = new StringBuffer();
+        StringBuilder command = new StringBuilder();
         command.append("FF ");
         //处理地址
         if (Integer.toHexString(address).length() == 1) {
@@ -97,7 +98,7 @@ public class PTZUtil {
         //处理参数1
 
         if (type.equals("angle")) {
-            int param3 = param1 * 100 + param2;
+            int param3 = 36000 - param1 * 100 + param2;
             String param3Hex = Integer.toHexString(param3);
             if (param3Hex.length() == 1) {
                 command.append("00 0");
@@ -139,7 +140,6 @@ public class PTZUtil {
         int checkSum = 0;
         if (type.equals("angle")) {
             String curruentCommand = command.toString().toUpperCase();
-            System.out.println("curruentCommand:" + curruentCommand);
             checkSum = address + command1 + command2 + Integer.valueOf(curruentCommand.substring(12, 14), 16) + Integer.valueOf(curruentCommand.substring(15, 17), 16);
         } else {
             checkSum = address + command2 + param1 + param2;
@@ -155,6 +155,7 @@ public class PTZUtil {
             checkSumStr = checkSumStr.substring(checkSumStr.length() - 2, checkSumStr.length());
             command.append(checkSumStr);
         }
+        System.out.println("command:" + command.toString().toUpperCase() + "222222222222222222222222222222222222222222222222222222," + param1 + ":" + param1);
         return command.toString().toUpperCase();
     }
 }

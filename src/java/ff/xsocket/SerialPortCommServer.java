@@ -24,6 +24,8 @@ public class SerialPortCommServer {
     private static Map<String, String> angleY = new ConcurrentHashMap<String, String>();
     //key为ip,value为true或false，当value为false时，自动巡航方法不再控制巡航
     private static Map<String, Boolean> allowCruise = new ConcurrentHashMap<String, Boolean>();
+    //key为ip,value为true或false，当value为false时，当前正在巡航的云台。
+    private static Map<String, Boolean> isCruising = new ConcurrentHashMap<String, Boolean>();
     //key为ip,value为up或down，告知，当前的云台自动巡航是向上还是向下。以方便判断当角度到达359度时，云台是up还是down
     private static Map<String, String> ptzOrientation = new ConcurrentHashMap<String, String>();
     //所有云台命令,以IP为Key，以Queue为Value。
@@ -199,6 +201,11 @@ public class SerialPortCommServer {
     public Map<String, LinkedList> getCommandMap() {
         return commandMap;
     }
+
+    public Map<String, Boolean> getIsCruising() {
+        return isCruising;
+    }
+    
     
     
     
