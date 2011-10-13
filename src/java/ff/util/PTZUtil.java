@@ -25,7 +25,7 @@ public class PTZUtil {
     }
 
     public void PTZAction(String ptzAction) {
-        logger.info("ptzAction:" + ptzAction + "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+        logger.info("ptzAction:" + ptzAction + ",   0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
 
         boolean connResult;
 
@@ -155,7 +155,7 @@ public class PTZUtil {
             checkSumStr = checkSumStr.substring(checkSumStr.length() - 2, checkSumStr.length());
             command.append(checkSumStr);
         }
-        System.out.println("command:" + command.toString().toUpperCase() + "222222222222222222222222222222222222222222222222222222," + param1 + ":" + param1);
+        System.out.println("command:" + command.toString().toUpperCase() + " ,222222222222222222222222222222222222222222222222222222," + param1 + ":" + param1);
         return command.toString().toUpperCase();
     }
 }

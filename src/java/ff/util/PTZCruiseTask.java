@@ -82,8 +82,8 @@ public class PTZCruiseTask {
             if (serialPortCommServer.getAngleX("192.168.254.65") > 359.00 && serialPortCommServer.getAngleX("192.168.254.65") < 359.99) {
                 String currentAngelY = String.valueOf(serialPortCommServer.getAngleY("192.168.254.65"));
                 //上扬10度
-                int angleY1 = Integer.parseInt(currentAngelY.split(".")[0]) + 10;
-                int angleY2 = Integer.parseInt(currentAngelY.split(".")[1]);
+                int angleY1 = Integer.parseInt(currentAngelY.split("\\.")[0]) + 10;
+                int angleY2 = Integer.parseInt(currentAngelY.split("\\.")[1]);
                 if (angleY1 > 90) {
                     angleY1 = 90;
                     angleY1 = 0;
@@ -111,8 +111,8 @@ public class PTZCruiseTask {
                     System.out.println("Y角度切换中。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
                     String currentAngelY = String.valueOf(serialPortCommServer.getAngleY("192.168.254.65"));
                     //上扬10度
-                    int angleY1 = Integer.parseInt(currentAngelY.split(".")[0]) + 10;
-                    int angleY2 = Integer.parseInt(currentAngelY.split(".")[1]);
+                    int angleY1 = Integer.parseInt(currentAngelY.split("\\.")[0]) + 10;
+                    int angleY2 = Integer.parseInt(currentAngelY.split("\\.")[1]);
                     if (angleY1 > 90) {
                         angleY1 = 90;
                         angleY1 = 0;
@@ -120,12 +120,9 @@ public class PTZCruiseTask {
                         angleY1 = 0;
                         angleY1 = 0;
                     }
+                    serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 00 00 00 01");
                     serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, angleY1, angleY2, "angle"));
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(PTZCruiseTask.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+
                     //继续巡航。
                     //serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 20, 0, "right"));
                 }
