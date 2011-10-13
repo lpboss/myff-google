@@ -96,7 +96,7 @@ public class PTZUtil {
         //这里要判断参数，对于角度的处理是二个度数相加再求的总的16进制，再拆分为二个参数。314.12即31412，得7AB4，再拆分。
         //处理参数1
 
-        if (type == "angle") {
+        if (type.equals("angle")) {
             int param3 = param1 * 100 + param2;
             String param3Hex = Integer.toHexString(param3);
             if (param3Hex.length() == 1) {
@@ -137,14 +137,14 @@ public class PTZUtil {
 
         //处理check sum
         int checkSum = 0;
-        if (type == "angle") {
+        if (type.equals("angle")) {
             String curruentCommand = command.toString().toUpperCase();
-            checkSum = command1 + command2 + Integer.valueOf(curruentCommand.substring(12, 14), 16) + Integer.valueOf(curruentCommand.substring(15, 17), 16);
+            System.out.println("curruentCommand:" + curruentCommand);
+            checkSum = address + command1 + command2 + Integer.valueOf(curruentCommand.substring(12, 14), 16) + Integer.valueOf(curruentCommand.substring(15, 17), 16);
         } else {
-            checkSum = command1 + command2 + param1 + param2;
+            checkSum = address + command2 + param1 + param2;
         }
         String checkSumStr = Integer.toHexString(checkSum);
-        System.out.println("checkSumStr:" + checkSumStr);
         if (checkSumStr.length() == 1) {
             command.append("0");
             command.append(checkSumStr);
@@ -152,8 +152,7 @@ public class PTZUtil {
             command.append(checkSumStr);
         } else {
             //处理大于2的情况。截取后二位。
-            System.out.println("checkSumStr:" + checkSumStr);
-            checkSumStr = checkSumStr.substring(checkSumStr.length() - 3, checkSumStr.length());
+            checkSumStr = checkSumStr.substring(checkSumStr.length() - 2, checkSumStr.length());
             command.append(checkSumStr);
         }
         return command.toString().toUpperCase();

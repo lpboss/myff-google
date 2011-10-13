@@ -26,24 +26,24 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
  * @author jerry
  */
 public class TestController extends MultiActionController {
-    
+
     private SysControllerDao sysControllerDao;
     private SysActionDao sysActionDao;
     private SysControllerService sysControllerService;
     private SysActionService sysActionService;
-    
+
     public void setSysActionDao(SysActionDao sysActionDao) {
         this.sysActionDao = sysActionDao;
     }
-    
+
     public void setSysControllerDao(SysControllerDao sysControllerDao) {
         this.sysControllerDao = sysControllerDao;
     }
-    
+
     public void setSysActionService(SysActionService sysActionService) {
         this.sysActionService = sysActionService;
     }
-    
+
     public void setSysControllerService(SysControllerService sysControllerService) {
         this.sysControllerService = sysControllerService;
     }
@@ -72,7 +72,7 @@ public class TestController extends MultiActionController {
                     sysController.setName(key);
                     sysControllerService.saveOrUpdate(sysController);
                 }
-                
+
                 Method[] methods = cls.getMethods();//得到某类的所有Public方法,getDeclaredMethods() 
                 for (Method method : methods) {
                     logger.info(method.getName() + "  " + method.getReturnType().getName() + " " + method.getModifiers());
@@ -99,13 +99,13 @@ public class TestController extends MultiActionController {
         ModelAndView mav = new ModelAndView();
         return mav;
     }
-    
+
     public ModelAndView test(HttpServletRequest request, HttpServletResponse response) {
         logger.info("test page ++++++++++++++++++++++++++++++++++++++++++++++++++++");
         ModelAndView mav = new ModelAndView();
         return mav;
     }
-    
+
     public void testQueue(HttpServletRequest request, HttpServletResponse response) {
         LinkedList<String> commandQueue = new LinkedList<String>();
         commandQueue.addLast("1");
@@ -117,7 +117,7 @@ public class TestController extends MultiActionController {
         System.out.println("commandQueue.getFirst():" + commandQueue.getFirst());
         commandQueue.removeFirst();
         System.out.println("commandQueue.getFirst():" + commandQueue.getFirst());
-        
+
         Integer command = 32;
         System.out.println("hex command:" + Integer.toHexString(command).toUpperCase());
         System.out.println("dec command:" + command);
@@ -133,5 +133,11 @@ public class TestController extends MultiActionController {
 
         System.out.println("PTZ Buffer String :" + PTZUtil.getPELCODCommandHexString(1, 0, 0x59, 45, 88, "angle"));
         //System.out.println("PTZ Buffer String :" + "1234".substring(0, 2));
+        String test = "FF 01 00 4D 18 F3 59";
+        System.out.println(test.substring(12, 14));
+        System.out.println(Integer.valueOf(test.substring(12, 14), 16));
+        
+        System.out.println(test.substring(15, 17));
+        System.out.println(Integer.valueOf(test.substring(15, 17), 16));
     }
 }
