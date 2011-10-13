@@ -57,4 +57,105 @@ public class PTZUtil {
             serialPortCommServer.getAllowCruise().put("192.168.254.65", Boolean.TRUE);
         }
     }
+
+    /**
+     *
+     * @author jerry
+     * 根据命令，参数，得到整个命令的16位值的，字符串。
+     * 注意：FF会被自动作为前缀，所以请不要在command中再传送FF，即不传从0位，1-3位，作为command传送，4，5作为params传送，
+     *       第6位会由方法计算并自动追加上。即返回的命令会是一个完整的，可执行的命令字符串。同时传送的double参数以16进制表示。
+     */
+    public static String getPELCODCommandHexString(int address, int command1, int command2, int param1, int param2, String type) {
+        StringBuffer command = new StringBuffer();
+        command.append("FF ");
+        //处理地址
+        if (Integer.toHexString(address).length() == 1) {
+            command.append("0");
+            command.append(Integer.toHexString(address));
+        } else {
+            command.append(Integer.toHexString(address));
+        }
+        command.append(" ");
+        //处理命令1
+        if (Integer.toHexString(command1).length() == 1) {
+            command.append("0");
+            command.append(Integer.toHexString(command1));
+        } else {
+            command.append(Integer.toHexString(command1));
+        }
+        command.append(" ");
+        //处理命令2
+        if (Integer.toHexString(command2).length() == 1) {
+            command.append("0");
+            command.append(Integer.toHexString(command2));
+        } else {
+            command.append(Integer.toHexString(command2));
+        }
+        command.append(" ");
+
+        //这里要判断参数，对于角度的处理是二个度数相加再求的总的16进制，再拆分为二个参数。314.12即31412，得7AB4，再拆分。
+        //处理参数1
+
+        if (type == "angle") {
+            int param3 = param1 * 100 + param2;
+            String param3Hex = Integer.toHexString(param3);
+            if (param3Hex.length() == 1) {
+                command.append("00 0");
+                command.append(param3Hex);
+            } else if (param3Hex.length() == 2) {
+                command.append("00 ");
+                command.append(param3Hex);
+            } else if (param3Hex.length() == 3) {
+                command.append("0");
+                command.append(param3Hex.substring(0, 1));
+                command.append(" ");
+                command.append(param3Hex.substring(2, 4));
+            } else if (param3Hex.length() == 4) {
+                command.append(param3Hex.substring(0, 2));
+                command.append(" ");
+                command.append(param3Hex.substring(2, 4));
+            }
+            command.append(" ");
+        } else {
+            //其它情况如何处理，暂不明确，先放着。
+            if (Integer.toHexString(param1).length() == 1) {
+                command.append("0");
+                command.append(Integer.toHexString(param1));
+            } else {
+                command.append(Integer.toHexString(param1));
+            }
+            command.append(" ");
+            //处理参数2
+            if (Integer.toHexString(param2).length() == 1) {
+                command.append("0");
+                command.append(Integer.toHexString(param2));
+            } else {
+                command.append(Integer.toHexString(param2));
+            }
+            command.append(" ");
+        }
+
+        //处理check sum
+        int checkSum = 0;
+        if (type == "angle") {
+            String curruentCommand = command.toString().toUpperCase();
+            checkSum = command1 + command2 + Integer.valueOf(curruentCommand.substring(12, 14), 16) + Integer.valueOf(curruentCommand.substring(15, 17), 16);
+        } else {
+            checkSum = command1 + command2 + param1 + param2;
+        }
+        String checkSumStr = Integer.toHexString(checkSum);
+        System.out.println("checkSumStr:" + checkSumStr);
+        if (checkSumStr.length() == 1) {
+            command.append("0");
+            command.append(checkSumStr);
+        } else if (checkSumStr.length() == 2) {
+            command.append(checkSumStr);
+        } else {
+            //处理大于2的情况。截取后二位。
+            System.out.println("checkSumStr:" + checkSumStr);
+            checkSumStr = checkSumStr.substring(checkSumStr.length() - 3, checkSumStr.length());
+            command.append(checkSumStr);
+        }
+        return command.toString().toUpperCase();
+    }
 }

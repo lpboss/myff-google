@@ -36,21 +36,7 @@ public class PTZCruiseTask {
      *作者：jerry
      *描述：发送云台角度查询命令，命令的结果会在HeadServerHandler的回调方法onData中进行分析，然后放入serialPortCommServer的angleX，angleY二个类变量中。
      */
-    @Scheduled(fixedDelay = 300)
-    public void getPTZAngle() {
-        // 发送云台角度查询命令
-        try {
-            //serialPortCommServer.sendCommand("192.168.254.65", "FF 01 00 51 00 00 52 FF 01 00 53 00 00 54");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     *作者：jerry
-     *描述：发送云台角度查询命令，命令的结果会在HeadServerHandler的回调方法onData中进行分析，然后放入serialPortCommServer的angleX，angleY二个类变量中。
-     */
-    @Scheduled(fixedDelay = 400)
+    @Scheduled(fixedDelay = 200)
     public void sendPTZCommand() {
         // 发送云台角度查询命令
         try {
@@ -87,9 +73,26 @@ public class PTZCruiseTask {
         if (serialPortCommServer.getAllowCruise().get("192.168.254.65") == null) {
             System.out.println("serialPortCommServer.getAllowCruise() == null :----------------------------------------------------------------------");
             serialPortCommServer.getAllowCruise().put("192.168.254.65", Boolean.TRUE);
-            //在此，说明云台从来没有进行巡航，同时，启动巡航。向右，顺时针。
-            serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 02 10 00 42");
+            //在此，说明云台从来没有进行巡航，同时，启动巡航。向右，顺时针。指定转到360度处停止。
+            //serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 02 10 00 42");
+            serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 59 8C 9F 85");
+            //判断，如果角度为359.99度，则垂直变化角度。
+            if (serialPortCommServer.getAngleY("192.168.254.65") == 359.99f) {
+                //拼接垂直转动命令。
+                String ptzVerticalAngelLocationCommand = "FF 01 00 5B";
+                //整个命令的16位 组成
+                float commandHex = 0x5c;
 
+                float currentY = serialPortCommServer.getAngleY("192.168.254.65");
+                //根据命令，参数，来拼接整个的命令字串。
+                if (currentY == 90f) {
+                    commandHex = 90f;
+                }
+                String ptzOrientation = serialPortCommServer.getPtzOrientation().get("192.168.254.65");
+                if (ptzOrientation == "up") {
+                } else {
+                }
+            }
         } else {
             //如果云台巡航有相关标志参数。则判断参数的值。
             //System.out.println("serialPortCommServer.getAllowCruise() == " + serialPortCommServer.getAllowCruise().get("192.168.254.65") + ",Time+" + new Date());

@@ -69,21 +69,21 @@ public class HeadServerHandler implements IDataHandler, IConnectHandler,
             byte[] b = buffer.array();
             String s = serialPortCommServer.byteArray2HexString(b);
             if (s.indexOf("FF010059") > -1) {
-                float angle_x = (float) Integer.parseInt(s.substring(s.indexOf("FF010059")+8, s.indexOf("FF010059")+12), 16) / 100;
+                float angle_x = (float) Integer.parseInt(s.substring(s.indexOf("FF010059") + 8, s.indexOf("FF010059") + 12), 16) / 100;
                 serialPortCommServer.setAngleX(ip, angle_x);
 
-                System.out.println("云台水平角度：" + serialPortCommServer.getAngleX(ip));
-            }else if (s.indexOf("FF01005B") > -1) {
-            	float angle_y =0f;
-            	int y= Integer.parseInt(s.substring(s.indexOf("FF01005B")+8, s.indexOf("FF01005B")+12), 16);
-            	if(y<18000){
-            		angle_y= 0-(float) y / 100;
-            	}else if(y>18000){
-            		angle_y= (float) (36000-y) / 100;
-            	}
-                serialPortCommServer.setAngleY(ip, angle_y );
+                //System.out.println("云台水平角度：" + serialPortCommServer.getAngleX(ip));
+            } else if (s.indexOf("FF01005B") > -1) {
+                float angle_y = 0f;
+                int y = Integer.parseInt(s.substring(s.indexOf("FF01005B") + 8, s.indexOf("FF01005B") + 12), 16);
+                if (y < 18000) {
+                    angle_y = 0 - (float) y / 100;
+                } else if (y > 18000) {
+                    angle_y = (float) (36000 - y) / 100;
+                }
+                serialPortCommServer.setAngleY(ip, angle_y);
 
-                System.out.println("云台垂直角度："+ serialPortCommServer.getAngleY(ip));
+                //System.out.println("云台垂直角度：" + serialPortCommServer.getAngleY(ip));
             }
         }
         return true;
@@ -118,5 +118,4 @@ public class HeadServerHandler implements IDataHandler, IConnectHandler,
 
         return false;
     }
-
 }
