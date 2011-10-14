@@ -91,17 +91,26 @@ public class PTZCruiseTask {
                         serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 10, 0, "right"));
                     }
                 }
+                //添加一个补丁块，以修正削苹果皮时角度通过0度时，不巡航的问题。
+                if (serialPortCommServer.getAngleX("192.168.254.65") >= 0.0 && serialPortCommServer.getAngleX("192.168.254.65") < 1.0) {
+                    String currentAngleY = String.valueOf(serialPortCommServer.getAngleY("192.168.254.65"));
+                    if (serialPortCommServer.getIsCruisingPresetAngleY().get("192.168.254.65") == Integer.parseInt(currentAngleY.split("\\.")[0])) {
+                        //继续巡航。
+                        serialPortCommServer.getIsCruisingPresetAngleY().remove("192.168.254.65");
+                        serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 10, 0, "right"));
+                    }
+                }
                 //判断，如果角度为359.99度，则垂直变化角度。
                 if (serialPortCommServer.getAngleX("192.168.254.65") > 359.90 && serialPortCommServer.getAngleX("192.168.254.65") < 359.99) {
                     System.out.println("Y角度切换中。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
-                    
+
                     //这里要判断一下，读取系统预置设置的Y角度，如果达到角度要求则执行水平转动命令。并清空数据库。否则继续等待Y角度的调整。
                     System.out.println("serialPortCommServer.getIsCruisingPresetAngleY().get(192.168.254.65):" + serialPortCommServer.getIsCruisingPresetAngleY().get("192.168.254.65"));
                     if (serialPortCommServer.getIsCruisingPresetAngleY().get("192.168.254.65") == null) {
-                        String currentAngelY = String.valueOf(serialPortCommServer.getAngleY("192.168.254.65"));
+                        String currentAngleY = String.valueOf(serialPortCommServer.getAngleY("192.168.254.65"));
                         //上扬10度
-                        int angleY1 = Integer.parseInt(currentAngelY.split("\\.")[0]) + 10;
-                        int angleY2 = Integer.parseInt(currentAngelY.split("\\.")[1]);
+                        int angleY1 = Integer.parseInt(currentAngleY.split("\\.")[0]) + 10;
+                        int angleY2 = Integer.parseInt(currentAngleY.split("\\.")[1]);
                         if (angleY1 > 90) {
                             angleY1 = 90;
                             angleY1 = 0;
@@ -120,11 +129,11 @@ public class PTZCruiseTask {
                         }
                         serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 00 00 00 01");
 
-                        serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, angleY1, angleY2, "ANGEL_Y"));
+                        serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, angleY1, angleY2, "ANGLE_Y"));
                     } else {
                         //判断角度是否达到预置的高度了。
-                        String currentAngelY = String.valueOf(serialPortCommServer.getAngleY("192.168.254.65"));
-                        if (serialPortCommServer.getIsCruisingPresetAngleY().get("192.168.254.65") == Integer.parseInt(currentAngelY.split("\\.")[0])) {
+                        String currentAngleY = String.valueOf(serialPortCommServer.getAngleY("192.168.254.65"));
+                        if (serialPortCommServer.getIsCruisingPresetAngleY().get("192.168.254.65") == Integer.parseInt(currentAngleY.split("\\.")[0])) {
                             //继续巡航。
                             serialPortCommServer.getIsCruisingPresetAngleY().remove("192.168.254.65");
                             serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 10, 0, "right"));
