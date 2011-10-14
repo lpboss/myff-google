@@ -134,8 +134,8 @@ public class PTZCruiseTask {
                         //判断角度是否达到预置的高度了。
                         String currentAngleY = String.valueOf(serialPortCommServer.getAngleY("192.168.254.65"));
                         if (serialPortCommServer.getIsCruisingPresetAngleY().get("192.168.254.65") == Integer.parseInt(currentAngleY.split("\\.")[0])) {
-                            //继续巡航。
-                            serialPortCommServer.getIsCruisingPresetAngleY().remove("192.168.254.65");
+                            //继续巡航。下面屏蔽了一行，因为来不及转动，所以总是角度在360以内。
+                            //serialPortCommServer.getIsCruisingPresetAngleY().remove("192.168.254.65");
                             serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 10, 0, "right"));
                         } else {
                             System.out.println("继续等待云台Y角度调整。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
