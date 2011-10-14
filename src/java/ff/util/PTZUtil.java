@@ -56,6 +56,7 @@ public class PTZUtil {
         } else if (ptzAction.equals("cruise")) {
             serialPortCommServer.getAllowCruise().put("192.168.254.65", Boolean.TRUE);
             serialPortCommServer.getIsCruising().put("192.168.254.65", Boolean.FALSE);
+            serialPortCommServer.getIsCruisingPresetAngleY().remove("192.168.254.65");
         }
     }
 

@@ -77,25 +77,24 @@ public class PTZCruiseTask {
             //在此，说明云台从来没有进行巡航，同时，启动巡航。向右，顺时针。指定转到360度处停止。
             //serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 02 10 00 42");
             //以10为步长，右转
-            serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right"));
+            serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 10, 0, "right"));
         } else {
             //如果云台巡航有相关标志参数。则判断参数的值。保证巡航期间，右转命令只发送一次。
             if (serialPortCommServer.getAllowCruise().get("192.168.254.65") == Boolean.TRUE) {
                 //以20为步长，右转.判断，如果有当前正在旋转巡航，则不发送
                 if (serialPortCommServer.getIsCruising().get("192.168.254.65") == null) {
                     serialPortCommServer.getIsCruising().put("192.168.254.65", Boolean.TRUE);
-                    serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right"));
+                    serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 10, 0, "right"));
                 } else {
                     if (serialPortCommServer.getIsCruising().get("192.168.254.65") == Boolean.FALSE) {
                         serialPortCommServer.getIsCruising().put("192.168.254.65", Boolean.TRUE);
-                        serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right"));
+                        serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 10, 0, "right"));
                     }
                 }
                 //判断，如果角度为359.99度，则垂直变化角度。
-                if (serialPortCommServer.getAngleX("192.168.254.65") > 359.00 && serialPortCommServer.getAngleX("192.168.254.65") < 359.99) {
+                if (serialPortCommServer.getAngleX("192.168.254.65") > 359.90 && serialPortCommServer.getAngleX("192.168.254.65") < 359.99) {
                     System.out.println("Y角度切换中。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
-                    //这时首先用水平角度命令，反它转到359.99度。
-                    serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x4B, 399, 99, "ANGEL_X"));
+                    
                     //这里要判断一下，读取系统预置设置的Y角度，如果达到角度要求则执行水平转动命令。并清空数据库。否则继续等待Y角度的调整。
                     System.out.println("serialPortCommServer.getIsCruisingPresetAngleY().get(192.168.254.65):" + serialPortCommServer.getIsCruisingPresetAngleY().get("192.168.254.65"));
                     if (serialPortCommServer.getIsCruisingPresetAngleY().get("192.168.254.65") == null) {
@@ -128,7 +127,7 @@ public class PTZCruiseTask {
                         if (serialPortCommServer.getIsCruisingPresetAngleY().get("192.168.254.65") == Integer.parseInt(currentAngelY.split("\\.")[0])) {
                             //继续巡航。
                             serialPortCommServer.getIsCruisingPresetAngleY().remove("192.168.254.65");
-                            serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right"));
+                            serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 10, 0, "right"));
                         } else {
                             System.out.println("继续等待云台Y角度调整。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
                         }
