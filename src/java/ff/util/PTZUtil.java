@@ -97,8 +97,15 @@ public class PTZUtil {
         //这里要判断参数，对于角度的处理是二个度数相加再求的总的16进制，再拆分为二个参数。314.12即31412，得7AB4，再拆分。
         //处理参数1
 
-        if (type.equals("angle")) {
-            int param3 = 36000 - param1 * 100 + param2;
+        if (type.equals("ANGLE_X") || type.equals("ANGLE_Y")) {
+            int param3 = 0;
+            if (type.equals("ANGLE_X")) {
+                param3 = param1 * 100 + param2;
+            } else {
+                param3 = 36000 - param1 * 100 + param2;
+            }
+
+
             String param3Hex = Integer.toHexString(param3);
             if (param3Hex.length() == 1) {
                 command.append("00 0");
@@ -138,7 +145,7 @@ public class PTZUtil {
 
         //处理check sum
         int checkSum = 0;
-        if (type.equals("angle")) {
+        if (type.equals("ANGLE_X") || type.equals("ANGLE_Y")) {
             String curruentCommand = command.toString().toUpperCase();
             checkSum = address + command1 + command2 + Integer.valueOf(curruentCommand.substring(12, 14), 16) + Integer.valueOf(curruentCommand.substring(15, 17), 16);
         } else {
