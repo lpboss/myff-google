@@ -92,7 +92,7 @@ public class PTZCruiseTask {
                     }
                 }
                 //添加一个补丁块，以修正削苹果皮时角度通过0度时，不巡航的问题。
-                if (serialPortCommServer.getAngleX("192.168.254.65") >= 0.0 && serialPortCommServer.getAngleX("192.168.254.65") < 1.0) {
+                if (serialPortCommServer.getAngleX("192.168.254.65") >= 0.0 && serialPortCommServer.getAngleX("192.168.254.65") < 2.0) {
                     String currentAngleY = String.valueOf(serialPortCommServer.getAngleY("192.168.254.65"));
                     if (serialPortCommServer.getIsCruisingPresetAngleY().get("192.168.254.65") == Integer.parseInt(currentAngleY.split("\\.")[0])) {
                         //继续巡航。
@@ -101,7 +101,7 @@ public class PTZCruiseTask {
                     }
                 }
                 //判断，如果角度为359.99度，则垂直变化角度。
-                if (serialPortCommServer.getAngleX("192.168.254.65") > 359.90 && serialPortCommServer.getAngleX("192.168.254.65") < 359.99) {
+                if (serialPortCommServer.getAngleX("192.168.254.65") > 359.80 && serialPortCommServer.getAngleX("192.168.254.65") < 359.99) {
                     System.out.println("Y角度切换中。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
 
                     //这里要判断一下，读取系统预置设置的Y角度，如果达到角度要求则执行水平转动命令。并清空数据库。否则继续等待Y角度的调整。
