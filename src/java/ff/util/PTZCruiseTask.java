@@ -70,7 +70,12 @@ public class PTZCruiseTask {
         //判断所有的云台，如果没有key添加值并巡航，如果有值，则依次判断巡航方向，比如是向上还是向下。如果角度在359度时，则上跳或下跳X度。
         //如果ptzOrientation中无值，默认向下转动云台。
         //暂时，只是为只有一个平台，即IP为：192.168.254.65
-        System.out.println("Angle (192.168.254.65) X:" + serialPortCommServer.getAngleX("192.168.254.65") + ",Y:" + serialPortCommServer.getAngleY("192.168.254.65") + "------------------");
+        Calendar calendar = Calendar.getInstance();
+        long milliseconds = calendar.getTimeInMillis();
+        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss SSS");
+        Date date = new Date(milliseconds);
+        System.out.println("Angle (192.168.254.65) X:" + serialPortCommServer.getAngleX("192.168.254.65") + ",Y:" + serialPortCommServer.getAngleY("192.168.254.65") + "------------------,Date:" + timeFormat.format(date));
+
         if (serialPortCommServer.getAllowCruise().get("192.168.254.65") == null) {
             System.out.println("serialPortCommServer.getAllowCruise() == null :----------------------------------------------------------------------");
             serialPortCommServer.getAllowCruise().put("192.168.254.65", Boolean.TRUE);
@@ -94,7 +99,7 @@ public class PTZCruiseTask {
                 //添加一个补丁块，以修正削苹果皮时角度通过0度时，不巡航的问题。
                 if (serialPortCommServer.getAngleX("192.168.254.65") >= 0.0 && serialPortCommServer.getAngleX("192.168.254.65") < 2.0) {
                     String currentAngleY = String.valueOf(serialPortCommServer.getAngleY("192.168.254.65"));
-                    if (serialPortCommServer.getIsCruisingPresetAngleY().get("192.168.254.65") == Integer.parseInt(currentAngleY.split("\\.")[0])) {
+                    if (serialPortCommServer.getIsCruisingPresetAngleY().get("192.168.254.65") != null && serialPortCommServer.getIsCruisingPresetAngleY().get("192.168.254.65") == Integer.parseInt(currentAngleY.split("\\.")[0])) {
                         //继续巡航。
                         serialPortCommServer.getIsCruisingPresetAngleY().remove("192.168.254.65");
                         serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 10, 0, "right"));
