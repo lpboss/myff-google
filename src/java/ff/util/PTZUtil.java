@@ -43,7 +43,7 @@ public class PTZUtil {
             //logger.info("FF 01 00 08 00 3F 48 UP..........................." + connResult);
         } else if (ptzAction.equals("down")) {
             serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 10 00 3F 50");
-            //logger.info("FF 01 00 10 00 3F 50 DOWN........................." + connResult);
+            //logger.info("FF 01 00 10 00 3F 50 DOWN........................." + connResult);FF 01 00 14 2F 2F 73
         } else if (ptzAction.equals("right")) {
             serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 02 3F 00 42");
             //logger.info("FF 01 00 02 3F 00 42 RIGHT........................" + connResult);
@@ -60,6 +60,10 @@ public class PTZUtil {
         }
     }
 
+//左上		FF	1	0	C	2F	0	3C
+//左下		FF	1	0	14	2F	2F	73
+//右上		FF	1	0	A	2F	2F	69
+//右下		FF	1	0	12	2F	0	42
     /**
      *
      * @author jerry
