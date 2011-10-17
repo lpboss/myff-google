@@ -104,9 +104,19 @@ public class PTZCruiseTask {
                         serialPortCommServer.getIsCruisingPresetAngleY().remove("192.168.254.65");
                         serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 10, 0, "right"));
                     }
+                } else {
+                    //有可能在设置上升以后，角度并不骨超过360度。这时要继续右转。
+                    //有这个值，说明还在上升的过程中。或者说已经上升了，但当时云台没有超过0度，所以这个值一直没有去掉。补丁的作法就是继续转动，以让云台超过0度。
+                    if (serialPortCommServer.getIsCruisingPresetAngleY().get("192.168.254.65") != null) {
+                        //判断，如果当前的角度，已经符合上杨角度，则执行下面的命令。
+                        String currentAngleY = String.valueOf(serialPortCommServer.getAngleY("192.168.254.65"));
+                        if (serialPortCommServer.getIsCruisingPresetAngleY().get("192.168.254.65") == Integer.parseInt(currentAngleY.split("\\.")[0])) {
+                            serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 10, 0, "right"));
+                        }
+                    }
                 }
                 //判断，如果角度为359.99度，则垂直变化角度。
-                if (serialPortCommServer.getAngleX("192.168.254.65") > 359.80 && serialPortCommServer.getAngleX("192.168.254.65") < 359.99) {
+                if (serialPortCommServer.getAngleX("192.168.254.65") > 359.90 && serialPortCommServer.getAngleX("192.168.254.65") < 359.99) {
                     System.out.println("Y角度切换中。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
 
                     //这里要判断一下，读取系统预置设置的Y角度，如果达到角度要求则执行水平转动命令。并清空数据库。否则继续等待Y角度的调整。
