@@ -15,6 +15,12 @@ import org.xsocket.connection.INonBlockingConnection;
 import org.xsocket.connection.IServer;
 import org.xsocket.connection.Server;
 
+/**
+ * 红外摄像头报警信息回传及参数设置服务器
+ *   
+ * @author   Jiangshilin
+ * @Date     2011-10-17
+ */
 public class AlertServerHandler implements IDataHandler, IConnectHandler,
         IIdleTimeoutHandler, IConnectionTimeoutHandler, IDisconnectHandler {
     private SerialPortCommServer serialPortCommServer;

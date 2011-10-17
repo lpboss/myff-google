@@ -9,9 +9,10 @@ import org.xsocket.connection.IServer;
 import org.xsocket.connection.Server;
 
 /**
- *
- * @author jerry
- * 保持与串口的连接，并发送各种命令
+ * 管理各xsocket服务器，以Spring Bean的方式随容器启动而启动，
+ *   
+ * @author   Jiangshilin
+ * @Date     2011-10-17
  */
 public class SerialPortCommServerBootstratp {
 

@@ -12,6 +12,12 @@ import org.xsocket.connection.IDisconnectHandler;
 import org.xsocket.connection.IIdleTimeoutHandler;
 import org.xsocket.connection.INonBlockingConnection;
 
+/**
+ * 云台角度及其它信息显示Flex客户端数据回传服务器
+ *   
+ * @author   Jiangshilin
+ * @Date     2011-10-17
+ */
 public class FlexServerHandler implements IDataHandler, IConnectHandler,
         IIdleTimeoutHandler, IConnectionTimeoutHandler, IDisconnectHandler {
 
@@ -29,6 +35,7 @@ public class FlexServerHandler implements IDataHandler, IConnectHandler,
             throws IOException, BufferUnderflowException,
             MaxReadSizeExceededException {
 
+    	//客户端ip
         String ip = connection.getRemoteAddress().getHostAddress();
 
         System.out.println("Flex客户端(" + ip + ":" + connection.getLocalPort()
@@ -58,16 +65,19 @@ public class FlexServerHandler implements IDataHandler, IConnectHandler,
     public boolean onData(INonBlockingConnection connection)
             throws IOException, BufferUnderflowException,
             ClosedChannelException, MaxReadSizeExceededException {
+    	//接收客户端发送的信息。客户端发送<headIp>xxx.xxx.xxx.xxx</headIp>，以切换查询的云台ip
         String data = connection.readStringByDelimiter("\n");
         if (data != null && data.indexOf("<headIp>") > -1
                 && data.indexOf("</headIp>") > -1) {
             String headIp = data.substring(8, data.indexOf("</headIp>"));
+            
+            //根据云台ip，发送相关云台信息
             serialPortCommServer.sendHeadInfo(connection, headIp);
 
             while (connection != null && connection.isOpen()) {
-
                 serialPortCommServer.sendHeadInfo(connection, headIp);
 
+                //以0.1秒为间隔，循环发送
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
