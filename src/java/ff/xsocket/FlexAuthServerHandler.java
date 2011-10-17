@@ -12,6 +12,12 @@ import org.xsocket.connection.IDisconnectHandler;
 import org.xsocket.connection.IIdleTimeoutHandler;
 import org.xsocket.connection.INonBlockingConnection;
 
+/**
+ * 云台角度及其它信息显示Flex客户端安全沙箱验证服务器
+ *   
+ * @author   Jiangshilin
+ * @Date     2011-10-17
+ */
 public class FlexAuthServerHandler implements IDataHandler, IConnectHandler,
         IIdleTimeoutHandler, IConnectionTimeoutHandler, IDisconnectHandler {
 

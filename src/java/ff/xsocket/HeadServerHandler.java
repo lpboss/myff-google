@@ -13,6 +13,12 @@ import org.xsocket.connection.IDisconnectHandler;
 import org.xsocket.connection.IIdleTimeoutHandler;
 import org.xsocket.connection.INonBlockingConnection;
 
+/**
+ * 云台控制及角度回传服务器
+ *   
+ * @author   Jiangshilin
+ * @Date     2011-10-17
+ */
 public class HeadServerHandler implements IDataHandler, IConnectHandler,
         IIdleTimeoutHandler, IConnectionTimeoutHandler, IDisconnectHandler {
 
@@ -63,17 +69,19 @@ public class HeadServerHandler implements IDataHandler, IConnectHandler,
             ClosedChannelException, MaxReadSizeExceededException {
         if (connection != null && connection.isOpen()) {
             String ip = connection.getRemoteAddress().getHostAddress();
-
+            
+            //接收从云台发送的角度信息
             ByteBuffer buffer = ByteBuffer.allocate(7);
             connection.read(buffer);
             byte[] b = buffer.array();
             String s = serialPortCommServer.byteArray2HexString(b);
-            if (s.indexOf("FF010059") > -1) {
+            
+            if (s.indexOf("FF010059") > -1) {//水平角度信息回传
                 float angle_x = (float) Integer.parseInt(s.substring(s.indexOf("FF010059") + 8, s.indexOf("FF010059") + 12), 16) / 100;
                 serialPortCommServer.setAngleX(ip, angle_x);
 
                 //System.out.println("云台水平角度：" + serialPortCommServer.getAngleX(ip));
-            } else if (s.indexOf("FF01005B") > -1) {
+            } else if (s.indexOf("FF01005B") > -1) {//垂直角度信息回传
                 float angle_y = 0f;
                 int y = Integer.parseInt(s.substring(s.indexOf("FF01005B") + 8, s.indexOf("FF01005B") + 12), 16);
                 if (y < 18000) {
