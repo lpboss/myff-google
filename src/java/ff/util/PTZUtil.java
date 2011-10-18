@@ -42,19 +42,19 @@ public class PTZUtil {
             serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 08 00 3F 48");
             //logger.info("FF 01 00 08 00 3F 48 UP..........................." + connResult);
         } else if (ptzAction.equals("up_left")) {
-            serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 0C 2F 00 3C");
+            serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 0C 3F 3F 8B");
             //logger.info("FF 01 00 10 00 3F 50 DOWN........................." + connResult);FF 01 00 14 2F 2F 73
         }else if (ptzAction.equals("up_right")) {
-            serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 0A 2F 2F 69");
+            serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 0A 3F 3F 89");
             //logger.info("FF 01 00 10 00 3F 50 DOWN........................." + connResult);FF 01 00 14 2F 2F 73
         }else if (ptzAction.equals("down")) {
             serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 10 00 3F 50");
             //logger.info("FF 01 00 10 00 3F 50 DOWN........................." + connResult);FF 01 00 14 2F 2F 73
         }else if (ptzAction.equals("down_left")) {
-            serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 14 2F 2F 73");
+            serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 14 3F 3F 93");
             //logger.info("FF 01 00 10 00 3F 50 DOWN........................." + connResult);FF 01 00 14 2F 2F 73
         }else if (ptzAction.equals("down_right")) {
-            serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 12 2F 00 42");
+            serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 12 3F 3F 91");
             //logger.info("FF 01 00 10 00 3F 50 DOWN........................." + connResult);FF 01 00 14 2F 2F 73
         } else if (ptzAction.equals("right")) {
             serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 02 3F 00 42");
