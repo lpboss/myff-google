@@ -1,8 +1,7 @@
-package ff.xsocket;
+package ff.server;
 
 import java.io.IOException;
 import java.nio.BufferUnderflowException;
-import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
 
 import org.xsocket.MaxReadSizeExceededException;
@@ -14,12 +13,12 @@ import org.xsocket.connection.IIdleTimeoutHandler;
 import org.xsocket.connection.INonBlockingConnection;
 
 /**
- * 云台控制及角度回传服务器
+ * 云台角度及其它信息显示Flex客户端数据回传服务器
  *   
  * @author   Jiangshilin
  * @Date     2011-10-17
  */
-public class HeadServerHandler implements IDataHandler, IConnectHandler,
+public class FlexServerHandler implements IDataHandler, IConnectHandler,
         IIdleTimeoutHandler, IConnectionTimeoutHandler, IDisconnectHandler {
 
     private SerialPortCommServer serialPortCommServer;
@@ -36,10 +35,10 @@ public class HeadServerHandler implements IDataHandler, IConnectHandler,
             throws IOException, BufferUnderflowException,
             MaxReadSizeExceededException {
 
+    	//客户端ip
         String ip = connection.getRemoteAddress().getHostAddress();
-        serialPortCommServer.addConnection(ip, connection);
 
-        System.out.println("云台控制客户端(" + ip + ":" + connection.getLocalPort()
+        System.out.println("Flex客户端(" + ip + ":" + connection.getLocalPort()
                 + ")已连接！");
 
         return true;
@@ -53,8 +52,7 @@ public class HeadServerHandler implements IDataHandler, IConnectHandler,
             throws IOException {
         if (connection != null && connection.isOpen()) {
             String ip = connection.getRemoteAddress().getHostAddress();
-            serialPortCommServer.removeConnection(ip);
-            System.out.println("云台控制客户端(" + ip + ":"
+            System.out.println("Flex客户端(" + ip + ":"
                     + connection.getLocalPort() + ")已断开！");
         }
         return false;
@@ -67,33 +65,28 @@ public class HeadServerHandler implements IDataHandler, IConnectHandler,
     public boolean onData(INonBlockingConnection connection)
             throws IOException, BufferUnderflowException,
             ClosedChannelException, MaxReadSizeExceededException {
-        if (connection != null && connection.isOpen()) {
-            String ip = connection.getRemoteAddress().getHostAddress();
+    	//接收客户端发送的信息。客户端发送<headIp>xxx.xxx.xxx.xxx</headIp>，以切换查询的云台ip
+        String data = connection.readStringByDelimiter("\n");
+        if (data != null && data.indexOf("<headIp>") > -1
+                && data.indexOf("</headIp>") > -1) {
+            String headIp = data.substring(8, data.indexOf("</headIp>"));
             
-            //接收从云台发送的角度信息
-            ByteBuffer buffer = ByteBuffer.allocate(7);
-            connection.read(buffer);
-            byte[] b = buffer.array();
-            String s = serialPortCommServer.byteArray2HexString(b);
-            
-            if (s.indexOf("FF010059") > -1) {//水平角度信息回传
-                float angle_x = (float) Integer.parseInt(s.substring(s.indexOf("FF010059") + 8, s.indexOf("FF010059") + 12), 16) / 100;
-                serialPortCommServer.setAngleX(ip, angle_x);
+            //根据云台ip，发送相关云台信息
+            serialPortCommServer.sendHeadInfo(connection, headIp);
 
-                //System.out.println("云台水平角度：" + serialPortCommServer.getAngleX(ip));
-            } else if (s.indexOf("FF01005B") > -1) {//垂直角度信息回传
-                float angle_y = 0f;
-                int y = Integer.parseInt(s.substring(s.indexOf("FF01005B") + 8, s.indexOf("FF01005B") + 12), 16);
-                if (y < 18000) {
-                    angle_y = 0 - (float) y / 100;
-                } else if (y > 18000) {
-                    angle_y = (float) (36000 - y) / 100;
+            while (connection != null && connection.isOpen()) {
+                serialPortCommServer.sendHeadInfo(connection, headIp);
+
+                //以0.1秒为间隔，循环发送
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-                serialPortCommServer.setAngleY(ip, angle_y);
-
-                //System.out.println("云台垂直角度：" + serialPortCommServer.getAngleY(ip));
             }
+
         }
+
         return true;
     }
 
@@ -105,7 +98,7 @@ public class HeadServerHandler implements IDataHandler, IConnectHandler,
             throws IOException {
         if (connection != null && connection.isOpen()) {
             String ip = connection.getRemoteAddress().getHostAddress();
-            System.out.println("云台控制客户端(" + ip + ":"
+            System.out.println("Flex客户端(" + ip + ":"
                     + connection.getLocalPort() + ")请求处理超时！");
         }
 
@@ -120,7 +113,7 @@ public class HeadServerHandler implements IDataHandler, IConnectHandler,
             throws IOException {
         if (connection != null && connection.isOpen()) {
             String ip = connection.getRemoteAddress().getHostAddress();
-            System.out.println("云台控制客户端(" + ip + ":"
+            System.out.println("Flex客户端(" + ip + ":"
                     + connection.getLocalPort() + ")连接超时！");
         }
 

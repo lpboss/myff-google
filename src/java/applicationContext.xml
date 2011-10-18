@@ -77,7 +77,7 @@
         <aop:advisor pointcut-ref="allService" advice-ref="txAdvice" />
     </aop:config>
     
-    <context:component-scan base-package="ff.util" /><!--需要扫描的包-->
+    <context:component-scan base-package="ff" /><!--需要扫描的包-->
     <context:annotation-config /><!--开启注解-->
     <task:annotation-driven/> <!-- 这句是重点 定时器开关-->
 </beans>

@@ -1,4 +1,4 @@
-package ff.xsocket;
+package ff.server;
 
 import java.io.IOException;
 import java.nio.BufferUnderflowException;
@@ -13,12 +13,12 @@ import org.xsocket.connection.IIdleTimeoutHandler;
 import org.xsocket.connection.INonBlockingConnection;
 
 /**
- * 云台角度及其它信息显示Flex客户端数据回传服务器
+ * 云台角度及其它信息显示Flex客户端安全沙箱验证服务器
  *   
  * @author   Jiangshilin
  * @Date     2011-10-17
  */
-public class FlexServerHandler implements IDataHandler, IConnectHandler,
+public class FlexAuthServerHandler implements IDataHandler, IConnectHandler,
         IIdleTimeoutHandler, IConnectionTimeoutHandler, IDisconnectHandler {
 
     private SerialPortCommServer serialPortCommServer;
@@ -35,11 +35,10 @@ public class FlexServerHandler implements IDataHandler, IConnectHandler,
             throws IOException, BufferUnderflowException,
             MaxReadSizeExceededException {
 
-    	//客户端ip
         String ip = connection.getRemoteAddress().getHostAddress();
 
         System.out.println("Flex客户端(" + ip + ":" + connection.getLocalPort()
-                + ")已连接！");
+                + ")请求连接！");
 
         return true;
     }
@@ -65,27 +64,14 @@ public class FlexServerHandler implements IDataHandler, IConnectHandler,
     public boolean onData(INonBlockingConnection connection)
             throws IOException, BufferUnderflowException,
             ClosedChannelException, MaxReadSizeExceededException {
-    	//接收客户端发送的信息。客户端发送<headIp>xxx.xxx.xxx.xxx</headIp>，以切换查询的云台ip
-        String data = connection.readStringByDelimiter("\n");
-        if (data != null && data.indexOf("<headIp>") > -1
-                && data.indexOf("</headIp>") > -1) {
-            String headIp = data.substring(8, data.indexOf("</headIp>"));
-            
-            //根据云台ip，发送相关云台信息
-            serialPortCommServer.sendHeadInfo(connection, headIp);
 
-            while (connection != null && connection.isOpen()) {
-                serialPortCommServer.sendHeadInfo(connection, headIp);
-
-                //以0.1秒为间隔，循环发送
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
+        String data = connection.readStringByDelimiter("\0");
+        if (data.equals("<policy-file-request/>")) {
+            String xml = "<?xml version=\"1.0\"?><cross-domain-policy><site-control permitted-cross-domain-policies=\"all\"/><allow-access-from domain=\"*\" to-ports=\"*\"/></cross-domain-policy>\0";
+            serialPortCommServer.sendMsg(connection, xml);
         }
+
+        connection.close();
 
         return true;
     }
@@ -96,11 +82,7 @@ public class FlexServerHandler implements IDataHandler, IConnectHandler,
     @Override
     public boolean onIdleTimeout(INonBlockingConnection connection)
             throws IOException {
-        if (connection != null && connection.isOpen()) {
-            String ip = connection.getRemoteAddress().getHostAddress();
-            System.out.println("Flex客户端(" + ip + ":"
-                    + connection.getLocalPort() + ")请求处理超时！");
-        }
+        System.out.println("onIdleTimeout");
 
         return false;
     }
@@ -111,11 +93,7 @@ public class FlexServerHandler implements IDataHandler, IConnectHandler,
     @Override
     public boolean onConnectionTimeout(INonBlockingConnection connection)
             throws IOException {
-        if (connection != null && connection.isOpen()) {
-            String ip = connection.getRemoteAddress().getHostAddress();
-            System.out.println("Flex客户端(" + ip + ":"
-                    + connection.getLocalPort() + ")连接超时！");
-        }
+        System.out.println("onConnectionTimeout");
 
         return false;
     }

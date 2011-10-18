@@ -1,4 +1,4 @@
-package ff.xsocket;
+package ff.server;
 
 import java.io.IOException;
 import java.nio.BufferUnderflowException;
@@ -21,7 +21,7 @@ import org.xsocket.connection.Server;
  * @author   Jiangshilin
  * @Date     2011-10-17
  */
-public class AlertServerHandler implements IDataHandler, IConnectHandler,
+public class PTZAlertServerHandler implements IDataHandler, IConnectHandler,
         IIdleTimeoutHandler, IConnectionTimeoutHandler, IDisconnectHandler {
     private SerialPortCommServer serialPortCommServer;
 
@@ -118,15 +118,4 @@ public class AlertServerHandler implements IDataHandler, IConnectHandler,
         return false;
     }
 
-    public static void main(String[] args) throws Exception {
-        IServer srv = null;
-        try {
-            srv = new Server(8002, new HeadServerHandler());
-            srv.setConnectionTimeoutMillis(10000);
-            srv.start();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

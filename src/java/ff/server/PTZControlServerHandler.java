@@ -1,7 +1,8 @@
-package ff.xsocket;
+package ff.server;
 
 import java.io.IOException;
 import java.nio.BufferUnderflowException;
+import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
 
 import org.xsocket.MaxReadSizeExceededException;
@@ -13,12 +14,12 @@ import org.xsocket.connection.IIdleTimeoutHandler;
 import org.xsocket.connection.INonBlockingConnection;
 
 /**
- * 云台角度及其它信息显示Flex客户端安全沙箱验证服务器
+ * 云台控制及角度回传服务器
  *   
  * @author   Jiangshilin
  * @Date     2011-10-17
  */
-public class FlexAuthServerHandler implements IDataHandler, IConnectHandler,
+public class PTZControlServerHandler implements IDataHandler, IConnectHandler,
         IIdleTimeoutHandler, IConnectionTimeoutHandler, IDisconnectHandler {
 
     private SerialPortCommServer serialPortCommServer;
@@ -36,9 +37,10 @@ public class FlexAuthServerHandler implements IDataHandler, IConnectHandler,
             MaxReadSizeExceededException {
 
         String ip = connection.getRemoteAddress().getHostAddress();
+        serialPortCommServer.addConnection(ip, connection);
 
-        System.out.println("Flex客户端(" + ip + ":" + connection.getLocalPort()
-                + ")请求连接！");
+        System.out.println("云台控制客户端(" + ip + ":" + connection.getLocalPort()
+                + ")已连接！");
 
         return true;
     }
@@ -51,7 +53,8 @@ public class FlexAuthServerHandler implements IDataHandler, IConnectHandler,
             throws IOException {
         if (connection != null && connection.isOpen()) {
             String ip = connection.getRemoteAddress().getHostAddress();
-            System.out.println("Flex客户端(" + ip + ":"
+            serialPortCommServer.removeConnection(ip);
+            System.out.println("云台控制客户端(" + ip + ":"
                     + connection.getLocalPort() + ")已断开！");
         }
         return false;
@@ -64,15 +67,33 @@ public class FlexAuthServerHandler implements IDataHandler, IConnectHandler,
     public boolean onData(INonBlockingConnection connection)
             throws IOException, BufferUnderflowException,
             ClosedChannelException, MaxReadSizeExceededException {
+        if (connection != null && connection.isOpen()) {
+            String ip = connection.getRemoteAddress().getHostAddress();
+            
+            //接收从云台发送的角度信息
+            ByteBuffer buffer = ByteBuffer.allocate(7);
+            connection.read(buffer);
+            byte[] b = buffer.array();
+            String s = serialPortCommServer.byteArray2HexString(b);
+            
+            if (s.indexOf("FF010059") > -1) {//水平角度信息回传
+                float angle_x = (float) Integer.parseInt(s.substring(s.indexOf("FF010059") + 8, s.indexOf("FF010059") + 12), 16) / 100;
+                serialPortCommServer.setAngleX(ip, angle_x);
 
-        String data = connection.readStringByDelimiter("\0");
-        if (data.equals("<policy-file-request/>")) {
-            String xml = "<?xml version=\"1.0\"?><cross-domain-policy><site-control permitted-cross-domain-policies=\"all\"/><allow-access-from domain=\"*\" to-ports=\"*\"/></cross-domain-policy>\0";
-            serialPortCommServer.sendMsg(connection, xml);
+                //System.out.println("云台水平角度：" + serialPortCommServer.getAngleX(ip));
+            } else if (s.indexOf("FF01005B") > -1) {//垂直角度信息回传
+                float angle_y = 0f;
+                int y = Integer.parseInt(s.substring(s.indexOf("FF01005B") + 8, s.indexOf("FF01005B") + 12), 16);
+                if (y < 18000) {
+                    angle_y = 0 - (float) y / 100;
+                } else if (y > 18000) {
+                    angle_y = (float) (36000 - y) / 100;
+                }
+                serialPortCommServer.setAngleY(ip, angle_y);
+
+                //System.out.println("云台垂直角度：" + serialPortCommServer.getAngleY(ip));
+            }
         }
-
-        connection.close();
-
         return true;
     }
 
@@ -82,7 +103,11 @@ public class FlexAuthServerHandler implements IDataHandler, IConnectHandler,
     @Override
     public boolean onIdleTimeout(INonBlockingConnection connection)
             throws IOException {
-        System.out.println("onIdleTimeout");
+        if (connection != null && connection.isOpen()) {
+            String ip = connection.getRemoteAddress().getHostAddress();
+            System.out.println("云台控制客户端(" + ip + ":"
+                    + connection.getLocalPort() + ")请求处理超时！");
+        }
 
         return false;
     }
@@ -93,7 +118,11 @@ public class FlexAuthServerHandler implements IDataHandler, IConnectHandler,
     @Override
     public boolean onConnectionTimeout(INonBlockingConnection connection)
             throws IOException {
-        System.out.println("onConnectionTimeout");
+        if (connection != null && connection.isOpen()) {
+            String ip = connection.getRemoteAddress().getHostAddress();
+            System.out.println("云台控制客户端(" + ip + ":"
+                    + connection.getLocalPort() + ")连接超时！");
+        }
 
         return false;
     }
