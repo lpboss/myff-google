@@ -23,7 +23,7 @@
                 //按钮
                 var cruise = Ext.create('Ext.Button', {
                     text: '巡航',
-                    //iconCls: 'cruise',
+                    iconCls: 'blue_point',
                     renderTo:'ptz_cruise',
                     handler: function(){
                         ptzAction("cruise");
@@ -31,7 +31,7 @@
                 })
                 
                 var upButton = Ext.create('Ext.Button', {
-                    text: '上',
+                    text: '上&nbsp;&nbsp;&nbsp;&nbsp;',
                     iconCls: 'arrow_up',
                     renderTo:'ptz_up',
                     handler: function(){
@@ -39,8 +39,26 @@
                     }
                 })
                 
+                var upLeftButton = Ext.create('Ext.Button', {
+                    text: '左上',
+                    iconCls: 'arrow_up_left',
+                    renderTo:'ptz_up_left',
+                    handler: function(){
+                        ptzAction("up_left");
+                    }
+                })
+                
+                var upRightButton = Ext.create('Ext.Button', {
+                    text: '右上',
+                    iconCls: 'arrow_up_right',
+                    renderTo:'ptz_up_right',
+                    handler: function(){
+                        ptzAction("up_right");
+                    }
+                })
+                
                 var downButton = Ext.create('Ext.Button', {
-                    text: '下',
+                    text: '下&nbsp;&nbsp;&nbsp;&nbsp;',
                     iconCls: 'arrow_down',
                     renderTo:'ptz_down',
                     handler: function(){
@@ -48,8 +66,29 @@
                     }
                 })
                 
+                
+                var downLeftButton = Ext.create('Ext.Button', {
+                    text: '左下',
+                    iconCls: 'arrow_down_left',
+                    renderTo:'ptz_down_left',
+                    handler: function(){
+                        ptzAction("down_left");
+                    }
+                })
+                
+                var downRightButton = Ext.create('Ext.Button', {
+                    text: '右下',
+                    iconCls: 'arrow_down_right',
+                    renderTo:'ptz_down_right',
+                    handler: function(){
+                        ptzAction("down_right");
+                    }
+                })
+                
+                
+                
                 var rightButton = Ext.create('Ext.Button', {
-                    text: '右',
+                    text: '右&nbsp;&nbsp;&nbsp;&nbsp;',
                     iconCls: 'arrow_right',
                     renderTo:'ptz_right',
                     handler: function(){
@@ -58,7 +97,7 @@
                 })
                 
                 var leftButton = Ext.create('Ext.Button', {
-                    text: '左',
+                    text: '左&nbsp;&nbsp;&nbsp;&nbsp;',
                     iconCls: 'arrow_left',
                     renderTo:'ptz_left',
                     handler: function(){
@@ -149,9 +188,9 @@
                     <div id="ptz">
                         <table>
                             <tr>
-                                <td></td>
+                                <td id="ptz_up_left"></td>
                                 <td id="ptz_up"></td>
-                                <td></td>
+                                <td id="ptz_up_right"></td>
                             </tr>
                             <tr>
                                 <td id="ptz_left"></td>
@@ -159,9 +198,9 @@
                                 <td id="ptz_right"></td>
                             </tr>
                             <tr>
-                                <td></td>
+                                <td id="ptz_down_left"></td>
                                 <td id="ptz_down"></td>
-                                <td></td>
+                                <td id="ptz_down_right"></td>
                             </tr>
                             <tr>
                                 <td></td>

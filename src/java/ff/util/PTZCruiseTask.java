@@ -36,7 +36,7 @@ public class PTZCruiseTask {
      *作者：jerry
      *描述：发送云台角度查询命令，命令的结果会在HeadServerHandler的回调方法onData中进行分析，然后放入serialPortCommServer的angleX，angleY二个类变量中。
      */
-    @Scheduled(fixedDelay = 30)
+    @Scheduled(fixedDelay = 15)
     public synchronized void sendPTZCommand() {
         // 发送云台角度查询命令
         try {
@@ -64,7 +64,7 @@ public class PTZCruiseTask {
      *作者：jerry
      *描述：让所有的云台，按既有模式旋转，比如削苹果皮模式。
      */
-    @Scheduled(fixedDelay = 30)
+    @Scheduled(fixedDelay = 15)
     public synchronized void PTZCruise() {
         //System.out.println("public void PTZCruise()+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         //判断所有的云台，如果没有key添加值并巡航，如果有值，则依次判断巡航方向，比如是向上还是向下。如果角度在359度时，则上跳或下跳X度。
@@ -82,18 +82,18 @@ public class PTZCruiseTask {
             //在此，说明云台从来没有进行巡航，同时，启动巡航。向右，顺时针。指定转到360度处停止。
             //serialPortCommServer.pushCommand("192.168.254.65", "FF 01 00 02 10 00 42");
             //以10为步长，右转
-            serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 10, 0, "right"));
+            serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right"));
         } else {
             //如果云台巡航有相关标志参数。则判断参数的值。保证巡航期间，右转命令只发送一次。
             if (serialPortCommServer.getAllowCruise().get("192.168.254.65") == Boolean.TRUE) {
                 //以20为步长，右转.判断，如果有当前正在旋转巡航，则不发送
                 if (serialPortCommServer.getIsCruising().get("192.168.254.65") == null) {
                     serialPortCommServer.getIsCruising().put("192.168.254.65", Boolean.TRUE);
-                    serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 10, 0, "right"));
+                    serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right"));
                 } else {
                     if (serialPortCommServer.getIsCruising().get("192.168.254.65") == Boolean.FALSE) {
                         serialPortCommServer.getIsCruising().put("192.168.254.65", Boolean.TRUE);
-                        serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 10, 0, "right"));
+                        serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right"));
                     }
                 }
                 //添加一个补丁块，以修正削苹果皮时角度通过0度时，不巡航的问题。
@@ -102,11 +102,21 @@ public class PTZCruiseTask {
                     if (serialPortCommServer.getIsCruisingPresetAngleY().get("192.168.254.65") != null && serialPortCommServer.getIsCruisingPresetAngleY().get("192.168.254.65") == Integer.parseInt(currentAngleY.split("\\.")[0])) {
                         //继续巡航。
                         serialPortCommServer.getIsCruisingPresetAngleY().remove("192.168.254.65");
-                        serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 10, 0, "right"));
+                        serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right"));
+                    }
+                } else {
+                    //有可能在设置上升以后，角度并不骨超过360度。这时要继续右转。
+                    //有这个值，说明还在上升的过程中。或者说已经上升了，但当时云台没有超过0度，所以这个值一直没有去掉。补丁的作法就是继续转动，以让云台超过0度。
+                    if (serialPortCommServer.getIsCruisingPresetAngleY().get("192.168.254.65") != null) {
+                        //判断，如果当前的角度，已经符合上杨角度，则执行下面的命令。
+                        String currentAngleY = String.valueOf(serialPortCommServer.getAngleY("192.168.254.65"));
+                        if (serialPortCommServer.getIsCruisingPresetAngleY().get("192.168.254.65") == Integer.parseInt(currentAngleY.split("\\.")[0])) {
+                            serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right"));
+                        }
                     }
                 }
                 //判断，如果角度为359.99度，则垂直变化角度。
-                if (serialPortCommServer.getAngleX("192.168.254.65") > 359.80 && serialPortCommServer.getAngleX("192.168.254.65") < 359.99) {
+                if (serialPortCommServer.getAngleX("192.168.254.65") > 359.50 && serialPortCommServer.getAngleX("192.168.254.65") < 359.99) {
                     System.out.println("Y角度切换中。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
 
                     //这里要判断一下，读取系统预置设置的Y角度，如果达到角度要求则执行水平转动命令。并清空数据库。否则继续等待Y角度的调整。
@@ -141,7 +151,7 @@ public class PTZCruiseTask {
                         if (serialPortCommServer.getIsCruisingPresetAngleY().get("192.168.254.65") == Integer.parseInt(currentAngleY.split("\\.")[0])) {
                             //继续巡航。下面屏蔽了一行，因为来不及转动，所以总是角度在360以内。
                             //serialPortCommServer.getIsCruisingPresetAngleY().remove("192.168.254.65");
-                            serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 10, 0, "right"));
+                            serialPortCommServer.pushCommand("192.168.254.65", PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right"));
                         } else {
                             System.out.println("继续等待云台Y角度调整。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
                         }
