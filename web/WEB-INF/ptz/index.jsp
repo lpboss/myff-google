@@ -109,7 +109,7 @@
                     text: '设置当前监控云台为192.168.254.65',
                     renderTo:'ptz_setChannel',
                     handler: function(){
-                    	document.getElementById("map").setChannel("192.168.254.65","/images/map.png");
+                    	document.getElementById("map").setChannel("192.168.254.65","../images/map.png");
                     }
                 })                 
             });
