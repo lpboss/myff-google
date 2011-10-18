@@ -17,6 +17,7 @@
         
             //当前云台是否转动。
             var isTurning = false;
+            //当前正在转动的方向
             var turningDirection = "stop";
             
             Ext.onReady(function() {
