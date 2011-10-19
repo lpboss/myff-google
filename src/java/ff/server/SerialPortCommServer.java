@@ -22,12 +22,14 @@ public class SerialPortCommServer {
     private static Map<String, INonBlockingConnection> connectionMap = new HashMap<String, INonBlockingConnection>();
     private static Map<String, String> angleX = new ConcurrentHashMap<String, String>();
     private static Map<String, String> angleY = new ConcurrentHashMap<String, String>();
-    //key为ip,value为true或false，当value为false时，自动巡航方法不再控制巡航
+    //key为ip,value为true或false，当value为false时，自动巡航方法不再控制巡航。主要是标记哪些云台当前允许其实自动巡航。
     private static Map<String, Boolean> allowCruise = new ConcurrentHashMap<String, Boolean>();
     //key为ip,value为true或false，当value为false时，当前正在巡航的云台。当前正在巡航的云台，不会重复发送巡航右转命令。以减少命令发送量。
     private static Map<String, Boolean> isCruising = new ConcurrentHashMap<String, Boolean>();
     //为巡航，比如削苹果皮等准备。其中Key为ip.value为预置的Y角度，只有达到此角度时才接受其它命令。
     private static Map<String, Integer> isCruisingPresetAngleY = new ConcurrentHashMap<String, Integer>();
+    //巡航断点，用来记录巡航人为停止时的XY角度。Key为IP,Value为（X|Y）记录二个角度。
+    private static Map<String, String> cruiseBreakpoint = new ConcurrentHashMap<String, String>();
     //key为ip,value为up或down，告知，当前的云台自动巡航是向上还是向下。以方便判断当角度到达359度时，云台是up还是down
     private static Map<String, String> ptzOrientation = new ConcurrentHashMap<String, String>();
     //所有云台命令,以IP为Key，以Queue为Value。
@@ -211,4 +213,10 @@ public class SerialPortCommServer {
     public Map<String, Integer> getIsCruisingPresetAngleY() {
         return isCruisingPresetAngleY;
     }
+
+    public Map<String, String> getCruiseBreakpoint() {
+        return cruiseBreakpoint;
+    }
+    
+    
 }
