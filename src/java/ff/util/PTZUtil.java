@@ -78,6 +78,7 @@ public class PTZUtil {
             serialPortCommServer.getAllowCruise().put(testIP, Boolean.TRUE);
             serialPortCommServer.getIsCruising().put(testIP, Boolean.FALSE);
             serialPortCommServer.getIsCruisingPresetAngleY().remove(testIP);
+            serialPortCommServer.getIsAdjustingXYForBreakpoint().remove(testIP);
         }
     }
 
@@ -135,9 +136,17 @@ public class PTZUtil {
         if (type.equals("ANGLE_X") || type.equals("ANGLE_Y")) {
             int param3 = 0;
             if (type.equals("ANGLE_X")) {
-                param3 = param1 * 100 + param2;
+                if (param2 < 10) {
+                    param3 = param1 * 100 + param2 * 10;
+                } else {
+                    param3 = param1 * 100 + param2;
+                }
             } else {
-                param3 = 36000 - (param1 * 100 + param2);
+                if (param2 < 10) {
+                    param3 = 36000 - (param1 * 100 + param2 * 10);
+                } else {
+                    param3 = 36000 - (param1 * 100 + param2);
+                }
             }
             //System.out.println("Type:" + type + ",Param1:" + param1 + ",Param2:" + param2 + ",Param3(36000 - (param1 * 100 + param2)):" + param3 + ",2222222222222222222222222");
 
@@ -152,7 +161,7 @@ public class PTZUtil {
                 command.append("0");
                 command.append(param3Hex.substring(0, 1));
                 command.append(" ");
-                command.append(param3Hex.substring(2, 4));
+                command.append(param3Hex.substring(1, 3));
             } else if (param3Hex.length() == 4) {
                 command.append(param3Hex.substring(0, 2));
                 command.append(" ");
