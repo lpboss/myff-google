@@ -30,6 +30,8 @@ public class SerialPortCommServer {
     private static Map<String, Integer> isCruisingPresetAngleY = new ConcurrentHashMap<String, Integer>();
     //巡航断点，用来记录巡航人为停止时的XY角度。Key为IP,Value为（X|Y）记录二个角度。
     private static Map<String, String> cruiseBreakpoint = new ConcurrentHashMap<String, String>();
+    //标记正在为回到断点，继续巡航的云台，提供回到断点状态位的标志。如果正在回到断点则不再发送调整命令。
+    private static Map<String, Boolean> isAdjustingXYForBreakpoint = new ConcurrentHashMap<String, Boolean>();
     //key为ip,value为up或down，告知，当前的云台自动巡航是向上还是向下。以方便判断当角度到达359度时，云台是up还是down
     private static Map<String, String> ptzOrientation = new ConcurrentHashMap<String, String>();
     //所有云台命令,以IP为Key，以Queue为Value。
@@ -217,6 +219,8 @@ public class SerialPortCommServer {
     public Map<String, String> getCruiseBreakpoint() {
         return cruiseBreakpoint;
     }
-    
-    
+
+    public Map<String, Boolean> getIsAdjustingXYForBreakpoint() {
+        return isAdjustingXYForBreakpoint;
+    }
 }
