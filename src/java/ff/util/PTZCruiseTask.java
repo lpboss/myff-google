@@ -92,7 +92,7 @@ public class PTZCruiseTask {
                     serialPortCommServer.getIsCruising().put(testIP, Boolean.TRUE);
                     serialPortCommServer.pushCommand(testIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right"));
                 } else {
-                    if (serialPortCommServer.getIsCruising().get(testIP) == Boolean.FALSE && serialPortCommServer.getIsAdjustingXYForBreakpoint().get(testIP) == null) {
+                    if (serialPortCommServer.getIsCruising().get(testIP) == Boolean.FALSE && serialPortCommServer.getCruiseBreakpoint().get(testIP) == null) {
                         serialPortCommServer.getIsCruising().put(testIP, Boolean.TRUE);
                         serialPortCommServer.pushCommand(testIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right"));
                     } else {
@@ -109,9 +109,11 @@ public class PTZCruiseTask {
                                 serialPortCommServer.getCruiseBreakpoint().remove(testIP);
                                 serialPortCommServer.getIsAdjustingXYForBreakpoint().remove(testIP);
                                 serialPortCommServer.getIsCruising().put(testIP, Boolean.FALSE);
+                                System.out.println("巡航......断点完全复位......继续巡航。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
                             } else {
                                 String adjustXCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4B, Integer.parseInt(breakPointAngleX.split("\\.")[0]), Integer.parseInt(breakPointAngleX.split("\\.")[1]), "ANGLE_X");
                                 String adjustYCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, Integer.parseInt(breakPointAngleY.split("\\.")[0]), Integer.parseInt(breakPointAngleY.split("\\.")[1]), "ANGLE_Y");
+
                                 if (serialPortCommServer.getIsAdjustingXYForBreakpoint().get(testIP) == null) {
                                     serialPortCommServer.getIsAdjustingXYForBreakpoint().put(testIP, Boolean.TRUE);
                                     serialPortCommServer.getIsCruising().put(testIP, Boolean.FALSE);
