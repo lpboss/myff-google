@@ -137,9 +137,9 @@ public class PTZUtil {
             if (type.equals("ANGLE_X")) {
                 param3 = param1 * 100 + param2;
             } else {
-                param3 = 36000 - param1 * 100 + param2;
+                param3 = 36000 - (param1 * 100 + param2);
             }
-
+            //System.out.println("Type:" + type + ",Param1:" + param1 + ",Param2:" + param2 + ",Param3(36000 - (param1 * 100 + param2)):" + param3 + ",2222222222222222222222222");
 
             String param3Hex = Integer.toHexString(param3);
             if (param3Hex.length() == 1) {
@@ -197,7 +197,7 @@ public class PTZUtil {
             checkSumStr = checkSumStr.substring(checkSumStr.length() - 2, checkSumStr.length());
             command.append(checkSumStr);
         }
-        System.out.println("command:" + command.toString().toUpperCase() + " ,222222222222222222222222222222222222222222222222222222," + param1 + ":" + param1);
+        System.out.println("type:" + type + ",command:" + command.toString().toUpperCase() + " ,222222222222222222222222222222222222222222222222222222," + param1 + ":" + param2);
         return command.toString().toUpperCase();
     }
 }
