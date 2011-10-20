@@ -76,7 +76,7 @@ public class PTZCruiseTask {
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss SSS");
         Date date = new Date(milliseconds);
         String testIP = "192.168.254.65";
-        System.out.println("Angle (192.168.254.65) X:" + serialPortCommServer.getAngleX(testIP) + ",Y:" + serialPortCommServer.getAngleY(testIP) + "------------------,Date:" + timeFormat.format(date));
+        //System.out.println("Angle (192.168.254.65) X:" + serialPortCommServer.getAngleX(testIP) + ",Y:" + serialPortCommServer.getAngleY(testIP) + "------------------,Date:" + timeFormat.format(date));
 
         if (serialPortCommServer.getAllowCruise().get(testIP) == null) {
             System.out.println("serialPortCommServer.getAllowCruise() == null :----------------------------------------------------------------------");
@@ -101,18 +101,29 @@ public class PTZCruiseTask {
                         //如果在巡航断点中有值，且getIsCruising().get(ip) = true,则说明要继续断点，继续巡航。
                         //先把云台调整到断点时的位置。同时调整二个角度。
                         if (serialPortCommServer.getCruiseBreakpoint().get(testIP) != null) {
-                            String angleX = serialPortCommServer.getCruiseBreakpoint().get(testIP).split("|")[0];
-                            String angleY = serialPortCommServer.getCruiseBreakpoint().get(testIP).split("|")[1];
+                            String angleX = serialPortCommServer.getCruiseBreakpoint().get(testIP).split("\\|")[0];
+                            String angleY = serialPortCommServer.getCruiseBreakpoint().get(testIP).split("\\|")[1];
                             //判断当前的XY与断点中的XY是否相等，如果不相同发送调整命令。如果相同，清除断点信息。
                             String currentAngleX = String.valueOf(serialPortCommServer.getAngleX(testIP));
                             String currentAngleY = String.valueOf(serialPortCommServer.getAngleY(testIP));
+                            System.out.println("angleX:" + angleX + ",angleY:" + angleY + ",currentAngleX:" + currentAngleX + ",currentAngleY:" + currentAngleY);
                             if (angleX.equals(currentAngleX) && angleY.equals(currentAngleY)) {
                                 serialPortCommServer.getCruiseBreakpoint().remove(testIP);
+                                serialPortCommServer.getIsAdjustingXYForBreakpoint().remove(testIP);
+                                serialPortCommServer.getAllowCruise().put(testIP, Boolean.TRUE);
+                                serialPortCommServer.getIsCruising().put(testIP, Boolean.FALSE);
                             } else {
-                                serialPortCommServer.pushCommand(testIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, Integer.parseInt(angleX.split("\\.")[0]), Integer.parseInt(angleX.split("\\.")[1]), "ANGLE_X"));
-                                serialPortCommServer.pushCommand(testIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, Integer.parseInt(angleY.split("\\.")[0]), Integer.parseInt(angleY.split("\\.")[1]), "ANGLE_Y"));
+                                if (serialPortCommServer.getIsAdjustingXYForBreakpoint().get(testIP) == null) {
+                                    serialPortCommServer.getIsAdjustingXYForBreakpoint().put(testIP, Boolean.TRUE);
+                                    serialPortCommServer.getAllowCruise().put(testIP, Boolean.FALSE);
+                                    serialPortCommServer.getIsCruising().put(testIP, Boolean.FALSE);
+                                    String adjustXCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4B, Integer.parseInt(angleX.split("\\.")[0]), Integer.parseInt(angleX.split("\\.")[1]), "ANGLE_X");
+                                    String adjustYCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, Integer.parseInt(angleY.split("\\.")[0]), Integer.parseInt(angleY.split("\\.")[1]), "ANGLE_Y");
+                                    serialPortCommServer.pushCommand(testIP, adjustXCommand + " " + adjustYCommand);
+                                }
+                                System.out.println("正在调整角度。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
+                                return;
                             }
-                            return;
                         }
                     }
                 }

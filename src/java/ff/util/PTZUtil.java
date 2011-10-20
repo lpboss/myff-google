@@ -84,7 +84,9 @@ public class PTZUtil {
     private void setCruiseBreakpoint(String ip) {
         //如果正在巡航，则在发送其它命令前，先保存断点。
         if (serialPortCommServer.getIsCruising().get(ip) != null && serialPortCommServer.getIsCruising().get(ip) == Boolean.TRUE) {
-            serialPortCommServer.getCruiseBreakpoint().put(ip, serialPortCommServer.getAngleX(ip) + "|" + serialPortCommServer.getAngleY(ip));
+            if (serialPortCommServer.getCruiseBreakpoint().get(ip) == null) {
+                serialPortCommServer.getCruiseBreakpoint().put(ip, serialPortCommServer.getAngleX(ip) + "|" + serialPortCommServer.getAngleY(ip));
+            }
         }
     }
 
