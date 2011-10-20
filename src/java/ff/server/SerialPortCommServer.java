@@ -5,6 +5,7 @@
 package ff.server;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -36,27 +37,62 @@ public class SerialPortCommServer {
     private static Map<String, String> ptzOrientation = new ConcurrentHashMap<String, String>();
     //所有云台命令,以IP为Key，以Queue为Value。
     private static Map<String, LinkedList> commandMap = new ConcurrentHashMap<String, LinkedList>();
-
+    DecimalFormat df = new DecimalFormat("0.00");
+    
+    /**
+     * 将socket连接对象以客户端ip地址为key，放入HashMap保存
+     * @param ip
+     * @param nbc
+     * @throws
+     */
     public void addConnection(String ip, INonBlockingConnection nbc) {
         connectionMap.put(ip, nbc);
     }
 
+    /**
+     * 根据客户端ip地址，从HashMap获取socket连接对象
+     * @param ip
+     * @return
+     * @throws
+     */
     public INonBlockingConnection getConnection(String ip) {
         return connectionMap.get(ip);
     }
 
+    /**
+     * 根据客户端ip地址，从HashMap删除socket连接对象
+     * @param ip
+     * @throws
+     */
     public void removeConnection(String ip) {
         connectionMap.remove(ip);
     }
 
+    /**
+     * 删除HashMap中所有的socket连接对象
+     * 
+     * @throws
+     */
     public void removeConnectionAll() {
         connectionMap.clear();
     }
 
+    /**
+     * 以云台ip为key，将云台水平角度信息存放在HashMap中
+     * @param ip
+     * @param angle_x
+     * @throws
+     */
     public void setAngleX(String ip, float angle_x) {
-        angleX.put(ip, angle_x + "");
+        angleX.put(ip, df.format(angle_x));
     }
 
+    /**
+     * 根据云台ip，获取云台水平角度（浮点型小数）
+     * @param ip
+     * @return
+     * @throws
+     */
     public float getAngleX(String ip) {
         if (angleX.get(ip) != null) {
             return Float.parseFloat(angleX.get(ip));
@@ -64,19 +100,55 @@ public class SerialPortCommServer {
             return 0;
         }
     }
-
+    
+    /**
+     * 根据云台ip，获取云台水平角度（保留两位小数的格式化字符串）
+     * @param ip
+     * @return
+     * @throws
+     */
+    public String getAngleXString(String ip) {
+        if (angleX.get(ip) != null) {
+            return angleX.get(ip);
+        } else {
+            return "0.00";
+        }
+    }
+    
+    /**
+     * 根据云台ip，删除其水平角度信息
+     * @param ip
+     * @throws
+     */
     public void removeAngleX(String ip) {
         angleX.remove(ip);
     }
 
+    /**
+     * 删除所有云台的水平角度信息
+     * 
+     * @throws
+     */
     public void removeAngleXAll() {
         angleX.clear();
     }
 
+    /**
+     * 以云台ip为key，将云台垂直角度信息存放在HashMap中
+     * @param ip
+     * @param angle_y
+     * @throws
+     */
     public void setAngleY(String ip, float angle_y) {
-        angleY.put(ip, angle_y + "");
+        angleY.put(ip, df.format(angle_y));
     }
 
+    /**
+     * 根据云台ip，获取云台垂直角度（浮点型小数）
+     * @param ip
+     * @return
+     * @throws
+     */
     public float getAngleY(String ip) {
         if (angleY.get(ip) != null) {
             return Float.parseFloat(angleY.get(ip));
@@ -84,16 +156,47 @@ public class SerialPortCommServer {
             return 0;
         }
     }
-
+    
+    /**
+     * 根据云台ip，获取云台垂直角度（保留两位小数的格式化字符串）
+     * @param ip
+     * @return
+     * @throws
+     */
+    public String getAngleYString(String ip) {
+        if (angleY.get(ip) != null) {
+            return angleY.get(ip);
+        } else {
+            return "0.00";
+        }
+    }
+    
+    /**
+     * 根据云台ip，删除其垂直角度信息
+     * @param ip
+     * @throws
+     */
     public void removeAngleY(String ip) {
         angleY.remove(ip);
     }
 
+    /**
+     * 删除所有云台的垂直角度信息
+     * 
+     * @throws
+     */
     public void removeAngleYAll() {
         angleY.clear();
     }
-
-    // 向客户端发送十六进制指令
+    
+    /**
+     * 向客户端发送十六进制指令
+     * @param connection
+     * @param command
+     * @return
+     * @throws IOException
+     * @throws
+     */
     public boolean sendCommand(INonBlockingConnection connection, String command)
             throws IOException {
         if (connection != null && connection.isOpen()) {
@@ -105,13 +208,27 @@ public class SerialPortCommServer {
         return false;
     }
 
-    // 向指定的云台，发送十六进制指令
+    /**
+     * 向指定的云台，发送十六进制指令
+     * @param ip
+     * @param command
+     * @return
+     * @throws IOException
+     * @throws
+     */
     public boolean sendCommand(String ip, String command) throws IOException {
         INonBlockingConnection connection = connectionMap.get(ip);
         return sendCommand(connection, command);
     }
 
-    // 向客户端发送文本信息
+    /**
+     * 向客户端发送文本信息
+     * @param connection
+     * @param msg
+     * @return
+     * @throws IOException
+     * @throws
+     */
     public boolean sendMsg(INonBlockingConnection connection, String msg)
             throws IOException {
         if (connection != null && connection.isOpen()) {
@@ -122,13 +239,27 @@ public class SerialPortCommServer {
         return false;
     }
 
-    // 向客户端发送文本信息
+    /**
+     * 向客户端发送文本信息
+     * @param ip
+     * @param msg
+     * @return
+     * @throws IOException
+     * @throws
+     */
     public boolean sendMsg(String ip, String msg) throws IOException {
         INonBlockingConnection connection = connectionMap.get(ip);
         return sendMsg(connection, msg);
     }
 
-    // 向flex客户端发送云台信息
+    /**
+     * 向flex客户端发送云台信息
+     * @param connection
+     * @param headIp
+     * @return
+     * @throws IOException
+     * @throws
+     */
     public boolean sendHeadInfo(INonBlockingConnection connection, String headIp)
             throws IOException {
         if (connection != null && connection.isOpen()) {
@@ -143,13 +274,25 @@ public class SerialPortCommServer {
         return false;
     }
 
-    // 向flex客户端发送云台信息
+    /**
+     *  向flex客户端发送云台信息
+     * @param ip
+     * @param headIp
+     * @return
+     * @throws IOException
+     * @throws
+     */
     public boolean sendHeadInfo(String ip, String headIp) throws IOException {
         INonBlockingConnection connection = connectionMap.get(ip);
         return sendHeadInfo(connection, headIp);
     }
 
-    // 将byte[]转换为十六进制字符串
+    /**
+     * 将byte[]转换为十六进制字符串
+     * @param b
+     * @return
+     * @throws
+     */
     public String byteArray2HexString(byte[] b) {
         String s = "";
         if (b != null && b.length > 0) {
@@ -170,7 +313,12 @@ public class SerialPortCommServer {
         return s;
     }
 
-    // 将十六进制字符串转换为byte[]
+    /**
+     * 将十六进制字符串转换为byte[]
+     * @param s
+     * @return
+     * @throws
+     */
     public byte[] hexString2ByteArray(String s) {
         s = s.replaceAll(" ", "").toUpperCase();
 
@@ -191,9 +339,10 @@ public class SerialPortCommServer {
     }
 
     /**
-     *
-     * @author jerry
-     * 向命令队列中追加命令。
+     * 向命令队列中追加命令
+     * @param ip
+     * @param ptzCommand
+     * @throws
      */
     public synchronized void pushCommand(String ip, String ptzCommand) {
         LinkedList<String> commandQueue = commandMap.get(ip);

@@ -3,9 +3,9 @@ package ff.util;
 import java.io.IOException;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.xsocket.connection.IServer;
 import org.xsocket.connection.Server;
 
@@ -30,15 +30,15 @@ public class ServerBootUtil{
 	private IServer flexAuthServer;
 	private Thread rtspStreamServer;
 	
-	@Autowired
+	@Resource
 	private PTZControlServerHandler ptzControlServerHandler;
-	@Autowired
+	@Resource
 	private PTZAlertServerHandler ptzAlertServerHandler;
-	@Autowired
+	@Resource
 	private FlexServerHandler flexServerHandler;
-	@Autowired
+	@Resource
 	private FlexAuthServerHandler flexAuthServerHandler;
-	@Autowired
+	@Resource
 	private RTSPStreamServerHandler rtspStreamServerHandler;
 	
 	private int ptzControlServerPort;
