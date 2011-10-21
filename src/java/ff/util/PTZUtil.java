@@ -86,7 +86,7 @@ public class PTZUtil {
         //如果正在巡航，则在发送其它命令前，先保存断点。
         if (serialPortCommServer.getIsCruising().get(ip) != null && serialPortCommServer.getIsCruising().get(ip) == Boolean.TRUE) {
             if (serialPortCommServer.getCruiseBreakpoint().get(ip) == null) {
-                serialPortCommServer.getCruiseBreakpoint().put(ip, serialPortCommServer.getAngleX(ip) + "|" + serialPortCommServer.getAngleY(ip));
+                serialPortCommServer.getCruiseBreakpoint().put(ip, serialPortCommServer.getAngleXString(ip) + "|" + serialPortCommServer.getAngleYString(ip));
             }
         }
     }
@@ -198,7 +198,7 @@ public class PTZUtil {
             checkSumStr = checkSumStr.substring(checkSumStr.length() - 2, checkSumStr.length());
             command.append(checkSumStr);
         }
-        System.out.println("type:" + type + ",command:" + command.toString().toUpperCase() + " ,222222222222222222222222222222222222222222222222222222," + param1 + ":" + param2);
+        //System.out.println("type:" + type + ",command:" + command.toString().toUpperCase() + " ,222222222222222222222222222222222222222222222222222222," + param1 + ":" + param2);
         return command.toString().toUpperCase();
     }
 }

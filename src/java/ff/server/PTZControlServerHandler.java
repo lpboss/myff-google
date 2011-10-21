@@ -80,7 +80,7 @@ public class PTZControlServerHandler implements IDataHandler, IConnectHandler,
                 float angle_x = (float) Integer.parseInt(s.substring(s.indexOf("FF010059") + 8, s.indexOf("FF010059") + 12), 16) / 100;
                 serialPortCommServer.setAngleX(ip, angle_x);
 
-                //System.out.println("云台水平角度：" + serialPortCommServer.getAngleX(ip));
+                //System.out.println("云台水平角度：" + serialPortCommServer.getAngleXString(ip));
             } else if (s.indexOf("FF01005B") > -1) {//垂直角度信息回传
                 float angle_y = 0f;
                 int y = Integer.parseInt(s.substring(s.indexOf("FF01005B") + 8, s.indexOf("FF01005B") + 12), 16);
