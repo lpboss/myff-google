@@ -29,16 +29,18 @@ public class SerialPortCommServer {
     private static Map<String, Boolean> isCruising = new ConcurrentHashMap<String, Boolean>();
     //为巡航，比如削苹果皮等准备。其中Key为ip.value为预置的Y角度，只有达到此角度时才接受其它命令。
     private static Map<String, Integer> isCruisingPresetAngleY = new ConcurrentHashMap<String, Integer>();
+    //为了修正在回到断点云台不到位的情况。加上命令调整时间，如果超过1秒，就再发送一次，相同的命令。值为毫秒数。
+    private static Map<String, Long> breakPointReturnBeginTime = new ConcurrentHashMap<String, Long>();
     //巡航断点，用来记录巡航人为停止时的XY角度。Key为IP,Value为（X|Y）记录二个角度。
     private static Map<String, String> cruiseBreakpoint = new ConcurrentHashMap<String, String>();
-    //标记正在为回到断点，继续巡航的云台，提供回到断点状态位的标志。如果正在回到断点则不再发送调整命令。
+    //标记正在为回到断点，继续巡航的云台，提供回到断点状态位的标志。如果正在回到断点则不再发送调整命令。    
     private static Map<String, Boolean> isAdjustingXYForBreakpoint = new ConcurrentHashMap<String, Boolean>();
     //key为ip,value为up或down，告知，当前的云台自动巡航是向上还是向下。以方便判断当角度到达359度时，云台是up还是down
     private static Map<String, String> ptzOrientation = new ConcurrentHashMap<String, String>();
     //所有云台命令,以IP为Key，以Queue为Value。
     private static Map<String, LinkedList> commandMap = new ConcurrentHashMap<String, LinkedList>();
     DecimalFormat df = new DecimalFormat("0.00");
-    
+
     /**
      * 将socket连接对象以客户端ip地址为key，放入HashMap保存
      * @param ip
@@ -100,7 +102,7 @@ public class SerialPortCommServer {
             return 0;
         }
     }
-    
+
     /**
      * 根据云台ip，获取云台水平角度（保留两位小数的格式化字符串）
      * @param ip
@@ -114,7 +116,7 @@ public class SerialPortCommServer {
             return "0.00";
         }
     }
-    
+
     /**
      * 根据云台ip，删除其水平角度信息
      * @param ip
@@ -156,7 +158,7 @@ public class SerialPortCommServer {
             return 0;
         }
     }
-    
+
     /**
      * 根据云台ip，获取云台垂直角度（保留两位小数的格式化字符串）
      * @param ip
@@ -170,7 +172,7 @@ public class SerialPortCommServer {
             return "0.00";
         }
     }
-    
+
     /**
      * 根据云台ip，删除其垂直角度信息
      * @param ip
@@ -188,7 +190,7 @@ public class SerialPortCommServer {
     public void removeAngleYAll() {
         angleY.clear();
     }
-    
+
     /**
      * 向客户端发送十六进制指令
      * @param connection
@@ -371,5 +373,9 @@ public class SerialPortCommServer {
 
     public Map<String, Boolean> getIsAdjustingXYForBreakpoint() {
         return isAdjustingXYForBreakpoint;
+    }
+
+    public Map<String, Long> getBreakPointReturnBeginTime() {
+        return breakPointReturnBeginTime;
     }
 }
