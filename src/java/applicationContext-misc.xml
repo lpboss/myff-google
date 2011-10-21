@@ -12,9 +12,7 @@
     <bean id="ptzAlertServerHandler" class="ff.server.PTZAlertServerHandler" />    
     <bean id="flexServerHandler" class="ff.server.FlexServerHandler" />
     <bean id="flexAuthServerHandler" class="ff.server.FlexAuthServerHandler" />
-    <bean id="rtspStreamServerHandler" class="ff.server.RTSPStreamServerHandler" scope="prototype">
-    	<property name="jnaLibPath" value="C:\\Program Files\\VideoLAN\\VLC" />
-    </bean>
+    <bean id="rtspStreamServerHandler" class="ff.server.RTSPStreamServerHandler" scope="prototype" />
     
     <!-- 本项目附属服务器启动类，包括串口通信服务器和流媒体转发服务器      --> 
     <bean id="serverBootUtil" class="ff.util.ServerBootUtil">
@@ -23,6 +21,12 @@
     	<property name="flexServerPort" value="8004" />
     	<property name="flexAuthServerPort" value="843" />
     	<property name="rtspStreamServerPort" value="554" />
+    	<property name="jnaLibPath" value="C:\\Program Files\\VideoLAN\\VLC" />
+    </bean>
+    
+    <bean id="rtspStreamRecordTask" class="ff.util.RTSPStreamRecordTask">
+    	<property name="port" value="554" />
+    	<property name="recordFilePath" value="D:\\RecordFile" />
     </bean>
      
     <bean id="ptzUtil" class="ff.util.PTZUtil" />

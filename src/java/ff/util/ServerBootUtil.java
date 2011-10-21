@@ -46,6 +46,7 @@ public class ServerBootUtil{
 	private int flexServerPort; 
 	private int flexAuthServerPort;
 	private int rtspStreamServerPort;
+	private String jnaLibPath;
 
 	@PostConstruct
 	public void start() throws IOException{
@@ -71,6 +72,7 @@ public class ServerBootUtil{
 
 		// 启动流媒体转发服务
 		rtspStreamServerHandler.setPort(rtspStreamServerPort);
+		rtspStreamServerHandler.setJnaLibPath(jnaLibPath);
 		rtspStreamServer = new Thread(rtspStreamServerHandler);
 		rtspStreamServer.start();
 	}
@@ -114,6 +116,13 @@ public class ServerBootUtil{
 	public void setRtspStreamServerPort(int rtspStreamServerPort) {
 		this.rtspStreamServerPort = rtspStreamServerPort;
 	}
-	
+
+	public String getJnaLibPath() {
+		return jnaLibPath;
+	}
+
+	public void setJnaLibPath(String jnaLibPath) {
+		this.jnaLibPath = jnaLibPath;
+	}	
 	
 }

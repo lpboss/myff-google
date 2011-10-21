@@ -1,6 +1,5 @@
 package ff.server;
 
-import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -102,6 +101,8 @@ public class RTSPStreamServerHandler implements Runnable{
 		//RTSPStreamServerHandler rtspStreamServerHandler=new RTSPStreamServerHandler();
 		//Thread rtspStreamServer = new Thread(rtspStreamServerHandler);
 		//rtspStreamServer.start();
+		//DecimalFormat df = new DecimalFormat("0.00");
+		//System.out.println(df.format(333.8));
 	}
 
 }
