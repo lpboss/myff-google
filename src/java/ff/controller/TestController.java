@@ -12,6 +12,8 @@ import ff.service.SysActionService;
 import ff.service.SysControllerService;
 import ff.util.PTZUtil;
 import java.lang.reflect.Method;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -107,37 +109,8 @@ public class TestController extends MultiActionController {
     }
 
     public void testQueue(HttpServletRequest request, HttpServletResponse response) {
-        LinkedList<String> commandQueue = new LinkedList<String>();
-        commandQueue.addLast("1");
-        commandQueue.addLast("2");
-        commandQueue.addLast("3");
-        commandQueue.addLast("4");
-        commandQueue.addLast("5");
-        System.out.println("commandQueue.getFirst():000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
-        System.out.println("commandQueue.getFirst():" + commandQueue.getFirst());
-        commandQueue.removeFirst();
-        System.out.println("commandQueue.getFirst():" + commandQueue.getFirst());
-
-        Integer command = 32;
-        System.out.println("hex command:" + Integer.toHexString(command).toUpperCase());
-        System.out.println("dec command:" + command);
-        command = 64;
-        System.out.println("hex command:" + Integer.toHexString(command));
-        System.out.println("dec command:" + command);
-        command = 128;
-        System.out.println("hex command:" + Integer.toHexString(command));
-        System.out.println("dec command:" + command);
-        command = 256;
-        System.out.println("hex command:" + Integer.toHexString(command));
-        System.out.println("dec command:" + command);
-
-        System.out.println("PTZ Buffer String :" + PTZUtil.getPELCODCommandHexString(1, 0, 0x59, 45, 88, "angle"));
-        //System.out.println("PTZ Buffer String :" + "1234".substring(0, 2));
-        String test = "FF 01 00 4D 18 F3 59";
-        System.out.println(test.substring(12, 14));
-        System.out.println(Integer.valueOf(test.substring(12, 14), 16));
-        
-        System.out.println(test.substring(15, 17));
-        System.out.println(Integer.valueOf(test.substring(15, 17), 16));
+        Date dt = new Date();
+        Long time = dt.getTime();//这就是距离1970年1月1日0点0分0秒的毫秒数
+        System.out.println("time:" + time + ", SECOND...............................");
     }
 }

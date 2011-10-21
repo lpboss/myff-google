@@ -76,7 +76,7 @@ public class PTZCruiseTask {
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss SSS");
         Date date = new Date(milliseconds);
         String testIP = "192.168.254.65";
-        //System.out.println("Angle (192.168.254.65) X:" + serialPortCommServer.getAngleX(testIP) + ",Y:" + serialPortCommServer.getAngleY(testIP) + "------------------,Date:" + timeFormat.format(date));
+        //System.out.println("Angle (192.168.254.65) X:" + serialPortCommServer.getAngleXString(testIP) + ",Y:" + serialPortCommServer.getAngleYString(testIP) + "------------------,Date:" + timeFormat.format(date));
         if (serialPortCommServer.getAllowCruise().get(testIP) == null) {
             System.out.println("serialPortCommServer.getAllowCruise() == null :----------------------------------------------------------------------");
             serialPortCommServer.getAllowCruise().put(testIP, Boolean.TRUE);
@@ -102,31 +102,34 @@ public class PTZCruiseTask {
                             String breakPointAngleX = serialPortCommServer.getCruiseBreakpoint().get(testIP).split("\\|")[0];
                             String breakPointAngleY = serialPortCommServer.getCruiseBreakpoint().get(testIP).split("\\|")[1];
                             //判断当前的XY与断点中的XY是否相等，如果不相同发送调整命令。如果相同，清除断点信息。
-                            String currentAngleX = String.valueOf(serialPortCommServer.getAngleX(testIP));
-                            String currentAngleY = String.valueOf(serialPortCommServer.getAngleY(testIP));
+                            String currentAngleX = serialPortCommServer.getAngleXString(testIP);
+                            String currentAngleY = serialPortCommServer.getAngleYString(testIP);
                             System.out.println("breakPointAngleX:" + breakPointAngleX + ",breakPointAngleY:" + breakPointAngleY + ",currentAngleX:" + currentAngleX + ",currentAngleY:" + currentAngleY);
                             if (breakPointAngleX.equals(currentAngleX) && breakPointAngleY.equals(currentAngleY)) {
                                 serialPortCommServer.getCruiseBreakpoint().remove(testIP);
                                 serialPortCommServer.getIsAdjustingXYForBreakpoint().remove(testIP);
+                                serialPortCommServer.getBreakPointReturnBeginTime().remove(testIP);
                                 serialPortCommServer.getIsCruising().put(testIP, Boolean.FALSE);
                                 System.out.println("巡航......断点完全复位......继续巡航。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
-                            } /*if (breakPointAngleX.equals(currentAngleX) || breakPointAngleY.equals(currentAngleY)) {
-                            //这是一个补丁。有时候X或Y角度会调整不到位，当有一个到位时，再发送调整命令。原因以后再查明。
-                            String adjustXCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4B, Integer.parseInt(breakPointAngleX.split("\\.")[0]), Integer.parseInt(breakPointAngleX.split("\\.")[1]), "ANGLE_X");
-                            String adjustYCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, Integer.parseInt(breakPointAngleY.split("\\.")[0]), Integer.parseInt(breakPointAngleY.split("\\.")[1]), "ANGLE_Y");
-                            
-                            serialPortCommServer.getIsAdjustingXYForBreakpoint().put(testIP, Boolean.TRUE);
-                            serialPortCommServer.getIsCruising().put(testIP, Boolean.FALSE);
-                            serialPortCommServer.pushCommand(testIP, adjustXCommand + " " + adjustYCommand);
-                            
-                            }*/ else {
+                            } else {
                                 String adjustXCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4B, Integer.parseInt(breakPointAngleX.split("\\.")[0]), Integer.parseInt(breakPointAngleX.split("\\.")[1]), "ANGLE_X");
                                 String adjustYCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, Integer.parseInt(breakPointAngleY.split("\\.")[0]), Integer.parseInt(breakPointAngleY.split("\\.")[1]), "ANGLE_Y");
 
                                 if (serialPortCommServer.getIsAdjustingXYForBreakpoint().get(testIP) == null) {
+                                    if (serialPortCommServer.getBreakPointReturnBeginTime().get(testIP) == null) {
+                                        serialPortCommServer.getBreakPointReturnBeginTime().put(testIP, new Date().getTime());
+                                    }
                                     serialPortCommServer.getIsAdjustingXYForBreakpoint().put(testIP, Boolean.TRUE);
                                     serialPortCommServer.getIsCruising().put(testIP, Boolean.FALSE);
-                                    serialPortCommServer.pushCommand(testIP, adjustXCommand + " " + adjustYCommand);
+                                    serialPortCommServer.pushCommand(testIP, adjustXCommand);
+                                    serialPortCommServer.pushCommand(testIP, adjustYCommand);
+                                } else {
+                                    //这是一个补丁功能，有时，云台调整不到位。如果超时4秒，再调整一次。
+                                    if (new Date().getTime() - serialPortCommServer.getBreakPointReturnBeginTime().get(testIP) > 4000) {
+                                        serialPortCommServer.getBreakPointReturnBeginTime().put(testIP, new Date().getTime());
+                                        serialPortCommServer.pushCommand(testIP, adjustXCommand);
+                                        serialPortCommServer.pushCommand(testIP, adjustYCommand);
+                                    }
                                 }
                                 System.out.println("巡航......断点复位......正在调整角度。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
                                 return;
@@ -136,7 +139,7 @@ public class PTZCruiseTask {
                 }
                 //添加一个补丁块，以修正削苹果皮时角度通过0度时，不巡航的问题。
                 if (serialPortCommServer.getAngleX(testIP) >= 0.0 && serialPortCommServer.getAngleX(testIP) < 2.0) {
-                    String currentAngleY = String.valueOf(serialPortCommServer.getAngleY(testIP));
+                    String currentAngleY = String.valueOf(serialPortCommServer.getAngleYString(testIP));
                     if (serialPortCommServer.getIsCruisingPresetAngleY().get(testIP) != null && serialPortCommServer.getIsCruisingPresetAngleY().get(testIP) == Integer.parseInt(currentAngleY.split("\\.")[0])) {
                         //继续巡航。
                         serialPortCommServer.getIsCruisingPresetAngleY().remove(testIP);
@@ -147,7 +150,7 @@ public class PTZCruiseTask {
                     //有这个值，说明还在上升的过程中。或者说已经上升了，但当时云台没有超过0度，所以这个值一直没有去掉。补丁的作法就是继续转动，以让云台超过0度。
                     if (serialPortCommServer.getIsCruisingPresetAngleY().get(testIP) != null) {
                         //判断，如果当前的角度，已经符合上杨角度，则执行下面的命令。
-                        String currentAngleY = String.valueOf(serialPortCommServer.getAngleY(testIP));
+                        String currentAngleY = String.valueOf(serialPortCommServer.getAngleYString(testIP));
                         if (serialPortCommServer.getIsCruisingPresetAngleY().get(testIP) == Integer.parseInt(currentAngleY.split("\\.")[0])) {
                             serialPortCommServer.pushCommand(testIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right"));
                         }
@@ -160,7 +163,7 @@ public class PTZCruiseTask {
                     //这里要判断一下，读取系统预置设置的Y角度，如果达到角度要求则执行水平转动命令。并清空数据库。否则继续等待Y角度的调整。
                     System.out.println("serialPortCommServer.getIsCruisingPresetAngleY().get(192.168.254.65):" + serialPortCommServer.getIsCruisingPresetAngleY().get(testIP));
                     if (serialPortCommServer.getIsCruisingPresetAngleY().get(testIP) == null) {
-                        String currentAngleY = String.valueOf(serialPortCommServer.getAngleY(testIP));
+                        String currentAngleY = serialPortCommServer.getAngleYString(testIP);
                         //上扬10度
                         int angleY1 = Integer.parseInt(currentAngleY.split("\\.")[0]) + 10;
                         int angleY2 = Integer.parseInt(currentAngleY.split("\\.")[1]);
@@ -185,7 +188,7 @@ public class PTZCruiseTask {
                         serialPortCommServer.pushCommand(testIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, angleY1, angleY2, "ANGLE_Y"));
                     } else {
                         //判断角度是否达到预置的高度了。
-                        String currentAngleY = String.valueOf(serialPortCommServer.getAngleY(testIP));
+                        String currentAngleY = String.valueOf(serialPortCommServer.getAngleYString(testIP));
                         if (serialPortCommServer.getIsCruisingPresetAngleY().get(testIP) == Integer.parseInt(currentAngleY.split("\\.")[0])) {
                             //继续巡航。下面屏蔽了一行，因为来不及转动，所以总是角度在360以内。
                             //serialPortCommServer.getIsCruisingPresetAngleY().remove(testIP);
