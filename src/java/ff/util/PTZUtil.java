@@ -78,6 +78,7 @@ public class PTZUtil {
             serialPortCommServer.getAllowCruise().put(testIP, Boolean.TRUE);
             serialPortCommServer.getIsCruising().put(testIP, Boolean.FALSE);
             serialPortCommServer.getIsCruisingPresetAngleY().remove(testIP);
+            serialPortCommServer.getIsAdjustingXYForBreakpoint().remove(testIP);
         }
     }
 
@@ -152,7 +153,7 @@ public class PTZUtil {
                 command.append("0");
                 command.append(param3Hex.substring(0, 1));
                 command.append(" ");
-                command.append(param3Hex.substring(2, 4));
+                command.append(param3Hex.substring(1, 3));
             } else if (param3Hex.length() == 4) {
                 command.append(param3Hex.substring(0, 2));
                 command.append(" ");

@@ -110,7 +110,16 @@ public class PTZCruiseTask {
                                 serialPortCommServer.getIsAdjustingXYForBreakpoint().remove(testIP);
                                 serialPortCommServer.getIsCruising().put(testIP, Boolean.FALSE);
                                 System.out.println("巡航......断点完全复位......继续巡航。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
-                            } else {
+                            } /*if (breakPointAngleX.equals(currentAngleX) || breakPointAngleY.equals(currentAngleY)) {
+                            //这是一个补丁。有时候X或Y角度会调整不到位，当有一个到位时，再发送调整命令。原因以后再查明。
+                            String adjustXCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4B, Integer.parseInt(breakPointAngleX.split("\\.")[0]), Integer.parseInt(breakPointAngleX.split("\\.")[1]), "ANGLE_X");
+                            String adjustYCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, Integer.parseInt(breakPointAngleY.split("\\.")[0]), Integer.parseInt(breakPointAngleY.split("\\.")[1]), "ANGLE_Y");
+                            
+                            serialPortCommServer.getIsAdjustingXYForBreakpoint().put(testIP, Boolean.TRUE);
+                            serialPortCommServer.getIsCruising().put(testIP, Boolean.FALSE);
+                            serialPortCommServer.pushCommand(testIP, adjustXCommand + " " + adjustYCommand);
+                            
+                            }*/ else {
                                 String adjustXCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4B, Integer.parseInt(breakPointAngleX.split("\\.")[0]), Integer.parseInt(breakPointAngleX.split("\\.")[1]), "ANGLE_X");
                                 String adjustYCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, Integer.parseInt(breakPointAngleY.split("\\.")[0]), Integer.parseInt(breakPointAngleY.split("\\.")[1]), "ANGLE_Y");
 
