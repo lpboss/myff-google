@@ -87,7 +87,7 @@
 					angleX2=Number(myXML.angleX);
 					angleY=Number(myXML.angleY);
 					show_angleX.text="水平角度：" + myXML.angleX;
-					show_angleY.text="水平角度：" + myXML.angleY;
+					show_angleY.text="垂直角度：" + myXML.angleY;
 					show_alertMax.text="最大值：" + myXML.alertMax;
 					if (angleX != angleX2){
 						if(angleX<90&&angleX2>270){//逆时针旋转，经过零点
