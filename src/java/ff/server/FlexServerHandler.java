@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.BufferUnderflowException;
 import java.nio.channels.ClosedChannelException;
 
+import net.sf.json.JSONObject;
+
 import org.xsocket.MaxReadSizeExceededException;
 import org.xsocket.connection.IConnectHandler;
 import org.xsocket.connection.IConnectionTimeoutHandler;
@@ -65,17 +67,16 @@ public class FlexServerHandler implements IDataHandler, IConnectHandler,
     public boolean onData(INonBlockingConnection connection)
             throws IOException, BufferUnderflowException,
             ClosedChannelException, MaxReadSizeExceededException {
-    	//接收客户端发送的信息。客户端发送<headIp>xxx.xxx.xxx.xxx</headIp>，以切换查询的云台ip
+    	//接收客户端发送的信息（json格式），以切换查询的云台ip
         String data = connection.readStringByDelimiter("\n");
-        if (data != null && data.indexOf("<headIp>") > -1
-                && data.indexOf("</headIp>") > -1) {
-            String headIp = data.substring(8, data.indexOf("</headIp>"));
+        if (data != null) {
+        	JSONObject jsonObject = JSONObject.fromObject(data);
+            String ptzIp = jsonObject.getString("ptzIp");
+            String alertIp = jsonObject.getString("alertIp");
             
             //根据云台ip，发送相关云台信息
-            serialPortCommServer.sendHeadInfo(connection, headIp);
-
             while (connection != null && connection.isOpen()) {
-                serialPortCommServer.sendHeadInfo(connection, headIp);
+                serialPortCommServer.sendHeadInfo(connection, ptzIp,alertIp);
 
                 //以0.1秒为间隔，循环发送
                 try {

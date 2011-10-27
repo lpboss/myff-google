@@ -33,10 +33,11 @@ public class RTSPStreamRecordTask {
 
 	/**
 	 * 每10分钟/600秒生成一个视频录像文件
-	 * 
+	 * 目前存储的是ip摄像机或编码器输出的元素rtsp视频流，这样会增加一倍的带宽占用
+	 * 如果改为存储转发后的rtsp视频流，会出现不稳定的情况，原因未明
 	 * @throws InterruptedException
 	 */
-	@Scheduled(fixedDelay = 600000)
+	@Scheduled(fixedRate = 600000)
     public synchronized void record() throws InterruptedException {
 		//流媒体参数
 		String[] mediaOptions = { ":rtsp-caching=0", ":no-sout-rtp-sap",
@@ -54,7 +55,7 @@ public class RTSPStreamRecordTask {
 				players.put(ip+".ch1", player_file1);					
 			}
 			
-			String input_ch1_file = "rtsp://localhost:"+port+"/"+ip+"/ch1";
+			String input_ch1_file = "rtsp://admin:12345@192.168.254.64/h264/ch1/main/av_stream";
 			String output_ch1_file = ":sout=#std{access=file,mux=ts,dst="+createFilePath(ip,"ch1")+"\\"+formatFileName()+"}";	
 			
 			player_file1.setStandardMediaOptions(mediaOptions);
@@ -74,7 +75,7 @@ public class RTSPStreamRecordTask {
 				player_file2 = mediaPlayerFactory.newHeadlessMediaPlayer();
 				players.put(ip+".ch2", player_file2);					
 			}
-			String input_ch2_file = "rtsp://localhost:"+port+"/"+ip+"/ch2";
+			String input_ch2_file = "rtsp://admin:12345@192.168.254.64/h264/ch2/main/av_stream";
 			String output_ch2_file = ":sout=#std{access=file,mux=ts,dst="+createFilePath(ip,"ch2")+"\\"+formatFileName()+"}";	
 			
 			player_file2.setStandardMediaOptions(mediaOptions);

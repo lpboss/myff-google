@@ -21,7 +21,11 @@ public class RTSPStreamServerHandler implements Runnable{
 	@Override
 	public void run() {
 		System.setProperty("jna.library.path", jnaLibPath);		
-		
+		streamingToRTSP();
+			
+	}
+	
+	private void streamingToRTSP(){
 		//流媒体参数
 		String[] mediaOptions = { ":rtsp-caching=50", ":no-sout-rtp-sap",
 				":no-sout-standard-sap", ":sout-all", ":sout-keep" };
@@ -53,35 +57,42 @@ public class RTSPStreamServerHandler implements Runnable{
 			players.put(ip+".ch2", player_ch2);	
 			System.out.println("Streaming '" + input_ch2 + "' to '" + output_ch2 + "'");
 			
-			/*
-			//存储第一通道
-			String input_ch1_file = "rtsp://localhost:"+port+"/"+ip+"/ch1";
-			String output_ch1_file = ":sout=#std{access=file,mux=ts,dst=D:\\"+ip+".1.mp4}";	
-			
-			HeadlessMediaPlayer player_file1 = mediaPlayerFactory.newHeadlessMediaPlayer();
-			player_file1.setStandardMediaOptions(mediaOptions);
-			player_file1.playMedia(input_ch1_file, output_ch1_file);
-			
-			//players.put(ip+"ch1", player_file1);	
-			System.out.println("Streaming '" + input_ch1 + "' to '" + output_ch1_file + "'");
-			*/
-		}		
-	}
-
-	public void stop(){		
-		//释放HeadlessMediaPlayer资源
-		for(Map.Entry <String,HeadlessMediaPlayer> entry:players.entrySet())   {
-			if(entry.getValue()!=null){
-				entry.getValue().release();
-				System.out.println(entry.getValue());
-			}
 		}
+	}
+	
+	private void streamingToHTTP(){
+		//流媒体参数
+		String[] mediaOptions = { ":sout-udp-caching=0", ":no-sout-rtp-sap",
+				":no-sout-standard-sap", ":sout-all", ":sout-keep" };
 		
-		//释放MediaPlayerFactory资源
-		mediaPlayerFactory.release();
-		
-		//清空hashmap
-		players.clear();
+		mediaPlayerFactory = new MediaPlayerFactory();
+
+		//云台ip列表，从数据库获取
+		String[] ptzs={"192.168.254.64"};
+		for(String ip:ptzs){	
+			//转发第一通道
+			String input_ch1 = "rtsp://admin:12345@"+ip+"/h264/ch1/main/av_stream";
+			String output_ch1 = ":sout=#transcode{vcodec=h264,acodec=mp3,samplerate=44100}:duplicate{dst=std{access=http{mime=video/x-flv},mux=ffmpeg{mux=flv},dst=:33333/stream.flv}}";	
+			
+			HeadlessMediaPlayer player_ch1 = mediaPlayerFactory.newHeadlessMediaPlayer();
+			player_ch1.setStandardMediaOptions(mediaOptions);
+			player_ch1.playMedia(input_ch1, output_ch1);
+			
+			players.put(ip+".ch1", player_ch1);	
+			System.out.println("Streaming '" + input_ch1 + "' to '" + output_ch1 + "'");
+			
+			//转发第二通道
+			String input_ch2 = "rtsp://admin:12345@"+ip+"/h264/ch2/main/av_stream";
+			String output_ch2 = ":sout=#rtp{sdp=rtsp://:"+port+"/"+ip+"/ch2}";				
+			
+			HeadlessMediaPlayer player_ch2 = mediaPlayerFactory.newHeadlessMediaPlayer();
+			player_ch2.setStandardMediaOptions(mediaOptions);
+			player_ch2.playMedia(input_ch2, output_ch2);
+			
+			players.put(ip+".ch2", player_ch2);	
+			System.out.println("Streaming '" + input_ch2 + "' to '" + output_ch2 + "'");
+			
+		}
 	}
 	
 	public int getPort() {
