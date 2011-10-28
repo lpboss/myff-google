@@ -205,4 +205,13 @@ public class PTZCruiseTask {
             serialPortCommServer.getPtzOrientation().put(testIP, "down");
         }
     }
+
+    /**
+     *作者：jerry
+     *描述：根据热值，判断是否为火警。
+     */
+    @Scheduled(fixedDelay = 15)
+    public synchronized void judgeFireAlarm() {
+        System.out.println("当前热值：" + serialPortCommServer.getAlert("192.168.1.50"));
+    }
 }
