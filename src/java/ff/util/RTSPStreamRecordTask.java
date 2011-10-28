@@ -60,11 +60,13 @@ public class RTSPStreamRecordTask {
 			
 			player_file1.setStandardMediaOptions(mediaOptions);
 			//开始写入录像文件，如果rtsp转发尚未完成启动，则等待1秒后重试
+			/*
 			while(!player_file1.startMedia(input_ch1_file, output_ch1_file)){
 				Thread.sleep(1000);
 				player_file1.stop();
 				output_ch1_file = ":sout=#std{access=file,mux=ts,dst="+createFilePath(ip,"ch1")+"\\"+formatFileName()+"}";
 			}
+			*/
 			System.out.println("Streaming '" + input_ch1_file + "' to '" + output_ch1_file + "'");
 			
 			//存储第二通道

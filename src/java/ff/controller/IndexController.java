@@ -4,15 +4,18 @@
  */
 package ff.controller;
 
-import ff.service.RoleService;
-import ff.service.UserService;
 import java.io.IOException;
 import java.io.PrintWriter;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
+
+import ff.service.RoleService;
+import ff.service.UserService;
 
 /**
  *
@@ -32,14 +35,30 @@ public class IndexController extends MultiActionController {
         this.roleService = roleService;
     }
     
-
+    /**
+     * 系统首页
+     * @param request
+     * @param response
+     * @return
+     * @throws
+     */
     public ModelAndView index(HttpServletRequest request, HttpServletResponse response) {
+        ModelAndView mav = new ModelAndView();
+        return mav;
+    }
+
+    /**
+     * 用户管理页（原首页），以后需调整
+     * @param request
+     * @param response
+     * @return
+     * @throws
+     */
+    public ModelAndView index2(HttpServletRequest request, HttpServletResponse response) {
 
         String path = request.getContextPath();
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
         
-        
-        logger.info("你好。。。。。。。。。。。。。。。。。。。。。。。。。。。Begin Index");
         String menusJSON = roleService.getRoleAllMenus(Long.parseLong("1"));
         /*List<Object[]> moduleIdList = roleService.getRoleAllMenus((long)1);
         logger.info("Menu Module Ready....................................");
@@ -55,13 +74,12 @@ public class IndexController extends MultiActionController {
         return mav;
     }
 
+    
     /**
      *作者：jerry
      *描述：登录页面
      */
     public void validateUser(HttpServletRequest request, HttpServletResponse response) {
-        logger.info("validate.......user..............");
-        logger.debug("Fuck...........................................");
         String loginId = request.getParameter("user_name");
         String password = request.getParameter("pwd");
         String jsonStr = userService.validateUser(loginId, password);
