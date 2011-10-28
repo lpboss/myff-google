@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   minWidth="360" minHeight="270" creationComplete="init()">	
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:Image id="m" x="0" y="0" width="100%" height="100%" smooth="true" smoothingQuality="high"/>
+	<s:Image id="b" x="0" y="0" width="100%" height="100%" smooth="true" smoothingQuality="high"
+			 source="../images/bg.png"/>
+	<s:Image id="p" x="146" y="25" width="8" height="135" smooth="true" smoothingQuality="high"
+			 source="../images/pointer.png"/>
+	<s:Label id="status" x="10" y="0" width="200" text="" visible="false" color="0xFFFFFF" />
+	<s:Label id="show_angleX" x="10" y="10" width="100" text="" visible="true" color="0xFFFFFF" />
+	<s:Label id="show_angleY" x="10" y="30" width="100" text="" visible="true" color="0xFFFFFF" />
+	<s:Label id="show_alertMax" x="10" y="50" width="100" text="" visible="true" color="0xFFFFFF" />
+	<fx:Script>
+		<![CDATA[			
+			import flash.display.Stage;
+			import flash.display.StageAlign;
+			import flash.display.StageDisplayState;
+			import flash.display.StageScaleMode;
+			import flash.events.Event;
+			import flash.events.FullScreenEvent;
+			import flash.events.MouseEvent;
+			import flash.external.ExternalInterface;
+			import flash.net.Socket;
+			import flash.utils.ByteArray;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.effects.Rotate;
+			import mx.utils.URLUtil;
+			
+			private var socket:Socket=new Socket();//创建Socket对象	
+			private var port:int=8888;//socket服务器端口		
+			private var pointer:Rotate = null;//指针对象			
+			private var angleX:Number = 0;//云台水平角度
+			private var angleX2:Number = 0;//云台水平角度
+			private var angleY:Number = 0;//云台垂直角度
+			private var centerX:Number;
+			private var centerY:Number;
+			private var pause:Boolean=false;//是否暂停指针旋转
+			private var ptzIp:String="127.0.0.1";//请求连接的云台IP，从客户端javascript传入
+			private var alertIp:String="127.0.0.1";//请求连接的报警传感器IP，从客户端javascript传入
+			
+			//初始化socket连接
+			private function init():void{
+				port =this.parameters.port;//从参数中获取socket服务器端口
+				//ip =this.parameters.ip;//从参数中获取请求连接的云台IP
+				//m.source =this.parameters.map;//从参数中获取背景地图的url
+				
+				connect();//连接socket服务器
+
+				pointer = new Rotate(p);
+				pointer.duration = 50;//指针转动效果持续时间
+				pointer.originX = 4;
+				pointer.originY = 125;				
+				
+				this.addEventListener(Event.ADDED_TO_STAGE, resizeStage);
+				this.addEventListener(Event.RESIZE, resizeStage);
+				
+				//鼠标双击全屏窗口
+				this.doubleClickEnabled=true;
+				this.addEventListener(MouseEvent.DOUBLE_CLICK, toggleFullScreen);
+				
+				ExternalInterface.addCallback("setChannel",setChannel);
+			}
+
+			//发送数据到服务器
+			private function sendMsg(msg:String):void{
+				socket.writeUTFBytes(msg+"\n");
+				socket.flush();
+			}
+			
+			//从服务器接收数据
+			private function recieveMsg(event:ProgressEvent):void{
+				var msg:String="";
+				//循环读取数据，socket的bytesAvailable对象存放了服务器传来的所有数据
+				while(socket.bytesAvailable){
+					msg+=socket.readUTFBytes(socket.bytesAvailable);
+					
+				}
+				if(!pause){
+					var myXML:XML = new XML(msg);
+					angleX2=Number(myXML.angleX);
+					angleY=Number(myXML.angleY);
+					show_angleX.text="水平角度：" + myXML.angleX;
+					show_angleY.text="垂直角度：" + myXML.angleY;
+					show_alertMax.text="最大值：" + myXML.alertMax;
+					if (angleX != angleX2){
+						if(angleX<90&&angleX2>270){//逆时针旋转，经过零点
+							angleX2=angleX2-360;
+							rotate(pointer,angleX,angleX2);
+							angleX=angleX2+360;
+						}else if(angleX>270&&angleX2<90){//顺时针旋转，经过零点
+							angleX=angleX-360;
+							rotate(pointer,angleX,angleX2);
+							angleX=angleX2;
+						}else{
+							rotate(pointer,angleX,angleX2);
+							angleX=angleX2;
+						}
+					}
+				}
+				
+				
+			}
+			
+			//Socket建立连接时的回调函数
+			private function connect():void{
+				var url:String =this.url;
+				URLUtil.getServerName(url);
+				//status.text ="与服务器连接中...";
+				if(socket!=null && socket.connected){
+					socket.close();
+				}
+				socket.connect(URLUtil.getServerName(url),port);//连接服务器   
+				socket.addEventListener(Event.CONNECT,toConnected);//监听是否连接上服务器
+				socket.addEventListener(Event.CLOSE,toClosed);//监听套接字连接是否关闭
+				socket.addEventListener(IOErrorEvent.IO_ERROR,toError);
+				socket.addEventListener(SecurityErrorEvent.SECURITY_ERROR,toError);				
+				socket.addEventListener(ProgressEvent.SOCKET_DATA,recieveMsg); //监听服务器新信息
+				
+			}
+			
+			//Socket建立连接时的回调函数
+			private function toConnected(event:Event):void{
+				//status.text ="已经成功连接到服务器！";
+				sendMsg("{ptzIp:"+ptzIp+",alertIp:"+alertIp+"}");//发送云台IP，json格式
+			}
+			
+			//Socket关闭连接时的回调函数
+			private function toClosed(event:Event):void{
+				//status.text ="和服务器断开!";
+				connect();
+			}
+			
+			//Socket连接出错时的回调函数
+			private function toError(event:Event):void{
+				//status.text ="连接服务器失败";
+				connect();
+			}
+			
+			//旋转指针
+			private function rotate(rot:Rotate, from_:Number, to_:Number):void{
+				rot.end();
+				rot.angleFrom = from_;
+				rot.angleTo = to_;
+				rot.play();
+			}			
+			
+			//窗口大小改变时调整页面布局
+			private function resizeStage(evt:Event):void{
+				pause=true;//暂停指针旋转
+				pointer.end();
+				p.scaleX=stage.stageHeight/300;
+				p.scaleY=stage.stageHeight/300;
+				
+				centerX = stage.stageWidth/2;
+				centerY = stage.stageHeight/2;
+				
+				pointer.originX = Math.round(p.width/2*stage.stageHeight/300);
+				pointer.originY = Math.round(p.height*stage.stageHeight/300-10*stage.stageHeight/300);
+				
+				p.x=centerX+pointer.originY*Math.sin(angleX*(Math.PI/180))-pointer.originX*Math.cos(angleX*(Math.PI/180));
+				p.y=centerY-pointer.originY*Math.cos(angleX*(Math.PI/180))-pointer.originX*Math.sin(angleX*(Math.PI/180));
+				
+				
+				//status.text =angleX+"，"+p.width+"，"+p.height+"，"+p.x+"，"+p.y+"，"+pointer.originX+"，"+pointer.originY;
+				pause=false;//恢复指针旋转		
+			}
+			
+			//双击全屏窗口
+			private function toggleFullScreen(event:MouseEvent):void{
+				if (stage.displayState == StageDisplayState.FULL_SCREEN ) {
+					//当前是全屏模式, 切换到一般模式
+					stage.displayState = StageDisplayState.NORMAL;
+				} else if (stage.displayState ==  StageDisplayState.NORMAL ) {
+					//当前是一般模式, 切换到全屏模式
+					stage.displayState = StageDisplayState.FULL_SCREEN;
+				}
+			}
+			
+			public function setChannel(ptzIp:String,alertIp:String,map:String):void {
+				if(ptzIp!=null&&ptzIp!=""&&ptzIp!=this.ptzIp){
+					this.ptzIp=ptzIp;
+					this.alertIp=alertIp;
+					connect();
+				}
+				if(map!=null&&map!=""){
+					m.source=map;
+				}
+					status.text ="！"+map;
+			}
+		]]>
+	</fx:Script>
+</s:Application>
