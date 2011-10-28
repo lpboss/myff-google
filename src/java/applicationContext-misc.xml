@@ -23,11 +23,11 @@
     	<property name="rtspStreamServerPort" value="554" />
     	<property name="jnaLibPath" value="C:\\Program Files\\VideoLAN\\VLC" />
     </bean>
-    
+    <!--
     <bean id="rtspStreamRecordTask" class="ff.util.RTSPStreamRecordTask">
     	<property name="port" value="554" />
     	<property name="recordFilePath" value="D:\\RecordFile" />
     </bean>
-     
+    -->  
     <bean id="ptzUtil" class="ff.util.PTZUtil" />
 </beans>

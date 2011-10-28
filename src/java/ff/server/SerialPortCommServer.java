@@ -500,7 +500,7 @@ public class SerialPortCommServer {
 	 */
 	public int hexString2Int(String s) {
 		int i = Integer.parseInt(s, 16);
-		if ((i >> 15) == 1) {// 判断最高位，如果为1，表明是负数，先取反，再去掉最高位符号位，再加一，然后取负值
+		if ((i >> 15) == 1) {// 判断最高位，如果为1，表明是负数，先取反，再去掉最高位符号位，再加1，然后取负值
 			i = -((~i & 0x7fff) + 1);
 		}
 		return i;
