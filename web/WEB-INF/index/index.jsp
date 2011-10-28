@@ -5,399 +5,142 @@
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
-<html>
-    <head>
-        <title>Fire Proofing</title>
-        <link href="<%=basePath%>stylesheets/images.css" media="screen" rel="stylesheet" type="text/css" />
-        <link href="<%=basePath%>javascripts/ext4/resources/css/ext-all.css" media="screen" rel="stylesheet" type="text/css" />
-        <script src="<%=basePath%>javascripts/ext4/ext-all.js" type="text/javascript"></script>
-        <script src="<%=basePath%>javascripts/ext4/locale/ext-lang-zh_CN.js" type="text/javascript"></script>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>浩海森林防火预警平台</title>
+<script src="<%=basePath%>javascripts/ext4/ext-all.js" type="text/javascript"></script>
+<script src="<%=basePath%>javascripts/ext4/locale/ext-lang-zh_CN.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="<%=basePath%>javascripts/greybox/gb_styles.css" media="all" />
+<script type="text/javascript">var GB_ROOT_DIR = "<%=basePath%>javascripts/greybox/";</script>
+<script type="text/javascript" src="<%=basePath%>javascripts/greybox/AJS.js"></script>
+<script type="text/javascript" src="<%=basePath%>javascripts/greybox/AJS_fx.js"></script>
+<script type="text/javascript" src="<%=basePath%>javascripts/greybox/gb_scripts.js"></script>
+<script>
 
-        <script type="text/javascript">
-            var pageSize = 10;
-            Ext.require([
-                'Ext.grid.*',
-                'Ext.data.*',
-                'Ext.util.*',
-                'Ext.state.*',
-                'Ext.form.*',
-                'Ext.layout.*',
-                //'Ext.tree.*',
-                'Ext.tab.Panel',
-                'Ext.selection.CellModel'
-            ]);
+//当前云台是否转动。
+var isTurning = false;
+//当前正在转动的方向
+var turningDirection = "stop";
 
-            Ext.QuickTips.init();
-            //Ext.Ajax.defaultPostHeader += ";charset=UTF-8";
-            Ext.data.Connection.prototype.method = 'POST';
-            //这是一个小补丁，阻止在IE下按Backspce引起乱跳转页面
+function ptzAction(ptzActionStr){
+	//如果方向相同，就要停止转动。
+	console.warn("Before:   ptzActionStr:",ptzActionStr,",turningDirection:",turningDirection,",isTurning:"+isTurning);
+	if (ptzActionStr === turningDirection){
+		isTurning = false;
+		turningDirection = "stop";
+		ptzActionStr = "stop";
+	}
+				
+	Ext.Ajax.request({
+		url : '<%=basePath%>ptz/ptzAction.htm',
+		success : function (result, request) {
+			turningDirection = ptzActionStr;
+			if(ptzActionStr == "stop"){
+				isTurning = false;
+			}else{
+				isTurning = true;
+			}
+			console.warn("After :   ptzActionStr:",ptzActionStr,",turningDirection:",turningDirection,",isTurning:"+isTurning);
+		},
+		failure : function (result, request){
+			Ext.MessageBox.show({
+				title: '消息',
+				msg: "通讯失败，请从新操作",
+				buttons: Ext.MessageBox.OK,
+				icon: Ext.MessageBox.WARNING
+			});
+		},
+		method : 'GET',
+		params : {
+			action_type : ptzActionStr
+		}
+	});
+}
 
+function setChannel(){
+	document.getElementById("map").setChannel("192.168.254.65","192.168.1.50","../images/map.png");
+}
+</script>
+</head>
 
-            // Add the additional 'advanced' VTypes
-            Ext.apply(Ext.form.field.VTypes, {
-                daterange: function(val, field) {
-                    var date = field.parseDate(val);
+<body>
+<p>监控预览 报警事件 录像查询 <a href="index2.htm" title="用户设置" rel="gb_page[800, 600]">用户设置</a> 系统设置</p>
+<table width="100%" border="1">
+  <tr>
+    <td width="30%">
+<OBJECT classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="330" height="270" id="vlc" events="True">
+            <param name="Src" value="rtsp://admin:12345@192.168.254.64/h264/ch1/main/av_stream" />
+            <param name="ShowDisplay" value="True" />
+            <param name="AutoLoop" value="False" />
+            <param name="AutoPlay" value="true" />
+            <embed id="vlcEmb"  type="application/x-google-vlc-plugin" version="VideoLAN.VLCPlugin.2" autoplay="yes" loop="no" width="330" height="270" target="rtsp://admin:12345@192.168.254.64/h264/ch1/main/av_stream" ></embed>
+        </OBJECT>
+    </td>
+    <td width="70%" rowspan="2">
+<OBJECT classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="960" height="540" id="vlc" events="True">
+            <param name="Src" value="rtsp://admin:12345@192.168.254.64/h264/ch2/main/av_stream" />
+            <param name="ShowDisplay" value="True" />
+            <param name="AutoLoop" value="False" />
+            <param name="AutoPlay" value="true" />
+            <embed id="vlcEmb"  type="application/x-google-vlc-plugin" version="VideoLAN.VLCPlugin.2" autoplay="yes" loop="no" width="960" height="540" target="rtsp://admin:12345@192.168.254.64/h264/ch2/main/av_stream" ></embed>
+        </OBJECT>
+    </td>
+  </tr>
+  <tr>
+    <td>
+<object id="map" type="application/x-shockwave-flash" data="<%=basePath%>images/map.swf" width="330" height="270">
+            <param name="movie" value="<%=basePath%>images/map.swf" />
+            <param name="quality" value="high" />
+            <param name="allowScriptAccess" value="sameDomain" />
+            <param name="allowFullScreen" value="true" />
+            <param name="FlashVars" value="port=8004" />
+        </object>
+    </td>
+  </tr>
+</table>
+<table width="100%" border="1">
+  <tr>
+    <td width="20%" nowrap="nowrap"><input type="button" name="button" id="button" value="亚安云台" onclick="setChannel();" /></td>
+    <td width="20%" nowrap="nowrap"><input type="button" name="button3" id="button3" value="左上" onclick="ptzAction('up_left');" />
+    <input type="button" name="button4" id="button4" value=" 上 " onclick="ptzAction('up');" />
+    <input type="button" name="button5" id="button5" value="右上" onclick="ptzAction('up_right');" /></td>
+    <td width="20%" nowrap="nowrap"><input type="button" name="button12" id="button12" value="远" />
+      调焦
+    <input type="button" name="button14" id="button14" value="近" /></td>
+    <td width="20%" nowrap="nowrap"><input type="button" name="button18" id="button18" value="螺旋扫描" />
+    <input type="button" name="button33" id="button35" value="设置" /></td>
+    <td nowrap="nowrap"><input type="button" name="button30" id="button31" value="显示模式" />      <input type="button" name="button28" id="button29" value="轮询监视" /></td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap"><input type="button" name="button2" id="button2" value="飞跃云台" /></td>
+    <td nowrap="nowrap"><input type="button" name="button6" id="button6" value=" 左 " onclick="ptzAction('left');" />
+    <input type="button" name="button7" id="button7" value="巡航" onclick="ptzAction('cruise');" />
+    <input type="button" name="button8" id="button8" value=" 右 " onclick="ptzAction('right');" /></td>
+    <td nowrap="nowrap"><input type="button" name="button13" id="button13" value="左" />
+      聚焦
+        <input type="button" name="button15" id="button15" value="右" /></td>
+    <td nowrap="nowrap"><input type="button" name="button16" id="button16" value="削苹果皮" />
+    <input type="button" name="button34" id="button36" value="设置" /></td>
+    <td nowrap="nowrap"><input type="button" name="button27" id="button28" value="图像抓拍" />
+    <input type="button" name="button29" id="button30" value="声音对讲" /></td>
+  </tr>
+  <tr>
+    <td nowrap="nowrap">&nbsp;</td>
+    <td nowrap="nowrap">
+    <input type="button" name="button10" id="button10" value="左下" onclick="ptzAction('down_left');" />
+    <input type="button" name="button11" id="button11" value=" 下 " onclick="ptzAction('down');" />
+    <input type="button" name="button9" id="button9" value="右下" onclick="ptzAction('down_right');" /></td>
+    <td nowrap="nowrap"><input type="button" name="button31" id="button32" value="大" />
+光圈
+  <input type="button" name="button31" id="button33" value="小" /></td>
+    <td nowrap="nowrap"><input type="button" name="button17" id="button17" value="预置点巡航" />
+    <input type="button" name="button35" id="button37" value="设置" /></td>
+    <td nowrap="nowrap"><input type="button" name="button19" id="button19" value="雨刷开" />
+    <input type="button" name="button19" id="button20" value="透雾开" />
+    <input type="button" name="button32" id="button34" value="声音开" /></td>
+  </tr>
+</table>
 
-                    if (!date) {
-                        return false;
-                    }
-                    if (field.startDateField && (!this.dateRangeMax || (date.getTime() != this.dateRangeMax.getTime()))) {
-                        var start = field.up('form').down('#' + field.startDateField);
-                        start.setMaxValue(date);
-                        start.validate();
-                        this.dateRangeMax = date;
-                    }
-                    else if (field.endDateField && (!this.dateRangeMin || (date.getTime() != this.dateRangeMin.getTime()))) {
-                        var end = field.up('form').down('#' + field.endDateField);
-                        end.setMinValue(date);
-                        end.validate();
-                        this.dateRangeMin = date;
-                    }
-                    /*
-                     * Always return true since we're only using this vtype to set the
-                     * min/max allowed values (these are tested for after the vtype test)
-                     */
-                    return true;
-                },
-
-                daterangeText: 'Start date must be less than end date',
-
-                password: function(val, field) {
-                    if (field.initialPassField) {
-                        var pwd = field.up('form').down('#' + field.initialPassField);
-                        return (val == pwd.getValue());
-                    }
-                    return true;
-                },
-
-                passwordText: 'Passwords do not match'
-            });
-
-            Ext.onReady(function() {
-
-                var logoutButton = Ext.create('Ext.Button', {
-                    text: '退出系统',
-                    iconCls: 'exit',
-                    handler: function(){
-                        Ext.Ajax.request({
-                            url : '<%=basePath%>index/logout.htm',
-                            success : function (result, request) {
-                                window.document.location.href = '<%=basePath%>index/login.htm';
-                            },
-                            failure : function (result, request){
-                                Ext.MessageBox.show({
-                                    title: '消息',
-                                    msg: "通讯失败，请从新操作",
-                                    buttons: Ext.MessageBox.OK,
-                                    icon: Ext.MessageBox.WARNING
-                                });
-                            },
-                            method : 'POST'
-                        });
-                    }
-                })
-
-                var topPanel = Ext.create('Ext.panel.Panel', {
-                    height: 30,
-                    bbar: ["<b style='font-size:14px;'>您好：<%=session.getAttribute("userName")%>", '->','-',logoutButton],
-                    region:'north'
-                });
-
-
-                //Extjs 4.0
-
-                var accordition = Ext.create('Ext.panel.Panel', {
-                    region:'west',
-                    margins:'5 0 5 5',
-                    split:true,
-                    width: 140,
-                    collapseMode: 'mini',
-                    layout:'accordion'
-                });
-
-                //EXTJS 4
-                var workTabs = Ext.create('Ext.tab.Panel', {
-                    region:'center',
-                    //ADD: handler
-                    onTitleDbClick:function(e,target,o){
-                        accordition.toggleCollapse(true);
-                    }
-                });
-
-                var reminderPanel = Ext.create('Ext.panel.Panel', {
-                    title: '系统提醒',
-                    id:'reminder_panel',
-                    //html: '&lt;empty panel&gt;',
-                    //cls:'cellpadding:10',
-          
-                    //bodyStyle: 'padding:15px;align:center',
-                    listeners: {
-                        //expand: showAgileDiagram
-                    },
-                    loader:{}
-                });
-                workTabs.add(reminderPanel).show();
-        
-        
-                workTabs.openTab = function(node) {
-                    // var id = node.attributes.url;
-                    var id = node.attributes.url;
-                    var url = node.attributes.url;
-                    var tabTitle = node.text;
-          
-                    workTabs.getItem(0).setTitle(tabTitle);
-                    workTabs.getItem(0).load({
-                        url: url,
-                        scripts: true
-                    });
-                    //workTabs.getItem(0).getUpdater().update(url);
-                    workTabs.getItem(0).show();
-                };
-
-                var viewport = Ext.create('Ext.container.Viewport', {
-                    layout: 'border',
-                    items: [topPanel,accordition, workTabs]
-                });
-
-                //添加详细菜单
-                function renderMenu(){
-                    var menus = eval(<%= request.getAttribute("menus")%>);
-
-                    if (!menus) { return; }
-                    for (var i = 0; i < menus.length; i++) {
-                        var itemModuleMenu = menus[i];
-                        var title = "<div style='background:url(" + itemModuleMenu.image +
-                            ") no-repeat;padding-left:20px;'>" +
-                            itemModuleMenu.name +
-                            "</div>";
-                        //Extjs 4,模级菜单
-                        var moduleNode = Ext.create('Ext.tree.Panel', {
-                            title: title,
-                            rootVisible: false,
-                            lines: false,
-                            autoScroll: true,
-                            qtips: itemModuleMenu.qitps,
-                            root: {
-                                editable: false,
-                                expanded: true,
-                                text: itemModuleMenu.name,
-                                draggable: false,
-                                children: itemModuleMenu.children
-                            },
-                            listeners: {
-                                itemclick:{
-                                    //Ext.view.View this, Ext.data.Model record, HTMLElement item, Number index, Ext.EventObject e, Object options
-                                    fn: function(view, record, item, index, e, options ){
-                                        workTabs.getActiveTab().setTitle(record.data.text);
-                                        var tab = workTabs.getActiveTab();
-                                        var loader = workTabs.getActiveTab().getLoader();
-                                        workTabs.getActiveTab().getLoader().load({
-                                            url: "<%=basePath%>"+record.data.id,
-                                            scripts: true
-                                        });
-                                        //workTabs.getItem(0).getUpdater().update(url);
-                                        workTabs.getActiveTab().show();
-                                    }
-                                }
-                            }
-                        });
-                        accordition.add(moduleNode);
-                    }
-                    accordition.doLayout();
-                }
-                renderMenu();
-
-
-        
-                //员工下拉框模型
-                Ext.define('User', {
-                    extend : 'Ext.data.Model',
-                    fields : [{name: 'id'},
-                        { name: 'number'},
-                        { name: 'name'},
-                        {name: 'loginId'},
-                        {name: 'identityCard'},
-                        {name: 'phone'},
-                        {name: 'email'},
-                        {name: 'address'}, 
-                        {
-                            name: 'role_name',
-                            mapping:'role',
-                            convert:function(value,record){
-                                if(value == ""){
-                                    return "";
-                                }else{
-                                    return value.name;
-                                }
-                            }
-                        },
-                        {name: 'roleId'},
-                        {name: 'isLocked'},
-                        {name: 'createdAt'},
-                        {name: 'updatedAt'}
-                    ]
-                });
-
-                userStore =  Ext.create('Ext.data.Store', {
-                    //autoDestroy : true,
-                    model : 'User',
-                    proxy : {
-                        type : 'ajax',
-                        url : '<%=basePath%>user/getAllUsers.htm?for_cbb=true',
-                        reader : {
-                            type : 'json',
-                            root : 'root',// JSON数组对象名
-                            totalProperty : 'totalProperty'// 数据集记录总数
-                        }
-                    },
-                    pageSize : pageSize
-                });
-
-
-                //员工下拉框模型
-                Ext.define('Role', {
-                    extend : 'Ext.data.Model',
-                    fields : [{name: 'id'},
-                        { name: 'number'},
-                        { name: 'name'},
-                        { name: 'description'},
-                        { name: 'isLocked'},
-                        {name: 'createdAt'},
-                        {name: 'updatedAt'}
-                    ]
-                });
-
-                Ext.define('SysAction', {
-                    extend : 'Ext.data.Model',
-                    fields : [{name: 'id'},
-                        {name: 'name'}
-                    ]
-                });
-
-                sysActionStore = Ext.create('Ext.data.Store', {
-                    //autoDestroy : true,
-                    model : 'SysAction',
-                    proxy : {
-                        type : 'ajax',
-                        url : '<%=basePath%>admin/getAllSysActions.htm',
-                        reader : {
-                            type : 'json',
-                            root : 'root',// JSON数组对象名
-                            totalProperty : 'totalProperty'// 数据集记录总数
-                        }
-                    },
-                    pageSize:10000
-                });
-
-                Ext.define('SysController', {
-                    extend : 'Ext.data.Model',
-                    fields : [{name: 'id'},
-                        {name: 'name'}
-                    ]
-                });
-
-                sysControllerStore = Ext.create('Ext.data.Store', {
-                    //autoDestroy : true,
-                    model : 'SysController',
-                    proxy : {
-                        type : 'ajax',
-                        url : '<%=basePath%>admin/getAllSysControllers.htm',
-                        reader : {
-                            type : 'json',
-                            root : 'root',// JSON数组对象名
-                            totalProperty : 'totalProperty'// 数据集记录总数
-                        }
-                    },
-                    pageSize:200
-                });
-
-                Ext.define('SysPrivilegeDetail', {
-                    extend : 'Ext.data.Model',
-                    fields : [{name: 'id',type:'int'},
-                        {name: 'name'},
-                        {name: 'sysControllerId',type:'int',mapping:'sysController',convert:function(value,record){
-                                if(value == null){
-                                    return "";
-                                }else{
-                                    return value.id;
-                                }
-                            }
-                        },
-                        {name: 'sysActionId',type:'int',mapping:'sysAction',convert:function(value,record){
-                                if(value == null){
-                                    return "";
-                                }else{
-                                    return value.id;
-                                }
-                            }
-                        },
-                        {name: 'params'},
-                        {name: 'sub_type'},
-                        {name: 'description'},
-                        {name: 'createdAt'},
-                        {name: 'isLocked'}
-                    ]
-                });
-
-
-                Ext.define('Privilege', {
-                    extend : 'Ext.data.Model',
-                    fields : [{name: 'id'},
-                        {name: 'name'},
-                        {name: 'number'},
-                        {name: 'sysControllerId',type:'int',mapping:'sysController',convert:function(value,record){
-                                if(value == null){
-                                    return "";
-                                }else{
-                                    return value.id;
-                                }
-                            }
-                        },
-                        {name: 'sysActionId',type:'int',mapping:'sysAction',convert:function(value,record){
-                                if(value == ""||value == null){
-                                    return "";
-                                }else{
-                                    return value.id;
-                                }
-                            }
-                        },
-                        {name: 'description'},
-                        {name: 'parentId',type:'int'},
-                        {name: 'moduleId',mapping: 'parentId'}
-                    ]
-                });
-
-                moduleStore = Ext.create('Ext.data.Store', {
-                    //autoDestroy : true,
-                    model : 'Privilege',
-                    proxy : {
-                        type : 'ajax',
-                        url : '<%=basePath%>privilege/getAllModules.htm',
-                        reader : {
-                            type : 'json',
-                            root : 'root',// JSON数组对象名
-                            totalProperty : 'totalProperty'// 数据集记录总数
-                        }
-                    },
-                    pageSize:100
-                });
-
-                Ext.define('RolesPrivilegeDetail', {
-                    extend : 'Ext.data.Model',
-                    fields : [{name: 'id'},
-                        {name: 'name',mapping:'privilegeDetail.name'},
-                        {name: 'description',mapping:'privilegeDetail.description'},
-                        {name: 'isLocked'}
-                    ]
-                });
-        
-        
-        
-        
-            });      
-        </script>
-    </head>
-    <body>
-        <script src="<%=basePath%>javascripts/application.js" type="text/javascript"></script>
-    </body>
+</body>
 </html>
