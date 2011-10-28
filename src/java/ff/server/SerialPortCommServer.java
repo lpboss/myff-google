@@ -106,6 +106,16 @@ public class SerialPortCommServer {
 		int[] alert = { degree_max, degree_min, degree_avg, x, y };
 		alertMap.put(ip, alert);
 	}
+	
+	/**
+	 * 根据热成像仪传感器ip获取当前的报警值信息
+	 * @param ip
+	 * @return 以int数组的形式回传，顺序分别是 最大值、最小值、平均值、最大值行、最大值列
+	 * @throws
+	 */
+	public int[] getAlert(String ip) {
+		return alertMap.get(ip);
+	}
 
 	/**
 	 * 根据热成像仪传感器ip，获取最大灰度值
