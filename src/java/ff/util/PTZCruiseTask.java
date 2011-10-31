@@ -214,7 +214,6 @@ public class PTZCruiseTask {
     public synchronized void judgeFireAlarm() {
         String testIP = "192.168.254.65";
         //判断，如果当前没有进行置中操作，则从新判断热值 。
-        System.out.println("serialPortCommServer.getIsMovingCenterForFireAlarm().get(testIP):" + serialPortCommServer.getIsMovingCenterForFireAlarm().get(testIP));
         if (serialPortCommServer.getIsMovingCenterForFireAlarm().get(testIP) == null && (serialPortCommServer.getAllowAlarm().get(testIP) == null || serialPortCommServer.getAllowAlarm().get(testIP) == Boolean.TRUE)) {
             //System.out.println("serialPortCommServer.getAlertMax(192.168.1.50)" + serialPortCommServer.getAlertMax("192.168.1.50"));
             if (serialPortCommServer.getAlertMax("192.168.1.50") > 1500) {
@@ -296,35 +295,35 @@ public class PTZCruiseTask {
                 } else {
                     angleStringY2 = String.valueOf(angleY2);
                 }
-                serialPortCommServer.getFineMovingCenterForFireAlarm().put(testIP, angleX1 + "." + angleStringX2 + "|" + adjustXCommand + "|" + angleY1 + "." + angleStringY2 + "|" + adjustXCommand + "|" + new Date().getTime());
-                //serialPortCommServer.getFineMovingCenterForFireAlarm().put(testIP, angleX1 + "." + angleX2 + "|" + adjustXCommand + "|" + angleY1 + "|" + adjustXCommand);
+                serialPortCommServer.getMicroMovingCenterForFireAlarm().put(testIP, angleX1 + "." + angleStringX2 + "|" + adjustXCommand + "|" + angleY1 + "." + angleStringY2 + "|" + adjustXCommand + "|" + new Date().getTime());
+                //serialPortCommServer.getMicroMovingCenterForFireAlarm().put(testIP, angleX1 + "." + angleX2 + "|" + adjustXCommand + "|" + angleY1 + "|" + adjustXCommand);
             }
         } else if (serialPortCommServer.getIsMovingCenterForFireAlarm().get(testIP) == Boolean.TRUE) {
             //如果当前正在微调。判断微调角度是否到位。如果不到位，继续调整。
             String currentAngleX = serialPortCommServer.getAngleXString(testIP);
             String currentAngleY = serialPortCommServer.getAngleYString(testIP);
             System.out.println("火警微调后的角度：" + currentAngleX + "," + currentAngleY);
-            String fineMovingInfo = serialPortCommServer.getFineMovingCenterForFireAlarm().get(testIP);
+            String microMovingInfo = serialPortCommServer.getMicroMovingCenterForFireAlarm().get(testIP);
             Float currentfloatAngleX = Float.parseFloat(currentAngleX);
             Float currentfloatAngleY = Float.parseFloat(currentAngleY);
-            Float fineAngleX = Float.parseFloat(fineMovingInfo.split("\\|")[0]);
-            Float fineAngleY = Float.parseFloat(fineMovingInfo.split("\\|")[2]);
-            System.out.println("火警微调要求角度：" + fineAngleX + "," + fineAngleY);
-            Long fineBeginTime = Long.parseLong(fineMovingInfo.split("\\|")[4]);
+            Float microAngleX = Float.parseFloat(microMovingInfo.split("\\|")[0]);
+            Float microAngleY = Float.parseFloat(microMovingInfo.split("\\|")[2]);
+            System.out.println("火警微调要求角度：" + microAngleX + "," + microAngleY);
+            Long microBeginTime = Long.parseLong(microMovingInfo.split("\\|")[4]);
             //各误差在0.5之内，并且已经过去1秒，即马上停止微调阶段。
-            if (Math.abs(currentfloatAngleX - fineAngleX) < 0.5 && Math.abs(currentfloatAngleY - fineAngleY) < 0.5 && new Date().getTime() - fineBeginTime > 1000) {
+            if (Math.abs(currentfloatAngleX - microAngleX) < 0.5 && Math.abs(currentfloatAngleY - microAngleY) < 0.5 && new Date().getTime() - microBeginTime > 1000) {
                 //调整到位后，清除微调信息。角度误差在0.5度时，停止调整。
                 //到位后，依然不允许巡航，要手工允许巡航。
                 //serialPortCommServer.getAllowCruise().put(testIP, Boolean.TRUE);
-                serialPortCommServer.getFineMovingCenterForFireAlarm().remove(testIP);
+                serialPortCommServer.getMicroMovingCenterForFireAlarm().remove(testIP);
                 serialPortCommServer.getIsMovingCenterForFireAlarm().remove(testIP);
                 System.out.println("微调已经到位了 --------------------------------------------------------------------------");
-            } else if ((Math.abs(currentfloatAngleX - fineAngleX) > 0.5 || Math.abs(currentfloatAngleY - fineAngleY) > 0.5) && new Date().getTime() - fineBeginTime > 1000) {
+            } else if ((Math.abs(currentfloatAngleX - microAngleX) > 0.5 || Math.abs(currentfloatAngleY - microAngleY) > 0.5) && new Date().getTime() - microBeginTime > 1000) {
                 //只要有一个角度有误差，且时间超过1秒，就继续发送调整命令。
-                serialPortCommServer.pushCommand(testIP, fineMovingInfo.split("\\|")[1]);
-                serialPortCommServer.pushCommand(testIP, fineMovingInfo.split("\\|")[3]);
+                serialPortCommServer.pushCommand(testIP, microMovingInfo.split("\\|")[1]);
+                serialPortCommServer.pushCommand(testIP, microMovingInfo.split("\\|")[3]);
                 //设置正在置中状态位。
-                serialPortCommServer.getFineMovingCenterForFireAlarm().put(testIP, fineMovingInfo.split("\\|")[0] + "|" + fineMovingInfo.split("\\|")[1] + "|" + fineMovingInfo.split("\\|")[2] + "|" + fineMovingInfo.split("\\|")[3] + "|" + new Date().getTime());
+                serialPortCommServer.getMicroMovingCenterForFireAlarm().put(testIP, microMovingInfo.split("\\|")[0] + "|" + microMovingInfo.split("\\|")[1] + "|" + microMovingInfo.split("\\|")[2] + "|" + microMovingInfo.split("\\|")[3] + "|" + new Date().getTime());
             }
         }
     }
