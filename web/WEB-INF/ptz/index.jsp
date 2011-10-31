@@ -106,13 +106,14 @@
                     }
                 })  
                 
-                var leftButton = Ext.create('Ext.Button', {
-                    text: '设置当前监控云台为192.168.254.65',
-                    renderTo:'ptz_setChannel',
+                var clearFireAlarmButton = Ext.create('Ext.Button', {
+                    text: '清火警相关值',
+                    //iconCls: 'arrow_down_right',
+                    renderTo:'clear_fire_alarm',
                     handler: function(){
-                    	document.getElementById("map").setChannel("192.168.254.65","192.168.1.50","../images/map.png");
+                        ptzAction("clear_fire_alarm");
                     }
-                })                 
+                })
             });
             
             function ptzAction(ptzActionStr){
@@ -192,21 +193,25 @@
                                 <td id="ptz_up_left"></td>
                                 <td id="ptz_up"></td>
                                 <td id="ptz_up_right"></td>
+                                <td id="clear_fire_alarm"></td>
                             </tr>
                             <tr>
                                 <td id="ptz_left"></td>
                                 <td id="ptz_cruise"></td>
                                 <td id="ptz_right"></td>
+                                <td></td>
                             </tr>
                             <tr>
                                 <td id="ptz_down_left"></td>
                                 <td id="ptz_down"></td>
                                 <td id="ptz_down_right"></td>
+                                <td></td>
                             </tr>
                             <tr>
                                 <td></td>
                                 <td></td>
                                 <td id="ptz_setChannel"></td>
+                                <td></td>
                             </tr>                            
                         </table>
                     </div>
