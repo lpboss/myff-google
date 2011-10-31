@@ -237,10 +237,12 @@ public class PTZCruiseTask {
                  */
                 String currentAngleX = serialPortCommServer.getAngleXString(testIP);
                 String currentAngleY = serialPortCommServer.getAngleYString(testIP);
-                System.out.println("当前热值：" + serialPortCommServer.getAlertMax("192.168.1.50"));
+                int maxHeatValue = serialPortCommServer.getAlertMax("192.168.1.50");
+                System.out.println("当前热值：" + maxHeatValue);
                 System.out.println("热成像X:" + heatPosX + ",当前水平角度：" + currentAngleX);
                 System.out.println("热成像Y:" + heatPosY + "当前垂直角度：" + currentAngleY);
-
+                //X|Y|AngleX|AngleY|MaxValue|Time
+                serialPortCommServer.getSceneFireAlarmInfo().put(testIP, heatPosX + "|" + heatPosY + "|" + currentAngleX + "|" + currentAngleY + "|" + maxHeatValue + "|" + new Date().getTime());
                 int angleY1 = Integer.parseInt(currentAngleY.split("\\.")[0]);//Y1为角度的整数部分，2为小数点部分
                 int angleY2 = Integer.parseInt(currentAngleY.split("\\.")[1]);
                 int angleX1 = Integer.parseInt(currentAngleX.split("\\.")[0]);
