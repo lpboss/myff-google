@@ -28,7 +28,7 @@ public class SerialPortCommServer {
     // key为ip,value为true或false，当value为false时，自动巡航方法不再控制巡航。主要是标记哪些云台当前允许其实自动巡航。
     private static Map<String, Boolean> allowCruise = new ConcurrentHashMap<String, Boolean>();
     // key为ip,value为true或false，当value为false时。主要是标记哪些云台当前为允许对火警作出反应为null或true都可以反应为false时不允许再次对火警反应。
-    private static Map<String, Boolean> allowAlarm = new ConcurrentHashMap<String, Boolean>();            
+    private static Map<String, Boolean> allowAlarm = new ConcurrentHashMap<String, Boolean>();
     // key为ip,value为true或false，当value为false时，当前正在巡航的云台。当前正在巡航的云台，不会重复发送巡航右转命令。以减少命令发送量。
     private static Map<String, Boolean> isCruising = new ConcurrentHashMap<String, Boolean>();
     // 为巡航，比如削苹果皮等准备。其中Key为ip.value为预置的Y角度，只有达到此角度时才接受其它命令。
@@ -37,6 +37,10 @@ public class SerialPortCommServer {
     private static Map<String, Boolean> isMovingCenterForFireAlarm = new ConcurrentHashMap<String, Boolean>();
     //火警时，为调整热值到中心时，进行的1度调整，其中的值格式为X1|X1Command|Y1|Y1Command|Time，X1，Y1代表水平，垂直角度。Time为调整开始时的时间。
     private static Map<String, String> microMovingCenterForFireAlarm = new ConcurrentHashMap<String, String>();
+    //火警时，当场保存的起火方位。由于火警地点随时变化，所以这里只记录最初的方位。Key为IP，值为：X|Y|Time
+    private static Map<String, String> sceneHeatValue = new ConcurrentHashMap<String, String>();
+    
+    
     //火警时，最终到调整到的中心角度，其中的值格式为X1|X1Command|Y1|Y1Command，X1，Y1代表水平，垂直角度。
     private static Map<String, String> finalMovingCenterForFireAlarm = new ConcurrentHashMap<String, String>();
     // 为了修正在回到断点云台不到位的情况。加上命令调整时间，如果超过1秒，就再发送一次，相同的命令。值为毫秒数。
@@ -575,6 +579,10 @@ public class SerialPortCommServer {
 
     public Map<String, Boolean> getAllowAlarm() {
         return allowAlarm;
+    }
+
+    public Map<String, String> getSceneHeatValue() {
+        return sceneHeatValue;
     }
 
     
