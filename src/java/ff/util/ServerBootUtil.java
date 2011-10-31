@@ -74,7 +74,7 @@ public class ServerBootUtil{
 		rtspStreamServerHandler.setPort(rtspStreamServerPort);
 		rtspStreamServerHandler.setJnaLibPath(jnaLibPath);
 		rtspStreamServer = new Thread(rtspStreamServerHandler);
-		rtspStreamServer.start();
+		//rtspStreamServer.start();
 	}
 
 	public int getPtzControlServerPort() {

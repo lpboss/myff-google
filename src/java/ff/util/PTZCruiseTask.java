@@ -212,6 +212,91 @@ public class PTZCruiseTask {
      */
     @Scheduled(fixedDelay = 15)
     public synchronized void judgeFireAlarm() {
-        System.out.println("当前热值：" + serialPortCommServer.getAlert("192.168.1.50"));
+        String testIP = "192.168.254.65";
+        //判断，如果当前没有进行置中操作，则从新判断热值 。
+        //System.out.println("serialPortCommServer.getIsMovingCenterForFireAlarm().get(testIP):" + serialPortCommServer.getIsMovingCenterForFireAlarm().get(testIP));
+        if (serialPortCommServer.getIsMovingCenterForFireAlarm().get(testIP) == null) {
+            System.out.println("serialPortCommServer.getAlertMax(192.168.1.50)" + serialPortCommServer.getAlertMax("192.168.1.50"));
+
+            if (serialPortCommServer.getAlertMax("192.168.1.50") > 1500) {
+                int heatPosX = serialPortCommServer.getAlertX("192.168.1.50");
+                int heatPosY = serialPortCommServer.getAlertY("192.168.1.50");
+
+                //如果正在巡航，则在发送其它命令前，先保存断点。并停止巡航。
+                serialPortCommServer.getAllowCruise().put(testIP, Boolean.FALSE);
+                serialPortCommServer.pushCommand(testIP, "FF 01 00 00 00 00 01");
+                if (serialPortCommServer.getIsCruising().get(testIP) != null && serialPortCommServer.getIsCruising().get(testIP) == Boolean.TRUE) {
+                    if (serialPortCommServer.getCruiseBreakpoint().get(testIP) == null) {
+                        serialPortCommServer.getCruiseBreakpoint().put(testIP, serialPortCommServer.getAngleXString(testIP) + "|" + serialPortCommServer.getAngleYString(testIP));
+                    }
+                }
+                /*逐渐让热成像对准中心。
+                4点区域法，左上（151.171），右上（228，171），左下（152，114），右下（228，114），（192，144）为中心点。
+                得到当前的角度
+                 */
+                String currentAngleX = serialPortCommServer.getAngleXString(testIP);
+                String currentAngleY = serialPortCommServer.getAngleYString(testIP);
+                System.out.println("当前热值：" + serialPortCommServer.getAlertMax("192.168.1.50"));
+                System.out.println("热成像X:" + heatPosX + ",当前水平角度：" + currentAngleX);
+                System.out.println("热成像Y:" + heatPosY + "当前垂直角度：" + currentAngleY);
+
+                int angleY1 = Integer.parseInt(currentAngleY.split("\\.")[0]);//Y1为角度的整数部分，2为小数点部分
+                int angleY2 = Integer.parseInt(currentAngleY.split("\\.")[1]);
+                int angleX1 = Integer.parseInt(currentAngleX.split("\\.")[0]);
+                int angleX2 = Integer.parseInt(currentAngleX.split("\\.")[1]);
+                //如果水平方向，小于192，水平逆时针转动。否则顺时针
+                if (heatPosX < 192) {
+                    if (angleX1 > 1 || angleX1 == 1) {
+                        angleX1 = angleX1 - 1;
+                    } else {
+                        angleX1 = 359;
+                    }
+                } else {
+                    if (angleX1 == 359) {
+                        angleX1 = 0;
+                    } else {
+                        angleX1 = angleX1 + 1;
+                    }
+                }
+
+                //垂直方向，如果小于144，向下转动。否则向上
+                if (heatPosY < 144) {
+                    if (angleY1 > 1) {
+                        angleY1 = angleY1 - 1;
+                    }
+                } else {
+                    if (angleY1 < 89) {
+                        angleY1 = angleY1 + 1;
+                    }
+                }
+
+                System.out.println("微调要求水平角度：" + angleX1 + "." + angleX2);
+                System.out.println("微调要求垂直角度：" + angleY1 + "." + angleY2);
+                /*
+                 * 准备好角度以后，进行角度调整命令。在角度调整后，计算出1度对于热成像方位值变化的比例。然后进行一次命令调整。
+                 */
+                String adjustXCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4B, angleX1, angleX2, "ANGLE_X");
+                String adjustYCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, angleY1, angleY2, "ANGLE_Y");
+                serialPortCommServer.pushCommand(testIP, adjustXCommand);
+                serialPortCommServer.pushCommand(testIP, adjustYCommand);
+                //设置正在置中状态位。
+                serialPortCommServer.getIsMovingCenterForFireAlarm().put(testIP, Boolean.TRUE);
+                serialPortCommServer.getFineMovingCenterForFireAlarm().put(testIP, angleX1 + "." + angleX2 + "|" + adjustXCommand + "|" + angleY1 + "|" + adjustXCommand);
+                //serialPortCommServer.getFineMovingCenterForFireAlarm().put(testIP, angleX1 + "." + angleX2 + "|" + adjustXCommand + "|" + angleY1 + "|" + adjustXCommand);
+            }
+        } else if (serialPortCommServer.getIsMovingCenterForFireAlarm().get(testIP) == Boolean.TRUE) {
+            //如果当前正在微调。判断微调角度是否到位。如果不到位，继续调整。
+            String currentAngleX = serialPortCommServer.getAngleXString(testIP);
+            String currentAngleY = serialPortCommServer.getAngleYString(testIP);
+            System.out.println("火警微调后的角度：" + currentAngleX + "," + currentAngleY);
+            String fineMovingInfo = serialPortCommServer.getFineMovingCenterForFireAlarm().get(testIP);
+            if (fineMovingInfo.split("\\.")[0].equals(currentAngleX) && fineMovingInfo.split("\\.")[2].equals(currentAngleY)) {
+                //调整到位后，清除微调信息。
+                serialPortCommServer.getAllowCruise().put(testIP, Boolean.TRUE);
+                serialPortCommServer.getFineMovingCenterForFireAlarm().remove(testIP);
+                serialPortCommServer.getIsMovingCenterForFireAlarm().remove(testIP);
+                System.out.println("微调已经到位了 --------------------------------------------------------------------------");
+            }
+        }
     }
 }

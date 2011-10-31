@@ -79,6 +79,17 @@ public class PTZUtil {
             serialPortCommServer.getIsCruising().put(testIP, Boolean.FALSE);
             serialPortCommServer.getIsCruisingPresetAngleY().remove(testIP);
             serialPortCommServer.getIsAdjustingXYForBreakpoint().remove(testIP);
+            //为了方便测试程度，下面取消返回断点的行为。
+            serialPortCommServer.getCruiseBreakpoint().remove(testIP);
+        } else if (ptzAction.equals("clear_fire_alarm")) {
+            System.out.println("已经清空有关火警状态的信息。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
+            serialPortCommServer.getAllowCruise().put(testIP, Boolean.FALSE);
+            serialPortCommServer.getFineMovingCenterForFireAlarm().remove(testIP);
+            serialPortCommServer.getCruiseBreakpoint().remove(testIP);
+            serialPortCommServer.getIsAdjustingXYForBreakpoint().remove(testIP);
+
+            serialPortCommServer.getFineMovingCenterForFireAlarm().remove(testIP);
+            serialPortCommServer.getIsMovingCenterForFireAlarm().remove(testIP);
         }
     }
 
@@ -91,10 +102,6 @@ public class PTZUtil {
         }
     }
 
-//左上		
-//左下		
-//右上		
-//右下		
     /**
      *
      * @author jerry

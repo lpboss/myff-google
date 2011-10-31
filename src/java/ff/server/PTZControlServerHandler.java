@@ -69,14 +69,15 @@ public class PTZControlServerHandler implements IDataHandler, IConnectHandler,
             ClosedChannelException, MaxReadSizeExceededException {
         if (connection != null && connection.isOpen()) {
             String ip = connection.getRemoteAddress().getHostAddress();
-            
+
             //接收从云台发送的角度信息
             ByteBuffer buffer = ByteBuffer.allocate(7);
             connection.read(buffer);
             byte[] b = buffer.array();
             String s = serialPortCommServer.byteArray2HexString(b);
-            
+
             if (s.indexOf("FF010059") > -1) {//水平角度信息回传
+                //System.out.println("S 变量全值：" + s);
                 float angle_x = (float) Integer.parseInt(s.substring(s.indexOf("FF010059") + 8, s.indexOf("FF010059") + 12), 16) / 100;
                 serialPortCommServer.setAngleX(ip, angle_x);
 
