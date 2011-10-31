@@ -101,9 +101,9 @@ public class SerialPortCommServer {
      * @param degree_avg
      *            平均值灰度值
      * @param x
-     *            最大灰度值对应行
-     * @param y
      *            最大灰度值对应列
+     * @param y
+     *            最大灰度值对应行    
      * @throws
      */
     public void setAlert(String ip, int degree_max, int degree_min,
@@ -174,10 +174,10 @@ public class SerialPortCommServer {
      * @return
      * @throws
      */
-    public int getAlertX(String ip) {
+    public int getAlertY(String ip) {
         int[] alert = alertMap.get(ip);
         if (alert != null) {
-            return alert[3];
+            return alert[4];
         }
         return 0;
     }
@@ -189,10 +189,10 @@ public class SerialPortCommServer {
      * @return
      * @throws
      */
-    public int getAlertY(String ip) {
+    public int getAlertX(String ip) {
         int[] alert = alertMap.get(ip);
         if (alert != null) {
-            return alert[4];
+            return alert[3];
         }
         return 0;
     }

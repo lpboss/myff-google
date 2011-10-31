@@ -21,7 +21,8 @@ import org.xsocket.connection.INonBlockingConnection;
  */
 public class PTZAlertServerHandler implements IDataHandler, IConnectHandler,
         IIdleTimeoutHandler, IConnectionTimeoutHandler, IDisconnectHandler {
-	private SerialPortCommServer serialPortCommServer;
+
+    private SerialPortCommServer serialPortCommServer;
 
     public void setSerialPortCommServer(SerialPortCommServer serialPortCommServer) {
         this.serialPortCommServer = serialPortCommServer;
@@ -68,26 +69,28 @@ public class PTZAlertServerHandler implements IDataHandler, IConnectHandler,
             ClosedChannelException, MaxReadSizeExceededException {
         if (connection != null && connection.isOpen()) {
             String ip = connection.getRemoteAddress().getHostAddress();
-            
+
             //接收从热成像传感器发送的报警信息
             ByteBuffer buffer = ByteBuffer.allocate(14);
             connection.read(buffer);
             byte[] b = buffer.array();
             String s = serialPortCommServer.byteArray2HexString(b);
-            
+
             //处理回传数据，详见数据格式文档
-            if (s.indexOf("7F7F") ==0 &&s.lastIndexOf("7F7F")==24) {
-            	//System.out.println("热成像传感器报警信息回传：" +s);
-            	int degree_avg=serialPortCommServer.hexString2Int(s.substring(6,8)+s.substring(4,6));
-            	int degree_max=serialPortCommServer.hexString2Int(s.substring(10,12)+s.substring(8,10));
-            	int degree_min=serialPortCommServer.hexString2Int(s.substring(22,24)+s.substring(20,22));
-            	int x=Integer.parseInt(s.substring(14,16)+s.substring(12,14), 16);
-            	int y=Integer.parseInt(s.substring(18,20)+s.substring(16,18), 16);
-            	
+            if (s.indexOf("7F7F") == 0 && s.lastIndexOf("7F7F") == 24) {
+                //System.out.println("热成像传感器报警信息回传：" +s);
+                int degree_avg = serialPortCommServer.hexString2Int(s.substring(6, 8) + s.substring(4, 6));
+                int degree_max = serialPortCommServer.hexString2Int(s.substring(10, 12) + s.substring(8, 10));
+                int degree_min = serialPortCommServer.hexString2Int(s.substring(22, 24) + s.substring(20, 22));
+                //列数x
+                int x = Integer.parseInt(s.substring(18, 20) + s.substring(16, 18), 16);
+                //行数y
+                int y = Integer.parseInt(s.substring(14, 16) + s.substring(12, 14), 16);
+
                 serialPortCommServer.setAlert(ip, degree_max, degree_min, degree_avg, x, y);
-                
-            	//System.out.println("热成像传感器报警信息解析，平均值："+degree_avg+"，最大值："+degree_max+"，最小值："+degree_min+"，行："+x+"，列："+y );
-             }
+
+                System.out.println("热成像传感器报警信息解析，平均值：" + degree_avg + "，最大值：" + degree_max + "，最小值：" + degree_min + "，列X：" + x + "，行Y：" + y);
+            }
         }
         return true;
     }
