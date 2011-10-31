@@ -281,7 +281,7 @@ public class PTZCruiseTask {
                 serialPortCommServer.pushCommand(testIP, adjustYCommand);
                 //设置正在置中状态位。
                 serialPortCommServer.getIsMovingCenterForFireAlarm().put(testIP, Boolean.TRUE);
-                serialPortCommServer.getFineMovingCenterForFireAlarm().put(testIP, angleX1 + "." + angleX2 + "|" + adjustXCommand + "|" + angleY1 + "|" + adjustXCommand);
+                serialPortCommServer.getFineMovingCenterForFireAlarm().put(testIP, angleX1 + "." + angleX2 + "|" + adjustXCommand + "|" + angleY1 + "." + angleY2 + "|" + adjustXCommand + "|" + new Date().getTime());
                 //serialPortCommServer.getFineMovingCenterForFireAlarm().put(testIP, angleX1 + "." + angleX2 + "|" + adjustXCommand + "|" + angleY1 + "|" + adjustXCommand);
             }
         } else if (serialPortCommServer.getIsMovingCenterForFireAlarm().get(testIP) == Boolean.TRUE) {
@@ -290,12 +290,25 @@ public class PTZCruiseTask {
             String currentAngleY = serialPortCommServer.getAngleYString(testIP);
             System.out.println("火警微调后的角度：" + currentAngleX + "," + currentAngleY);
             String fineMovingInfo = serialPortCommServer.getFineMovingCenterForFireAlarm().get(testIP);
-            if (fineMovingInfo.split("\\.")[0].equals(currentAngleX) && fineMovingInfo.split("\\.")[2].equals(currentAngleY)) {
-                //调整到位后，清除微调信息。
+            Float currentfloatAngleX = Float.parseFloat(currentAngleX);
+            Float currentfloatAngleY = Float.parseFloat(currentAngleY);
+            Float fineAngleX = Float.parseFloat(fineMovingInfo.split("\\.")[0]);
+            Float fineAngleY = Float.parseFloat(fineMovingInfo.split("\\.")[1]);
+            Long fineBeginTime = Long.parseLong(fineMovingInfo.split("\\.")[4]);
+            //各误差在0.5之内，并且已经过去0.5秒，即马上停止微调阶段。
+            if (Math.abs(currentfloatAngleX - fineAngleX) < 0.5 && Math.abs(currentfloatAngleY - fineAngleY) < 0.5 && new Date().getTime() - fineBeginTime > 500) {
+                //调整到位后，清除微调信息。角度误差在0.5度时，停止调整。
                 serialPortCommServer.getAllowCruise().put(testIP, Boolean.TRUE);
                 serialPortCommServer.getFineMovingCenterForFireAlarm().remove(testIP);
                 serialPortCommServer.getIsMovingCenterForFireAlarm().remove(testIP);
                 System.out.println("微调已经到位了 --------------------------------------------------------------------------");
+            } else if ((Math.abs(currentfloatAngleX - fineAngleX) > 0.5 || Math.abs(currentfloatAngleY - fineAngleY) > 0.5) && new Date().getTime() - fineBeginTime > 500) {
+                //只要有一个角度有误差，且时间超过0.5秒，就继续发送调整命令。
+                serialPortCommServer.pushCommand(testIP, fineMovingInfo.split("\\.")[1]);
+                serialPortCommServer.pushCommand(testIP, fineMovingInfo.split("\\.")[3]);
+                //设置正在置中状态位。
+                serialPortCommServer.getFineMovingCenterForFireAlarm().put(testIP, fineMovingInfo.split("\\.")[0] + "|" + fineMovingInfo.split("\\.")[1] + "|" + fineMovingInfo.split("\\.")[2] + "|" + fineMovingInfo.split("\\.")[3] + "|" + new Date().getTime());
+
             }
         }
     }
