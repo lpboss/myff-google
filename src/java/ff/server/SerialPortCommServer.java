@@ -27,6 +27,8 @@ public class SerialPortCommServer {
     private static Map<String, String> angleY = new ConcurrentHashMap<String, String>();
     // key为ip,value为true或false，当value为false时，自动巡航方法不再控制巡航。主要是标记哪些云台当前允许其实自动巡航。
     private static Map<String, Boolean> allowCruise = new ConcurrentHashMap<String, Boolean>();
+    // key为ip,value为true或false，当value为false时。主要是标记哪些云台当前为允许对火警作出反应为null或true都可以反应为false时不允许再次对火警反应。
+    private static Map<String, Boolean> allowAlarm = new ConcurrentHashMap<String, Boolean>();            
     // key为ip,value为true或false，当value为false时，当前正在巡航的云台。当前正在巡航的云台，不会重复发送巡航右转命令。以减少命令发送量。
     private static Map<String, Boolean> isCruising = new ConcurrentHashMap<String, Boolean>();
     // 为巡航，比如削苹果皮等准备。其中Key为ip.value为预置的Y角度，只有达到此角度时才接受其它命令。
@@ -569,6 +571,10 @@ public class SerialPortCommServer {
 
     public Map<String, String> getFineMovingCenterForFireAlarm() {
         return fineMovingCenterForFireAlarm;
+    }
+
+    public Map<String, Boolean> getAllowAlarm() {
+        return allowAlarm;
     }
 
     

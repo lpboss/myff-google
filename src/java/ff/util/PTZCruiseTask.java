@@ -215,7 +215,7 @@ public class PTZCruiseTask {
         String testIP = "192.168.254.65";
         //判断，如果当前没有进行置中操作，则从新判断热值 。
         System.out.println("serialPortCommServer.getIsMovingCenterForFireAlarm().get(testIP):" + serialPortCommServer.getIsMovingCenterForFireAlarm().get(testIP));
-        if (serialPortCommServer.getIsMovingCenterForFireAlarm().get(testIP) == null) {
+        if (serialPortCommServer.getIsMovingCenterForFireAlarm().get(testIP) == null && (serialPortCommServer.getAllowAlarm().get(testIP) == null || serialPortCommServer.getAllowAlarm().get(testIP) == Boolean.TRUE)) {
             //System.out.println("serialPortCommServer.getAlertMax(192.168.1.50)" + serialPortCommServer.getAlertMax("192.168.1.50"));
             if (serialPortCommServer.getAlertMax("192.168.1.50") > 1500) {
                 int heatPosX = serialPortCommServer.getAlertX("192.168.1.50");
@@ -223,7 +223,10 @@ public class PTZCruiseTask {
 
                 //如果正在巡航，则在发送其它命令前，先保存断点。并停止巡航。
                 serialPortCommServer.getAllowCruise().put(testIP, Boolean.FALSE);
+                //同时不允许此云台再次报告火警
+                serialPortCommServer.getAllowAlarm().put(testIP, Boolean.FALSE);
                 serialPortCommServer.pushCommand(testIP, "FF 01 00 00 00 00 01");
+
                 if (serialPortCommServer.getIsCruising().get(testIP) != null && serialPortCommServer.getIsCruising().get(testIP) == Boolean.TRUE) {
                     if (serialPortCommServer.getCruiseBreakpoint().get(testIP) == null) {
                         serialPortCommServer.getCruiseBreakpoint().put(testIP, serialPortCommServer.getAngleXString(testIP) + "|" + serialPortCommServer.getAngleYString(testIP));
@@ -280,7 +283,20 @@ public class PTZCruiseTask {
                 serialPortCommServer.pushCommand(testIP, adjustYCommand);
                 //设置正在置中状态位。
                 serialPortCommServer.getIsMovingCenterForFireAlarm().put(testIP, Boolean.TRUE);
-                serialPortCommServer.getFineMovingCenterForFireAlarm().put(testIP, angleX1 + "." + angleX2 + "|" + adjustXCommand + "|" + angleY1 + "." + angleY2 + "|" + adjustXCommand + "|" + new Date().getTime());
+                //这里要处理小数位的表达问题，比如32.07，其中07为7，这里如果字符串相加要处理为再+0
+                String angleStringX2 = "";
+                if (angleX2 < 10) {
+                    angleStringX2 = "0" + String.valueOf(angleX2);
+                } else {
+                    angleStringX2 = String.valueOf(angleX2);
+                }
+                String angleStringY2 = "";
+                if (angleY2 < 10) {
+                    angleStringY2 = "0" + String.valueOf(angleY2);
+                } else {
+                    angleStringY2 = String.valueOf(angleY2);
+                }
+                serialPortCommServer.getFineMovingCenterForFireAlarm().put(testIP, angleX1 + "." + angleStringX2 + "|" + adjustXCommand + "|" + angleY1 + "." + angleStringY2 + "|" + adjustXCommand + "|" + new Date().getTime());
                 //serialPortCommServer.getFineMovingCenterForFireAlarm().put(testIP, angleX1 + "." + angleX2 + "|" + adjustXCommand + "|" + angleY1 + "|" + adjustXCommand);
             }
         } else if (serialPortCommServer.getIsMovingCenterForFireAlarm().get(testIP) == Boolean.TRUE) {
@@ -295,15 +311,16 @@ public class PTZCruiseTask {
             Float fineAngleY = Float.parseFloat(fineMovingInfo.split("\\|")[2]);
             System.out.println("火警微调要求角度：" + fineAngleX + "," + fineAngleY);
             Long fineBeginTime = Long.parseLong(fineMovingInfo.split("\\|")[4]);
-            //各误差在0.5之内，并且已经过去0.5秒，即马上停止微调阶段。
-            if (Math.abs(currentfloatAngleX - fineAngleX) < 0.5 && Math.abs(currentfloatAngleY - fineAngleY) < 0.5 && new Date().getTime() - fineBeginTime > 500) {
+            //各误差在0.5之内，并且已经过去1秒，即马上停止微调阶段。
+            if (Math.abs(currentfloatAngleX - fineAngleX) < 0.5 && Math.abs(currentfloatAngleY - fineAngleY) < 0.5 && new Date().getTime() - fineBeginTime > 1000) {
                 //调整到位后，清除微调信息。角度误差在0.5度时，停止调整。
-                serialPortCommServer.getAllowCruise().put(testIP, Boolean.TRUE);
+                //到位后，依然不允许巡航，要手工允许巡航。
+                //serialPortCommServer.getAllowCruise().put(testIP, Boolean.TRUE);
                 serialPortCommServer.getFineMovingCenterForFireAlarm().remove(testIP);
                 serialPortCommServer.getIsMovingCenterForFireAlarm().remove(testIP);
                 System.out.println("微调已经到位了 --------------------------------------------------------------------------");
-            } else if ((Math.abs(currentfloatAngleX - fineAngleX) > 0.5 || Math.abs(currentfloatAngleY - fineAngleY) > 0.5) && new Date().getTime() - fineBeginTime > 500) {
-                //只要有一个角度有误差，且时间超过0.5秒，就继续发送调整命令。
+            } else if ((Math.abs(currentfloatAngleX - fineAngleX) > 0.5 || Math.abs(currentfloatAngleY - fineAngleY) > 0.5) && new Date().getTime() - fineBeginTime > 1000) {
+                //只要有一个角度有误差，且时间超过1秒，就继续发送调整命令。
                 serialPortCommServer.pushCommand(testIP, fineMovingInfo.split("\\|")[1]);
                 serialPortCommServer.pushCommand(testIP, fineMovingInfo.split("\\|")[3]);
                 //设置正在置中状态位。
