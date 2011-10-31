@@ -216,8 +216,7 @@ public class PTZCruiseTask {
         //判断，如果当前没有进行置中操作，则从新判断热值 。
         System.out.println("serialPortCommServer.getIsMovingCenterForFireAlarm().get(testIP):" + serialPortCommServer.getIsMovingCenterForFireAlarm().get(testIP));
         if (serialPortCommServer.getIsMovingCenterForFireAlarm().get(testIP) == null) {
-            System.out.println("serialPortCommServer.getAlertMax(192.168.1.50)" + serialPortCommServer.getAlertMax("192.168.1.50"));
-
+            //System.out.println("serialPortCommServer.getAlertMax(192.168.1.50)" + serialPortCommServer.getAlertMax("192.168.1.50"));
             if (serialPortCommServer.getAlertMax("192.168.1.50") > 1500) {
                 int heatPosX = serialPortCommServer.getAlertX("192.168.1.50");
                 int heatPosY = serialPortCommServer.getAlertY("192.168.1.50");
@@ -292,9 +291,10 @@ public class PTZCruiseTask {
             String fineMovingInfo = serialPortCommServer.getFineMovingCenterForFireAlarm().get(testIP);
             Float currentfloatAngleX = Float.parseFloat(currentAngleX);
             Float currentfloatAngleY = Float.parseFloat(currentAngleY);
-            Float fineAngleX = Float.parseFloat(fineMovingInfo.split("\\.")[0]);
-            Float fineAngleY = Float.parseFloat(fineMovingInfo.split("\\.")[1]);
-            Long fineBeginTime = Long.parseLong(fineMovingInfo.split("\\.")[4]);
+            Float fineAngleX = Float.parseFloat(fineMovingInfo.split("\\|")[0]);
+            Float fineAngleY = Float.parseFloat(fineMovingInfo.split("\\|")[2]);
+            System.out.println("火警微调要求角度：" + fineAngleX + "," + fineAngleY);
+            Long fineBeginTime = Long.parseLong(fineMovingInfo.split("\\|")[4]);
             //各误差在0.5之内，并且已经过去0.5秒，即马上停止微调阶段。
             if (Math.abs(currentfloatAngleX - fineAngleX) < 0.5 && Math.abs(currentfloatAngleY - fineAngleY) < 0.5 && new Date().getTime() - fineBeginTime > 500) {
                 //调整到位后，清除微调信息。角度误差在0.5度时，停止调整。
@@ -304,11 +304,10 @@ public class PTZCruiseTask {
                 System.out.println("微调已经到位了 --------------------------------------------------------------------------");
             } else if ((Math.abs(currentfloatAngleX - fineAngleX) > 0.5 || Math.abs(currentfloatAngleY - fineAngleY) > 0.5) && new Date().getTime() - fineBeginTime > 500) {
                 //只要有一个角度有误差，且时间超过0.5秒，就继续发送调整命令。
-                serialPortCommServer.pushCommand(testIP, fineMovingInfo.split("\\.")[1]);
-                serialPortCommServer.pushCommand(testIP, fineMovingInfo.split("\\.")[3]);
+                serialPortCommServer.pushCommand(testIP, fineMovingInfo.split("\\|")[1]);
+                serialPortCommServer.pushCommand(testIP, fineMovingInfo.split("\\|")[3]);
                 //设置正在置中状态位。
-                serialPortCommServer.getFineMovingCenterForFireAlarm().put(testIP, fineMovingInfo.split("\\.")[0] + "|" + fineMovingInfo.split("\\.")[1] + "|" + fineMovingInfo.split("\\.")[2] + "|" + fineMovingInfo.split("\\.")[3] + "|" + new Date().getTime());
-
+                serialPortCommServer.getFineMovingCenterForFireAlarm().put(testIP, fineMovingInfo.split("\\|")[0] + "|" + fineMovingInfo.split("\\|")[1] + "|" + fineMovingInfo.split("\\|")[2] + "|" + fineMovingInfo.split("\\|")[3] + "|" + new Date().getTime());
             }
         }
     }
