@@ -89,7 +89,7 @@ public class PTZAlertServerHandler implements IDataHandler, IConnectHandler,
 
                 serialPortCommServer.setAlert(ip, degree_max, degree_min, degree_avg, x, y);
 
-                System.out.println("热成像传感器报警信息解析，平均值：" + degree_avg + "，最大值：" + degree_max + "，最小值：" + degree_min + "，列X：" + x + "，行Y：" + y);
+                //System.out.println("热成像传感器报警信息解析，平均值：" + degree_avg + "，最大值：" + degree_max + "，最小值：" + degree_min + "，列X：" + x + "，行Y：" + y);
             }
         }
         return true;

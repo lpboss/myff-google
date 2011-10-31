@@ -90,6 +90,8 @@ public class PTZUtil {
 
             serialPortCommServer.getFineMovingCenterForFireAlarm().remove(testIP);
             serialPortCommServer.getIsMovingCenterForFireAlarm().remove(testIP);
+            //允许再次报火警
+            serialPortCommServer.getAllowAlarm().put(testIP, Boolean.TRUE);
         }
     }
 
