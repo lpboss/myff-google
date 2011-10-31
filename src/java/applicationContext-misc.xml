@@ -21,13 +21,14 @@
     	<property name="flexServerPort" value="8004" />
     	<property name="flexAuthServerPort" value="843" />
     	<property name="rtspStreamServerPort" value="554" />
-    	<property name="jnaLibPath" value="C:\\Program Files\\VideoLAN\\VLC" />
+    	<!--<property name="jnaLibPath" value="C:\\Program Files\\VideoLAN\\VLC" />-->
+        <property name="jnaLibPath" value="D:\\Program Files (x86)\\VideoLAN\\VLC" />
     </bean>
     
-    <bean id="rtspStreamRecordTask" class="ff.util.RTSPStreamRecordTask">
+    <!--<bean id="rtspStreamRecordTask" class="ff.util.RTSPStreamRecordTask">
     	<property name="port" value="554" />
     	<property name="recordFilePath" value="D:\\RecordFile" />
-    </bean>
+    </bean>-->
      
     <bean id="ptzUtil" class="ff.util.PTZUtil" />
 </beans>
