@@ -36,7 +36,7 @@ public class SerialPortCommServer {
     //火警时，如果正在调整起火点到中心位置，则以下变量中的状态为true;
     private static Map<String, Boolean> isMovingCenterForFireAlarm = new ConcurrentHashMap<String, Boolean>();
     //火警时，为调整热值到中心时，进行的1度调整，其中的值格式为X1|X1Command|Y1|Y1Command|Time，X1，Y1代表水平，垂直角度。Time为调整开始时的时间。
-    private static Map<String, String> fineMovingCenterForFireAlarm = new ConcurrentHashMap<String, String>();
+    private static Map<String, String> microMovingCenterForFireAlarm = new ConcurrentHashMap<String, String>();
     //火警时，最终到调整到的中心角度，其中的值格式为X1|X1Command|Y1|Y1Command，X1，Y1代表水平，垂直角度。
     private static Map<String, String> finalMovingCenterForFireAlarm = new ConcurrentHashMap<String, String>();
     // 为了修正在回到断点云台不到位的情况。加上命令调整时间，如果超过1秒，就再发送一次，相同的命令。值为毫秒数。
@@ -569,8 +569,8 @@ public class SerialPortCommServer {
         return finalMovingCenterForFireAlarm;
     }
 
-    public Map<String, String> getFineMovingCenterForFireAlarm() {
-        return fineMovingCenterForFireAlarm;
+    public Map<String, String> getMicroMovingCenterForFireAlarm() {
+        return microMovingCenterForFireAlarm;
     }
 
     public Map<String, Boolean> getAllowAlarm() {
