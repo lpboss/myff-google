@@ -214,7 +214,7 @@ public class PTZCruiseTask {
     public synchronized void judgeFireAlarm() {
         String testIP = "192.168.254.65";
         //判断，如果当前没有进行置中操作，则从新判断热值 。
-        //System.out.println("serialPortCommServer.getIsMovingCenterForFireAlarm().get(testIP):" + serialPortCommServer.getIsMovingCenterForFireAlarm().get(testIP));
+        System.out.println("serialPortCommServer.getIsMovingCenterForFireAlarm().get(testIP):" + serialPortCommServer.getIsMovingCenterForFireAlarm().get(testIP));
         if (serialPortCommServer.getIsMovingCenterForFireAlarm().get(testIP) == null) {
             System.out.println("serialPortCommServer.getAlertMax(192.168.1.50)" + serialPortCommServer.getAlertMax("192.168.1.50"));
 
