@@ -25,7 +25,7 @@ import ff.server.SerialPortCommServer;
  * 此类中的方法，负责执行定时巡航任务。
  */
 @Service
-public class PTZCruiseTask {
+public class PTZCruiseTask1 {
 
     private SerialPortCommServer serialPortCommServer;
 
@@ -181,7 +181,7 @@ public class PTZCruiseTask {
                         try {
                             serialPortCommServer.sendCommand(testIP, "FF 01 00 00 00 00 01");
                         } catch (IOException ex) {
-                            Logger.getLogger(PTZCruiseTask.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(PTZCruiseTask1.class.getName()).log(Level.SEVERE, null, ex);
                         }
                         serialPortCommServer.pushCommand(testIP, "FF 01 00 00 00 00 01");
 
@@ -214,11 +214,11 @@ public class PTZCruiseTask {
     public synchronized void judgeFireAlarm() {
         double visualAngleX = 20.2;//视角X
         double visualAngleY = 15.2;//视角Y
-        int infraredPixelX = 382;//红外像素X数量
-        int infraredPixelY = 288;//红外像素Y数量
-        double anglePerPixelX = visualAngleX / infraredPixelX;//每个像素的角度
-        double anglePerPixelY = visualAngleY / infraredPixelY;//每个像素的角度
-
+        double infraredPixelX = 382;//红外像素X数量
+        double infraredPixelY = 288;//红外像素Y数量
+        double anglePerPixelX = visualAngleX/infraredPixelX;//每个像素的角度
+        double anglePerPixelY = visualAngleY/infraredPixelY;//每个像素的角度
+        
         String testIP = "192.168.254.65";
         String fireIP = "192.168.1.50";
         int microAdjustAngle = 1;//1度,每次微调的角度。
@@ -258,73 +258,56 @@ public class PTZCruiseTask {
                 int angleX1 = Integer.parseInt(currentAngleX.split("\\.")[0]);
                 int angleX2 = Integer.parseInt(currentAngleX.split("\\.")[1]);
                 //如果水平方向，小于192，水平逆时针转动。否则顺时针
-                //X方向最高热值与中心点的像素差
-                int dValueX = 0;
-                //Y方向最高热值与中心点的像素差
-                int dValueY = 0;
-                double finalPTZAngleX = Double.parseDouble(currentAngleX);
-                double finalPTZAngleY = Double.parseDouble(currentAngleY);
-                if (heatPosX < (infraredPixelX / 2)) {
-                    dValueX = (infraredPixelX / 2) - heatPosX;
-                    if ((finalPTZAngleX - dValueX * anglePerPixelX) < 0) {
-                        finalPTZAngleX = 360 + (finalPTZAngleX - dValueX * anglePerPixelX);//如果小于0，则用360循环补差。
-                    } else if ((finalPTZAngleX - dValueX * anglePerPixelX) == 0) {
-                        finalPTZAngleX = 0;
+                if (heatPosX < 192) {
+                    if (angleX1 > 1 || angleX1 == 1) {
+                        angleX1 = angleX1 - microAdjustAngle;
                     } else {
-                        finalPTZAngleX = finalPTZAngleX - dValueX * anglePerPixelX;
+                        angleX1 = 359;
                     }
-                } else if (heatPosX > (infraredPixelX / 2)) {
-                    dValueX = heatPosX - (infraredPixelX / 2);
-                    if ((finalPTZAngleX + dValueX * anglePerPixelX) > 360) {
-                        finalPTZAngleX = (finalPTZAngleX + dValueX * anglePerPixelX) - 360;//如果小于0，则用360循环补差。
-                    } else if ((finalPTZAngleX + dValueX * anglePerPixelX) == 360) {
-                        finalPTZAngleX = 0;
+                } else {
+                    if (angleX1 == 359) {
+                        angleX1 = 0;
                     } else {
-                        finalPTZAngleX = finalPTZAngleX + dValueX * anglePerPixelX;
+                        angleX1 = angleX1 + microAdjustAngle;
                     }
                 }
 
                 //垂直方向，如果小于144，向下转动。否则向上
-                if (heatPosY < (infraredPixelY / 2)) {
-                    dValueY = (infraredPixelY / 2) - heatPosY;
-                    if ((finalPTZAngleY + dValueY * anglePerPixelY) > 90) {
-                        finalPTZAngleY = 90;
-                    } else if ((finalPTZAngleY + dValueY * anglePerPixelY) == 90) {
-                        finalPTZAngleY = 90;
-                    } else {
-                        finalPTZAngleY = finalPTZAngleY + dValueY * anglePerPixelY;
+                if (heatPosY < 144) {
+                    if (angleY1 > 1) {
+                        angleY1 = angleY1 + microAdjustAngle;
                     }
                 } else {
-                    dValueY = heatPosY - (infraredPixelY / 2);
-                    if ((finalPTZAngleY - dValueY * anglePerPixelY) < 0) {
-                        finalPTZAngleY = 0;
-                    } else if ((finalPTZAngleY - dValueY * anglePerPixelY) == 0) {
-                        finalPTZAngleY = 0;
-                    } else {
-                        finalPTZAngleY = finalPTZAngleY - dValueY * anglePerPixelY;
+                    if (angleY1 < 89) {
+                        angleY1 = angleY1 - microAdjustAngle;
                     }
                 }
 
-                //System.out.println("微调要求水平角度：" + angleX1 + "." + angleX2);
-                //System.out.println("微调要求垂直角度：" + angleY1 + "." + angleY2);
-
-                //给角度取2位小数。
-                finalPTZAngleX = Math.round(finalPTZAngleX * 100) / 100;
-                finalPTZAngleY = Math.round(finalPTZAngleY * 100) / 100;
-                System.out.println("最终要求水平角度：" + finalPTZAngleX);
-                System.out.println("最终要求垂直角度：" + finalPTZAngleY);
+                System.out.println("微调要求水平角度：" + angleX1 + "." + angleX2);
+                System.out.println("微调要求垂直角度：" + angleY1 + "." + angleY2);
                 /*
                  * 准备好角度以后，进行角度调整命令。在角度调整后，计算出1度对于热成像方位值变化的比例。然后进行一次命令调整。
                  */
-                String adjustXCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4B, (int) Math.floor(finalPTZAngleX), (int) (finalPTZAngleX - Math.floor(finalPTZAngleX)) * 100, "ANGLE_X");
-                String adjustYCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, (int) Math.floor(finalPTZAngleY), (int) (finalPTZAngleY - Math.floor(finalPTZAngleY)) * 100, "ANGLE_Y");
+                String adjustXCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4B, angleX1, angleX2, "ANGLE_X");
+                String adjustYCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, angleY1, angleY2, "ANGLE_Y");
                 serialPortCommServer.pushCommand(testIP, adjustXCommand);
                 serialPortCommServer.pushCommand(testIP, adjustYCommand);
                 //设置正在置中状态位。
                 serialPortCommServer.getIsMovingCenterForFireAlarm().put(testIP, Boolean.TRUE);
                 //这里要处理小数位的表达问题，比如32.07，其中07为7，这里如果字符串相加要处理为再+0
-                serialPortCommServer.getMicroMovingCenterForFireAlarm().put(testIP, finalPTZAngleX + "|" + adjustXCommand + "|" + finalPTZAngleY + "|" + adjustXCommand + "|" + new Date().getTime());
-                serialPortCommServer.getFinalMovingCenterForFireAlarm().put(testIP, finalPTZAngleX + "|" + adjustXCommand + "|" + finalPTZAngleY + "|" + adjustXCommand + "|" + new Date().getTime());
+                String angleStringX2 = "";
+                if (angleX2 < 10) {
+                    angleStringX2 = "0" + String.valueOf(angleX2);
+                } else {
+                    angleStringX2 = String.valueOf(angleX2);
+                }
+                String angleStringY2 = "";
+                if (angleY2 < 10) {
+                    angleStringY2 = "0" + String.valueOf(angleY2);
+                } else {
+                    angleStringY2 = String.valueOf(angleY2);
+                }
+                serialPortCommServer.getMicroMovingCenterForFireAlarm().put(testIP, angleX1 + "." + angleStringX2 + "|" + adjustXCommand + "|" + angleY1 + "." + angleStringY2 + "|" + adjustXCommand + "|" + new Date().getTime());
                 //serialPortCommServer.getMicroMovingCenterForFireAlarm().put(testIP, angleX1 + "." + angleX2 + "|" + adjustXCommand + "|" + angleY1 + "|" + adjustXCommand);
             }
         } else if (serialPortCommServer.getIsMovingCenterForFireAlarm().get(testIP) == Boolean.TRUE) {
@@ -340,14 +323,72 @@ public class PTZCruiseTask {
             System.out.println("火警微调要求角度：" + microAngleX + "," + microAngleY);
             Long microBeginTime = Long.parseLong(microMovingInfo.split("\\|")[4]);
             //各误差在0.5之内，并且已经过去1秒，即马上停止微调阶段。
-            if (Math.abs(currentfloatAngleX - microAngleX) < 0.2 && Math.abs(currentfloatAngleY - microAngleY) < 0.2 && new Date().getTime() - microBeginTime > 1000) {
+            if (Math.abs(currentfloatAngleX - microAngleX) < 0.5 && Math.abs(currentfloatAngleY - microAngleY) < 0.5 && new Date().getTime() - microBeginTime > 1000) {
                 //调整到位后，清除微调信息。角度误差在0.5度时，停止调整。
                 //到位后，依然不允许巡航，要手工允许巡航。
                 //serialPortCommServer.getAllowCruise().put(testIP, Boolean.TRUE);
                 serialPortCommServer.getMicroMovingCenterForFireAlarm().remove(testIP);
                 serialPortCommServer.getIsMovingCenterForFireAlarm().remove(testIP);
                 System.out.println("微调已经到位了 --------------------------------------------------------------------------");
-            } else if ((Math.abs(currentfloatAngleX - microAngleX) > 0.2 || Math.abs(currentfloatAngleY - microAngleY) > 0.2) && new Date().getTime() - microBeginTime > 1000) {
+                //下面要发送最终的调整命令，把火点调整到屏幕中央。
+                int scenePosX = Integer.parseInt(serialPortCommServer.getSceneFireAlarmInfo().get(testIP).split("\\|")[0]);
+                int scenePosY = Integer.parseInt(serialPortCommServer.getSceneFireAlarmInfo().get(testIP).split("\\|")[1]);
+                int currentPosX = serialPortCommServer.getAlertX(fireIP);
+                int currentPosY = serialPortCommServer.getAlertY(fireIP);
+                int angleDouble = 0;
+                String adjustXCommand = "";
+                String adjustYCommand = "";
+                if (scenePosX < 192) {
+                    angleDouble = Math.round((192 - currentPosX) / (currentPosX - scenePosX));
+                    angleDouble = angleDouble * 2;
+                    System.out.println("left.........................................................");
+                    System.out.println("scenePosX:" + scenePosX);
+                    System.out.println("currentPosX:" + currentPosX);
+                    System.out.println("angleDouble:" + angleDouble);
+                    System.out.println("currentAngleX.split(|)[0]:" + currentAngleX.split("\\.")[0]);
+                    System.out.println("currentAngleX.split(|)[1]:" + currentAngleX.split("\\.")[1]);
+                    System.out.println("最终调整角度,X:" + (Integer.parseInt(currentAngleX.split("\\.")[0]) + angleDouble));
+                    adjustXCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4B, Integer.parseInt(currentAngleX.split("\\.")[0]) - angleDouble, Integer.parseInt(currentAngleX.split("\\.")[1]), "ANGLE_X");
+                } else if (scenePosX > 192) {
+                    angleDouble = Math.round((currentPosX - 192) / (scenePosX - currentPosX));
+                    angleDouble = angleDouble * 2;
+                    System.out.println("right.........................................................");
+                    System.out.println("scenePosX:" + scenePosX);
+                    System.out.println("currentPosX:" + currentPosX);
+                    System.out.println("angleDouble:" + angleDouble);
+                    System.out.println("currentAngleX.split(|)[0]:" + currentAngleX.split("\\.")[0]);
+                    System.out.println("currentAngleX.split(|)[1]:" + currentAngleX.split("\\.")[1]);
+                    System.out.println("火警取终定位角度：");
+                    System.out.println("最终调整角度,X:" + (Integer.parseInt(currentAngleX.split("\\.")[0]) + angleDouble));
+                    adjustXCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4B, Integer.parseInt(currentAngleX.split("\\.")[0]) + angleDouble, Integer.parseInt(currentAngleX.split("\\.")[1]), "ANGLE_X");
+                }
+                if (scenePosY > 144) {
+                    angleDouble = Math.round((currentPosY - 144) / (scenePosY - currentPosY));
+                    angleDouble = angleDouble * 2;
+                    System.out.println("up.........................................................");
+                    System.out.println("scenePosY:" + scenePosY);
+                    System.out.println("currentPosY:" + currentPosY);
+                    System.out.println("angleDouble:" + angleDouble);
+                    System.out.println("currentAngleY:" + currentAngleY);
+                    System.out.println("最终调整角度,Y:" + (Integer.parseInt(currentAngleY.split("\\.")[0]) + angleDouble));
+                    adjustYCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, Integer.parseInt(currentAngleY.split("\\.")[0]) - angleDouble, Integer.parseInt(currentAngleY.split("\\.")[1]), "ANGLE_Y");
+                } else if (scenePosY < 144) {
+                    angleDouble = Math.round((144 - currentPosY) / (currentPosY - scenePosY));
+                    angleDouble = angleDouble * 2;
+                    System.out.println("down.........................................................");
+                    System.out.println("scenePosY:" + scenePosY);
+                    System.out.println("currentPosY:" + currentPosY);
+                    System.out.println("angleDouble:" + angleDouble);
+                    System.out.println("currentAngleY:" + currentAngleY);
+                    System.out.println("最终调整角度,Y:" + (Integer.parseInt(currentAngleY.split("\\.")[0]) + angleDouble));
+                    adjustYCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, Integer.parseInt(currentAngleY.split("\\.")[0]) + angleDouble, Integer.parseInt(currentAngleY.split("\\.")[1]), "ANGLE_Y");
+                }
+                System.out.println("火警现场角度,角度信息，X:" + serialPortCommServer.getSceneFireAlarmInfo().get(testIP).split("\\|")[2] + ",Y:" + serialPortCommServer.getSceneFireAlarmInfo().get(testIP).split("\\|")[3]);
+                System.out.println("火警现场角度,像素信息，X:" + scenePosX + ",Y:" + scenePosY);
+                //暂时只调整X坐标
+                serialPortCommServer.pushCommand(testIP, adjustXCommand);
+                serialPortCommServer.pushCommand(testIP, adjustYCommand);
+            } else if ((Math.abs(currentfloatAngleX - microAngleX) > 0.5 || Math.abs(currentfloatAngleY - microAngleY) > 0.5) && new Date().getTime() - microBeginTime > 1000) {
                 //只要有一个角度有误差，且时间超过1秒，就继续发送调整命令。
                 serialPortCommServer.pushCommand(testIP, microMovingInfo.split("\\|")[1]);
                 serialPortCommServer.pushCommand(testIP, microMovingInfo.split("\\|")[3]);
