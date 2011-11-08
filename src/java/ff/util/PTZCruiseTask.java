@@ -212,8 +212,13 @@ public class PTZCruiseTask {
      */
     @Scheduled(fixedDelay = 15)
     public synchronized void judgeFireAlarm() {
-        double visualAngleX = 20.2;//视角X
-        double visualAngleY = 15.2;//视角Y
+        //double visualAngleX = 20.2;//视角X
+        //double visualAngleY = 15.2;//视角Y
+        
+        //double visualAngleX = 30.84;//视角X
+        double visualAngleX = 50;//视角X
+        double visualAngleY = 38;//视角Y
+        
         int infraredPixelX = 382;//红外像素X数量
         int infraredPixelY = 288;//红外像素Y数量
         double anglePerPixelX = visualAngleX / infraredPixelX;//每个像素的角度
@@ -225,7 +230,7 @@ public class PTZCruiseTask {
         //判断，如果当前没有进行置中操作，则从新判断热值 。
         if (serialPortCommServer.getIsMovingCenterForFireAlarm().get(testIP) == null && (serialPortCommServer.getAllowAlarm().get(testIP) == null || serialPortCommServer.getAllowAlarm().get(testIP) == Boolean.TRUE)) {
             //System.out.println("serialPortCommServer.getAlertMax(fireIP)" + serialPortCommServer.getAlertMax(fireIP));
-            if (serialPortCommServer.getAlertMax(fireIP) > 1500) {
+            if (serialPortCommServer.getAlertMax(fireIP) > 1300) {
                 int heatPosX = serialPortCommServer.getAlertX(fireIP);
                 int heatPosY = serialPortCommServer.getAlertY(fireIP);
 
@@ -301,45 +306,50 @@ public class PTZCruiseTask {
                 }
 
                 //给角度取2位小数。
-                finalPTZAngleX = Math.round(finalPTZAngleX * 100) / 100;
-                finalPTZAngleY = Math.round(finalPTZAngleY * 100) / 100;
+                finalPTZAngleX = Math.round(finalPTZAngleX * 100) / 100d;
+                finalPTZAngleY = Math.round(finalPTZAngleY * 100) / 100d;
                 System.out.println("最终要求水平角度：" + finalPTZAngleX);
                 System.out.println("最终要求垂直角度：" + finalPTZAngleY);
                 /*
                  * 准备好角度以后，进行角度调整命令。在角度调整后，计算出1度对于热成像方位值变化的比例。然后进行一次命令调整。
                  */
-                String adjustXCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4B, (int) Math.floor(finalPTZAngleX), (int) (finalPTZAngleX - Math.floor(finalPTZAngleX)) * 100, "ANGLE_X");
-                String adjustYCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, (int) Math.floor(finalPTZAngleY), (int) (finalPTZAngleY - Math.floor(finalPTZAngleY)) * 100, "ANGLE_Y");
+                String adjustXCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4B, (int) Math.floor(finalPTZAngleX), (int) Math.floor((finalPTZAngleX - Math.floor(finalPTZAngleX)) * 100), "ANGLE_X");
+                String adjustYCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, (int) Math.floor(finalPTZAngleY), (int) Math.floor((finalPTZAngleY - Math.floor(finalPTZAngleY)) * 100), "ANGLE_Y");
                 serialPortCommServer.pushCommand(testIP, adjustXCommand);
                 serialPortCommServer.pushCommand(testIP, adjustYCommand);
                 //设置正在置中状态位。
                 serialPortCommServer.getIsMovingCenterForFireAlarm().put(testIP, Boolean.TRUE);
                 //这里要处理小数位的表达问题，比如32.07，其中07为7，这里如果字符串相加要处理为再+0
-                serialPortCommServer.getFinalMovingCenterForFireAlarm().put(testIP, finalPTZAngleX + "|" + adjustXCommand + "|" + finalPTZAngleY + "|" + adjustXCommand + "|" + new Date().getTime());
+                serialPortCommServer.getFinalMovingCenterForFireAlarm().put(testIP, finalPTZAngleX + "|" + adjustXCommand + "|" + finalPTZAngleY + "|" + adjustYCommand + "|" + new Date().getTime());
             }
         } else if (serialPortCommServer.getIsMovingCenterForFireAlarm().get(testIP) == Boolean.TRUE) {
             //如果当前正在微调。判断微调角度是否到位。如果不到位，继续调整。
             String currentAngleX = serialPortCommServer.getAngleXString(testIP);
             String currentAngleY = serialPortCommServer.getAngleYString(testIP);
-            System.out.println("火警调后的当前角度：" + currentAngleX + "," + currentAngleY);
+            //System.out.println("火警调后的当前角度：" + currentAngleX + "," + currentAngleY);
             String finalMovingInfo = serialPortCommServer.getFinalMovingCenterForFireAlarm().get(testIP);
             Float currentfloatAngleX = Float.parseFloat(currentAngleX);
             Float currentfloatAngleY = Float.parseFloat(currentAngleY);
             Float finalAngleX = Float.parseFloat(finalMovingInfo.split("\\|")[0]);
             Float finalAngleY = Float.parseFloat(finalMovingInfo.split("\\|")[2]);
-            System.out.println("火警最后要求对准角度：" + finalAngleX + "," + finalAngleY);
+            //System.out.println("火警最后要求对准角度：" + finalAngleX + "," + finalAngleY);
             Long microBeginTime = Long.parseLong(finalMovingInfo.split("\\|")[4]);
             //各误差在0.5之内，并且已经过去1秒，即马上停止微调阶段。
-            if (Math.abs(currentfloatAngleX - finalAngleX) < 0.2 && Math.abs(currentfloatAngleY - finalAngleY) < 0.2 && new Date().getTime() - microBeginTime > 1000) {
+            if (Math.abs(currentfloatAngleX - finalAngleX) < 0.03 && Math.abs(currentfloatAngleY - finalAngleY) < 0.03 && new Date().getTime() - microBeginTime > 2000) {
                 //调整到位后，清除微调信息。角度误差在0.5度时，停止调整。
                 //到位后，依然不允许巡航，要手工允许巡航。
                 //serialPortCommServer.getAllowCruise().put(testIP, Boolean.TRUE);
                 serialPortCommServer.getIsMovingCenterForFireAlarm().remove(testIP);
                 System.out.println("最终调整已经到位了 --------------------------------------------------------------------------");
-            } else if ((Math.abs(currentfloatAngleX - finalAngleX) > 0.2 || Math.abs(currentfloatAngleY - finalAngleY) > 0.2) && new Date().getTime() - microBeginTime > 1000) {
+                System.out.println("最终调整已经到位后，角度：" + currentfloatAngleX + "," + currentfloatAngleY);
+                int heatPosX = serialPortCommServer.getAlertX(fireIP);
+                int heatPosY = serialPortCommServer.getAlertY(fireIP);
+                System.out.println("最终调整已经到位后，热值位置：" + heatPosX + "," + heatPosY);
+            } else if ((Math.abs(currentfloatAngleX - finalAngleX) > 0.03 || Math.abs(currentfloatAngleY - finalAngleY) > 0.03) && new Date().getTime() - microBeginTime > 2000) {
                 //只要有一个角度有误差，且时间超过1秒，就继续发送调整命令。
                 serialPortCommServer.pushCommand(testIP, finalMovingInfo.split("\\|")[1]);
                 serialPortCommServer.pushCommand(testIP, finalMovingInfo.split("\\|")[3]);
+                System.out.println("调整中，当前的角度：" + currentfloatAngleX + "," + currentfloatAngleY);
                 //设置正在置中状态位。
                 serialPortCommServer.getFinalMovingCenterForFireAlarm().put(testIP, finalMovingInfo.split("\\|")[0] + "|" + finalMovingInfo.split("\\|")[1] + "|" + finalMovingInfo.split("\\|")[2] + "|" + finalMovingInfo.split("\\|")[3] + "|" + new Date().getTime());
             }
@@ -351,12 +361,12 @@ public class PTZCruiseTask {
         String testIP = "192.168.254.65";
         String currentAngleX = serialPortCommServer.getAngleXString(testIP);
         String currentAngleY = serialPortCommServer.getAngleYString(testIP);
-        System.out.println("当前的角度信息：" + currentAngleX + "," + currentAngleY);
+        //System.out.println("当前的角度信息：" + currentAngleX + "," + currentAngleY);
         String fireIP = "192.168.1.50";
         int heatPosX = serialPortCommServer.getAlertX(fireIP);
         int heatPosY = serialPortCommServer.getAlertY(fireIP);
-        System.out.println("当前的最高热值像素信息：" + heatPosX + "," + heatPosY);
+        //System.out.println("当前的最高热值像素信息：" + heatPosX + "," + heatPosY);
 
-        System.out.println("最高热值：" + serialPortCommServer.getAlertMax(fireIP));
+        //System.out.println("最高热值：" + serialPortCommServer.getAlertMax(fireIP));
     }
 }
