@@ -76,7 +76,9 @@ public class PTZCruiseTask {
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss SSS");
         Date date = new Date(milliseconds);
         String testIP = "192.168.254.65";
-        //System.out.println("Angle (192.168.254.65) X:" + serialPortCommServer.getAngleXString(testIP) + ",Y:" + serialPortCommServer.getAngleYString(testIP) + "------------------,Date:" + timeFormat.format(date));
+        System.out.println("Angle (192.168.254.65) X:" + serialPortCommServer.getAngleXString(testIP) + ",Y:" + serialPortCommServer.getAngleYString(testIP) + "------------------,Date:" + timeFormat.format(date));
+        System.out.println("serialPortCommServer.getAllowCruise().get(testIP):" + serialPortCommServer.getAllowCruise().get(testIP));
+        
         if (serialPortCommServer.getAllowCruise().get(testIP) == null) {
             System.out.println("serialPortCommServer.getAllowCruise() == null :----------------------------------------------------------------------");
             serialPortCommServer.getAllowCruise().put(testIP, Boolean.TRUE);
@@ -214,11 +216,11 @@ public class PTZCruiseTask {
     public synchronized void judgeFireAlarm() {
         //double visualAngleX = 20.2;//视角X
         //double visualAngleY = 15.2;//视角Y
-        
+
         //double visualAngleX = 30.84;//视角X
         double visualAngleX = 50;//视角X
         double visualAngleY = 38;//视角Y
-        
+
         int infraredPixelX = 382;//红外像素X数量
         int infraredPixelY = 288;//红外像素Y数量
         double anglePerPixelX = visualAngleX / infraredPixelX;//每个像素的角度
