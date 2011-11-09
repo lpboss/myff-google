@@ -27,7 +27,8 @@ public class PTZDaoHImpl extends HibernateDaoSupport implements PTZDao  {
 
     @Override
     public List<PTZ> getAllPTZs() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<PTZ> ptzs = this.getHibernateTemplate().find("from PTZ");
+        return ptzs;
     }
 
     @Override
