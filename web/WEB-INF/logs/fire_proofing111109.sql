@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50517
 File Encoding         : 65001
 
-Date: 2011-11-09 14:27:37
+Date: 2011-11-09 16:32:23
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -127,6 +127,8 @@ CREATE TABLE `ptzs` (
   `gis_map_url` varchar(255) DEFAULT NULL COMMENT '地图文件存放位置',
   `visual_angle_x` float DEFAULT '0' COMMENT '红外视角X',
   `visual_angle_y` float DEFAULT '0' COMMENT '红外视角Y',
+  `infrared_pixel_x` smallint(6) DEFAULT '0' COMMENT '红外摄像机X方向像素',
+  `infrared_pixel_y` smallint(6) DEFAULT '0' COMMENT '红外摄像机Y方向像素',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `version` int(11) DEFAULT NULL,
@@ -137,7 +139,7 @@ CREATE TABLE `ptzs` (
 -- ----------------------------
 -- Records of ptzs
 -- ----------------------------
-INSERT INTO `ptzs` VALUES ('1', '测试机1', 'rtsp://admin:12345@192.168.254.64/h264/ch1/main/av_stream', null, null, null, null, '', null, null, null, '0', '0', null, null, null, null);
+INSERT INTO `ptzs` VALUES ('1', '测试机1', 'rtsp://admin:12345@192.168.254.64/h264/ch1/main/av_stream', null, null, null, null, '', null, null, null, '0', '0', '0', '0', null, null, null, null);
 
 -- ----------------------------
 -- Table structure for `roles`
