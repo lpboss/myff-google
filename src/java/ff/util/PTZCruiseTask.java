@@ -371,4 +371,19 @@ public class PTZCruiseTask {
 
         //System.out.println("最高热值：" + serialPortCommServer.getAlertMax(fireIP));
     }
+    
+    //定时的取出所有可用的云台信息关注入相关的变量。
+    @Scheduled(fixedDelay = 10000)
+    public synchronized void getPTZInfo() {
+        String testIP = "192.168.254.65";
+        String currentAngleX = serialPortCommServer.getAngleXString(testIP);
+        String currentAngleY = serialPortCommServer.getAngleYString(testIP);
+        //System.out.println("当前的角度信息：" + currentAngleX + "," + currentAngleY);
+        String fireIP = "192.168.1.50";
+        int heatPosX = serialPortCommServer.getAlertX(fireIP);
+        int heatPosY = serialPortCommServer.getAlertY(fireIP);
+        //System.out.println("当前的最高热值像素信息：" + heatPosX + "," + heatPosY);
+
+        //System.out.println("最高热值：" + serialPortCommServer.getAlertMax(fireIP));
+    }
 }
