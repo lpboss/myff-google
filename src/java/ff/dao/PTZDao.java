@@ -1,0 +1,23 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package ff.dao;
+
+import ff.model.PTZ;
+import java.util.List;
+
+/**
+ *
+ * @author Haoqingmeng
+ */
+public interface PTZDao {
+
+    PTZ saveOrUpdate(PTZ ptz); //保存
+
+    String deletePTZ(Long id); //删除
+
+    List<PTZ> getAllPTZs();    //得到所有的云台信息
+
+    PTZ getPTZById(Long id);   //得到某一条数据
+}

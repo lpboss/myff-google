@@ -1,3 +1,3 @@
 2011-11-09
-  1、摄像机的增、删、改、查
-  2
+  1、PTZ(云台的)的增、删、改、查，不要删除数据，变量名、字段名字标准
+  2   model---dao---|dao.imple|---service---|service.imple|--controller----前台页面
