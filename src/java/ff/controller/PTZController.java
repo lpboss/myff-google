@@ -61,29 +61,8 @@ public class PTZController extends MultiActionController {
      *作者：Haoqingmeng
      *描述：PTZ的增加    
      */
-    public void create(HttpServletRequest request, HttpServletResponse response) {
-
-        String name = request.getParameter("name");
-        String password = request.getParameter("password");
-        Long roleId = Long.valueOf(request.getParameter("role_id"));
-        User user = new User();
-        user.setName(name);
-        user.setPassword(password);
-        user.setRole(roleService.getRoleById(roleId));
-        String jsonStr = userService.create(user);
-        PrintWriter pw;
-        try {
-            response.setContentType("text/json; charset=utf-8");
-            response.setHeader("Cache-Control", "no-cache");
-            pw = response.getWriter();
-            pw.write(jsonStr);
-            pw.close();
-        } catch (IOException e) {
-            logger.info(e);
-        }
-    }
-    
-    
+ 
+ 
     
     
     
