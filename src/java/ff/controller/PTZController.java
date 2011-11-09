@@ -57,12 +57,6 @@ public class PTZController extends MultiActionController {
             logger.info(e);
         }
     }
-   /**
-     *作者：Haoqingmeng
-     *描述：PTZ的增加    
-     */
- 
- 
     
     
     
