@@ -374,7 +374,7 @@ public class PTZCruiseTask {
     
     //定时的取出所有可用的云台信息关注入相关的变量。
     @Scheduled(fixedDelay = 10000)
-    public synchronized void getPTZInfo() {
+    public synchronized void getPTZsInfo() {
         String testIP = "192.168.254.65";
         String currentAngleX = serialPortCommServer.getAngleXString(testIP);
         String currentAngleY = serialPortCommServer.getAngleYString(testIP);
