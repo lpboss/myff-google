@@ -228,7 +228,6 @@ public class PTZCruiseTask {
 
         String testIP = "192.168.254.65";
         String fireIP = "192.168.1.50";
-        int microAdjustAngle = 1;//1度,每次微调的角度。
 
         //判断，如果当前没有进行置中操作，则从新判断热值 。
         if (serialPortCommServer.getIsMovingCenterForFireAlarm().get(testIP) == null && (serialPortCommServer.getAllowAlarm().get(testIP) == null || serialPortCommServer.getAllowAlarm().get(testIP) == Boolean.TRUE)) {

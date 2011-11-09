@@ -32,7 +32,7 @@ CREATE TABLE `fire_alarms` (
   `user_id` int(11) DEFAULT NULL,
   `deal_date` datetime DEFAULT NULL COMMENT '处理时间',
   `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL, 
   `version` int(11) DEFAULT NULL,
   `is_locked` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
