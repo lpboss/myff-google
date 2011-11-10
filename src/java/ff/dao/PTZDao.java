@@ -13,6 +13,8 @@ import java.util.List;
  */
 public interface PTZDao {
 
+    PTZ getPTZByName(String name); //添加
+
     PTZ saveOrUpdate(PTZ ptz); //保存
 
     String deletePTZ(Long id); //删除

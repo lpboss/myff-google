@@ -33,6 +33,10 @@ public class PTZ {
     private String infraredCircuitUrl; //'红外电路板设备地址',
     private float northMigration; //'摄像机0角度与正北的便宜。顺时针为正。',
     private String gisMapUrl; //'地图文件存放位置',
+    private float visualAngleX;//'红外视角X'
+    private float visualAngleY;//'红外视角Y'
+    private Integer infraredPixelX;//'红外摄像机X方向像素'
+    private Integer infraredPixelY;//'红外摄像机Y方向像素'
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private Integer version;
@@ -170,5 +174,41 @@ public class PTZ {
 
     public void setVisibleRTSPUrl(String visibleRTSPUrl) {
         this.visibleRTSPUrl = visibleRTSPUrl;
+    }
+
+    @Column(name = "visual_angle_x", length = 100)
+    public float getVisualAngleX() {
+        return visualAngleX;
+    }
+
+    public void setVisualAngleX(float visualAngleX) {
+        this.visualAngleX = visualAngleX;
+    }
+
+    @Column(name = "visual_angle_y", length = 100)
+    public float getVisualAngleY() {
+        return visualAngleY;
+    }
+
+    public void setVisualAngleY(float visualAngleY) {
+        this.visualAngleY = visualAngleY;
+    }
+
+    @Column(name = "infrared_pixel_x", length = 100)
+    public Integer getInfraredPixelX() {
+        return infraredPixelX;
+    }
+
+    public void setInfraredPixelX(Integer infraredPixelX) {
+        this.infraredPixelX = infraredPixelX;
+    }
+
+    @Column(name = "infrared_pixel_y", length = 100)
+    public Integer getInfraredPixelY() {
+        return infraredPixelY;
+    }
+
+    public void setInfraredPixelY(Integer infraredPixelY) {
+        this.infraredPixelY = infraredPixelY;
     }
 }

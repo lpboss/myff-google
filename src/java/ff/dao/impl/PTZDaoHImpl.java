@@ -35,5 +35,10 @@ public class PTZDaoHImpl extends HibernateDaoSupport implements PTZDao  {
     public PTZ getPTZById(Long id) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    @Override
+    public PTZ getPTZByName(String name) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
     
 }
