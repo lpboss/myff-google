@@ -9,6 +9,7 @@ package ff.controller;
  * @author jerry
  */
 import ff.util.PTZUtil;
+import ff.service.PTZService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 public class PTZController extends MultiActionController {
 
     private PTZUtil ptzUtil;
+    private PTZService ptzService;
 
     public void setPtzUtil(PTZUtil ptzUtil) {
         this.ptzUtil = ptzUtil;
@@ -58,7 +60,24 @@ public class PTZController extends MultiActionController {
         }
     }
     
-    
+    /**
+     *作者：Haoqingmeng
+     *描述：得到PTZ列表
+     */
+   public void getAllPTZs(HttpServletRequest request, HttpServletResponse response) {
+        String jsonStr = ptzService.getPTZList();
+        logger.info(jsonStr);
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    } 
     
     
 }
