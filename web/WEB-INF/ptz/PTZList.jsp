@@ -35,14 +35,10 @@
                 
                 var PTZGrid =  Ext.create('Ext.grid.Panel', {
                     store: PTZDS,
-                    columns : [Ext.create('Ext.grid.RowNumberer'),{
-                            header: 'id',
-                            dataIndex: 'id',
-                            width: 30
-                        }, {
+                    columns : [Ext.create('Ext.grid.RowNumberer'), {
                             header: '名字',
                             dataIndex: 'name',
-                            width:45
+                            width:50
                         }, {
                             header: '编码器IP',
                             dataIndex: 'controllUrl',
@@ -50,7 +46,7 @@
                         }, {
                             header: '通过串口,发pelcod的ip',
                             dataIndex: 'pelcodCommandUrl',
-                            width:60
+                            width:150
                         }, {
                             header: '可见光摄像机地址,模拟请参考controll_url',
                             dataIndex: 'visibleCameraUrl',
@@ -68,47 +64,38 @@
                         }, {
                             header: '红外电路板设备地址',
                             dataIndex: 'infraredCircuitUrl',
-                            hidden:true,
                             width:230
                         },{
                             header: '摄像机0角度与正北的偏移。顺时针为正。',
                             dataIndex: 'northMigration',
-                            hidden:true,
                             width:230
                         },{
                             header: '地图文件存放位置',
                             dataIndex: 'gisMapUrl',
-                            hidden:true,
                             width:230
                         },{
                             header: '红外视角X',
                             dataIndex: 'visualAngleX',
-                            hidden:true,
                             width:230
                         },{
                             header: '红外视角Y',
                             dataIndex: 'visualAngleY',
-                            hidden:true,
                             width:230
                         },{
                             header: '红外摄像机X方向像素',
                             dataIndex: 'infraredPixelX',
-                            hidden:true,
                             width:230
                         },{
                             header: '红外摄像机Y方向像素',
                             dataIndex: 'infraredPixelY',
-                            hidden:true,
                             width:230
                         },{
                             header: '版本',
                             dataIndex: 'version',
-                            hidden:true,
                             width:230
                         },{
                             header: '状态',
-                            dataIndex: 'isLocked',
-                            hidden:true,
+                            dataIndex: 'isLocked',                          
                             width:230
                         }],
                     selModel :Ext.create('Ext.selection.CheckboxModel'),
