@@ -34,7 +34,7 @@ public class PTZController extends MultiActionController {
         logger.info("PTZ index page");
         ModelAndView mav = new ModelAndView();
         return mav;
-    }
+    }    
 
     /**
      *作者：jerry
@@ -58,6 +58,16 @@ public class PTZController extends MultiActionController {
         } catch (IOException e) {
             logger.info(e);
         }
+    }
+    
+    /**
+     *作者：Haoqingmeng
+     *描述：返回PTZ页面
+     */
+     public ModelAndView PTZList(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("PTZ index page");
+        ModelAndView mav = new ModelAndView();
+        return mav;
     }
     
     /**

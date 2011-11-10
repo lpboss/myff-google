@@ -22,7 +22,7 @@
                     model : 'User',
                     proxy : {
                         type : 'ajax',
-                        url : '<%=basePath%>user/getAllUsers.htm',
+                        url : '<%=basePath%>user/getAllPTZs.htm',
                         reader : {
                             type : 'json',
                             root : 'root',// JSON数组对象名
