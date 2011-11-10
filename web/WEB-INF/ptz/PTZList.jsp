@@ -68,47 +68,38 @@
                         }, {
                             header: '红外电路板设备地址',
                             dataIndex: 'infraredCircuitUrl',
-                            hidden:true,
                             width:230
                         },{
                             header: '摄像机0角度与正北的偏移。顺时针为正。',
                             dataIndex: 'northMigration',
-                            hidden:true,
                             width:230
                         },{
                             header: '地图文件存放位置',
                             dataIndex: 'gisMapUrl',
-                            hidden:true,
                             width:230
                         },{
                             header: '红外视角X',
                             dataIndex: 'visualAngleX',
-                            hidden:true,
                             width:230
                         },{
                             header: '红外视角Y',
                             dataIndex: 'visualAngleY',
-                            hidden:true,
                             width:230
                         },{
                             header: '红外摄像机X方向像素',
                             dataIndex: 'infraredPixelX',
-                            hidden:true,
                             width:230
                         },{
                             header: '红外摄像机Y方向像素',
                             dataIndex: 'infraredPixelY',
-                            hidden:true,
                             width:230
                         },{
                             header: '版本',
                             dataIndex: 'version',
-                            hidden:true,
                             width:230
                         },{
                             header: '状态',
                             dataIndex: 'isLocked',
-                            hidden:true,
                             width:230
                         }],
                     selModel :Ext.create('Ext.selection.CheckboxModel'),
