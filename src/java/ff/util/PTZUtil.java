@@ -84,11 +84,9 @@ public class PTZUtil {
         } else if (ptzAction.equals("clear_fire_alarm")) {
             System.out.println("已经清空有关火警状态的信息。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
             serialPortCommServer.getAllowCruise().put(testIP, Boolean.FALSE);
-            serialPortCommServer.getMicroMovingCenterForFireAlarm().remove(testIP);
             serialPortCommServer.getCruiseBreakpoint().remove(testIP);
             serialPortCommServer.getIsAdjustingXYForBreakpoint().remove(testIP);
 
-            serialPortCommServer.getMicroMovingCenterForFireAlarm().remove(testIP);
             serialPortCommServer.getIsMovingCenterForFireAlarm().remove(testIP);
             //允许再次报火警
             serialPortCommServer.getAllowAlarm().put(testIP, Boolean.TRUE);

@@ -35,8 +35,6 @@ public class SerialPortCommServer {
     private static Map<String, Integer> isCruisingPresetAngleY = new ConcurrentHashMap<String, Integer>();
     //火警时，如果正在调整起火点到中心位置，则以下变量中的状态为true;
     private static Map<String, Boolean> isMovingCenterForFireAlarm = new ConcurrentHashMap<String, Boolean>();
-    //火警时，为调整热值到中心时，进行的1度调整，其中的值格式为X1|X1Command|Y1|Y1Command|Time，X1，Y1代表水平，垂直角度。Time为调整开始时的时间。
-    private static Map<String, String> microMovingCenterForFireAlarm = new ConcurrentHashMap<String, String>();
     //火警时，当场保存的起火方位与热值，时间。由于火警地点随时变化，所以这里只记录最初的方位。Key为IP，值为：X|Y|AngleX|AngleY|MaxValue|Time
     private static Map<String, String> sceneFireAlarmInfo = new ConcurrentHashMap<String, String>();
     
@@ -571,10 +569,6 @@ public class SerialPortCommServer {
 
     public Map<String, String> getFinalMovingCenterForFireAlarm() {
         return finalMovingCenterForFireAlarm;
-    }
-
-    public Map<String, String> getMicroMovingCenterForFireAlarm() {
-        return microMovingCenterForFireAlarm;
     }
 
     public Map<String, Boolean> getAllowAlarm() {

@@ -335,9 +335,9 @@ public class PTZCruiseTask {
             Float finalAngleX = Float.parseFloat(finalMovingInfo.split("\\|")[0]);
             Float finalAngleY = Float.parseFloat(finalMovingInfo.split("\\|")[2]);
             //System.out.println("火警最后要求对准角度：" + finalAngleX + "," + finalAngleY);
-            Long microBeginTime = Long.parseLong(finalMovingInfo.split("\\|")[4]);
+            Long finalBeginTime = Long.parseLong(finalMovingInfo.split("\\|")[4]);
             //各误差在0.5之内，并且已经过去1秒，即马上停止微调阶段。
-            if (Math.abs(currentfloatAngleX - finalAngleX) < 0.03 && Math.abs(currentfloatAngleY - finalAngleY) < 0.03 && new Date().getTime() - microBeginTime > 2000) {
+            if (Math.abs(currentfloatAngleX - finalAngleX) < 0.03 && Math.abs(currentfloatAngleY - finalAngleY) < 0.03 && new Date().getTime() - finalBeginTime > 2000) {
                 //调整到位后，清除微调信息。角度误差在0.5度时，停止调整。
                 //到位后，依然不允许巡航，要手工允许巡航。
                 //serialPortCommServer.getAllowCruise().put(testIP, Boolean.TRUE);
@@ -347,7 +347,7 @@ public class PTZCruiseTask {
                 int heatPosX = serialPortCommServer.getAlertX(fireIP);
                 int heatPosY = serialPortCommServer.getAlertY(fireIP);
                 System.out.println("最终调整已经到位后，热值位置：" + heatPosX + "," + heatPosY);
-            } else if ((Math.abs(currentfloatAngleX - finalAngleX) > 0.03 || Math.abs(currentfloatAngleY - finalAngleY) > 0.03) && new Date().getTime() - microBeginTime > 2000) {
+            } else if ((Math.abs(currentfloatAngleX - finalAngleX) > 0.03 || Math.abs(currentfloatAngleY - finalAngleY) > 0.03) && new Date().getTime() - finalBeginTime > 2000) {
                 //只要有一个角度有误差，且时间超过1秒，就继续发送调整命令。
                 serialPortCommServer.pushCommand(testIP, finalMovingInfo.split("\\|")[1]);
                 serialPortCommServer.pushCommand(testIP, finalMovingInfo.split("\\|")[3]);
