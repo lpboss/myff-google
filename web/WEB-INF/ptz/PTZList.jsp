@@ -35,14 +35,10 @@
                 
                 var PTZGrid =  Ext.create('Ext.grid.Panel', {
                     store: PTZDS,
-                    columns : [Ext.create('Ext.grid.RowNumberer'),{
-                            header: 'id',
-                            dataIndex: 'id',
-                            width: 30
-                        }, {
+                    columns : [Ext.create('Ext.grid.RowNumberer'), {
                             header: '名字',
                             dataIndex: 'name',
-                            width:45
+                            width:50
                         }, {
                             header: '编码器IP',
                             dataIndex: 'controllUrl',
@@ -50,10 +46,11 @@
                         }, {
                             header: '通过串口,发pelcod的ip',
                             dataIndex: 'pelcodCommandUrl',
-                            width:60
+                            width:150
                         }, {
                             header: '可见光摄像机地址,模拟请参考controll_url',
                             dataIndex: 'visibleCameraUrl',
+                            
                             width:70
                         }, {
                             header: '可见光RTSP流',
@@ -99,7 +96,7 @@
                             width:230
                         },{
                             header: '状态',
-                            dataIndex: 'isLocked',
+                            dataIndex: 'isLocked',                          
                             width:230
                         }],
                     selModel :Ext.create('Ext.selection.CheckboxModel'),

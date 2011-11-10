@@ -40,6 +40,7 @@
                 <value>ff.model.PrivilegeDetail</value>                
                 <value>ff.model.SysAction</value>
                 <value>ff.model.SysController</value>
+                <value>ff.model.PTZ</value>
                 <!--<value>ff.model.UserPsycholTestResult</value>
                 <value>ff.model.PsycholTest</value>
                 <value>ff.model.PsycholTestType</value>
