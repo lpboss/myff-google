@@ -65,7 +65,7 @@ function setChannel(){
 </head>
 
 <body>
-<p>监控预览 报警事件 录像查询 <a href="index2.htm" title="用户设置" rel="gb_page[800, 600]">用户设置</a> 系统设置</p>
+<p>监控预览 报警事件 录像查询 <a href="index2.htm" title="用户设置" rel="gb_page[1400, 900]">用户设置</a> 系统设置</p>
 <table width="100%" border="1">
   <tr>
     <td width="30%">

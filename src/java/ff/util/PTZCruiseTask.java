@@ -82,8 +82,8 @@ public class PTZCruiseTask {
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss SSS");
         Date date = new Date(milliseconds);
         String testIP = "192.168.254.65";
-        System.out.println("Angle (192.168.254.65) X:" + serialPortCommServer.getAngleXString(testIP) + ",Y:" + serialPortCommServer.getAngleYString(testIP) + "------------------,Date:" + timeFormat.format(date));
-        System.out.println("serialPortCommServer.getAllowCruise().get(testIP):" + serialPortCommServer.getAllowCruise().get(testIP));
+        //System.out.println("Angle (" + testIP + ") X:" + serialPortCommServer.getAngleXString(testIP) + ",Y:" + serialPortCommServer.getAngleYString(testIP) + "------------------,Date:" + timeFormat.format(date));
+        //System.out.println("serialPortCommServer.getAllowCruise().get(testIP):" + serialPortCommServer.getAllowCruise().get(testIP));
 
         if (serialPortCommServer.getAllowCruise().get(testIP) == null) {
             System.out.println("serialPortCommServer.getAllowCruise() == null :----------------------------------------------------------------------");
