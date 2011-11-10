@@ -18,6 +18,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import ff.server.SerialPortCommServer;
+import ff.service.PTZService;
 
 /**
  *
@@ -27,10 +28,15 @@ import ff.server.SerialPortCommServer;
 @Service
 public class PTZCruiseTask {
 
+    private PTZService ptzService;
     private SerialPortCommServer serialPortCommServer;
 
     public void setSerialPortCommServer(SerialPortCommServer serialPortCommServer) {
         this.serialPortCommServer = serialPortCommServer;
+    }
+
+    public void setPtzService(PTZService ptzService) {
+        this.ptzService = ptzService;
     }
 
     /**
@@ -76,9 +82,9 @@ public class PTZCruiseTask {
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss SSS");
         Date date = new Date(milliseconds);
         String testIP = "192.168.254.65";
-        System.out.println("Angle (192.168.254.65) X:" + serialPortCommServer.getAngleXString(testIP) + ",Y:" + serialPortCommServer.getAngleYString(testIP) + "------------------,Date:" + timeFormat.format(date));
-        System.out.println("serialPortCommServer.getAllowCruise().get(testIP):" + serialPortCommServer.getAllowCruise().get(testIP));
-        
+        //System.out.println("Angle (" + testIP + ") X:" + serialPortCommServer.getAngleXString(testIP) + ",Y:" + serialPortCommServer.getAngleYString(testIP) + "------------------,Date:" + timeFormat.format(date));
+        //System.out.println("serialPortCommServer.getAllowCruise().get(testIP):" + serialPortCommServer.getAllowCruise().get(testIP));
+
         if (serialPortCommServer.getAllowCruise().get(testIP) == null) {
             System.out.println("serialPortCommServer.getAllowCruise() == null :----------------------------------------------------------------------");
             serialPortCommServer.getAllowCruise().put(testIP, Boolean.TRUE);
@@ -371,7 +377,7 @@ public class PTZCruiseTask {
 
         //System.out.println("最高热值：" + serialPortCommServer.getAlertMax(fireIP));
     }
-    
+
     //定时的取出所有可用的云台信息关注入相关的变量。
     @Scheduled(fixedDelay = 10000)
     public synchronized void getPTZsInfo() {

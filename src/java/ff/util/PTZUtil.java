@@ -81,15 +81,18 @@ public class PTZUtil {
             serialPortCommServer.getIsAdjustingXYForBreakpoint().remove(testIP);
             //为了方便测试程度，下面取消返回断点的行为。
             serialPortCommServer.getCruiseBreakpoint().remove(testIP);
+            //允许再次报火警
+            serialPortCommServer.getAllowAlarm().put(testIP, Boolean.TRUE);
         } else if (ptzAction.equals("clear_fire_alarm")) {
+            //清了火警信息后，只有点巡航按钮后，方可再次对火情发出火警
             System.out.println("已经清空有关火警状态的信息。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
             serialPortCommServer.getAllowCruise().put(testIP, Boolean.FALSE);
             serialPortCommServer.getCruiseBreakpoint().remove(testIP);
             serialPortCommServer.getIsAdjustingXYForBreakpoint().remove(testIP);
 
             serialPortCommServer.getIsMovingCenterForFireAlarm().remove(testIP);
-            //允许再次报火警
-            serialPortCommServer.getAllowAlarm().put(testIP, Boolean.TRUE);
+            //不允许再次报火警
+            serialPortCommServer.getAllowAlarm().put(testIP, Boolean.FALSE);
         }
     }
 
