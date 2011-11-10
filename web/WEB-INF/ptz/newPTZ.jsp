@@ -103,18 +103,78 @@
                     anchor: '95%'
                 });
                 
-                 var version = Ext.create('Ext.form.field.Text', {
+                var version = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '版本',
                     name: 'version',
                     anchor: '95%'
                 });
                 
-                 var isLocked = Ext.create('Ext.form.field.Text', {
+                var isLocked = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '状态',
                     name: 'is_locked',
                     anchor: '95%'
                 });
-                
+               
+                var newPTZForm = Ext.create('Ext.form.Panel', {
+                    fieldDefaults: {
+                        labelWidth: 55,
+                        labelAlign: 'right'
+                    },
+                    url:'<%=basePath%>user/create.htm',
+                    frame:true,
+                    bodyStyle:'padding:5px 5px 0',
+                    width: 605,
+                     items: [{
+                            layout: 'column',
+                            xtype: 'container',
+                            items: [{
+                                    columnWidth: .3,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [loginId]
+                                }, {
+                                    columnWidth: .35,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [password]
+                                }, {
+                                    columnWidth: .35,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [role]
+                                }]
+                        },{
+                            layout: 'column',
+                            xtype: 'container',
+                            items: [{
+                                    columnWidth: .3,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [name]
+                                },{
+                                    columnWidth: .35,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [phone]
+                                },{
+                                    columnWidth: .35,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [identityCard]
+                                }]
+                        },address,email,{
+                            layout: 'column',
+                            xtype: 'container',
+                            items: [{
+                                    columnWidth: 1,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [desc]
+                                }]
+                        }],
+                    
+                })
+               
                 
             })
         </script>
