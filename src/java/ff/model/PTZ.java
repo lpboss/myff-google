@@ -107,6 +107,7 @@ public class PTZ {
         this.infraredRTSPUrl = infraredRTSPUrl;
     }
 
+    @Column(name = "is_locked")
     public Long getIsLocked() {
         return isLocked;
     }
@@ -151,6 +152,7 @@ public class PTZ {
         this.updatedAt = updatedAt;
     }
 
+    @Column(name = "version")
     public Integer getVersion() {
         return version;
     }
@@ -159,6 +161,7 @@ public class PTZ {
         this.version = version;
     }
 
+    @Column(name = "visible_camera_url")
     public String getVisibleCameraUrl() {
         return visibleCameraUrl;
     }

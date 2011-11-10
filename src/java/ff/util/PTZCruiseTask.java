@@ -376,6 +376,8 @@ public class PTZCruiseTask {
         //System.out.println("当前的最高热值像素信息：" + heatPosX + "," + heatPosY);
 
         //System.out.println("最高热值：" + serialPortCommServer.getAlertMax(fireIP));
+        String ptzs = ptzService.getAllPTZs();
+        System.out.println(ptzs);
     }
 
     //定时的取出所有可用的云台信息关注入相关的变量。
