@@ -1,7 +1,7 @@
 <%-- 
     Document   : editPTZ
     Created on : 2011-11-9, 20:14:54
-    Author     : Administrator
+    Author     : Haoqingmeng
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
