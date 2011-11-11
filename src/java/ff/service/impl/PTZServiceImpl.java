@@ -14,7 +14,7 @@ import net.sf.json.JSONArray;
 
 /**
  *
- * @author Jerry
+ * @author Jerry,2011-11-11
  */
 public class PTZServiceImpl implements PTZService {
 
