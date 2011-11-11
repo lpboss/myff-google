@@ -90,6 +90,7 @@ public class PTZServiceImpl implements PTZService {
         return jsonStr;
     }
 
+    //得到数据列表
     @Override
     public String getPTZList() {
         List ptzs = ptzDao.getAllPTZs();
@@ -102,8 +103,12 @@ public class PTZServiceImpl implements PTZService {
     }
 
     @Override
+    public PTZ saveOrUpdate(PTZ ptz) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
     public List<PTZ> getAllPTZs() {
-        List ptzs = ptzDao.getAllPTZs();
-        return ptzs;
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

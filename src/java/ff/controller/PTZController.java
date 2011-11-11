@@ -8,6 +8,7 @@ package ff.controller;
  *
  * @author jerry
  */
+import ff.model.PTZ;
 import ff.util.PTZUtil;
 import ff.service.PTZService;
 import java.io.IOException;
@@ -22,6 +23,12 @@ public class PTZController extends MultiActionController {
     private PTZUtil ptzUtil;
     private PTZService ptzService;
 
+    public void setPtzService(PTZService ptzService) {
+        this.ptzService = ptzService;
+    }
+
+    
+    
     public void setPtzUtil(PTZUtil ptzUtil) {
         this.ptzUtil = ptzUtil;
     }
@@ -34,7 +41,7 @@ public class PTZController extends MultiActionController {
         logger.info("PTZ index page");
         ModelAndView mav = new ModelAndView();
         return mav;
-    }    
+    }
 
     /**
      *作者：jerry
@@ -59,22 +66,23 @@ public class PTZController extends MultiActionController {
             logger.info(e);
         }
     }
-    
+
     /**
      *作者：Haoqingmeng
      *描述：返回PTZ页面
      */
-     public ModelAndView PTZList(HttpServletRequest request, HttpServletResponse response) {
-        logger.info("PTZ index page");
+    public ModelAndView PTZList(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("PTZ PTZList page");
         ModelAndView mav = new ModelAndView();
         return mav;
     }
-    
+
     /**
      *作者：Haoqingmeng
      *描述：得到PTZ列表
      */
-   public void getAllPTZs(HttpServletRequest request, HttpServletResponse response) {
+    public void getAllPTZs(HttpServletRequest request, HttpServletResponse response) {
+        
         String jsonStr = ptzService.getPTZList();
         logger.info(jsonStr);
         PrintWriter pw;
@@ -87,7 +95,26 @@ public class PTZController extends MultiActionController {
         } catch (IOException e) {
             logger.info(e);
         }
-    } 
-    
-    
+    }
+
+    //添加
+    public void createRole(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("id");
+        PTZ ptz = new PTZ();
+        ptz.setName(request.getParameter("name")); //名称
+        ptz.setControllUrl(request.getParameter("description")); //
+        ptzService.saveOrUpdate(ptz);
+        String info = "success";
+        String jsonStr = "{success:true,info:'" + info + "'}";
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
 }

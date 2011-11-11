@@ -214,4 +214,6 @@ public class PTZ {
     public void setInfraredPixelY(Integer infraredPixelY) {
         this.infraredPixelY = infraredPixelY;
     }
+
+    
 }
