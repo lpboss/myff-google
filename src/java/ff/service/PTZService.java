@@ -19,7 +19,9 @@ public interface PTZService {
     
     String createPTZ(String name); // 添加
     
-    String getAllPTZs(); //得到所有的
+    List<PTZ> getAllPTZs(); //得到所有的云台信息
+    
+    String getAllPTZsJSON(); //得到所有的云台信息以Json返回。
     
     String getPTZList();
 

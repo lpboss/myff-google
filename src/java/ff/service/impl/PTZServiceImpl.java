@@ -81,7 +81,7 @@ public class PTZServiceImpl implements PTZService {
 
     //得到所有的数据
     @Override
-    public String getAllPTZs() {
+    public String getAllPTZsJSON() {
         List<PTZ> ptzs = ptzDao.getAllPTZs();
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.setExcludes(new String[]{"users", "rolesPrivilegeDetails"});
@@ -99,5 +99,11 @@ public class PTZServiceImpl implements PTZService {
         JSONArray ptzJS = JSONArray.fromObject(ptzs, jsonConfig);
         String jsonStr = "{totalProperty:" + ptzs.size() + ",root:" + ptzJS.toString() + "}";
         return jsonStr;
+    }
+
+    @Override
+    public List<PTZ> getAllPTZs() {
+        List ptzs = ptzDao.getAllPTZs();
+        return ptzs;
     }
 }
