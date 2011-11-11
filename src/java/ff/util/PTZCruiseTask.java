@@ -33,7 +33,6 @@ public class PTZCruiseTask {
     private PTZService ptzService;
     private SerialPortCommServer serialPortCommServer;
     private List<PTZ> ptzs;
-    
 
     public void setSerialPortCommServer(SerialPortCommServer serialPortCommServer) {
         this.serialPortCommServer = serialPortCommServer;
@@ -87,17 +86,29 @@ public class PTZCruiseTask {
         Date date = new Date(milliseconds);
         String ptzIP = "192.168.254.65";
         //System.out.println("Angle (" + ptzIP + ") X:" + serialPortCommServer.getAngleXString(ptzIP) + ",Y:" + serialPortCommServer.getAngleYString(ptzIP) + "------------------,Date:" + timeFormat.format(date));
-        //System.out.println("serialPortCommServer.getAllowCruise().get(ptzIP):" + serialPortCommServer.getAllowCruise().get(ptzIP));
+        //System.out.println("当前的云台" + ptzIP + "是否允许巡航：" + serialPortCommServer.getAllowCruise().get(ptzIP));
 
         if (serialPortCommServer.getAllowCruise().get(ptzIP) == null) {
             System.out.println("serialPortCommServer.getAllowCruise() == null :----------------------------------------------------------------------");
-            serialPortCommServer.getAllowCruise().put(ptzIP, Boolean.TRUE);
+
             //在此，说明云台从来没有进行巡航，同时，启动巡航。向右，顺时针。指定转到360度处停止。
             //serialPortCommServer.pushCommand(ptzIP, "FF 01 00 02 10 00 42");
             //以10为步长，右转
-            serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right"));
+            boolean commandResult;
+            try {
+                //刚开机时，有可能命令运行失败，所以要判断命令执行的结果。
+                commandResult = serialPortCommServer.sendCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right"));
+                if (commandResult) {
+                    serialPortCommServer.getAllowCruise().put(ptzIP, Boolean.TRUE);
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(PTZCruiseTask.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            //serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right"));
         } else {
             //如果云台巡航有相关标志参数。则判断参数的值。保证巡航期间，右转命令只发送一次。
+            //System.out.println("当前的云台" + ptzIP + "是否正在巡航：" + serialPortCommServer.getIsCruising().get(ptzIP));
             if (serialPortCommServer.getAllowCruise().get(ptzIP) == Boolean.TRUE) {
                 //以20为步长，右转.判断，如果有当前正在旋转巡航，则不发送
                 if (serialPortCommServer.getIsCruising().get(ptzIP) == null) {
@@ -108,6 +119,8 @@ public class PTZCruiseTask {
                         serialPortCommServer.getIsCruising().put(ptzIP, Boolean.TRUE);
                         serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right"));
                     } else {
+                        //实其实是个补丁，如果在发送巡航指令时，有可能命令并没有被执行，所以要每次发送。
+                        //serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right"));
                         //如果在巡航断点中有值，且getIsCruising().get(ip) = true,则说明要继续断点，继续巡航。
                         //先把云台调整到断点时的位置。同时调整二个角度。
                         if (serialPortCommServer.getCruiseBreakpoint().get(ptzIP) != null) {
@@ -210,6 +223,11 @@ public class PTZCruiseTask {
                         }
                     }
                 }
+            } else {
+                //如果不允许巡航了，判断一下，适当停止。如果正在火警调节中，就暂时不发停止命令如果不是，发送停止命令。
+                /*if (serialPortCommServer.getIsMovingCenterForFireAlarm().get(ptzIP) == null || serialPortCommServer.getIsMovingCenterForFireAlarm().get(ptzIP) == Boolean.FALSE) {
+                serialPortCommServer.pushCommand(ptzIP, "FF 01 00 00 00 00 01");
+                }*/
             }
         }
         //判断当前云台是否有旋转方向的标记，如果没有则默认设置向下。
@@ -258,6 +276,8 @@ public class PTZCruiseTask {
                         if (serialPortCommServer.getCruiseBreakpoint().get(ptzIP) == null) {
                             serialPortCommServer.getCruiseBreakpoint().put(ptzIP, serialPortCommServer.getAngleXString(ptzIP) + "|" + serialPortCommServer.getAngleYString(ptzIP));
                         }
+                        //同时设置当前云台不处于巡航状态。
+                        serialPortCommServer.getIsCruising().put(ptzIP, Boolean.FALSE);
                     }
                     /*逐渐让热成像对准中心。
                     4点区域法，左上（151.171），右上（228，171），左下（152，114），右下（228，114），（192，144）为中心点。
@@ -363,7 +383,7 @@ public class PTZCruiseTask {
                     //只要有一个角度有误差，且时间超过1秒，就继续发送调整命令。
                     serialPortCommServer.pushCommand(ptzIP, finalMovingInfo.split("\\|")[1]);
                     serialPortCommServer.pushCommand(ptzIP, finalMovingInfo.split("\\|")[3]);
-                    System.out.println("调整中，当前的角度：" + currentfloatAngleX + "," + currentfloatAngleY);
+                    System.out.println("火警发生后，云台调整中，当前的角度：" + currentfloatAngleX + "," + currentfloatAngleY);
                     //设置正在置中状态位。
                     serialPortCommServer.getFinalMovingCenterForFireAlarm().put(ptzIP, finalMovingInfo.split("\\|")[0] + "|" + finalMovingInfo.split("\\|")[1] + "|" + finalMovingInfo.split("\\|")[2] + "|" + finalMovingInfo.split("\\|")[3] + "|" + new Date().getTime());
                 }
