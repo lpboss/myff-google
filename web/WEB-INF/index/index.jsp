@@ -17,7 +17,6 @@
 <script type="text/javascript" src="<%=basePath%>javascripts/greybox/AJS_fx.js"></script>
 <script type="text/javascript" src="<%=basePath%>javascripts/greybox/gb_scripts.js"></script>
 <script>
-
 //当前云台是否转动。
 var isTurning = false;
 //当前正在转动的方向
@@ -25,8 +24,8 @@ var turningDirection = "stop";
 
 function ptzAction(ptzActionStr){
 	//如果方向相同，就要停止转动。
-	console.warn("Before:   ptzActionStr:",ptzActionStr,",turningDirection:",turningDirection,",isTurning:"+isTurning);
-	if (ptzActionStr === turningDirection){
+	//console.warn("Before:   ptzActionStr:",ptzActionStr,",turningDirection:",turningDirection,",isTurning:"+isTurning);
+	if (ptzActionStr == turningDirection){
 		isTurning = false;
 		turningDirection = "stop";
 		ptzActionStr = "stop";
@@ -41,7 +40,7 @@ function ptzAction(ptzActionStr){
 			}else{
 				isTurning = true;
 			}
-			console.warn("After :   ptzActionStr:",ptzActionStr,",turningDirection:",turningDirection,",isTurning:"+isTurning);
+			//console.warn("After :   ptzActionStr:",ptzActionStr,",turningDirection:",turningDirection,",isTurning:"+isTurning);
 		},
 		failure : function (result, request){
 			Ext.MessageBox.show({

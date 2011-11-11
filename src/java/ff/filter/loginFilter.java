@@ -28,15 +28,15 @@ public class loginFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest hreq = (HttpServletRequest) request;
         HttpServletResponse hresp = (HttpServletResponse) response;
-        System.out.println("loginFilter++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++Begin");
-        System.out.println("hreq.getRequestURI():" + hreq.getRequestURI());
-        System.out.println("hreq.getPathInfo():" + hreq.getPathInfo());
-        System.out.println(hreq.getQueryString());
-        System.out.println(hreq.getMethod());
-        System.out.println(hreq.getContentType());
-        System.out.println("getParameterMap:"+hreq.getParameterMap());
-        System.out.println("hreq.getSession().getAttribute(userId):" + hreq.getSession().getAttribute("userId"));
-        System.out.println("loginFilter++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++End");
+        //System.out.println("loginFilter++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++Begin");
+        //System.out.println("hreq.getRequestURI():" + hreq.getRequestURI());
+        //System.out.println("hreq.getPathInfo():" + hreq.getPathInfo());
+        //System.out.println(hreq.getQueryString());
+        //System.out.println(hreq.getMethod());
+        //System.out.println(hreq.getContentType());
+        //System.out.println("getParameterMap:"+hreq.getParameterMap());
+        //System.out.println("hreq.getSession().getAttribute(userId):" + hreq.getSession().getAttribute("userId"));
+        //System.out.println("loginFilter++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++End");
         /*if (hreq.getSession().getAttribute("userId") == null) {
             if (hreq.getRequestURI().equals("/PsychologyTest/") || hreq.getRequestURI().equals("/PsychologyTest/psycholtest") || hreq.getRequestURI().equals("/PsychologyTest/psycholtest/index.html") || hreq.getRequestURI().equals("/PsychologyTest/psycholtest/injectUserId.html") || hreq.getRequestURI().equals("/PsychologyTest/psycholtest/clearSession.html")) {
                 chain.doFilter(request, response);
