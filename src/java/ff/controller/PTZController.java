@@ -8,6 +8,7 @@ package ff.controller;
  *
  * @author jerry
  */
+import ff.model.PTZ;
 import ff.util.PTZUtil;
 import ff.service.PTZService;
 import java.io.IOException;
@@ -65,7 +66,7 @@ public class PTZController extends MultiActionController {
      *描述：返回PTZ页面
      */
      public ModelAndView PTZList(HttpServletRequest request, HttpServletResponse response) {
-        logger.info("PTZ index page");
+        logger.info("PTZ PTZList page");
         ModelAndView mav = new ModelAndView();
         return mav;
     }
@@ -88,6 +89,27 @@ public class PTZController extends MultiActionController {
             logger.info(e);
         }
     } 
+   
+   //添加
+   public void createRole(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("id");
+        PTZ ptz = new PTZ();
+        ptz.setName(request.getParameter("name")); //名称
+        ptz.setControllUrl(request.getParameter("description")); //
+        ptzService.saveOrUpdate(ptz);
+        String info = "success";
+        String jsonStr = "{success:true,info:'" + info + "'}";
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
     
     
 }
