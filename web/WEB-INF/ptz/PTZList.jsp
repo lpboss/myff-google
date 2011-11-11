@@ -22,7 +22,7 @@
                     model : 'User',
                     proxy : {
                         type : 'ajax',
-                        url : '<%=basePath%>user/getAllPTZs.htm',
+                        url : '<%=basePath%>ptz/getAllPTZs.htm',
                         reader : {
                             type : 'json',
                             root : 'root',// JSON数组对象名
@@ -32,13 +32,17 @@
                     pageSize : pageSize,
                     autoLoad : true
                 });
+                        
+                var PTZGrid =  Ext.create('Ext.grid.Panel',
                 
-                var PTZGrid =  Ext.create('Ext.grid.Panel', {
+                {
                     store: PTZDS,
+                    width: screenWidth-190,
+                    height: screenHeight-285,                   
                     columns : [Ext.create('Ext.grid.RowNumberer'), {
                             header: '名字',
                             dataIndex: 'name',
-                            width:50
+                            width:40
                         }, {
                             header: '编码器IP',
                             dataIndex: 'controllUrl',
@@ -46,42 +50,44 @@
                         }, {
                             header: '通过串口,发pelcod的ip',
                             dataIndex: 'pelcodCommandUrl',
-                            width:150
+                            width:120
                         }, {
                             header: '可见光摄像机地址,模拟请参考controll_url',
-                            dataIndex: 'visibleCameraUrl',
-                            
-                            width:70
+                            dataIndex: 'visibleCameraUrl',                          
+                            width:210
                         }, {
                             header: '可见光RTSP流',
-                            dataIndex: 'visibleRTSPUrl'
+                            dataIndex: 'visibleRTSPUrl',
+                            width:80
+                             
                         }, {
                             header: '红外RTSP流',
-                            dataIndex: 'infraredRTSPUrl'
+                            dataIndex: 'infraredRTSPUrl',
+                            width:70
                         }, {
                             header: '红外摄像机地址',
                             dataIndex: 'infraredCameraUrl',
-                            width:230
+                            width:90
                         }, {
                             header: '红外电路板设备地址',
                             dataIndex: 'infraredCircuitUrl',
-                            width:230
+                            width:110
                         },{
-                            header: '摄像机0角度与正北的偏移。顺时针为正。',
+                            header: '摄像机0角度与正北的偏移',//。顺时针为正。
                             dataIndex: 'northMigration',
-                            width:230
+                            width:140
                         },{
                             header: '地图文件存放位置',
                             dataIndex: 'gisMapUrl',
-                            width:230
+                            width:100
                         },{
                             header: '红外视角X',
                             dataIndex: 'visualAngleX',
-                            width:230
+                            width:60
                         },{
                             header: '红外视角Y',
                             dataIndex: 'visualAngleY',
-                            width:230
+                            width:80
                         },{
                             header: '红外摄像机X方向像素',
                             dataIndex: 'infraredPixelX',
@@ -100,8 +106,8 @@
                             width:230
                         }],
                     selModel :Ext.create('Ext.selection.CheckboxModel'),
-                    width: screenWidth-190,
-                    height: screenHeight-285,
+                    
+                    
                     iconCls: 'icon-grid',
                     bbar: Ext.create('Ext.PagingToolbar', {
                         pageSize: pageSize + 15,
