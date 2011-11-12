@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50517
 File Encoding         : 65001
 
-Date: 2011-11-11 07:31:46
+Date: 2011-11-12 09:54:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -139,7 +139,7 @@ CREATE TABLE `ptzs` (
 -- ----------------------------
 -- Records of ptzs
 -- ----------------------------
-INSERT INTO `ptzs` VALUES ('1', '测试机1', 'rtsp://admin:12345@192.168.254.64/h264/ch1/main/av_stream', '192.168.254.65', null, null, null, '192.168.1.50', null, '0', null, '50', '38', '382', '288', null, null, null, '0');
+INSERT INTO `ptzs` VALUES ('1', '测试机1', 'rtsp://admin:12345@192.168.254.64/h264/ch1/main/av_stream', '192.168.254.65', null, null, null, '192.168.1.50', '192.168.1.50', '0', null, '50', '38', '382', '288', null, null, null, '0');
 
 -- ----------------------------
 -- Table structure for `roles`
