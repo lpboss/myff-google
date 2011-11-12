@@ -109,6 +109,7 @@ public class PTZServiceImpl implements PTZService {
 
     @Override
     public List<PTZ> getAllPTZs() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List ptzs = ptzDao.getAllPTZs();
+        return ptzs;
     }
 }
