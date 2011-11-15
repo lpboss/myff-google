@@ -263,7 +263,7 @@ public class PTZCruiseTask {
 
             //判断，如果当前没有进行置中操作，则从新判断热值 。
             if (serialPortCommServer.getIsMovingCenterForFireAlarm().get(ptzIP) == null && (serialPortCommServer.getAllowAlarm().get(ptzIP) == null || serialPortCommServer.getAllowAlarm().get(ptzIP) == Boolean.TRUE)) {
-                //System.out.println("serialPortCommServer.getAlertMax(infraredSetupIP)" + serialPortCommServer.getAlertMax(infraredSetupIP));
+                System.out.println("serialPortCommServer.getAlertMax(infraredSetupIP):" + serialPortCommServer.getAlertMax(infraredSetupIP));
                 if (serialPortCommServer.getAlertMax(infraredSetupIP) > 1300) {
                     int heatPosX = serialPortCommServer.getAlertX(infraredSetupIP);
                     int heatPosY = serialPortCommServer.getAlertY(infraredSetupIP);
@@ -290,7 +290,7 @@ public class PTZCruiseTask {
                     int maxHeatValue = serialPortCommServer.getAlertMax(infraredSetupIP);
                     System.out.println("当前热值：" + maxHeatValue);
                     System.out.println("热成像X:" + heatPosX + ",当前水平角度：" + currentAngleX);
-                    System.out.println("热成像Y:" + heatPosY + "当前垂直角度：" + currentAngleY);
+                    System.out.println("热成像Y:" + heatPosY + ",当前垂直角度：" + currentAngleY);
                     //X|Y|AngleX|AngleY|MaxValue|Time
                     serialPortCommServer.getSceneFireAlarmInfo().put(ptzIP, heatPosX + "|" + heatPosY + "|" + currentAngleX + "|" + currentAngleY + "|" + maxHeatValue + "|" + new Date().getTime());
                     //如果水平方向，小于192，水平逆时针转动。否则顺时针
