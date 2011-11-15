@@ -11,6 +11,9 @@ import java.util.List;
 import net.sf.json.JsonConfig;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONArray;
+import java.sql.Timestamp;
+import java.util.Calendar;
+
 
 /**
  *
@@ -104,7 +107,7 @@ public class PTZServiceImpl implements PTZService {
 
     @Override
     public PTZ saveOrUpdate(PTZ ptz) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return ptzDao.saveOrUpdate(ptz);
     }
 
     @Override
@@ -112,4 +115,6 @@ public class PTZServiceImpl implements PTZService {
         List ptzs = ptzDao.getAllPTZs();
         return ptzs;
     }
+
+    
 }

@@ -27,8 +27,7 @@
                 
                 var controllUrl = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '编码器IP',
-                    name: 'controll_url',
-                    
+                    name: 'controll_url',                  
                     anchor: '95%'
                 });
                 
@@ -122,7 +121,7 @@
                         labelWidth: 55,
                         labelAlign: 'right'
                     },
-                    url:'<%=basePath%>PTZ/create.htm',
+                    url:'<%=basePath%>ptz/create.htm',
                     frame:true,
                     bodyStyle:'padding:5px 5px 0',
                     width: 605,
