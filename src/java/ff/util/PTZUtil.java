@@ -112,7 +112,7 @@ public class PTZUtil {
      * 注意：FF会被自动作为前缀，所以请不要在command中再传送FF，即不传从0位，1-3位，作为command传送，4，5作为params传送，
      *       第6位会由方法计算并自动追加上。即返回的命令会是一个完整的，可执行的命令字符串。同时传送的double参数以16进制表示。
      */
-    public static String getPELCODCommandHexString(int address, int command1, int command2, int param1, int param2, String type) {
+    public static String getPELCODCommandHexString(int address, int command1, int command2, int param1, int param2, String angleType, String ptzType) {
         StringBuilder command = new StringBuilder();
         command.append("FF ");
         //处理地址
@@ -143,12 +143,17 @@ public class PTZUtil {
         //这里要判断参数，对于角度的处理是二个度数相加再求的总的16进制，再拆分为二个参数。314.12即31412，得7AB4，再拆分。
         //处理参数1
 
-        if (type.equals("ANGLE_X") || type.equals("ANGLE_Y")) {
+        if (angleType.equals("ANGLE_X") || angleType.equals("ANGLE_Y")) {
             int param3 = 0;
-            if (type.equals("ANGLE_X")) {
+            if (angleType.equals("ANGLE_X")) {
                 param3 = param1 * 100 + param2;
             } else {
-                param3 = 36000 - (param1 * 100 + param2);
+                if (ptzType.equalsIgnoreCase("FY")) {
+                    param3 = param1 * 100 + param2;
+                } else {
+                    param3 = 36000 - (param1 * 100 + param2);
+                }
+
             }
             //System.out.println("Type:" + type + ",Param1:" + param1 + ",Param2:" + param2 + ",Param3(36000 - (param1 * 100 + param2)):" + param3 + ",2222222222222222222222222");
 
@@ -191,7 +196,7 @@ public class PTZUtil {
 
         //处理check sum
         int checkSum = 0;
-        if (type.equals("ANGLE_X") || type.equals("ANGLE_Y")) {
+        if (angleType.equals("ANGLE_X") || angleType.equals("ANGLE_Y")) {
             String curruentCommand = command.toString().toUpperCase();
             checkSum = address + command1 + command2 + Integer.valueOf(curruentCommand.substring(12, 14), 16) + Integer.valueOf(curruentCommand.substring(15, 17), 16);
         } else {
