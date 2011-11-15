@@ -17,13 +17,12 @@ public interface PTZService {
 
     String editPTZ(Long id);   //修改
     
-    String createPTZ(String name); // 添加
+    String create(String name); // 添加
     
     List<PTZ> getAllPTZs(); //得到所有的云台信息
     
     String getAllPTZsJSON(); //得到所有的云台信息以Json返回。
-    
-    
+       
     String getPTZList(); //得到数据列表
     
     PTZ saveOrUpdate(PTZ ptz); //保存

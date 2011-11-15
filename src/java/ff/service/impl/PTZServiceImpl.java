@@ -65,7 +65,7 @@ public class PTZServiceImpl implements PTZService {
 
     //增加
     @Override
-    public String createPTZ(String name) {
+    public String create(String name) {
         PTZ ptz = new PTZ();
         String info = null;
         if (ptzDao.getPTZByName(name) == null) {

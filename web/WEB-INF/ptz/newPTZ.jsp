@@ -28,11 +28,13 @@
                 var controllUrl = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '编码器IP',
                     name: 'controll_url',
+                    
                     anchor: '95%'
                 });
                 
                 var pelcodCommandUrl = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '通过串口,发pelcod的ip',
+                    lableWidth:100,
                     name: 'pelcod_command_url',
                     anchor: '95%'
                 });
@@ -120,61 +122,68 @@
                         labelWidth: 55,
                         labelAlign: 'right'
                     },
-                    url:'<%=basePath%>user/create.htm',
+                    url:'<%=basePath%>PTZ/create.htm',
                     frame:true,
                     bodyStyle:'padding:5px 5px 0',
                     width: 605,
-                     items: [{
+                    items: [{
                             layout: 'column',
                             xtype: 'container',
                             items: [{
                                     columnWidth: .3,
-                                    layout: 'anchor',
+                                    layout: 'anchor',                                  
                                     xtype: 'container',
-                                    items: [loginId]
+                                    items: [name,controllUrl,pelcodCommandUrl,visibleCameraUrl,visibleRTSPUrl]
+                                }, {
+                                    columnWidth: .35,
+                                    layout: 'anchor',
+                                    xtype: 'container',                                  
+                                    items: [infraredRTSPUrl,infraredCameraUrl,infraredCircuitUrl,northMigration,gisMapUrl]
                                 }, {
                                     columnWidth: .35,
                                     layout: 'anchor',
                                     xtype: 'container',
-                                    items: [password]
-                                }, {
-                                    columnWidth: .35,
-                                    layout: 'anchor',
-                                    xtype: 'container',
-                                    items: [role]
-                                }]
-                        },{
-                            layout: 'column',
-                            xtype: 'container',
-                            items: [{
-                                    columnWidth: .3,
-                                    layout: 'anchor',
-                                    xtype: 'container',
-                                    items: [name]
-                                },{
-                                    columnWidth: .35,
-                                    layout: 'anchor',
-                                    xtype: 'container',
-                                    items: [phone]
-                                },{
-                                    columnWidth: .35,
-                                    layout: 'anchor',
-                                    xtype: 'container',
-                                    items: [identityCard]
-                                }]
-                        },address,email,{
-                            layout: 'column',
-                            xtype: 'container',
-                            items: [{
-                                    columnWidth: 1,
-                                    layout: 'anchor',
-                                    xtype: 'container',
-                                    items: [desc]
+                                    items: [visualAngleX,visualAngleY,infraredPixelX,infraredPixelY,version,isLocked]
                                 }]
                         }],
+                    buttons: [{
+                            text: '提交',
+                            iconCls: 'icon-save',
+                            handler: function(){
+                                // check form value
+                                if (newPTZForm.form.isValid()) {
+                                    this.disable();
+                                    newPTZForm.form.submit({
+                                        method : 'POST',
+                                        success: function(result, response){
+                                            if (response.result.info == "success") {
+                                                //添加成功后，隐藏窗口，并刷新Grid
+                                                newPTZWin.destroy();
+                                            }
+                                            else {
+                                                Ext.MessageBox.alert('消息', response.result.info);
+                                            }
+                                        },
+                                        failure: function(result, response){
+                                            Ext.MessageBox.alert('提示', result.responseText);
+                                            newPTZWin.destroy();
+                                        }
+                                    });
+                                }
+                                else {
+                                    Ext.MessageBox.alert('错误提示', '请按要求填写必输选项.');
+                                }
+                            }
+                        },{
+                            text: '取消',
+                            iconCls: 'exit',
+                            handler: function(){
+                                newPTZWin.destroy();
+                            }
+                        }]
                     
-                })
-               
+                });
+                newPTZForm.render('new_PTZ_form');
                 
             })
         </script>
