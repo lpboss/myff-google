@@ -161,6 +161,13 @@
                     anchor: '95%'
                 });
                 
+                 var editPTZForm = Ext.create('Ext.form.Panel', {
+                     
+                 })
+                
+                
+                
+                
                 
                 
              })
