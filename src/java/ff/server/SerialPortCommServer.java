@@ -37,8 +37,6 @@ public class SerialPortCommServer {
     private static Map<String, Boolean> isMovingCenterForFireAlarm = new ConcurrentHashMap<String, Boolean>();
     //火警时，当场保存的起火方位与热值，时间。由于火警地点随时变化，所以这里只记录最初的方位。Key为IP，值为：X|Y|AngleX|AngleY|MaxValue|Time
     private static Map<String, String> sceneFireAlarmInfo = new ConcurrentHashMap<String, String>();
-    
-    
     //火警时，最终到调整到的中心角度，其中的值格式为X1|X1Command|Y1|Y1Command，X1，Y1代表水平，垂直角度。
     private static Map<String, String> finalMovingCenterForFireAlarm = new ConcurrentHashMap<String, String>();
     // 为了修正在回到断点云台不到位的情况。加上命令调整时间，如果超过1秒，就再发送一次，相同的命令。值为毫秒数。
@@ -579,8 +577,6 @@ public class SerialPortCommServer {
         return sceneFireAlarmInfo;
     }
 
-    
-    
     public static void main(String[] args) {
         SerialPortCommServer server = new SerialPortCommServer();
 
