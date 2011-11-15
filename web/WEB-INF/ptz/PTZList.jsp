@@ -45,7 +45,7 @@
                             width:70
                         }, {
                             header: '编码器IP',
-                            dataIndex: 'controllUrl',
+                            dataIndex: 'controll_url',
                             width:70
                         }, {
                             header: '通过串口,发pelcod的ip',
