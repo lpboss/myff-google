@@ -63,11 +63,11 @@ public class PTZ {
     }
 
     @Column(name = "created_at", nullable = false, length = 19)
-    public Timestamp getCreated_at() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreated_at(Timestamp createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -214,6 +214,4 @@ public class PTZ {
     public void setInfraredPixelY(Integer infraredPixelY) {
         this.infraredPixelY = infraredPixelY;
     }
-
-    
 }
