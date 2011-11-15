@@ -7,6 +7,7 @@ package ff.service.impl;
 import ff.dao.PTZDao;
 import ff.model.PTZ;
 import ff.service.PTZService;
+import ff.util.DateJsonValueProcessor;
 import java.util.List;
 import net.sf.json.JsonConfig;
 import net.sf.json.JSONObject;
@@ -99,7 +100,7 @@ public class PTZServiceImpl implements PTZService {
         List ptzs = ptzDao.getAllPTZs();
         JsonConfig jsonConfig = new JsonConfig();
         //这是需要过滤掉的变量名。
-       // jsonConfig.setExcludes(new String[]{});
+        jsonConfig.setExcludes(new String[]{});
         JSONArray ptzJS = JSONArray.fromObject(ptzs, jsonConfig);
         String jsonStr = "{totalProperty:" + ptzs.size() + ",root:" + ptzJS.toString() + "}";
         return jsonStr;
@@ -114,6 +115,17 @@ public class PTZServiceImpl implements PTZService {
     public List<PTZ> getAllPTZs() {
         List ptzs = ptzDao.getAllPTZs();
         return ptzs;
+    }
+
+    @Override
+    public String getPTZJSONById(Long id) {
+        PTZ ptz = ptzDao.getPTZById(id);
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.setExcludes(new String[]{"videos", "users"});
+        jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm"));
+        JSONObject userJS = JSONObject.fromObject(ptz, jsonConfig);
+        String jsonStr = userJS.toString();
+        return jsonStr;
     }
 
     
