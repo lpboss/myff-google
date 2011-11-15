@@ -5,6 +5,10 @@ import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import org.xsocket.MaxReadSizeExceededException;
 import org.xsocket.connection.IConnectHandler;
 import org.xsocket.connection.IConnectionTimeoutHandler;
@@ -71,49 +75,42 @@ public class PTZControlServerHandler implements IDataHandler, IConnectHandler,
             String ip = connection.getRemoteAddress().getHostAddress();
 
             //接收从云台发送的角度信息
-            byte[] b = connection.readBytesByLength(7);
+            ByteBuffer buffer = ByteBuffer.allocate(7);
+            connection.read(buffer);
+            byte[] b = buffer.array();
             String s = serialPortCommServer.byteArray2HexString(b);
 
-            //亚安云台算法
-            /*
+            //added by Jerry 2011-11-14
+            Calendar calendar = Calendar.getInstance();
+            long milliseconds = calendar.getTimeInMillis();
+            SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss SSS");
+            Date date = new Date(milliseconds);
+            //System.out.println("打印时实传回的角度信息：" + s + ",Date:" + timeFormat.format(date) + ",==================================");
             if (s.indexOf("FF010059") > -1) {//水平角度信息回传
-                //System.out.println("S 变量全值：" + s);
-                float angle_x = (float) Integer.parseInt(s.substring(s.indexOf("FF010059") + 8, s.indexOf("FF010059") + 12), 16) / 100;
+                //System.out.println("打印时实传回的云台水平角度信息：" + s + ",Date:" + timeFormat.format(date));
+                float angle_x = 0;
+                try {
+                    angle_x = (float) Integer.parseInt(s.substring(s.indexOf("FF010059") + 8, s.indexOf("FF010059") + 12), 16) / 100;
+                } catch (Exception e) {
+                    System.out.println("打印解析传回的云台水平角度信息时发生的错误：" + e);
+                }
                 serialPortCommServer.setAngleX(ip, angle_x);
 
                 //System.out.println("云台水平角度：" + serialPortCommServer.getAngleXString(ip));
             } else if (s.indexOf("FF01005B") > -1) {//垂直角度信息回传
+                //System.out.println("打印时实传回的云台垂直角度信息：" + s + ",Date:" + timeFormat.format(date));
                 float angle_y = 0f;
-                int y = Integer.parseInt(s.substring(s.indexOf("FF01005B") + 8, s.indexOf("FF01005B") + 12), 16);
+                int y = 0;
+                try {
+                    y = Integer.parseInt(s.substring(s.indexOf("FF01005B") + 8, s.indexOf("FF01005B") + 12), 16);
+                } catch (Exception e) {
+                    System.out.println("打印解析传回的云台垂直角度信息时发生的错误：" + e);
+                }
                 if (y < 18000) {
                     angle_y = 0 - (float) y / 100;
                 } else if (y > 18000) {
                     angle_y = (float) (36000 - y) / 100;
                 }
-                serialPortCommServer.setAngleY(ip, angle_y);
-
-                //System.out.println("云台垂直角度：" + serialPortCommServer.getAngleY(ip));
-            }
-            */
-            
-            //飞跃云台算法
-            if (s.indexOf("FF010059") > -1) {//水平角度信息回传
-                //System.out.println("S 变量全值：" + s);
-                float angle_x = (float) Integer.parseInt(s.substring(s.indexOf("FF010059") + 8, s.indexOf("FF010059") + 12), 16) / 10;
-                serialPortCommServer.setAngleX(ip, angle_x);
-
-                //System.out.println("云台水平角度：" + serialPortCommServer.getAngleXString(ip));
-            } else if (s.indexOf("FF01005B") > -1) {//垂直角度信息回传，正角度
-                float angle_y = 0f;
-                int y = Integer.parseInt(s.substring(s.indexOf("FF01005B") + 8, s.indexOf("FF01005B") + 12), 16);
-                angle_y = (float) y / 10;
-                serialPortCommServer.setAngleY(ip, angle_y);
-
-                //System.out.println("云台垂直角度：" + serialPortCommServer.getAngleY(ip));
-            } else if (s.indexOf("FF01015B") > -1) {//垂直角度信息回传，负角度
-                float angle_y = 0f;
-                int y = Integer.parseInt(s.substring(s.indexOf("FF01005B") + 8, s.indexOf("FF01005B") + 12), 16);
-                angle_y = - (float) y / 10;
                 serialPortCommServer.setAngleY(ip, angle_y);
 
                 //System.out.println("云台垂直角度：" + serialPortCommServer.getAngleY(ip));
