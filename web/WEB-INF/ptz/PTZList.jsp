@@ -42,7 +42,7 @@
                     columns : [Ext.create('Ext.grid.RowNumberer'), {
                             header: '名字',
                             dataIndex: 'name',
-                            width:40
+                            width:70
                         }, {
                             header: '编码器IP',
                             dataIndex: 'controllUrl',
