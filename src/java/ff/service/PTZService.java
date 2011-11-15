@@ -26,6 +26,8 @@ public interface PTZService {
     String getPTZList(); //得到数据列表
     
     PTZ saveOrUpdate(PTZ ptz); //保存
+    
+    String getPTZJSONById(Long id);
 
     String updatePTZ(Long id, String name); //更新
 }

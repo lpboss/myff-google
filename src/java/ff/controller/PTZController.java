@@ -94,7 +94,6 @@ public class PTZController extends MultiActionController {
     public void getAllPTZs(HttpServletRequest request, HttpServletResponse response) {
         
         String jsonStr = ptzService.getPTZList();
-        logger.info("ddddddddddddddddddddddddddddddddd");
         logger.info(jsonStr);
         PrintWriter pw;
         try {
@@ -113,7 +112,21 @@ public class PTZController extends MultiActionController {
         String id = request.getParameter("id");
         PTZ ptz = new PTZ();
         ptz.setName(request.getParameter("name")); //名称
-        ptz.setControllUrl(request.getParameter("description")); //
+        ptz.setControllUrl(request.getParameter("controll_url"));//编码器IP
+        ptz.setPelcodCommandUrl(request.getParameter("pelcod_command_url"));//通过串口,发pelcod的ip
+        ptz.setVisibleCameraUrl(request.getParameter("visible_camera_url"));//可见光摄像机地址,模拟请参考controll_url
+        ptz.setVisibleRTSPUrl(request.getParameter("visible_rtsp_url"));//可见光RTSP流
+        ptz.setInfraredRTSPUrl(request.getParameter("infrared_rtsp_url"));//红外RTSP流
+        ptz.setInfraredCameraUrl(request.getParameter("infrared_camera_url"));//红外摄像机地址
+        ptz.setInfraredCircuitUrl(request.getParameter("infrared_circuit_url"));//红外电路板设备地址       
+        ptz.setNorthMigration(request.getIntHeader("north_migration"));//摄像机0角度与正北的偏移
+        ptz.setGisMapUrl(request.getParameter("gis_map_url"));//地图文件存放位置
+        ptz.setVisualAngleX(request.getIntHeader("visual_angle_x"));//红外视角X
+        ptz.setVisualAngleY(request.getIntHeader("visual_angle_y"));//红外视角Y
+        ptz.setInfraredPixelX(request.getIntHeader("infrared_pixel_x"));//红外摄像机X方向像素
+        ptz.setInfraredPixelY(request.getIntHeader("infrared_pixel_y"));//红外摄像机Y方向像素     
+        ptz.setVersion(Integer.getInteger("version"));//版本
+        ptz.setIsLocked(Long.getLong("isLocked"));//状态
         ptzService.saveOrUpdate(ptz);
         String info = "success";
         String jsonStr = "{success:true,info:'" + info + "'}";
@@ -128,4 +141,25 @@ public class PTZController extends MultiActionController {
             logger.info(e);
         }
     }
+    
+    //编辑PTZ
+    public void getPTZById(HttpServletRequest request, HttpServletResponse response) {
+        Long id = Long.valueOf(request.getParameter("id"));
+        String jsonStr = ptzService.getPTZJSONById(id);
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
+    
+    
+    
+    
+    
 }

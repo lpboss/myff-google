@@ -39,7 +39,7 @@
                 });
                 
                 var visibleCameraUrl = Ext.create('Ext.form.field.Text', {
-                    fieldLabel: '可见光摄像机地址,模拟请参考controll_url',
+                    fieldLabel: '可见光摄像机地址',
                     name: 'visible_camera_url',
                     anchor: '95%'
                 });
@@ -118,13 +118,14 @@
                
                 var newPTZForm = Ext.create('Ext.form.Panel', {
                     fieldDefaults: {
-                        labelWidth: 55,
+                        labelWidth: 180,
                         labelAlign: 'right'
                     },
                     url:'<%=basePath%>ptz/create.htm',
                     frame:true,
                     bodyStyle:'padding:5px 5px 0',
-                    width: 605,
+                    width: 1190,
+                    height: 220,
                     items: [{
                             layout: 'column',
                             xtype: 'container',

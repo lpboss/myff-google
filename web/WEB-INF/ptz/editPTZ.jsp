@@ -23,7 +23,7 @@
                         }, {
                             name: 'name'
                         }, {
-                            name: 'controll_url'
+                            name: 'controllUrl'
                         }, {
                             name: 'pelcod_command_url'
                         }, {
@@ -54,13 +54,14 @@
                             name: 'version'
                         }, {
                             name: 'is_locked'
-                        }, {
+                        }
+                      /*  , {
                             name: 'createAt',
                             mapping:'createAt.id'
                         }, {
                             name: 'updateAt',
                             mapping:'updateAt.id'
-                        }
+                        }*/
                     ]
                 });
                 
@@ -87,7 +88,7 @@
                 });
                 
                 var visibleCameraUrl = Ext.create('Ext.form.field.Text', {
-                    fieldLabel: '可见光摄像机地址,模拟请参考controll_url',
+                    fieldLabel: '可见光摄像机地址',
                     name: 'visible_camera_url',
                     anchor: '95%'
                 });
@@ -168,7 +169,7 @@
                     model : 'Role',
                     proxy : {
                         type : 'ajax',
-                        url : '<%=basePath%>PTZ/getAllPTZs.htm?for_cbb=true',
+                        url : '<%=basePath%>ptz/getAllPTZs.htm?for_cbb=true',
                         reader : {
                             type : 'json',
                             root : 'root',// JSON数组对象名
@@ -179,35 +180,31 @@
                 
                 var editPTZForm = Ext.create('Ext.form.Panel', {
                     fieldDefaults: {
-                        labelWidth: 55,
+                        labelWidth: 180,
                         labelAlign: 'right'
                     },
                     trackResetOnLoad: true,
                     frame:true,
-                    url: '<%=basePath%>user/update.htm?id=' + userId,
+                    url: '<%=basePath%>ptz/update.htm?id=' + userId,
                     reader: Ext.create('Ext.data.reader.Json',{
                         model: 'UserEdit',
                         root: ''
                     }),
                     bodyStyle:'padding:5px 5px 0',
-                    width: 605,
-                    //height:300,
+                    width: 1190,
+                    height: 220,
                     items: [{
                             layout: 'column',
                             xtype: 'container',
                             items: [{
                                     columnWidth: .3,
-                                    layout: 'anchor',
+                                    layout: 'anchor',                                  
                                     xtype: 'container',
                                     items: [name,controllUrl,pelcodCommandUrl,visibleCameraUrl,visibleRTSPUrl]
-                                }]
-                        },{
-                            layout: 'column',
-                            xtype: 'container',
-                            items: [{
-                                    columnWidth: .3,
+                                }, {
+                                    columnWidth: .35,
                                     layout: 'anchor',
-                                    xtype: 'container',
+                                    xtype: 'container',                                  
                                     items: [infraredRTSPUrl,infraredCameraUrl,infraredCircuitUrl,northMigration,gisMapUrl]
                                 }, {
                                     columnWidth: .35,
@@ -258,7 +255,7 @@
                 PTZStore.load({callback: function(record, options, success){
                         if(success){
                             editPTZForm.form.load({
-                                url: '<%=basePath%>user/getUserById.htm?id=' + userId,
+                                url: '<%=basePath%>ptz/getPTZById.htm?id=' + userId,
                                 method : 'POST',
                                 waitMsg: '正在载入数据...',
                                 success: function(form, action){

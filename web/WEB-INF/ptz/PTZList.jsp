@@ -17,9 +17,33 @@
         <script type="text/javascript">
             Ext.onReady(function(){
                 
+                //PTZ下拉框模型
+                Ext.define('PTZ', {
+                    extend : 'Ext.data.Model',
+                    fields : [
+                        {name: 'id'},
+                        { name: 'name'},
+                        { name: 'controllUrl'},
+                        { name: 'pelcodCommandUrl'},
+                        { name: 'visibleCameraUrl'},
+                        { name: 'visibleRTSPUrl'},
+                        { name: 'infraredRTSPUrl'},
+                        { name: 'infraredCameraUrl'},
+                        { name: 'infraredCircuitUrl'},
+                        { name: 'northMigration'},
+                        { name: 'gisMapUrl'},
+                        { name: 'visualAngleX'},
+                        { name: 'visualAngleY'},
+                        { name: 'infraredPixelX'},
+                        { name: 'infraredPixelY'},
+                        { name: 'version'},
+                        { name: 'isLocked'}
+                    ]
+                });
+                
                 PTZDS =  Ext.create('Ext.data.Store', {
                     //autoDestroy : true,
-                    model : 'User',
+                    model : 'PTZ',
                     proxy : {
                         type : 'ajax',
                         url : '<%=basePath%>ptz/getAllPTZs.htm',
@@ -42,28 +66,28 @@
                     columns : [Ext.create('Ext.grid.RowNumberer'), {
                             header: '名字',
                             dataIndex: 'name',
-                            width:70
+                            width:90
                         }, {
                             header: '编码器IP',
-                            dataIndex: 'controll_url',
-                            width:70
+                            dataIndex: 'controllUrl',
+                            width:100
                         }, {
                             header: '通过串口,发pelcod的ip',
                             dataIndex: 'pelcodCommandUrl',
                             width:120
                         }, {
-                            header: '可见光摄像机地址,模拟请参考controll_url',
+                            header: '可见光摄像机地址',
                             dataIndex: 'visibleCameraUrl',                          
                             width:210
                         }, {
                             header: '可见光RTSP流',
                             dataIndex: 'visibleRTSPUrl',
-                            width:80
+                            width:90
                              
                         }, {
                             header: '红外RTSP流',
                             dataIndex: 'infraredRTSPUrl',
-                            width:70
+                            width:90
                         }, {
                             header: '红外摄像机地址',
                             dataIndex: 'infraredCameraUrl',
@@ -83,11 +107,11 @@
                         },{
                             header: '红外视角X',
                             dataIndex: 'visualAngleX',
-                            width:60
+                            width:90
                         },{
                             header: '红外视角Y',
                             dataIndex: 'visualAngleY',
-                            width:80
+                            width:90
                         },{
                             header: '红外摄像机X方向像素',
                             dataIndex: 'infraredPixelX',
@@ -122,8 +146,8 @@
                             handler : function(){
                                 newPTZWin = Ext.create('Ext.window.Window', {
                                     layout: 'fit',
-                                    width:617,
-                                    height:330,
+                                    width:1200,
+                                    height:250,
                                     closeAction: 'destroy',
                                     plain: true,
                                     modal: true,
@@ -159,8 +183,8 @@
                                     editPTZWin = Ext.create('Ext.window.Window', {
                                         title: '编辑云台',
                                         layout:'fit',
-                                        width:617,
-                                        height:335,
+                                        width:1200,
+                                        height:250,
                                         closeAction:'destroy',
                                         constrain:true,
                                         plain: true,
