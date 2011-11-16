@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 /**
  *
  * @author jerry
+ * 2011
  */
 @Entity
 @Table(name = "ptzs")
