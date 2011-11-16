@@ -86,7 +86,7 @@ public class PTZCruiseTask {
             SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss SSS");
             Date date = new Date(milliseconds);
             String ptzIP = ptz.getPelcodCommandUrl();
-            //System.out.println("Angle (" + ptzIP + ") X:" + serialPortCommServer.getAngleXString(ptzIP) + ",Y:" + serialPortCommServer.getAngleYString(ptzIP) + "------------------,Date:" + timeFormat.format(date));
+            System.out.println("Angle (" + ptzIP + ") X:" + serialPortCommServer.getAngleXString(ptzIP) + ",Y:" + serialPortCommServer.getAngleYString(ptzIP) + "------------------,Date:" + timeFormat.format(date));
             //System.out.println("当前的云台" + ptzIP + "是否允许巡航：" + serialPortCommServer.getAllowCruise().get(ptzIP));
 
             if (serialPortCommServer.getAllowCruise().get(ptzIP) == null) {
@@ -98,7 +98,7 @@ public class PTZCruiseTask {
                 boolean commandResult;
                 try {
                     //刚开机时，有可能命令运行失败，所以要判断命令执行的结果。
-                    commandResult = serialPortCommServer.sendCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right"));
+                    commandResult = serialPortCommServer.sendCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right", ptz.getBrandType()));
                     if (commandResult) {
                         serialPortCommServer.getAllowCruise().put(ptzIP, Boolean.TRUE);
                     }
@@ -114,11 +114,11 @@ public class PTZCruiseTask {
                     //以20为步长，右转.判断，如果有当前正在旋转巡航，则不发送
                     if (serialPortCommServer.getIsCruising().get(ptzIP) == null) {
                         serialPortCommServer.getIsCruising().put(ptzIP, Boolean.TRUE);
-                        serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right"));
+                        serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right", ptz.getBrandType()));
                     } else {
                         if (serialPortCommServer.getIsCruising().get(ptzIP) == Boolean.FALSE && serialPortCommServer.getCruiseBreakpoint().get(ptzIP) == null) {
                             serialPortCommServer.getIsCruising().put(ptzIP, Boolean.TRUE);
-                            serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right"));
+                            serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right", ptz.getBrandType()));
                         } else {
                             //实其实是个补丁，如果在发送巡航指令时，有可能命令并没有被执行，所以要每次发送。
                             //serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right"));
@@ -138,8 +138,8 @@ public class PTZCruiseTask {
                                     serialPortCommServer.getIsCruising().put(ptzIP, Boolean.FALSE);
                                     System.out.println("巡航......断点完全复位......继续巡航。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
                                 } else {
-                                    String adjustXCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4B, Integer.parseInt(breakPointAngleX.split("\\.")[0]), Integer.parseInt(breakPointAngleX.split("\\.")[1]), "ANGLE_X");
-                                    String adjustYCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, Integer.parseInt(breakPointAngleY.split("\\.")[0]), Integer.parseInt(breakPointAngleY.split("\\.")[1]), "ANGLE_Y");
+                                    String adjustXCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4B, Integer.parseInt(breakPointAngleX.split("\\.")[0]), Integer.parseInt(breakPointAngleX.split("\\.")[1]), "ANGLE_X", ptz.getBrandType());
+                                    String adjustYCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, Integer.parseInt(breakPointAngleY.split("\\.")[0]), Integer.parseInt(breakPointAngleY.split("\\.")[1]), "ANGLE_Y", ptz.getBrandType());
 
                                     if (serialPortCommServer.getIsAdjustingXYForBreakpoint().get(ptzIP) == null) {
                                         if (serialPortCommServer.getBreakPointReturnBeginTime().get(ptzIP) == null) {
@@ -169,7 +169,7 @@ public class PTZCruiseTask {
                         if (serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP) != null && serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP) == Integer.parseInt(currentAngleY.split("\\.")[0])) {
                             //继续巡航。
                             serialPortCommServer.getIsCruisingPresetAngleY().remove(ptzIP);
-                            serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right"));
+                            serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right", ptz.getBrandType()));
                         }
                     } else {
                         //有可能在设置上升以后，角度并不骨超过360度。这时要继续右转。
@@ -178,7 +178,7 @@ public class PTZCruiseTask {
                             //判断，如果当前的角度，已经符合上杨角度，则执行下面的命令。
                             String currentAngleY = String.valueOf(serialPortCommServer.getAngleYString(ptzIP));
                             if (serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP) == Integer.parseInt(currentAngleY.split("\\.")[0])) {
-                                serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right"));
+                                serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right", ptz.getBrandType()));
                             }
                         }
                     }
@@ -211,14 +211,14 @@ public class PTZCruiseTask {
                             }
                             serialPortCommServer.pushCommand(ptzIP, "FF 01 00 00 00 00 01");
 
-                            serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, angleY1, angleY2, "ANGLE_Y"));
+                            serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, angleY1, angleY2, "ANGLE_Y", ptz.getBrandType()));
                         } else {
                             //判断角度是否达到预置的高度了。
                             String currentAngleY = String.valueOf(serialPortCommServer.getAngleYString(ptzIP));
                             if (serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP) == Integer.parseInt(currentAngleY.split("\\.")[0])) {
                                 //继续巡航。下面屏蔽了一行，因为来不及转动，所以总是角度在360以内。
                                 //serialPortCommServer.getIsCruisingPresetAngleY().remove(ptzIP);
-                                serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right"));
+                                serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, 15, 0, "right", ptz.getBrandType()));
                             } else {
                                 System.out.println("继续等待云台Y角度调整。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
                             }
@@ -263,7 +263,7 @@ public class PTZCruiseTask {
 
             //判断，如果当前没有进行置中操作，则从新判断热值 。
             if (serialPortCommServer.getIsMovingCenterForFireAlarm().get(ptzIP) == null && (serialPortCommServer.getAllowAlarm().get(ptzIP) == null || serialPortCommServer.getAllowAlarm().get(ptzIP) == Boolean.TRUE)) {
-                //System.out.println("serialPortCommServer.getAlertMax(infraredSetupIP)" + serialPortCommServer.getAlertMax(infraredSetupIP));
+                System.out.println("serialPortCommServer.getAlertMax(infraredSetupIP):" + serialPortCommServer.getAlertMax(infraredSetupIP));
                 if (serialPortCommServer.getAlertMax(infraredSetupIP) > 1300) {
                     int heatPosX = serialPortCommServer.getAlertX(infraredSetupIP);
                     int heatPosY = serialPortCommServer.getAlertY(infraredSetupIP);
@@ -290,7 +290,7 @@ public class PTZCruiseTask {
                     int maxHeatValue = serialPortCommServer.getAlertMax(infraredSetupIP);
                     System.out.println("当前热值：" + maxHeatValue);
                     System.out.println("热成像X:" + heatPosX + ",当前水平角度：" + currentAngleX);
-                    System.out.println("热成像Y:" + heatPosY + "当前垂直角度：" + currentAngleY);
+                    System.out.println("热成像Y:" + heatPosY + ",当前垂直角度：" + currentAngleY);
                     //X|Y|AngleX|AngleY|MaxValue|Time
                     serialPortCommServer.getSceneFireAlarmInfo().put(ptzIP, heatPosX + "|" + heatPosY + "|" + currentAngleX + "|" + currentAngleY + "|" + maxHeatValue + "|" + new Date().getTime());
                     //如果水平方向，小于192，水平逆时针转动。否则顺时针
@@ -349,8 +349,8 @@ public class PTZCruiseTask {
                     /*
                      * 准备好角度以后，进行角度调整命令。在角度调整后，计算出1度对于热成像方位值变化的比例。然后进行一次命令调整。
                      */
-                    String adjustXCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4B, (int) Math.floor(finalPTZAngleX), (int) Math.floor((finalPTZAngleX - Math.floor(finalPTZAngleX)) * 100), "ANGLE_X");
-                    String adjustYCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, (int) Math.floor(finalPTZAngleY), (int) Math.floor((finalPTZAngleY - Math.floor(finalPTZAngleY)) * 100), "ANGLE_Y");
+                    String adjustXCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4B, (int) Math.floor(finalPTZAngleX), (int) Math.floor((finalPTZAngleX - Math.floor(finalPTZAngleX)) * 100), "ANGLE_X", ptz.getBrandType());
+                    String adjustYCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, (int) Math.floor(finalPTZAngleY), (int) Math.floor((finalPTZAngleY - Math.floor(finalPTZAngleY)) * 100), "ANGLE_Y", ptz.getBrandType());
                     serialPortCommServer.pushCommand(ptzIP, adjustXCommand);
                     serialPortCommServer.pushCommand(ptzIP, adjustYCommand);
                     //设置正在置中状态位。

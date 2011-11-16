@@ -91,19 +91,19 @@
                         },{
                             header: '红外摄像机X方向像素',
                             dataIndex: 'infraredPixelX',
-                            width:230
+                            width:150
                         },{
                             header: '红外摄像机Y方向像素',
                             dataIndex: 'infraredPixelY',
-                            width:230
+                            width:150
                         },{
                             header: '版本',
                             dataIndex: 'version',
-                            width:230
+                            width:80
                         },{
                             header: '状态',
                             dataIndex: 'isLocked',                          
-                            width:230
+                            width:40
                         }],
                     selModel :Ext.create('Ext.selection.CheckboxModel'),
                     
