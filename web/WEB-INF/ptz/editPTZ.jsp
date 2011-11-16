@@ -69,7 +69,7 @@
                     anchor: '95%'
                 });
                 
-                var northMigration = Ext.create('Ext.form.field.Text', {
+                var northMigration = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '摄像机0角度与正北的偏移',
                     name: 'northMigration',
                     anchor: '95%'
@@ -81,31 +81,43 @@
                     anchor: '95%'
                 });
                 
-                var visualAngleX = Ext.create('Ext.form.field.Text', {
+                var visualAngleX = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '红外视角X',
                     name: 'visualAngleX',
                     anchor: '95%'
                 });
                 
-                var visualAngleY = Ext.create('Ext.form.field.Text', {
+                var visualAngleY = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '红外视角Y',
                     name: 'visualAngleY',
                     anchor: '95%'
                 });
                 
-                var infraredPixelX = Ext.create('Ext.form.field.Text', {
+                var infraredPixelX = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '红外摄像机X方向像素',
                     name: 'infraredPixelX',
                     anchor: '95%'
                 });
                 
-                var infraredPixelY = Ext.create('Ext.form.field.Text', {
+                var infraredPixelY = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '红外摄像机Y方向像素',
                     name: 'infraredPixelY',
                     anchor: '95%'
                 });
                 
-                var version = Ext.create('Ext.form.field.Text', {
+                var brandType = Ext.create('Ext.form.field.Text', {
+                    fieldLabel: '品牌类型',
+                    name: 'brandType',
+                    anchor: '95%'
+                });
+                
+                var cruiseStep = Ext.create('Ext.form.field.Number', {
+                    fieldLabel: '巡航步长',
+                    name: 'cruiseStep',
+                    anchor: '95%'
+                });
+                
+                var version = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '版本',
                     name: 'version',
                     anchor: '95%'
@@ -149,17 +161,17 @@
                             layout: 'column',
                             xtype: 'container',
                             items: [{
-                                    columnWidth: .3,
+                                    columnWidth: .33,
                                     layout: 'anchor',                                  
                                     xtype: 'container',
-                                    items: [name,controllUrl,pelcodCommandUrl,visibleCameraUrl,visibleRTSPUrl]
+                                    items: [name,controllUrl,pelcodCommandUrl,visibleCameraUrl,visibleRTSPUrl,brandType]
                                 }, {
-                                    columnWidth: .35,
+                                    columnWidth: .33,
                                     layout: 'anchor',
                                     xtype: 'container',                                  
-                                    items: [infraredRTSPUrl,infraredCameraUrl,infraredCircuitUrl,northMigration,gisMapUrl]
+                                    items: [infraredRTSPUrl,infraredCameraUrl,infraredCircuitUrl,northMigration,gisMapUrl,cruiseStep]
                                 }, {
-                                    columnWidth: .35,
+                                    columnWidth: .33,
                                     layout: 'anchor',
                                     xtype: 'container',
                                     items: [visualAngleX,visualAngleY,infraredPixelX,infraredPixelY,version,isLocked]
