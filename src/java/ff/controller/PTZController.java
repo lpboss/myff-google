@@ -181,7 +181,7 @@ public class PTZController extends MultiActionController {
         String brandType = request.getParameter("brandType");//品牌类型
         Integer cruiseStep = Integer.valueOf(request.getParameter("cruiseStep")); //巡航步长
         Integer version = Integer.valueOf(request.getParameter("version")); //版本
-        Long isLocked = Long.valueOf(request.getParameter("isLocked"));//状态
+      //  Long isLocked = Long.valueOf(request.getParameter("isLocked"));//状态
      //   Long ptzId = Long.valueOf(request.getParameter("roleId"));
         PTZ ptz = ptzService.getPTZById(id);
         ptz.setId(id);
@@ -202,7 +202,7 @@ public class PTZController extends MultiActionController {
         ptz.setBrandType(brandType);
         ptz.setCruiseStep(Integer.valueOf(cruiseStep));
         ptz.setVersion(Integer.valueOf(version));
-        ptz.setIsLocked(Long.valueOf(isLocked));
+    //    ptz.setIsLocked(Long.valueOf(isLocked));
 
 
       //  logger.info(ptzId);
