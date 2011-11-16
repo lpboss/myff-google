@@ -83,7 +83,7 @@
                 var pelcodCommandUrl = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '通过串口,发pelcod的ip',
                     lableWidth:100,
-                    name: 'pelcod_command_url',
+                    name: 'pelcodCommandUrl',
                     anchor: '95%'
                 });
                 
