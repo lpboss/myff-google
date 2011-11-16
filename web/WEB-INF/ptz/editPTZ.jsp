@@ -16,7 +16,7 @@
         <script type="text/javascript">
             Ext.onReady(function(){
                 var userId = <%=request.getParameter("id")%>;
-                
+ 
                 var name = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '名字',
                     allowBlank: false,
@@ -41,67 +41,67 @@
                 
                 var visibleCameraUrl = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '可见光摄像机地址',
-                    name: 'visible_camera_url',
+                    name: 'visibleCameraUrl',
                     anchor: '95%'
                 });
                 
                 var visibleRTSPUrl = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '可见光RTSP流',            
-                    name: 'visible_rtsp_url',
+                    name: 'visibleRTSPUrl',
                     anchor: '95%'
                 });
                 
                 var infraredRTSPUrl = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '红外RTSP流',
-                    name: 'infrared_rtsp_url',
+                    name: 'infraredRTSPUrl',
                     anchor: '95%'
                 });
                 
                 var infraredCameraUrl = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '红外摄像机地址',
-                    name: 'infrared_camera_url',
+                    name: 'infraredCameraUrl',
                     anchor: '95%'
                 });
                 
                 var infraredCircuitUrl = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '红外电路板设备地址',
-                    name: 'infrared_circuit_url',
+                    name: 'infraredCircuitUrl',
                     anchor: '95%'
                 });
                 
                 var northMigration = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '摄像机0角度与正北的偏移',
-                    name: 'north_migration',
+                    name: 'northMigration',
                     anchor: '95%'
                 });
                 
                 var gisMapUrl = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '地图文件存放位置',
-                    name: 'gis_map_url',
+                    name: 'gisMapUrl',
                     anchor: '95%'
                 });
                 
                 var visualAngleX = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '红外视角X',
-                    name: 'visual_angle_x',
+                    name: 'visualAngleX',
                     anchor: '95%'
                 });
                 
                 var visualAngleY = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '红外视角Y',
-                    name: 'visual_angle_y',
+                    name: 'visualAngleY',
                     anchor: '95%'
                 });
                 
                 var infraredPixelX = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '红外摄像机X方向像素',
-                    name: 'infrared_pixel_x',
+                    name: 'infraredPixelX',
                     anchor: '95%'
                 });
                 
                 var infraredPixelY = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '红外摄像机Y方向像素',
-                    name: 'infrared_pixel_y',
+                    name: 'infraredPixelY',
                     anchor: '95%'
                 });
                 

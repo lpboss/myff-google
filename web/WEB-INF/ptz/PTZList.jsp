@@ -54,7 +54,7 @@
                         }, {
                             header: '可见光摄像机地址',
                             dataIndex: 'visibleCameraUrl',                          
-                            width:210
+                            width:120
                         }, {
                             header: '可见光RTSP流',
                             dataIndex: 'visibleRTSPUrl',

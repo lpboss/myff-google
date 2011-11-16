@@ -158,7 +158,34 @@ public class PTZController extends MultiActionController {
         }
     }
     
-    
+    //更新PTZ
+      public void update(HttpServletRequest request, HttpServletResponse response) {
+        Long id = Long.valueOf(request.getParameter("id"));
+
+        String name = request.getParameter("name");
+        String password = request.getParameter("password");
+        Long roleId = Long.valueOf(request.getParameter("roleId"));
+        PTZ ptz = ptzService.getPTZById(id);
+        ptz.setId(id);
+        ptz.setName(name);
+
+        logger.info(roleId);
+        PrintWriter pw;
+        try {
+            logger.info("user update..............................................Begin..........");
+            String jsonStr = ptzService.update(ptz);
+            logger.info("user update..............................................");
+            logger.info(jsonStr);
+
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
     
     
     
