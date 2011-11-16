@@ -62,7 +62,7 @@
                              
                         }, {
                             header: '红外RTSP流',
-                            dataIndex: 'infraredRTSPUrl',
+                            dataIndex: 'infrared_rtsp_url',
                             width:90
                         }, {
                             header: '红外摄像机地址',
@@ -96,6 +96,14 @@
                             header: '红外摄像机Y方向像素',
                             dataIndex: 'infraredPixelY',
                             width:150
+                        },{
+                            header: '品牌类型',
+                            dataIndex: 'brandType',
+                            width:80
+                        },{
+                            header: '巡航步长',
+                            dataIndex: 'cruiseStep',
+                            width:80
                         },{
                             header: '版本',
                             dataIndex: 'version',

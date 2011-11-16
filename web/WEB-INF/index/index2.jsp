@@ -241,6 +241,10 @@
                         }, {
                             name: 'infraredPixelY'
                         }, {
+                            name: 'brandType'
+                        }, {
+                            name: 'cruiseStep'
+                        }, {
                             name: 'version'
                         }, {
                             name: 'isLocked'
@@ -256,7 +260,7 @@
                 });
                 
                 
-                 //PTZ下拉框模型
+                 //PTZList
                 Ext.define('PTZ', {
                     extend : 'Ext.data.Model',
                     fields : [
@@ -275,6 +279,8 @@
                         { name: 'visualAngleY'},
                         { name: 'infraredPixelX'},
                         { name: 'infraredPixelY'},
+                        { name: 'brandType'},
+                        { name: 'cruiseStep'},
                         { name: 'version'},
                         { name: 'isLocked'}
                     ]

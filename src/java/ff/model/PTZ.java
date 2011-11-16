@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 /**
  *
  * @author jerry
+ * 2011
  */
 @Entity
 @Table(name = "ptzs")
@@ -37,11 +38,13 @@ public class PTZ {
     private float visualAngleY;//'红外视角Y'
     private Integer infraredPixelX;//'红外摄像机X方向像素'
     private Integer infraredPixelY;//'红外摄像机Y方向像素'
+    private String brandType; //品牌类型,不同品牌，特性不同，plcod命令拼接方式不同。
+    private Integer cruiseStep;//巡航步长
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private Integer version;
     private Long isLocked = new Long(0);// '启用，停用',
-
+    
     @Id
     @GeneratedValue
     @Column(name = "id", unique = true, nullable = false)
@@ -103,7 +106,7 @@ public class PTZ {
         return infraredRTSPUrl;
     }
 
-    public void setInfraredRTSPUrl(String infrared_rtsp_url) {
+    public void setInfraredRTSPUrl(String infraredRTSPUrl) {
         this.infraredRTSPUrl = infraredRTSPUrl;
     }
 
@@ -213,5 +216,24 @@ public class PTZ {
 
     public void setInfraredPixelY(Integer infraredPixelY) {
         this.infraredPixelY = infraredPixelY;
+    }
+
+    @Column(name = "brand_type", length = 100)
+    public String getBrandType() {
+        return brandType;
+    }
+
+    public void setBrandType(String brandType) {
+        this.brandType = brandType;
+    }
+
+    @Column(name = "cruise_step", length = 100)
+
+    public Integer getCruiseStep() {
+        return cruiseStep;
+    }
+
+    public void setCruiseStep(Integer cruiseStep) {
+        this.cruiseStep = cruiseStep;
     }
 }

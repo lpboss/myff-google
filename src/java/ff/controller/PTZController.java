@@ -26,7 +26,7 @@ public class PTZController extends MultiActionController {
     public void setPtzService(PTZService ptzService) {
         this.ptzService = ptzService;
     }
-   
+
     public void setPtzUtil(PTZUtil ptzUtil) {
         this.ptzUtil = ptzUtil;
     }
@@ -74,13 +74,13 @@ public class PTZController extends MultiActionController {
         ModelAndView mav = new ModelAndView();
         return mav;
     }
-    
+
     //返回 添加页面
     public ModelAndView newPTZ(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView mav = new ModelAndView();
         return mav;
     }
-    
+
     //返回 修改页面
     public ModelAndView editPTZ(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView mav = new ModelAndView();
@@ -92,7 +92,7 @@ public class PTZController extends MultiActionController {
      *描述：得到PTZ列表
      */
     public void getAllPTZs(HttpServletRequest request, HttpServletResponse response) {
-        
+
         String jsonStr = ptzService.getPTZList();
         logger.info(jsonStr);
         PrintWriter pw;
@@ -124,7 +124,9 @@ public class PTZController extends MultiActionController {
         ptz.setVisualAngleX(request.getIntHeader("visual_angle_x"));//红外视角X
         ptz.setVisualAngleY(request.getIntHeader("visual_angle_y"));//红外视角Y
         ptz.setInfraredPixelX(request.getIntHeader("infrared_pixel_x"));//红外摄像机X方向像素
-        ptz.setInfraredPixelY(request.getIntHeader("infrared_pixel_y"));//红外摄像机Y方向像素     
+        ptz.setInfraredPixelY(request.getIntHeader("infrared_pixel_y"));//红外摄像机Y方向像素    
+        ptz.setBrandType(request.getParameter("brand_type"));//品牌类型,不同品牌，特性不同，plcod命令拼接方式不同。
+        ptz.setCruiseStep(Integer.getInteger("cruise_step"));//巡航步长
         ptz.setVersion(Integer.getInteger("version"));//版本
         ptz.setIsLocked(Long.getLong("isLocked"));//状态
         ptzService.saveOrUpdate(ptz);
@@ -141,7 +143,7 @@ public class PTZController extends MultiActionController {
             logger.info(e);
         }
     }
-    
+
     //编辑PTZ
     public void getPTZById(HttpServletRequest request, HttpServletResponse response) {
         Long id = Long.valueOf(request.getParameter("id"));
@@ -157,19 +159,53 @@ public class PTZController extends MultiActionController {
             logger.info(e);
         }
     }
-    
+
     //更新PTZ
-      public void update(HttpServletRequest request, HttpServletResponse response) {
+    public void update(HttpServletRequest request, HttpServletResponse response) {
         Long id = Long.valueOf(request.getParameter("id"));
 
-        String name = request.getParameter("name");
-        String password = request.getParameter("password");
-        Long roleId = Long.valueOf(request.getParameter("roleId"));
+        String name = request.getParameter("name"); //名称
+        String controllUrl = request.getParameter("controllUrl");//编码器IP
+        String pelcodCommandUrl = request.getParameter("pelcodCommandUrl"); //通过串口,发pelcod的ip
+        String visibleCameraUrl = request.getParameter("visibleCameraUrl"); //可见光摄像机地址,模拟请参考controll_url
+        String visibleRTSPUrl = request.getParameter("visibleRTSPUrl"); //可见光RTSP流
+        String infraredRTSPUrl = request.getParameter("infraredRTSPUrl"); //红外RTSP流
+        String infraredCameraUrl = request.getParameter("infraredCameraUrl"); //红外摄像机地址
+        String infraredCircuitUrl = request.getParameter("infraredCircuitUrl"); //红外电路板设备地址         
+        Float northMigration = Float.valueOf(request.getParameter("infraredCircuitUrl")); //摄像机0角度与正北的偏移
+        String gisMapUrl = request.getParameter("gisMapUrl");//地图文件存放位置
+        Float visualAngleX = Float.valueOf(request.getParameter("visualAngleX"));//红外视角X
+        Float visualAngleY = Float.valueOf(request.getParameter("visualAngleY"));//红外视角Y
+        Integer infraredPixelX = Integer.valueOf(request.getParameter("infraredPixelX"));//红外摄像机X方向像素
+        Integer infraredPixelY = Integer.valueOf(request.getParameter("infraredPixelY"));//红外摄像机Y方向像素    
+        String brandType = request.getParameter("brandType");//品牌类型
+        Integer cruiseStep = Integer.valueOf(request.getParameter("cruiseStep")); //巡航步长
+        Integer version = Integer.valueOf(request.getParameter("version")); //版本
+        Long isLocked = Long.valueOf(request.getParameter("isLocked"));//状态
+     //   Long ptzId = Long.valueOf(request.getParameter("roleId"));
         PTZ ptz = ptzService.getPTZById(id);
         ptz.setId(id);
         ptz.setName(name);
+        ptz.setControllUrl(controllUrl);
+        ptz.setPelcodCommandUrl(pelcodCommandUrl);
+        ptz.setVisibleCameraUrl(visibleCameraUrl);
+        ptz.setVisibleRTSPUrl(visibleRTSPUrl);
+        ptz.setInfraredRTSPUrl(infraredRTSPUrl);
+        ptz.setInfraredCameraUrl(infraredCameraUrl);
+        ptz.setInfraredCircuitUrl(infraredCircuitUrl);
+        ptz.setNorthMigration(northMigration);
+        ptz.setGisMapUrl(gisMapUrl);
+        ptz.setVisualAngleX(visualAngleX);
+        ptz.setVisualAngleY(visualAngleY);
+        ptz.setInfraredPixelX(Integer.valueOf(infraredPixelX));
+        ptz.setInfraredPixelY(Integer.valueOf(infraredPixelY));
+        ptz.setBrandType(brandType);
+        ptz.setCruiseStep(Integer.valueOf(cruiseStep));
+        ptz.setVersion(Integer.valueOf(version));
+        ptz.setIsLocked(Long.valueOf(isLocked));
 
-        logger.info(roleId);
+
+      //  logger.info(ptzId);
         PrintWriter pw;
         try {
             logger.info("user update..............................................Begin..........");
@@ -186,7 +222,4 @@ public class PTZController extends MultiActionController {
             logger.info(e);
         }
     }
-    
-    
-    
 }
