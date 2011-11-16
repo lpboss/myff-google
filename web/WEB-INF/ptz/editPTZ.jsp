@@ -16,7 +16,7 @@
         <script type="text/javascript">
             Ext.onReady(function(){
                 var userId = <%=request.getParameter("id")%>;
-                Ext.define('UserEdit', {
+                Ext.define('PTZEdit', {
                     extend : 'Ext.data.Model',
                     fields : [{
                             name: 'id'
@@ -76,7 +76,7 @@
                 var controllUrl = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '编码器IP',
                     allowBlank: true,                  
-                    name: 'controll_url',
+                    name: 'controllUrl',//controll_url
                     anchor: '95%'
                 });
                 
@@ -166,7 +166,7 @@
                 });
                 
                 var PTZStore =  Ext.create('Ext.data.Store', {
-                    model : 'Role',
+                    model : 'PTZEdit',
                     proxy : {
                         type : 'ajax',
                         url : '<%=basePath%>ptz/getAllPTZs.htm?for_cbb=true',
@@ -187,7 +187,7 @@
                     frame:true,
                     url: '<%=basePath%>ptz/update.htm?id=' + userId,
                     reader: Ext.create('Ext.data.reader.Json',{
-                        model: 'UserEdit',
+                        model: 'PTZEdit',
                         root: ''
                     }),
                     bodyStyle:'padding:5px 5px 0',
