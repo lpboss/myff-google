@@ -44,7 +44,7 @@ public class PTZ {
     private Timestamp updatedAt;
     private Integer version;
     private Long isLocked = new Long(0);// '启用，停用',
-
+    
     @Id
     @GeneratedValue
     @Column(name = "id", unique = true, nullable = false)
@@ -106,7 +106,7 @@ public class PTZ {
         return infraredRTSPUrl;
     }
 
-    public void setInfraredRTSPUrl(String infrared_rtsp_url) {
+    public void setInfraredRTSPUrl(String infraredRTSPUrl) {
         this.infraredRTSPUrl = infraredRTSPUrl;
     }
 
@@ -228,6 +228,7 @@ public class PTZ {
     }
 
     @Column(name = "cruise_step", length = 100)
+
     public Integer getCruiseStep() {
         return cruiseStep;
     }

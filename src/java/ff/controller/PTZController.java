@@ -26,7 +26,7 @@ public class PTZController extends MultiActionController {
     public void setPtzService(PTZService ptzService) {
         this.ptzService = ptzService;
     }
-   
+
     public void setPtzUtil(PTZUtil ptzUtil) {
         this.ptzUtil = ptzUtil;
     }
@@ -73,13 +73,13 @@ public class PTZController extends MultiActionController {
         logger.info("PTZ PTZList page");
         ModelAndView mav = new ModelAndView();
         return mav;
-    }
-    
+   
+  
     //返回 添加页面
     public ModelAndView newPTZ(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView mav = new ModelAndView();
         return mav;
-    }
+}
     
     //返回 修改页面
     public ModelAndView editPTZ(HttpServletRequest request, HttpServletResponse response) {
@@ -91,7 +91,8 @@ public class PTZController extends MultiActionController {
      *作者：Haoqingmeng
      *描述：得到PTZ列表
      */
-    public void getAllPTZs(HttpServletRequest request, HttpServletResponse response) {
+    public void getAllPTZs(HttpServletRequest request, HttpServletResponse r
+{
         
         String jsonStr = ptzService.getPTZList();
         logger.info(jsonStr);
@@ -111,8 +112,24 @@ public class PTZController extends MultiActionController {
     public void create(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("id");
         PTZ ptz = new PTZ();
-        ptz.setName(request.getParameter("name")); //名称
-        ptz.setControllUrl(request.getParameter("description")); //
+        ptz.setName(request.getParame        ptz.setControllUrl(request.getParameter("controll_url"));//编码器IP
+        ptz.setPelcodCommandUrl(request.getParameter("pelcod_command_url"));//通过串口,发pelcod的ip
+        ptz.setVisibleCameraUrl(request.getParameter("visible_camera_url"));//可见光摄像机地址,模拟请参考controll_url
+        ptz.setVisibleRTSPUrl(request.getParameter("visible_rtsp_url"));//可见光RTSP流
+        ptz.setInfraredRTSPUrl(request.getParameter("infrared_rtsp_url"));//红外RTSP流
+        ptz.setInfraredCameraUrl(request.getParameter("infrared_camera_url"));//红外摄像机地址
+        ptz.setInfraredCircuitUrl(request.getParameter("infrared_circuit_url"));//红外电路板设备地址       
+        ptz.setNorthMigration(request.getIntHeader("north_migration"));//摄像机0角度与正北的偏移
+        ptz.setGisMapUrl(request.getParameter("gis_map_url"));//地图文件存放位置
+        ptz.setVisualAngleX(request.getIntHeader("visual_angle_x"));//红外视角X
+        ptz.setVisualAngleY(request.getIntHeader("visual_angle_y"));//红外视角Y
+        ptz.setInfraredPixelX(request.getIntHeader("infrared_pixel_x"));//红外摄像机X方向像素
+        ptz.setInfraredPixelY(request.getIntHeader("infrared_pixel_y"));//红外摄像机Y方向像素    
+        ptz.setBrandType(request.getParameter("brand_type"));//品牌类型,不同品牌，特性不同，plcod命令拼接方式不同。
+        ptz.setCruiseStep(Integer.getInteger("cruise_step"));//巡航步长
+        ptz.setVersion(Integer.getInteger("version"));//版本
+        ptz.setIsLocked(Long.getLong("isLocked"));//状态
+description")); //
         ptzService.saveOrUpdate(ptz);
         String info = "success";
         String jsonStr = "{success:true,info:'" + info + "'}";

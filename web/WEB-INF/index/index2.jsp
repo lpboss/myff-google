@@ -206,9 +206,86 @@
                     accordition.doLayout();
                 }
                 renderMenu();
-
-
-        
+                
+               //PTZ编辑 
+                Ext.define('PTZEdit', {
+                    extend : 'Ext.data.Model',
+                    fields : [{
+                            name: 'id'
+                        }, {
+                            name: 'name'
+                        }, {
+                            name: 'controllUrl'
+                        }, {
+                            name: 'pelcodCommandUrl'
+                        }, {
+                            name: 'visibleCameraUrl'
+                        }, {
+                            name: 'visibleRTSPUrl'
+                        }, {
+                            name: 'infraredRTSPUrl'
+                        }, {
+                            name: 'infraredCameraUrl'
+                        }, {
+                            name: 'infraredCircuitUrl'
+                        }, {
+                            name: 'northMigration'
+                        }, {
+                            name: 'gisMapUrl'
+                        }, {
+                            name: 'visualAngleX'
+                        }, {
+                            name: 'visualAngleY'
+                        }, {
+                            name: 'infraredPixelX'
+                        }, {
+                            name: 'infraredPixelY'
+                        }, {
+                            name: 'brandType'
+                        }, {
+                            name: 'cruiseStep'
+                        }, {
+                            name: 'version'
+                        }, {
+                            name: 'isLocked'
+                        }
+                      /*  , {
+                            name: 'createAt',
+                            mapping:'createAt.id'
+                        }, {
+                            name: 'updateAt',
+                            mapping:'updateAt.id'
+                        }*/
+                    ]
+                });
+                
+                
+                 //PTZList
+                Ext.define('PTZ', {
+                    extend : 'Ext.data.Model',
+                    fields : [
+                        {name: 'id'},
+                        { name: 'name'},
+                        { name: 'controllUrl'},
+                        { name: 'pelcodCommandUrl'},
+                        { name: 'visibleCameraUrl'},
+                        { name: 'visibleRTSPUrl'},
+                        { name: 'infraredRTSPUrl'},
+                        { name: 'infraredCameraUrl'},
+                        { name: 'infraredCircuitUrl'},
+                        { name: 'northMigration'},
+                        { name: 'gisMapUrl'},
+                        { name: 'visualAngleX'},
+                        { name: 'visualAngleY'},
+                        { name: 'infraredPixelX'},
+                        { name: 'infraredPixelY'},
+                        { name: 'brandType'},
+                        { name: 'cruiseStep'},
+                        { name: 'version'},
+                        { name: 'isLocked'}
+                    ]
+                });
+      
                 //员工下拉框模型
                 Ext.define('User', {
                     extend : 'Ext.data.Model',
@@ -265,7 +342,7 @@
                         {name: 'createdAt'},
                         {name: 'updatedAt'}
                     ]
-                });
+                });                             
 
                 Ext.define('SysAction', {
                     extend : 'Ext.data.Model',
