@@ -83,7 +83,7 @@
                     //autoDestroy : true,
                     model : 'Role',
                     proxy : {
-                    type : 'ajax',
+                        type : 'ajax',
                         url : '<%=basePath%>admin/getAllRoles.htm?for_cbb=true',
                         reader : {
                             type : 'json',
@@ -116,7 +116,7 @@
                 var newUserForm = Ext.create('Ext.form.Panel', {
                     fieldDefaults: {
                         labelWidth: 55,
-                    labelAlign: 'right'
+                        labelAlign: 'right'
                     },
                     url:'<%=basePath%>user/create.htm',
                     frame:true,

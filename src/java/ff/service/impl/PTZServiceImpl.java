@@ -11,6 +11,9 @@ import java.util.List;
 import net.sf.json.JsonConfig;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONArray;
+import java.sql.Timestamp;
+import java.util.Calendar;
+
 
 /**
  *
@@ -65,7 +68,7 @@ public class PTZServiceImpl implements PTZService {
 
     //增加
     @Override
-    public String createPTZ(String name) {
+    public String create(String name) {
         PTZ ptz = new PTZ();
         String info = null;
         if (ptzDao.getPTZByName(name) == null) {
@@ -84,16 +87,27 @@ public class PTZServiceImpl implements PTZService {
     public String getAllPTZsJSON() {
         List<PTZ> ptzs = ptzDao.getAllPTZs();
         JsonConfig jsonConfig = new JsonConfig();
-        //jsonConfig.setExcludes(new String[]{"users", "rolesPrivilegeDetails"});
+        jsonConfig.setExcludes(new String[]{"users", "rolesPrivilegeDetails"});
+        JSONArray rolesJS = JSONArray.fromObject(ptzs, jsonConfig);
+        String jsonStr = "{totalProperty:" + ptzs.size() + ",root:" + rolesJS.toString() + "}";
+        return jsonStr;
+    }
+
+    //得到数据列表
+    @Override
+    public String getPTZList() {
+        List ptzs = ptzDao.getAllPTZs();
+        JsonConfig jsonConfig = new JsonConfig();
+        //这是需要过滤掉的变量名。
+        jsonConfig.setExcludes(new String[]{});
         JSONArray ptzJS = JSONArray.fromObject(ptzs, jsonConfig);
         String jsonStr = "{totalProperty:" + ptzs.size() + ",root:" + ptzJS.toString() + "}";
         return jsonStr;
     }
 
-
     @Override
     public PTZ saveOrUpdate(PTZ ptz) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return ptzDao.saveOrUpdate(ptz);
     }
 
     @Override
@@ -101,4 +115,6 @@ public class PTZServiceImpl implements PTZService {
         List ptzs = ptzDao.getAllPTZs();
         return ptzs;
     }
+
+    
 }

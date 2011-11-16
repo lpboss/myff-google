@@ -26,9 +26,7 @@ public class PTZController extends MultiActionController {
     public void setPtzService(PTZService ptzService) {
         this.ptzService = ptzService;
     }
-
-    
-    
+   
     public void setPtzUtil(PTZUtil ptzUtil) {
         this.ptzUtil = ptzUtil;
     }
@@ -76,6 +74,18 @@ public class PTZController extends MultiActionController {
         ModelAndView mav = new ModelAndView();
         return mav;
     }
+    
+    //返回 添加页面
+    public ModelAndView newPTZ(HttpServletRequest request, HttpServletResponse response) {
+        ModelAndView mav = new ModelAndView();
+        return mav;
+    }
+    
+    //返回 修改页面
+    public ModelAndView editPTZ(HttpServletRequest request, HttpServletResponse response) {
+        ModelAndView mav = new ModelAndView();
+        return mav;
+    }
 
     /**
      *作者：Haoqingmeng
@@ -83,7 +93,7 @@ public class PTZController extends MultiActionController {
      */
     public void getAllPTZs(HttpServletRequest request, HttpServletResponse response) {
         
-        String jsonStr = ptzService.getAllPTZsJSON();
+        String jsonStr = ptzService.getPTZList();
         logger.info(jsonStr);
         PrintWriter pw;
         try {
@@ -98,7 +108,7 @@ public class PTZController extends MultiActionController {
     }
 
     //添加
-    public void createRole(HttpServletRequest request, HttpServletResponse response) {
+    public void create(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("id");
         PTZ ptz = new PTZ();
         ptz.setName(request.getParameter("name")); //名称
