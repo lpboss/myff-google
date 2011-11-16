@@ -22,10 +22,7 @@ public interface PTZService {
     List<PTZ> getAllPTZs(); //得到所有的云台信息
     
     String getAllPTZsJSON(); //得到所有的云台信息以Json返回。
-    
-    
-    String getPTZList(); //得到数据列表
-    
+        
     PTZ saveOrUpdate(PTZ ptz); //保存
 
     String updatePTZ(Long id, String name); //更新

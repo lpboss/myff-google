@@ -83,7 +83,7 @@ public class PTZController extends MultiActionController {
      */
     public void getAllPTZs(HttpServletRequest request, HttpServletResponse response) {
         
-        String jsonStr = ptzService.getPTZList();
+        String jsonStr = ptzService.getAllPTZsJSON();
         logger.info(jsonStr);
         PrintWriter pw;
         try {

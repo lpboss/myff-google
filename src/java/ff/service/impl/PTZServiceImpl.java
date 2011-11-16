@@ -84,23 +84,12 @@ public class PTZServiceImpl implements PTZService {
     public String getAllPTZsJSON() {
         List<PTZ> ptzs = ptzDao.getAllPTZs();
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[]{"users", "rolesPrivilegeDetails"});
-        JSONArray rolesJS = JSONArray.fromObject(ptzs, jsonConfig);
-        String jsonStr = "{totalProperty:" + ptzs.size() + ",root:" + rolesJS.toString() + "}";
-        return jsonStr;
-    }
-
-    //得到数据列表
-    @Override
-    public String getPTZList() {
-        List ptzs = ptzDao.getAllPTZs();
-        JsonConfig jsonConfig = new JsonConfig();
-        //这是需要过滤掉的变量名。
-        jsonConfig.setExcludes(new String[]{});
+        //jsonConfig.setExcludes(new String[]{"users", "rolesPrivilegeDetails"});
         JSONArray ptzJS = JSONArray.fromObject(ptzs, jsonConfig);
         String jsonStr = "{totalProperty:" + ptzs.size() + ",root:" + ptzJS.toString() + "}";
         return jsonStr;
     }
+
 
     @Override
     public PTZ saveOrUpdate(PTZ ptz) {
