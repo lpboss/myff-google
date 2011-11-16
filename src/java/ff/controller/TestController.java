@@ -72,15 +72,16 @@ public class TestController extends MultiActionController {
                 SysController sysController = sysControllerDao.getSysControllerByName(key);
                 if (sysController == null) {
                     sysController = new SysController();
-                    sysController.setName(key);
+                    sysController.setName(key.toLowerCase());
                     sysControllerService.saveOrUpdate(sysController);
                 }
 
                 Method[] methods = cls.getMethods();//得到某类的所有Public方法,getDeclaredMethods() 
                 for (Method method : methods) {
+                    System.out.println(method.getName() + "  " + method.getReturnType().getName() + " " + method.getModifiers());
                     logger.info(method.getName() + "  " + method.getReturnType().getName() + " " + method.getModifiers());
                     //只有本类的方法，才加入。
-                    if (method.getDeclaringClass().getName() == cls.getName()) {
+                    if (method.getDeclaringClass().getName().equals(cls.getName())) {
                         //排除掉注入方法
                         if (method.getName().indexOf("set") == -1 && method.getName().indexOf("Service") == -1) {
                             logger.info("method.getName():" + method.getName());

@@ -86,11 +86,11 @@ public class PTZCruiseTask {
             SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss SSS");
             Date date = new Date(milliseconds);
             String ptzIP = ptz.getPelcodCommandUrl();
-            System.out.println("Angle (" + ptzIP + ") X:" + serialPortCommServer.getAngleXString(ptzIP) + ",Y:" + serialPortCommServer.getAngleYString(ptzIP) + "------------------,Date:" + timeFormat.format(date));
+            //System.out.println("Angle (" + ptzIP + ") X:" + serialPortCommServer.getAngleXString(ptzIP) + ",Y:" + serialPortCommServer.getAngleYString(ptzIP) + "------------------,Date:" + timeFormat.format(date));
             //System.out.println("当前的云台" + ptzIP + "是否允许巡航：" + serialPortCommServer.getAllowCruise().get(ptzIP));
 
             if (serialPortCommServer.getAllowCruise().get(ptzIP) == null) {
-                System.out.println("serialPortCommServer.getAllowCruise() == null :----------------------------------------------------------------------");
+                //System.out.println("serialPortCommServer.getAllowCruise() == null :----------------------------------------------------------------------");
 
                 //在此，说明云台从来没有进行巡航，同时，启动巡航。向右，顺时针。指定转到360度处停止。
                 //serialPortCommServer.pushCommand(ptzIP, "FF 01 00 02 10 00 42");
@@ -263,7 +263,7 @@ public class PTZCruiseTask {
 
             //判断，如果当前没有进行置中操作，则从新判断热值 。
             if (serialPortCommServer.getIsMovingCenterForFireAlarm().get(ptzIP) == null && (serialPortCommServer.getAllowAlarm().get(ptzIP) == null || serialPortCommServer.getAllowAlarm().get(ptzIP) == Boolean.TRUE)) {
-                System.out.println("serialPortCommServer.getAlertMax(infraredSetupIP):" + serialPortCommServer.getAlertMax(infraredSetupIP));
+                //System.out.println("serialPortCommServer.getAlertMax(infraredSetupIP):" + serialPortCommServer.getAlertMax(infraredSetupIP));
                 if (serialPortCommServer.getAlertMax(infraredSetupIP) > 1300) {
                     int heatPosX = serialPortCommServer.getAlertX(infraredSetupIP);
                     int heatPosY = serialPortCommServer.getAlertY(infraredSetupIP);
