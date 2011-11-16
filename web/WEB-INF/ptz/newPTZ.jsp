@@ -39,7 +39,7 @@
                 });
                 
                 var visibleCameraUrl = Ext.create('Ext.form.field.Text', {
-                    fieldLabel: '可见光摄像机地址,模拟请参考controll_url',
+                    fieldLabel: '可见光摄像机地址',
                     name: 'visible_camera_url',
                     anchor: '95%'
                 });
@@ -68,7 +68,7 @@
                     anchor: '95%'
                 });
                 
-                var northMigration = Ext.create('Ext.form.field.Text', {
+                var northMigration = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '摄像机0角度与正北的偏移',
                     name: 'north_migration',
                     anchor: '95%'
@@ -80,31 +80,43 @@
                     anchor: '95%'
                 });
                 
-                var visualAngleX = Ext.create('Ext.form.field.Text', {
+                var visualAngleX = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '红外视角X',
                     name: 'visual_angle_x',
                     anchor: '95%'
                 });
                 
-                var visualAngleY = Ext.create('Ext.form.field.Text', {
+                var visualAngleY = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '红外视角Y',
                     name: 'visual_angle_y',
                     anchor: '95%'
                 });
                 
-                var infraredPixelX = Ext.create('Ext.form.field.Text', {
+                var infraredPixelX = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '红外摄像机X方向像素',
                     name: 'infrared_pixel_x',
                     anchor: '95%'
                 });
                 
-                var infraredPixelY = Ext.create('Ext.form.field.Text', {
+                var infraredPixelY = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '红外摄像机Y方向像素',
                     name: 'infrared_pixel_y',
                     anchor: '95%'
                 });
                 
-                var version = Ext.create('Ext.form.field.Text', {
+                var brandType = Ext.create('Ext.form.field.Text', {
+                    fieldLabel: '品牌类型',
+                    name: 'brandType',
+                    anchor: '95%'
+                });
+                
+                var cruiseStep = Ext.create('Ext.form.field.Number', {
+                    fieldLabel: '巡航步长',
+                    name: 'cruiseStep',
+                    anchor: '95%'
+                });
+                
+                var version = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '版本',
                     name: 'version',
                     anchor: '95%'
@@ -118,28 +130,29 @@
                
                 var newPTZForm = Ext.create('Ext.form.Panel', {
                     fieldDefaults: {
-                        labelWidth: 55,
+                        labelWidth: 180,
                         labelAlign: 'right'
                     },
                     url:'<%=basePath%>ptz/create.htm',
                     frame:true,
                     bodyStyle:'padding:5px 5px 0',
-                    width: 605,
+                    width: 1190,
+                    height: 220,
                     items: [{
                             layout: 'column',
                             xtype: 'container',
                             items: [{
-                                    columnWidth: .3,
+                                    columnWidth: .33,
                                     layout: 'anchor',                                  
                                     xtype: 'container',
-                                    items: [name,controllUrl,pelcodCommandUrl,visibleCameraUrl,visibleRTSPUrl]
+                                    items: [name,controllUrl,pelcodCommandUrl,visibleCameraUrl,visibleRTSPUrl,brandType]
                                 }, {
-                                    columnWidth: .35,
+                                    columnWidth: .33,
                                     layout: 'anchor',
                                     xtype: 'container',                                  
-                                    items: [infraredRTSPUrl,infraredCameraUrl,infraredCircuitUrl,northMigration,gisMapUrl]
+                                    items: [infraredRTSPUrl,infraredCameraUrl,infraredCircuitUrl,northMigration,gisMapUrl,cruiseStep]
                                 }, {
-                                    columnWidth: .35,
+                                    columnWidth: .33,
                                     layout: 'anchor',
                                     xtype: 'container',
                                     items: [visualAngleX,visualAngleY,infraredPixelX,infraredPixelY,version,isLocked]

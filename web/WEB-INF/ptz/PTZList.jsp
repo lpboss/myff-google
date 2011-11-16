@@ -15,11 +15,11 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>云台信息设置</title>
         <script type="text/javascript">
-            Ext.onReady(function(){
+            Ext.onReady(function(){                            
                 
                 PTZDS =  Ext.create('Ext.data.Store', {
                     //autoDestroy : true,
-                    model : 'User',
+                    model : 'PTZ',
                     proxy : {
                         type : 'ajax',
                         url : '<%=basePath%>ptz/getAllPTZs.htm',
@@ -42,28 +42,28 @@
                     columns : [Ext.create('Ext.grid.RowNumberer'), {
                             header: '名字',
                             dataIndex: 'name',
-                            width:70
+                            width:90
                         }, {
                             header: '编码器IP',
                             dataIndex: 'controllUrl',
-                            width:70
+                            width:100
                         }, {
                             header: '通过串口,发pelcod的ip',
                             dataIndex: 'pelcodCommandUrl',
                             width:120
                         }, {
-                            header: '可见光摄像机地址,模拟请参考controll_url',
+                            header: '可见光摄像机地址',
                             dataIndex: 'visibleCameraUrl',                          
-                            width:210
+                            width:120
                         }, {
                             header: '可见光RTSP流',
                             dataIndex: 'visibleRTSPUrl',
-                            width:80
+                            width:90
                              
                         }, {
                             header: '红外RTSP流',
-                            dataIndex: 'infraredRTSPUrl',
-                            width:70
+                            dataIndex: 'infrared_rtsp_url',
+                            width:90
                         }, {
                             header: '红外摄像机地址',
                             dataIndex: 'infraredCameraUrl',
@@ -83,11 +83,11 @@
                         },{
                             header: '红外视角X',
                             dataIndex: 'visualAngleX',
-                            width:60
+                            width:90
                         },{
                             header: '红外视角Y',
                             dataIndex: 'visualAngleY',
-                            width:80
+                            width:90
                         },{
                             header: '红外摄像机X方向像素',
                             dataIndex: 'infraredPixelX',
@@ -96,6 +96,14 @@
                             header: '红外摄像机Y方向像素',
                             dataIndex: 'infraredPixelY',
                             width:150
+                        },{
+                            header: '品牌类型',
+                            dataIndex: 'brandType',
+                            width:80
+                        },{
+                            header: '巡航步长',
+                            dataIndex: 'cruiseStep',
+                            width:80
                         },{
                             header: '版本',
                             dataIndex: 'version',
@@ -122,8 +130,8 @@
                             handler : function(){
                                 newPTZWin = Ext.create('Ext.window.Window', {
                                     layout: 'fit',
-                                    width:617,
-                                    height:330,
+                                    width:1200,
+                                    height:250,
                                     closeAction: 'destroy',
                                     plain: true,
                                     modal: true,
@@ -159,8 +167,8 @@
                                     editPTZWin = Ext.create('Ext.window.Window', {
                                         title: '编辑云台',
                                         layout:'fit',
-                                        width:617,
-                                        height:335,
+                                        width:1200,
+                                        height:250,
                                         closeAction:'destroy',
                                         constrain:true,
                                         plain: true,
