@@ -15,31 +15,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>云台信息设置</title>
         <script type="text/javascript">
-            Ext.onReady(function(){
-                
-                //PTZ下拉框模型
-                Ext.define('PTZ', {
-                    extend : 'Ext.data.Model',
-                    fields : [
-                        {name: 'id'},
-                        { name: 'name'},
-                        { name: 'controllUrl'},
-                        { name: 'pelcodCommandUrl'},
-                        { name: 'visibleCameraUrl'},
-                        { name: 'visibleRTSPUrl'},
-                        { name: 'infraredRTSPUrl'},
-                        { name: 'infraredCameraUrl'},
-                        { name: 'infraredCircuitUrl'},
-                        { name: 'northMigration'},
-                        { name: 'gisMapUrl'},
-                        { name: 'visualAngleX'},
-                        { name: 'visualAngleY'},
-                        { name: 'infraredPixelX'},
-                        { name: 'infraredPixelY'},
-                        { name: 'version'},
-                        { name: 'isLocked'}
-                    ]
-                });
+            Ext.onReady(function(){                            
                 
                 PTZDS =  Ext.create('Ext.data.Store', {
                     //autoDestroy : true,
