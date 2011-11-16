@@ -86,6 +86,8 @@ public class PTZController extends MultiActionController {
         ModelAndView mav = new ModelAndView();
         return mav;
     }
+    
+
 
     /**
      *作者：Haoqingmeng

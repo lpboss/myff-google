@@ -13,5 +13,5 @@
     <bean id="privilegeDetailDao" class="ff.dao.impl.PrivilegeDetailDaoHImpl" />
     <bean id="adminDao" class="ff.dao.impl.AdminDaoHImpl" />
     <bean id="ptzDao" class="ff.dao.impl.PTZDaoHImpl" />
-    <bean id="FireAlarmDao" class="ff.dao.impl.FireAlarmDaoHImpl" />
+    <bean id="fireAlarmDao" class="ff.dao.impl.FireAlarmDaoHImpl" />
 </beans>

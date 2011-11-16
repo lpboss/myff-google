@@ -23,6 +23,7 @@ import javax.persistence.ManyToOne;
 public class PTZ {
 
     private Long id;
+    private Integer ptz_id;
     private String name;
     private String controllUrl; //编码器IP',
     private String pelcodCommandUrl; //'通过串口,发pelcod的ip',
@@ -51,6 +52,15 @@ public class PTZ {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setPtz_id(Integer ptz_id) {
+        this.ptz_id = ptz_id;
+    }
+
+    @Column(name = "ptz_id", length = 100)
+    public Integer getPtz_id() {
+        return ptz_id;
     }
 
     @Column(name = "controll_url", length = 100)

@@ -22,15 +22,33 @@ public class FireAlarmController extends MultiActionController {
 
     private FireAlarmService fireAlarmService;
 
+    public void setFireAlarmService(FireAlarmService fireAlarmService) {
+        this.fireAlarmService = fireAlarmService;
+    }
+
+    public FireAlarmService getFireAlarmService() {
+        return fireAlarmService;
+    }
+
     public ModelAndView fireAlarmList(HttpServletRequest request, HttpServletResponse response) {
         logger.info("Fuc............................................k");
         ModelAndView mav = new ModelAndView();
         return mav;
     }
 
+    public ModelAndView newFireAlarm(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("Fuc............................................k");
+        ModelAndView mav = new ModelAndView();
+        return mav;
+    }
+
     public void getAllFireAlarm(HttpServletRequest request, HttpServletResponse response) {
+        Integer aaaa = 1;
+        Integer bbbb = 2;
+        logger.info(aaaa);
         String jsonStr = fireAlarmService.getFireAlarmList();
         logger.info(jsonStr);
+        logger.info(bbbb);
         PrintWriter pw;
         try {
             response.setContentType("text/json; charset=utf-8");

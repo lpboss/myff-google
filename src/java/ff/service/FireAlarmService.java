@@ -11,4 +11,5 @@ import ff.model.FireAlarm;
  */
 public interface FireAlarmService {
       String getFireAlarmList();
+    
 }

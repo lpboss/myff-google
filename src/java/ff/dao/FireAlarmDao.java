@@ -10,5 +10,5 @@ import java.util.List;
  * @author Administrator
  */
 public interface FireAlarmDao {
-    
+     List<FireAlarm> getAllFireAlarms();
 }

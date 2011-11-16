@@ -390,7 +390,12 @@
                         {name: 'isLocked'}
                     ]
                 });
-        
+                Ext.define('FireAlarm', {
+                    extend : 'Ext.data.Model',
+                    fields : [{name: 'id'}
+                       
+                    ]
+                });
         
         
         

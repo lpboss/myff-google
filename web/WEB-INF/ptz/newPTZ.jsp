@@ -27,7 +27,8 @@
                 
                 var controllUrl = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '编码器IP',
-                    name: 'controll_url',                  
+                    name: 'controll_url',
+                    
                     anchor: '95%'
                 });
                 
@@ -121,16 +122,16 @@
                         labelWidth: 55,
                         labelAlign: 'right'
                     },
-                    url:'<%=basePath%>ptz/create.htm',
+                    url:'<%=basePath%>user/create.htm',
                     frame:true,
                     bodyStyle:'padding:5px 5px 0',
                     width: 605,
-                    items: [{
+                     items: [{
                             layout: 'column',
                             xtype: 'container',
                             items: [{
                                     columnWidth: .3,
-                                    layout: 'anchor',                                  
+                                    layout: 'anchor',
                                     xtype: 'container',
                                     items: [name,controllUrl,pelcodCommandUrl,visibleCameraUrl,visibleRTSPUrl]
                                 }, {
@@ -142,7 +143,35 @@
                                     columnWidth: .35,
                                     layout: 'anchor',
                                     xtype: 'container',
-                                    items: [visualAngleX,visualAngleY,infraredPixelX,infraredPixelY,version,isLocked]
+                                    items: [visualAngleX,visualAngleY,infraredPixelX,infraredPixelY]
+                                }]
+                        },{
+                            layout: 'column',
+                            xtype: 'container',
+                            items: [{
+                                    columnWidth: .3,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: []
+                                },{
+                                    columnWidth: .35,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: []
+                                },{
+                                    columnWidth: .35,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: []
+                                }]
+                        },{
+                            layout: 'column',
+                            xtype: 'container',
+                            items: [{
+                                    columnWidth: 1,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: []
                                 }]
                         }],
                     buttons: [{
@@ -182,7 +211,7 @@
                         }]
                     
                 });
-                newPTZForm.render('new_PTZ_form');
+               newPTZForm.render('new_PTZ_form');
                 
             })
         </script>
