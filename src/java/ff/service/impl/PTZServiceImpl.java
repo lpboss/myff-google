@@ -117,39 +117,5 @@ public class PTZServiceImpl implements PTZService {
         return ptzs;
     }
 
-    @Override
-    public String getPTZJSONById(Long id) {
-        PTZ ptz = ptzDao.getPTZById(id);
-        JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[]{"videos", "users"});
-        jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm"));
-        JSONObject userJS = JSONObject.fromObject(ptz, jsonConfig);
-        String jsonStr = userJS.toString();
-        return jsonStr;
-    }
-
-    @Override
-    public PTZ getPTZById(Long id) {
-        return ptzDao.getPTZById(id);
-    }
-
-    @Override
-    public String update(PTZ ptz) {
-       String info = null;
-        if (ptz == null) {
-            info = "没有该用户，不能编辑！";
-        } else {
-            PTZ userDB = ptzDao.getPTZByName(ptz.getName());
-            if (userDB != null && userDB.getId() != ptz.getId()) {
-                info = "该用户名已使用，请更换！";
-            } else {
-                ptzDao.saveOrUpdate(ptz);
-                info = "success";
-            }
-        }
-        String jsonStr = "{success:true,info:'" + info + "'}";
-        return jsonStr;
-    }
-
     
 }
