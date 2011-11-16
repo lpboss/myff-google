@@ -83,7 +83,9 @@
                 var visualAngleX = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '红外视角X',
                     name: 'visual_angle_x',
-                    anchor: '95%'
+                    anchor: '95%',
+                    maxValue: 99,   
+                    minValue: 0
                 });
                 
                 var visualAngleY = Ext.create('Ext.form.field.Number', {

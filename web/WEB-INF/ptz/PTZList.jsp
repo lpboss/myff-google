@@ -149,6 +149,40 @@
                                 newPTZWin.resizable = false;
                                 newPTZWin.show();
                             }
+                        },'-',{                    
+                            text: '删除',
+                            width: 50,
+                            iconCls: 'remove',
+                            handler: function(){
+                                var records = userGrid.getSelectionModel().getSelection();
+                                if(records.length==0){
+                                    Ext.MessageBox.show({
+                                        title: '提示信息',
+                                        msg: "请先选中一条记录后，再编辑。",
+                                        buttons: Ext.MessageBox.OK,
+                                        icon: Ext.MessageBox.WARNING
+                                    });
+                                }else{
+                                    Ext.MessageBox.confirm('警告','确定删除？',function (button){
+                                      if(button=='yes'){
+                                          var id = records[0].get('id');
+                                          Ext.Ajax.request({
+                                              url:"<%=basePath%>firealarm/deleteFireAlarm.htm?id="+id,
+                                                method:'post',
+                                                success:function(response,opts){
+                                                    var data = Ext.JSON.decode(response.responseText);
+                                                    if(data.success&&data.info=='success') {
+                                                        fireAlarmDS.load();
+                                                        Ext.MessageBox.alert('提示信息', '已成功删除火警信息。');
+                                                    } else {
+                                                        Ext.MessageBox.alert('提示信息', data.info);
+                                                    }
+                                                }
+                                          })
+                                      }  
+                                    })
+                                }
+                            }       
                         },'-',{
                             text: '编辑',
                             iconCls: 'editItem',
