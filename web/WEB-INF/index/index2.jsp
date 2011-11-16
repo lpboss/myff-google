@@ -206,9 +206,82 @@
                     accordition.doLayout();
                 }
                 renderMenu();
-
-
-        
+                
+               //PTZ编辑 
+                Ext.define('PTZEdit', {
+                    extend : 'Ext.data.Model',
+                    fields : [{
+                            name: 'id'
+                        }, {
+                            name: 'name'
+                        }, {
+                            name: 'controllUrl'
+                        }, {
+                            name: 'pelcodCommandUrl'
+                        }, {
+                            name: 'visible_camera_url'
+                        }, {
+                            name: 'visible_rtsp_url'
+                        }, {
+                            name: 'identity_card'
+                        }, {
+                            name: 'infrared_rtsp_url'
+                        }, {
+                            name: 'infrared_camera_url'
+                        }, {
+                            name: 'infrared_circuit_url'
+                        }, {
+                            name: 'north_migration'
+                        }, {
+                            name: 'gis_map_url'
+                        }, {
+                            name: 'visual_angle_x'
+                        }, {
+                            name: 'visual_angle_y'
+                        }, {
+                            name: 'infrared_pixel_x'
+                        }, {
+                            name: 'infrared_pixel_y'
+                        }, {
+                            name: 'version'
+                        }, {
+                            name: 'is_locked'
+                        }
+                      /*  , {
+                            name: 'createAt',
+                            mapping:'createAt.id'
+                        }, {
+                            name: 'updateAt',
+                            mapping:'updateAt.id'
+                        }*/
+                    ]
+                });
+                
+                
+                 //PTZ下拉框模型
+                Ext.define('PTZ', {
+                    extend : 'Ext.data.Model',
+                    fields : [
+                        {name: 'id'},
+                        { name: 'name'},
+                        { name: 'controllUrl'},
+                        { name: 'pelcodCommandUrl'},
+                        { name: 'visibleCameraUrl'},
+                        { name: 'visibleRTSPUrl'},
+                        { name: 'infraredRTSPUrl'},
+                        { name: 'infraredCameraUrl'},
+                        { name: 'infraredCircuitUrl'},
+                        { name: 'northMigration'},
+                        { name: 'gisMapUrl'},
+                        { name: 'visualAngleX'},
+                        { name: 'visualAngleY'},
+                        { name: 'infraredPixelX'},
+                        { name: 'infraredPixelY'},
+                        { name: 'version'},
+                        { name: 'isLocked'}
+                    ]
+                });
+      
                 //员工下拉框模型
                 Ext.define('User', {
                     extend : 'Ext.data.Model',

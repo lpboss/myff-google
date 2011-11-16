@@ -16,54 +16,6 @@
         <script type="text/javascript">
             Ext.onReady(function(){
                 var userId = <%=request.getParameter("id")%>;
-                Ext.define('PTZEdit', {
-                    extend : 'Ext.data.Model',
-                    fields : [{
-                            name: 'id'
-                        }, {
-                            name: 'name'
-                        }, {
-                            name: 'controllUrl'
-                        }, {
-                            name: 'pelcodCommandUrl'
-                        }, {
-                            name: 'visible_camera_url'
-                        }, {
-                            name: 'visible_rtsp_url'
-                        }, {
-                            name: 'identity_card'
-                        }, {
-                            name: 'infrared_rtsp_url'
-                        }, {
-                            name: 'infrared_camera_url'
-                        }, {
-                            name: 'infrared_circuit_url'
-                        }, {
-                            name: 'north_migration'
-                        }, {
-                            name: 'gis_map_url'
-                        }, {
-                            name: 'visual_angle_x'
-                        }, {
-                            name: 'visual_angle_y'
-                        }, {
-                            name: 'infrared_pixel_x'
-                        }, {
-                            name: 'infrared_pixel_y'
-                        }, {
-                            name: 'version'
-                        }, {
-                            name: 'is_locked'
-                        }
-                      /*  , {
-                            name: 'createAt',
-                            mapping:'createAt.id'
-                        }, {
-                            name: 'updateAt',
-                            mapping:'updateAt.id'
-                        }*/
-                    ]
-                });
                 
                 var name = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '名字',
