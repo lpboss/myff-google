@@ -25,7 +25,7 @@
                         }, {
                             name: 'controllUrl'
                         }, {
-                            name: 'pelcod_command_url'
+                            name: 'pelcodCommandUrl'
                         }, {
                             name: 'visible_camera_url'
                         }, {
