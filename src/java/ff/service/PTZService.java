@@ -27,6 +27,10 @@ public interface PTZService {
     
     PTZ saveOrUpdate(PTZ ptz); //保存
     
+    PTZ getPTZById(Long id);
+    
+    String update(PTZ ptz);
+    
     String getPTZJSONById(Long id);
 
     String updatePTZ(Long id, String name); //更新

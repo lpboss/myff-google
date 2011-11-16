@@ -219,33 +219,31 @@
                         }, {
                             name: 'pelcodCommandUrl'
                         }, {
-                            name: 'visible_camera_url'
+                            name: 'visibleCameraUrl'
                         }, {
-                            name: 'visible_rtsp_url'
+                            name: 'visibleRTSPUrl'
                         }, {
-                            name: 'identity_card'
+                            name: 'infraredRTSPUrl'
                         }, {
-                            name: 'infrared_rtsp_url'
+                            name: 'infraredCameraUrl'
                         }, {
-                            name: 'infrared_camera_url'
+                            name: 'infraredCircuitUrl'
                         }, {
-                            name: 'infrared_circuit_url'
+                            name: 'northMigration'
                         }, {
-                            name: 'north_migration'
+                            name: 'gisMapUrl'
                         }, {
-                            name: 'gis_map_url'
+                            name: 'visualAngleX'
                         }, {
-                            name: 'visual_angle_x'
+                            name: 'visualAngleY'
                         }, {
-                            name: 'visual_angle_y'
+                            name: 'infraredPixelX'
                         }, {
-                            name: 'infrared_pixel_x'
-                        }, {
-                            name: 'infrared_pixel_y'
+                            name: 'infraredPixelY'
                         }, {
                             name: 'version'
                         }, {
-                            name: 'is_locked'
+                            name: 'isLocked'
                         }
                       /*  , {
                             name: 'createAt',
