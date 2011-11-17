@@ -17,6 +17,44 @@
 <script type="text/javascript" src="<%=basePath%>javascripts/greybox/gb_scripts.js"></script>
 <script type="text/javascript" src="<%=basePath%>javascripts/ext4/ext-all.js"></script>
 <script type="text/javascript" src="<%=basePath%>javascripts/ext4/locale/ext-lang-zh_CN.js"></script>
+<style type="text/css">
+<!--
+#apDiv3 {
+	position:absolute;
+	width:132px;
+	min-height:132px;
+	z-index:100;
+	right: 15px;
+	top: 120px;
+	overflow:visible;
+}
+#apDiv4 {
+	position:absolute;
+	width:89px;
+	min-height:87px;
+	right: 20px;
+	top: 25px;
+	z-index:200;
+	overflow:visible;
+}
+.blk_29 {
+ overflow:hidden;
+ width:685px;
+}
+.blk_29 .pcont {
+ width:630px;
+ float:left;
+ overflow:hidden;
+}
+.blk_29 .ScrCont {
+ width:32766px;
+}
+.blk_29 #List1_1, .blk_18 #List2_1 {
+ float:left;
+}
+
+-->
+</style>
 <script type="text/javascript"> 
 
 //当前云台是否转动。
@@ -64,10 +102,10 @@ function ptzAction(ptzActionStr){
 function setChannel(ptzControlIP,ptzAlertIP,visibleRTSPUrl,infraredRTSPUrl,gisMapUrl){
 	document.getElementById("map").setChannel(ptzControlIP,ptzAlertIP,"../images/"+gisMapUrl);
 
-	document.getElementById("infraredPlayer").playlist.add(infraredRTSPUrl);
+	document.getElementById("infraredPlayer").playlist.add(infraredRTSPUrl,infraredRTSPUrl, " :rtsp-caching=50");
 	document.getElementById("infraredPlayer").playlist.play();
 	
-	document.getElementById("visiblePlayer").playlist.add(visibleRTSPUrl);
+	document.getElementById("visiblePlayer").playlist.add(visibleRTSPUrl,visibleRTSPUrl, " :rtsp-caching=50");
 	document.getElementById("visiblePlayer").playlist.play();
 }
 
@@ -112,6 +150,26 @@ function resizeWindow(clientWidth){
 	document.getElementById("map").style.height=clientWidth*0.256*0.818;
 	document.getElementById("visiblePlayer").style.width=clientWidth*0.744;
 	document.getElementById("visiblePlayer").style.height=clientWidth*0.744*0.563;
+}
+
+//启动客户端报警，本方法由flex调用
+var alarming=true;
+function startAlarm(){	
+	if(!document.getElementById("alarmPlayer").Played && alarming){
+		document.getElementById("alarmPlayer").play();
+    }
+}
+
+//关闭客户端报警
+function stopAlarm(obj){
+	if(alarming){
+		alarming=false;
+		document.getElementById("alarmPlayer").stop();
+		obj.innerText="开启报警";
+    }else{
+		alarming=true;
+		obj.innerText="关闭报警";
+	}
 }
 
 /*begin云台节点左右翻屏*/
@@ -205,57 +263,18 @@ function CompScr_1(){
 		setTimeout('CompScr_1()',TempSpeed)
 	}
 }
-function picrun_ini(){
+function picrun_init(){
 	document.getElementById("List2_1").innerHTML=document.getElementById("List1_1").innerHTML;
 	document.getElementById('ISL_Cont_1').scrollLeft=fill_1>=0?fill_1:document.getElementById('List1_1').scrollWidth-Math.abs(fill_1);
 }
 /*end云台节点左右翻屏*/
 
 </script>   
-<style type="text/css">
-<!--
-
-#apDiv3 {
-	position:absolute;
-	width:132px;
-	min-height:132px;
-	z-index:3;
-	right: 32px;
-	top: 140px;
-	overflow:visible;
-}
-#apDiv4 {
-	position:absolute;
-	width:89px;
-	min-height:87px;
-	right: 20px;
-	top: 25px;
-	z-index:4;
-	overflow:visible;
-}
-.blk_29 {
- overflow:hidden;
- width:685px;
-}
-.blk_29 .pcont {
- width:630px;
- float:left;
- overflow:hidden;
-}
-.blk_29 .ScrCont {
- width:32766px;
-}
-.blk_29 #List1_1, .blk_18 #List2_1 {
- float:left;
-}
-
--->
-</style>
 </head>
-<body onresize="resizeWindow(document.documentElement.clientWidth);" onload="resizeWindow(document.documentElement.clientWidth);showTime();picrun_ini();">
+<body onresize="resizeWindow(document.documentElement.clientWidth);" onload="resizeWindow(document.documentElement.clientWidth);showTime();picrun_init();">
 <div class="top" >
   <div class="top1"><img src="<%=basePath%>images/toplname.jpg" width="315" height="69" /></div>
-  <div class="top2"></div>
+  <div class="top2"><embed id="alarmPlayer" src="<%=basePath%>images/alarm.wav" type="audio/mpeg" autostart="false" loop="true" hidden="true"></embed></div>
   <div id="sysTime" class="top3">2011-11-11 11:11:11 星期一</div>
 </div>
 
@@ -288,7 +307,6 @@ function picrun_ini(){
                 <param name="ShowDisplay" value="True" />
                 <param name="AutoLoop" value="False" />
                 <param name="AutoPlay" value="true" />
-                <embed id="vlcEmb"  type="application/x-google-vlc-plugin" version="VideoLAN.VLCPlugin.2" autoplay="yes" loop="no" width="330" height="270" target="rtsp://admin:12345@192.168.254.64/h264/ch1/main/av_stream" ></embed>
             </OBJECT>
             </div>
         <div class="cleft2">
@@ -307,9 +325,9 @@ function picrun_ini(){
                 <param name="ShowDisplay" value="True" />
                 <param name="AutoLoop" value="False" />
                 <param name="AutoPlay" value="true" />
-                <embed id="vlcEmb"  type="application/x-google-vlc-plugin" version="VideoLAN.VLCPlugin.2" autoplay="yes" loop="no" width="800" height="450" target="rtsp://admin:12345@192.168.254.64/h264/ch2/main/av_stream" ></embed>
             </OBJECT>    
-          <div id="apDiv3">
+         <div id="apDiv3" style="background-color:black">
+           <iframe id='iframebar' src="about:blank" frameBorder="0" marginHeight="0" marginWidth="0" style=" z-index:-1;position:absolute;top:0px;left:0px;height:100%;width:100%;filter:alpha(opacity=0);"></iframe>
           <table width="100%" height="132" border="0" cellpadding="0" cellspacing="0">
             <tr>
               <td  class="up1png">&nbsp;</td>
@@ -386,108 +404,13 @@ function picrun_ini(){
     <td height="24" class="apple"><a href="#">苹果皮</a></td>
     <td class="touwu"><a href="#">透雾</a></td>
     <td class="jianshi"><a href="#">轮循监视</a></td>
-    <td class="duijiang"><a href="#">声音对讲</a></td>
+    <td class="duijiang"><a id="alarmSwitch" href="javascript:stopAlarm(document.getElementById('alarmSwitch'));">关闭报警</a></td>
   </tr>
 </table></div>
 </div>
 </body>
 </html>
 <script type="text/javascript">
-/*begin云台节点左右翻屏*/
-var Speed_1 = 25; //速度(毫秒)
-var Space_1 = 20; //每次移动(px)
-var PageWidth_1 = 625; //翻页宽度
-var fill_1 = 0; //整体移位
-var MoveLock_1 = false;
-var MoveTimeObj_1;
-var MoveWay_1="right";
-var Comp_1 = 0;
 
-function ISL_GoUp_1(){
-	if(MoveLock_1) return;
-	MoveLock_1=true;
-	MoveWay_1="left";
-	MoveTimeObj_1=setInterval('ISL_ScrUp_1();',Speed_1);
-}
-
-function ISL_StopUp_1(){
-	if(MoveWay_1 == "right"){
-		return
-	};
-	clearInterval(MoveTimeObj_1);
-	if((document.getElementById('ISL_Cont_1').scrollLeft-fill_1)%PageWidth_1!=0){
-		Comp_1=fill_1-(document.getElementById('ISL_Cont_1').scrollLeft%PageWidth_1);
-		CompScr_1()
-	}else{
-		MoveLock_1=false
-	}
-}
-function ISL_ScrUp_1(){
-	if(document.getElementById('ISL_Cont_1').scrollLeft<=0){
-		document.getElementById('ISL_Cont_1').scrollLeft=document.getElementById('ISL_Cont_1').scrollLeft+document.getElementById('List1_1').offsetWidth
-	}
-	document.getElementById('ISL_Cont_1').scrollLeft-=Space_1
-}
-function ISL_GoDown_1(){
-	clearInterval(MoveTimeObj_1);
-	if(MoveLock_1) return;
-	MoveLock_1=true;
-	MoveWay_1="right";
-	ISL_ScrDown_1();
-	MoveTimeObj_1=setInterval('ISL_ScrDown_1()',Speed_1)
-}
-function ISL_StopDown_1(){
-	if(MoveWay_1 == "left") return;
-	clearInterval(MoveTimeObj_1);
-	if(document.getElementById('ISL_Cont_1').scrollLeft%PageWidth_1-(fill_1>=0?fill_1:fill_1+1)!=0){
-		Comp_1=PageWidth_1-document.getElementById('ISL_Cont_1').scrollLeft%PageWidth_1+fill_1;
-		CompScr_1()
-	}else{
-		MoveLock_1=false
-	}
-}
-function ISL_ScrDown_1(){
-	if(document.getElementById('ISL_Cont_1').scrollLeft>=document.getElementById('List1_1').scrollWidth){
-		document.getElementById('ISL_Cont_1').scrollLeft=document.getElementById('ISL_Cont_1').scrollLeft-document.getElementById('List1_1').scrollWidth
-	}
-	document.getElementById('ISL_Cont_1').scrollLeft+=Space_1
-}
-function CompScr_1(){
-	if(Comp_1==0){
-		MoveLock_1=false;
-		return
-	}
-	var num,TempSpeed=Speed_1,TempSpace=Space_1;
-	if(Math.abs(Comp_1)<PageWidth_1/2){
-		TempSpace=Math.round(Math.abs(Comp_1/Space_1));
-		if(TempSpace<1) TempSpace=1
-	}
-	if(Comp_1<0){
-		if(Comp_1<-TempSpace){
-			Comp_1+=TempSpace;
-			num=TempSpace
-		}else{
-			num=-Comp_1;
-			Comp_1=0
-		}
-		document.getElementById('ISL_Cont_1').scrollLeft-=num;
-		setTimeout('CompScr_1()',TempSpeed)
-	}else{
-		if(Comp_1>TempSpace){
-			Comp_1-=TempSpace;
-			num=TempSpace
-		}else{
-			num=Comp_1;
-			Comp_1=0
-		}
-		document.getElementById('ISL_Cont_1').scrollLeft+=num;
-		setTimeout('CompScr_1()',TempSpeed)
-	}
-}
-function picrun_ini(){
-	document.getElementById("List2_1").innerHTML=document.getElementById("List1_1").innerHTML;
-	document.getElementById('ISL_Cont_1').scrollLeft=fill_1>=0?fill_1:document.getElementById('List1_1').scrollWidth-Math.abs(fill_1);
-}
-/*end云台节点左右翻屏*/
 
 </script>
