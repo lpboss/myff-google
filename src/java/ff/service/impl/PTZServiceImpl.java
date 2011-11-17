@@ -26,17 +26,10 @@ public class PTZServiceImpl implements PTZService {
 
     //删除
     @Override
-    public String deletePTZ(String id) {
+    public String deletePTZ(Long id) {
         String info = ptzDao.deletePTZ(id);
-        System.out.print("eee");
-        System.out.print(info);
-        System.out.print("rrr");
         String jsonStr = "{success:true,info:\"" + info + "\"}";
-        System.out.print("ttt");
-        System.out.print(jsonStr);
-        System.out.print("uuu");
         return jsonStr;
-        
     }
 
     public void setptzDao(PTZDao ptzDao) {

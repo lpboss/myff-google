@@ -162,7 +162,7 @@
                                         icon: Ext.MessageBox.WARNING
                                     });
                                 }else{
-                                    Ext.MessageBox.confirm('警告', '确定要删除该视频？',function(button){
+                                    Ext.MessageBox.confirm('警告', '确定要删除该信息？',function(button){
                                         var ids = [];
                                         var name = '';
                                         for(var i = 0 ; i < records.length ; i++){
