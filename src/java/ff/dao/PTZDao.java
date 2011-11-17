@@ -17,7 +17,7 @@ public interface PTZDao {
 
     PTZ saveOrUpdate(PTZ ptz); //保存
 
-    String deletePTZ(Long id); //删除
+    String deletePTZ(String id); //删除
 
     List<PTZ> getAllPTZs();    //得到所有的云台信息
 

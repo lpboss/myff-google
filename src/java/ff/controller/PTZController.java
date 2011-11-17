@@ -225,8 +225,11 @@ public class PTZController extends MultiActionController {
     
     //删除PTZ
     public void deletePTZ(HttpServletRequest request, HttpServletResponse response) {
-        Long id = Long.valueOf(request.getParameter("key"));
-        
+      //  Long id = Long.valueOf(request.getParameter("keys"));
+        String id = String.valueOf(request.getParameter("key"));
+        logger.info ("sss");
+        logger.info (id);
+        logger.info ("www");
       String jsonStr = ptzService.deletePTZ(id);
         PrintWriter pw;
         try {
