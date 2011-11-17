@@ -263,7 +263,7 @@ public class PTZCruiseTask {
 
             //判断，如果当前没有进行置中操作，则从新判断热值 。
             if (serialPortCommServer.getIsMovingCenterForFireAlarm().get(ptzIP) == null && (serialPortCommServer.getAllowAlarm().get(ptzIP) == null || serialPortCommServer.getAllowAlarm().get(ptzIP) == Boolean.TRUE)) {
-                //System.out.println("serialPortCommServer.getAlertMax(infraredSetupIP):" + serialPortCommServer.getAlertMax(infraredSetupIP));
+                System.out.println("serialPortCommServer.getAlertMax(infraredSetupIP):" + serialPortCommServer.getAlertMax(infraredSetupIP));
                 if (serialPortCommServer.getAlertMax(infraredSetupIP) > 1300) {
                     int heatPosX = serialPortCommServer.getAlertX(infraredSetupIP);
                     int heatPosY = serialPortCommServer.getAlertY(infraredSetupIP);
