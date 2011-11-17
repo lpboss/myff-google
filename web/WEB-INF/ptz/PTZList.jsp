@@ -178,6 +178,7 @@
                                          //   var keys = Ext.util.JSON.encode(ids)
                                             
                                             alert(ids)
+
                                             Ext.Ajax.request({
                                                 url:"<%=basePath%>ptz/deletePTZ.htm?key="+ids,
                                                 method:'post',
