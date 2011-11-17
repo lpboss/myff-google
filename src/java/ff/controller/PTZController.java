@@ -222,4 +222,24 @@ public class PTZController extends MultiActionController {
             logger.info(e);
         }
     }
+    
+    //删除PTZ
+    public void deletePTZ(HttpServletRequest request, HttpServletResponse response) {
+        Long id = Long.valueOf(request.getParameter("key"));
+        String jsonStr = ptzService.getPTZJSONById(id);
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
+    
+    
+    
+    
 }

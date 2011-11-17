@@ -179,7 +179,7 @@
                                             
                                             alert(ids)
                                             Ext.Ajax.request({
-                                                url:"<%=basePath%>ptz/deletePTZ.htm?id="+ids,
+                                                url:"<%=basePath%>ptz/deletePTZ.htm?key="+ids,
                                                 method:'post',
                                                 success:function(response,opts){
                                                     var data = Ext.JSON.decode(response.responseText);
