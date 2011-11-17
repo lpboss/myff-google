@@ -154,20 +154,32 @@
                             width: 50,
                             iconCls: 'remove',
                             handler: function(){
-                                var records = userGrid.getSelectionModel().getSelection();
+                                var records = PTZGrid.getSelectionModel().getSelection();
                                 if(records.length==0){
                                     Ext.MessageBox.show({
                                         title: '提示信息',
-                                        msg: "请先选中一条记录后，再编辑。",
+                                        msg: "请先选中一条记录后，再删除。",
                                         buttons: Ext.MessageBox.OK,
                                         icon: Ext.MessageBox.WARNING
                                     });
                                 }else{
                                     Ext.MessageBox.confirm('警告','确定删除？',function (button){
-                                      if(button=='yes'){
-                                          var id = records[0].get('id');
-                                          Ext.Ajax.request({
-                                              url:"<%=basePath%>firealarm/deleteFireAlarm.htm?id="+id,
+                                        if(button=='yes'){
+                                         //   var id = records[0].get('id');
+                                            
+                                            
+                                            var ids = [];
+                                            var name = '';
+                                            for(var i = 0 ; i < records.length ; i++){
+                                                var data = records[i].data
+                                                ids.push(data.id);
+                                                name += data.name + '<br />'
+                                            }
+                                         //   var keys = Ext.util.JSON.encode(ids)
+                                            
+                                            alert(ids)
+                                            Ext.Ajax.request({
+                                                url:"<%=basePath%>ptz/deletePTZ.htm?id="+ids,
                                                 method:'post',
                                                 success:function(response,opts){
                                                     var data = Ext.JSON.decode(response.responseText);
@@ -178,8 +190,8 @@
                                                         Ext.MessageBox.alert('提示信息', data.info);
                                                     }
                                                 }
-                                          })
-                                      }  
+                                            })
+                                        }  
                                     })
                                 }
                             }       
