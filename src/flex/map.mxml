@@ -7,11 +7,11 @@
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
 	<s:Image id="m" x="0" y="0" width="100%" height="100%" smooth="true" smoothingQuality="high" scaleMode="stretch" fillMode="scale" />
-	<s:Image id="p" x="0" y="0" width="5" height="95" smooth="true" smoothingQuality="high" source="../images/pointer.png"/>
+	<s:Image id="p" x="0" y="0" width="5" height="99" source="../images/pointer.png"/>
 	<s:Label id="status" x="10" y="0" width="200" text="" visible="false" color="0xFFFFFF" />
 	<s:Label id="show_angleX" x="10" y="10" width="100" text="" visible="true" color="0xFFFFFF" fontFamily="微软雅黑" fontSize="11" />
 	<s:Label id="show_angleY"  x="10" y="30" width="100" text="" visible="true" color="0xFFFFFF" fontFamily="微软雅黑" fontSize="11" />
-	<s:Label id="show_alert" x="200" y="10" width="100" text="报警状态：正常" visible="true" color="0xFFFFFF" fontFamily="微软雅黑" fontSize="11" />
+	<s:Label id="show_alert" x="200" y="10" width="100" text="当前状态：正常" visible="true" color="0xFFFFFF" fontFamily="微软雅黑" fontSize="11" />
 	<s:Label id="show_alertMax" x="200" y="30" width="100" text="" visible="true" color="0xFFFFFF" fontFamily="微软雅黑" fontSize="11" />
 	<fx:Script>
 		<![CDATA[			
@@ -88,6 +88,19 @@
 					show_angleX.text="水平角度：" + myXML.angleX;
 					show_angleY.text="垂直角度：" + myXML.angleY;
 					show_alertMax.text="最大热值：" + myXML.alertMax;
+					
+					//判断当前节点是否有火警
+					if(myXML.myAlarm=="true"){
+						show_alert.text="当前状态：火警！";
+					}
+					
+					//判断所有节点是否有火警
+					if(myXML.globalAlarm=="true"){
+						//处理报警
+						ExternalInterface.call("startAlarm");
+					}
+					
+					//根据回传的水平角度旋转指针
 					if (angleX != angleX2){
 						if(angleX<90&&angleX2>270){//逆时针旋转，经过零点
 							angleX2=angleX2-360;
@@ -174,13 +187,13 @@
 				
 				//计算指针的旋转轴坐标
 				pointer.originX = Math.round(p.width/2*scaleY);
-				pointer.originY = Math.round(p.height*scaleY-10*scaleY);
+				pointer.originY = Math.round(p.height*scaleY-1.85*scaleY);
 				
 				//计算指针左上角的坐标
 				p.x=centerX+pointer.originY*Math.sin(angleX*(Math.PI/180))-pointer.originX*Math.cos(angleX*(Math.PI/180));
 				p.y=centerY-pointer.originY*Math.cos(angleX*(Math.PI/180))-pointer.originX*Math.sin(angleX*(Math.PI/180));
 				
-				
+				//
 				show_angleX.x=10*scaleX;
 				show_angleX.y=10*scaleY;
 				show_angleX.scaleX=scaleY;
