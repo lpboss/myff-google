@@ -21,9 +21,15 @@ import org.xsocket.connection.INonBlockingConnection;
 public class SerialPortCommServer {
 
     static Logger logger = Logger.getLogger(SerialPortCommServer.class.getName());
+    //客户端连接池，key为客户端ip，value为连接对象
     private static Map<String, INonBlockingConnection> connectionMap = new HashMap<String, INonBlockingConnection>();
+    //存放热成像报警值，key为热成像传感器串口服务器ip，value为报警值数组，顺序分别为最大值、最小值、平均值、最大值行、最大值列
     private static Map<String, int[]> alertMap = new ConcurrentHashMap<String, int[]>();
+    //存放客户端警报，key为热成像传感器串口服务器ip，value为云台控制串口服务器ip
+    private static Map<String, String> alarmMap = new ConcurrentHashMap<String, String>();
+    //云台水平角度，key为云台ip，value为角度值
     private static Map<String, String> angleX = new ConcurrentHashMap<String, String>();
+    //云台垂直角度，key为云台ip，value为角度值
     private static Map<String, String> angleY = new ConcurrentHashMap<String, String>();
     // key为ip,value为true或false，当value为false时，自动巡航方法不再控制巡航。主要是标记哪些云台当前允许其实自动巡航。
     private static Map<String, Boolean> allowCruise = new ConcurrentHashMap<String, Boolean>();
@@ -88,7 +94,7 @@ public class SerialPortCommServer {
      * 
      * @throws
      */
-    public void removeConnectionAll() {
+    public void removeConnection() {
         connectionMap.clear();
     }
 
@@ -214,10 +220,61 @@ public class SerialPortCommServer {
      * 
      * @throws
      */
-    public void removeAlertAll() {
+    public void removeAlert() {
         alertMap.clear();
     }
 
+    /**
+     * 打开某个云台节点的警报
+     * @param alertIP 热成像传感器ip
+     * @param ptzIP 云台ip
+     * @throws
+     */
+    public void openAlarm(String alertIP, String ptzIP) {
+    	alarmMap.put(alertIP,ptzIP);
+    }
+    
+    /**
+     * 关闭某个云台节点的警报
+     * @param alertIP 热成像传感器ip
+     * @param ptzIP 云台ip
+     * @throws
+     */
+    public void closeAlarm(String alertIP, String ptzIP){
+    	alarmMap.remove(alertIP);
+    }
+    
+    /**
+     * 关闭所有云台节点的警报
+     * 
+     * @throws
+     */
+    public void closeAlarm(){
+    	alarmMap.clear();
+    }
+    
+    /**
+     * 检查某个云台节点是否警报
+     * @param alertIP
+     * @param ptzIP
+     * @return ture 警报；false 正常
+     * @throws
+     */
+    public boolean isAlarm(String alertIP, String ptzIP){
+    	if(alarmMap.get(alertIP)!=null) return true;
+    	return false;
+    }
+    
+    /**
+     * 检查所有云台是否有警报的
+     * @return ture 警报；false 正常
+     * @throws
+     */
+    public boolean isAlarm(){
+    	if(!alarmMap.isEmpty()) return true;
+    	return false;
+    }
+    
     /**
      * 以云台ip为key，将云台水平角度信息存放在HashMap中
      * 
@@ -274,7 +331,7 @@ public class SerialPortCommServer {
      * 
      * @throws
      */
-    public void removeAngleXAll() {
+    public void removeAngleX() {
         angleX.clear();
     }
 
@@ -334,7 +391,7 @@ public class SerialPortCommServer {
      * 
      * @throws
      */
-    public void removeAngleYAll() {
+    public void removeAngleY() {
         angleY.clear();
     }
 
@@ -425,7 +482,9 @@ public class SerialPortCommServer {
                     + "</alertMin><alertAvg>" + getAlertAvg(alertIp)
                     + "</alertAvg><alertX>" + getAlertX(alertIp)
                     + "</alertX><alertY>" + getAlertY(alertIp)
-                    + "</alertY></xml>";
+                    + "</alertY><myAlarm>" + isAlarm(alertIp,ptzIp)
+                    + "</myAlarm><globalAlarm>" + isAlarm()
+                    + "</globalAlarm></xml>";
 
             //System.out.println("向flex客户端发送信息:" + headInfo);
             if (headInfo != null) {
