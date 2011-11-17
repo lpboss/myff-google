@@ -36,8 +36,7 @@ public class PTZDaoHImpl extends HibernateDaoSupport implements PTZDao  {
         logger.info("ggg");
         logger.info(id);
         logger.info("kkk");
-        getHibernateTemplate().delete("select * from PTZ where id IN (id)");
-        logger.info("ccc");
+        
         try {
             Object role = this.getHibernateTemplate().load(PTZ.class, new String(id));    //先加载特定实例
           
