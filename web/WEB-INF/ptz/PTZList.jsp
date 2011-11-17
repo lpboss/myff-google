@@ -114,8 +114,7 @@
                             width:40
                         }],
                     selModel :Ext.create('Ext.selection.CheckboxModel'),
-                    
-                    
+                                    
                     iconCls: 'icon-grid',
                     bbar: Ext.create('Ext.PagingToolbar', {
                         pageSize: pageSize + 15,
@@ -153,7 +152,7 @@
                             text: '删除',
                             width: 50,
                             iconCls: 'remove',
-                            handler: function(){
+                            handler:function(){
                                 var records = PTZGrid.getSelectionModel().getSelection();
                                 if(records.length==0){
                                     Ext.MessageBox.show({
@@ -163,37 +162,38 @@
                                         icon: Ext.MessageBox.WARNING
                                     });
                                 }else{
-                                    Ext.MessageBox.confirm('警告','确定删除？',function (button){
-                                        if(button=='yes'){
-                                         //   var id = records[0].get('id');
-                                            
-                                            
-                                            var ids = [];
-                                            var name = '';
-                                            for(var i = 0 ; i < records.length ; i++){
-                                                var data = records[i].data
-                                                ids.push(data.id);
-                                                name += data.name + '<br />'
-                                            }
-                                         //   var keys = Ext.util.JSON.encode(ids)
-                                            
-                                            alert(ids)
-
+                                    Ext.MessageBox.confirm('警告', '确定要删除该视频？',function(button){
+                                        var ids = [];
+                                        var name = '';
+                                        for(var i = 0 ; i < records.length ; i++){
+                                            var data = records[i].data
+                                            ids.push(data.id);
+                                            name += data.name + '<br />'
+                                        }
+                                       
+                                        console.info(ids)
+                                    //    var keys = Ext.util.JSON.encode(ids)
+                                    
+                                        if(button == 'yes'){
                                             Ext.Ajax.request({
                                                 url:"<%=basePath%>ptz/deletePTZ.htm?key="+ids,
                                                 method:'post',
                                                 success:function(response,opts){
                                                     var data = Ext.JSON.decode(response.responseText);
                                                     if(data.success&&data.info=='success') {
-                                                        fireAlarmDS.load();
-                                                        Ext.MessageBox.alert('提示信息', '已成功删除火警信息。');
+                                                        PTZDS.load();
+                                                        Ext.MessageBox.alert('提示信息', '已成功删除PTZ信息。');
                                                     } else {
                                                         Ext.MessageBox.alert('提示信息', data.info);
                                                     }
+                                                },
+                                                params:{
+                                                    ids:ids
                                                 }
-                                            })
-                                        }  
-                                    })
+                                            });
+                                        }
+                                    });
+          
                                 }
                             }       
                         },'-',{

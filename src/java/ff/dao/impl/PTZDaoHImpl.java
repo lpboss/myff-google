@@ -32,10 +32,21 @@ public class PTZDaoHImpl extends HibernateDaoSupport implements PTZDao  {
     }
 
     @Override
-    public String deletePTZ(Long id) {
+    public String deletePTZ(String id) {
+        logger.info("ggg");
+        logger.info(id);
+        logger.info("kkk");
+        getHibernateTemplate().delete("select * from PTZ where id IN (id)");
+        logger.info("ccc");
         try {
-            Object role = this.getHibernateTemplate().load(PTZ.class, new Long(id));    //先加载特定实例
-            getHibernateTemplate().delete(role);                                 //删除特定实例
+            Object role = this.getHibernateTemplate().load(PTZ.class, new String(id));    //先加载特定实例
+          
+            logger.info("ddd");
+            logger.info(role);
+            logger.info("vvv");
+            getHibernateTemplate().delete("select * from PTZ where id IN (id)"); 
+         //   getHibernateTemplate().delete(role);                                 //删除特定实例
+            
         } catch (Exception e) {
             return e.toString();
         }
