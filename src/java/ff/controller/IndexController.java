@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
+import ff.service.PTZService;
 import ff.service.RoleService;
 import ff.service.UserService;
 
@@ -26,8 +27,14 @@ public class IndexController extends MultiActionController {
     private UserService userService;
     
     private RoleService roleService;
+    
+    private PTZService ptzService;
 
-    public void setUserService(UserService userService) {
+    public void setPtzService(PTZService ptzService) {
+		this.ptzService = ptzService;
+	}
+
+	public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
@@ -44,6 +51,7 @@ public class IndexController extends MultiActionController {
      */
     public ModelAndView index(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView mav = new ModelAndView();
+        mav.addObject("ptzs", ptzService.getAllPTZs());
         return mav;
     }
 
