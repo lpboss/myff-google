@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface PTZService {
 
-    String deletePTZ(String id); //删除
+    String deletePTZ(Long id); //删除
 
     String editPTZ(Long id);   //修改
     
