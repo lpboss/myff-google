@@ -2,17 +2,17 @@
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
 			   xmlns:s="library://ns.adobe.com/flex/spark"
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
-			   minWidth="330" minHeight="270" creationComplete="init()">	
+			   minWidth="50" minHeight="50" creationComplete="init()">	
 	<fx:Declarations>
 		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
 	</fx:Declarations>
 	<s:Image id="m" x="0" y="0" width="100%" height="100%" smooth="true" smoothingQuality="high" scaleMode="stretch" fillMode="scale" />
-	<s:Image id="p" x="146" y="25" width="8" height="135" smooth="true" smoothingQuality="high"
-			 source="../images/pointer.png"/>
+	<s:Image id="p" x="0" y="0" width="5" height="95" smooth="true" smoothingQuality="high" source="../images/pointer.png"/>
 	<s:Label id="status" x="10" y="0" width="200" text="" visible="false" color="0xFFFFFF" />
-	<s:Label id="show_angleX" x="10" y="10" width="100" text="" visible="true" color="0xFFFFFF" />
-	<s:Label id="show_angleY" x="10" y="30" width="100" text="" visible="true" color="0xFFFFFF" />
-	<s:Label id="show_alertMax" x="10" y="50" width="100" text="" visible="true" color="0xFFFFFF" />
+	<s:Label id="show_angleX" x="10" y="10" width="100" text="" visible="true" color="0xFFFFFF" fontFamily="微软雅黑" fontSize="11" />
+	<s:Label id="show_angleY"  x="10" y="30" width="100" text="" visible="true" color="0xFFFFFF" fontFamily="微软雅黑" fontSize="11" />
+	<s:Label id="show_alert" x="200" y="10" width="100" text="报警状态：正常" visible="true" color="0xFFFFFF" fontFamily="微软雅黑" fontSize="11" />
+	<s:Label id="show_alertMax" x="200" y="30" width="100" text="" visible="true" color="0xFFFFFF" fontFamily="微软雅黑" fontSize="11" />
 	<fx:Script>
 		<![CDATA[			
 			import flash.display.Stage;
@@ -63,6 +63,7 @@
 				this.doubleClickEnabled=true;
 				this.addEventListener(MouseEvent.DOUBLE_CLICK, toggleFullScreen);
 				
+				//注册javascript函数，用于切换云台
 				ExternalInterface.addCallback("setChannel",setChannel);
 			}
 
@@ -86,7 +87,7 @@
 					angleY=Number(myXML.angleY);
 					show_angleX.text="水平角度：" + myXML.angleX;
 					show_angleY.text="垂直角度：" + myXML.angleY;
-					show_alertMax.text="最大值：" + myXML.alertMax;
+					show_alertMax.text="最大热值：" + myXML.alertMax;
 					if (angleX != angleX2){
 						if(angleX<90&&angleX2>270){//逆时针旋转，经过零点
 							angleX2=angleX2-360;
@@ -110,7 +111,7 @@
 			private function connect():void{
 				var url:String =this.url;
 				URLUtil.getServerName(url);
-				//status.text ="与服务器连接中...";
+				status.text ="与服务器连接中...";
 				if(socket!=null && socket.connected){
 					socket.close();
 				}
@@ -125,19 +126,19 @@
 			
 			//Socket建立连接时的回调函数
 			private function toConnected(event:Event):void{
-				//status.text ="已经成功连接到服务器！";
+				status.text ="已经成功连接到服务器！";
 				sendMsg("{ptzIp:"+ptzIp+",alertIp:"+alertIp+"}");//发送云台IP，json格式
 			}
 			
 			//Socket关闭连接时的回调函数
 			private function toClosed(event:Event):void{
-				//status.text ="和服务器断开!";
+				status.text ="和服务器断开!";
 				connect();
 			}
 			
 			//Socket连接出错时的回调函数
 			private function toError(event:Event):void{
-				//status.text ="连接服务器失败";
+				status.text ="连接服务器失败!";
 				connect();
 			}
 			
@@ -151,23 +152,54 @@
 			
 			//窗口大小改变时调整页面布局
 			private function resizeStage(evt:Event):void{
-				pause=true;//暂停指针旋转
+				//先暂停指针旋转
+				pause=true;
 				pointer.end();
-				p.scaleX=stage.stageHeight/300;
-				p.scaleY=stage.stageHeight/300;
 				
+								
+				status.text =this.height+"";
+				//计算缩放比例
+				var baseWidth:Number = 306;//以306作为缩放的基准宽度
+				var baseHeight:Number = 250;//以250作为缩放的基准高度
+				var scaleX:Number=stage.stageWidth/baseWidth;//水平缩放比例
+				var scaleY:Number=stage.stageHeight/baseHeight;//垂直缩放比例
+				
+				//缩放指针图片，因为一般height<width，所以按垂直缩放比例缩放
+				p.scaleX=scaleY;
+				p.scaleY=scaleY;
+				
+				//计算屏幕中心点坐标
 				centerX = stage.stageWidth/2;
 				centerY = stage.stageHeight/2;
 				
-				pointer.originX = Math.round(p.width/2*stage.stageHeight/300);
-				pointer.originY = Math.round(p.height*stage.stageHeight/300-10*stage.stageHeight/300);
+				//计算指针的旋转轴坐标
+				pointer.originX = Math.round(p.width/2*scaleY);
+				pointer.originY = Math.round(p.height*scaleY-10*scaleY);
 				
+				//计算指针左上角的坐标
 				p.x=centerX+pointer.originY*Math.sin(angleX*(Math.PI/180))-pointer.originX*Math.cos(angleX*(Math.PI/180));
 				p.y=centerY-pointer.originY*Math.cos(angleX*(Math.PI/180))-pointer.originX*Math.sin(angleX*(Math.PI/180));
 				
 				
+				show_angleX.x=10*scaleX;
+				show_angleX.y=10*scaleY;
+				show_angleX.scaleX=scaleY;
+				show_angleX.scaleY=scaleY;
+				show_angleY.x=10*scaleX;
+				show_angleY.y=30*scaleY;
+				show_angleY.scaleX=scaleY;
+				show_angleY.scaleY=scaleY;
+				show_alert.x=220*scaleX;
+				show_alert.y=10*scaleY;
+				show_alert.scaleX=scaleY;
+				show_alert.scaleY=scaleY;
+				show_alertMax.x=220*scaleX;
+				show_alertMax.y=30*scaleY;
+				show_alertMax.scaleX=scaleY;
+				show_alertMax.scaleY=scaleY;
+				
 				//status.text =angleX+"，"+p.width+"，"+p.height+"，"+p.x+"，"+p.y+"，"+pointer.originX+"，"+pointer.originY;
-				pause=false;//恢复指针旋转		
+				pause=false;//缩放完后，恢复指针旋转		
 			}
 			
 			//双击全屏窗口
@@ -190,7 +222,6 @@
 				if(map!=null&&map!=""){
 					m.source=map;
 				}
-					status.text ="！"+map;
 			}
 		]]>
 	</fx:Script>
