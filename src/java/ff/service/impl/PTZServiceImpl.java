@@ -15,7 +15,6 @@ import net.sf.json.JSONArray;
 import java.sql.Timestamp;
 import java.util.Calendar;
 
-
 /**
  *
  * @author Jerry,2011-11-11
@@ -135,7 +134,7 @@ public class PTZServiceImpl implements PTZService {
 
     @Override
     public String update(PTZ ptz) {
-       String info = null;
+        String info = null;
         if (ptz == null) {
             info = "没有该用户，不能编辑！";
         } else {
@@ -150,6 +149,4 @@ public class PTZServiceImpl implements PTZService {
         String jsonStr = "{success:true,info:'" + info + "'}";
         return jsonStr;
     }
-
-    
 }

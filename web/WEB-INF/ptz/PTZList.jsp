@@ -32,13 +32,15 @@
                     pageSize : pageSize,
                     autoLoad : true
                 });
-        
+
                 var PTZGrid =  Ext.create('Ext.grid.Panel',
                 
                 {
                     store: PTZDS,
                     width: screenWidth-190,
-                    height: screenHeight-285,                     
+                    height: screenHeight-285, 
+                    layout:'fit',  
+                    
                     columns : [Ext.create('Ext.grid.RowNumberer'), {
                             header: '名字',
                             dataIndex: 'name',
@@ -105,6 +107,22 @@
                             dataIndex: 'cruiseStep',
                             width:80
                         },{
+                            header: '巡航右边界',
+                            dataIndex: 'cruiseRightLimitf',
+                            width:80
+                        },{
+                            header: '巡航左边界',
+                            dataIndex: 'cruiseLeftLimit',
+                            width:80
+                        },{
+                            header: '最大上仰角度',
+                            dataIndex: 'cruiseUpLimit',
+                            width:80
+                        },{
+                            header: '巡航时最大俯角',
+                            dataIndex: 'cruiseDownLimit',
+                            width:80
+                        },{
                             header: '版本',
                             dataIndex: 'version',
                             width:80
@@ -113,8 +131,8 @@
                             dataIndex: 'isLocked',                          
                             width:40
                         }],
-                    selModel :Ext.create('Ext.selection.CheckboxModel'),
-                                    
+       
+                    selModel :Ext.create('Ext.selection.CheckboxModel'),                                 
                     iconCls: 'icon-grid',
                     bbar: Ext.create('Ext.PagingToolbar', {
                         pageSize: pageSize + 15,
@@ -123,6 +141,7 @@
                         displayMsg: "显示第 {0} 条到 {1} 条记录，一共 {2} 条",
                         emptyMsg: "没有记录"
                     }),
+                      
                     tbar: [{
                             text: '添加',
                             iconCls: 'addItem',
@@ -130,7 +149,7 @@
                                 newPTZWin = Ext.create('Ext.window.Window', {
                                     layout: 'fit',
                                     width:1200,
-                                    height:250,
+                                    height:300,
                                     closeAction: 'destroy',
                                     plain: true,
                                     modal: true,
@@ -172,7 +191,7 @@
                                         }
                                        
                                         console.info(ids)
-                                    //    var keys = Ext.util.JSON.encode(ids)
+                                        //    var keys = Ext.util.JSON.encode(ids)
                                     
                                         if(button == 'yes'){
                                             Ext.Ajax.request({
@@ -215,7 +234,7 @@
                                         title: '编辑云台',
                                         layout:'fit',
                                         width:1200,
-                                        height:250,
+                                        height:300,
                                         closeAction:'destroy',
                                         constrain:true,
                                         plain: true,
@@ -233,7 +252,285 @@
                                 editPTZWin.show();
                             }
                         }]
+                        
+                        
+                        
                 });
+                    
+                PTZGrid.on("itemcontextmenu",function(view,record,item,index,e,options){
+                    e.preventDefault();
+                    PTZMenu.showAt(e.getXY());
+                    //privilegeRightMenu.show(node.ui.getAnchor());
+                    currentNode =  record;
+                    nodeId = record.get('id');
+                    //window.status = currentNode.get('id');
+                    //alert(typeof(currentNode.get('id'))==="string");
+                    addPrivilegeModuleItem.setDisabled(false);
+                    editPrivilegeModuleItem.setDisabled(false);
+                    addPrivilegeMenuItem.setDisabled(false);
+                    editPrivilegeMenuItem.setDisabled(false);          
+                    delPrivilegeMenuItem.setDisabled(false);
+                    if (record.getId() == 0){
+                        editPrivilegeModuleItem.setDisabled(true);
+                        addPrivilegeMenuItem.setDisabled(true);
+                        editPrivilegeMenuItem.setDisabled(true);
+                        delPrivilegeMenuItem.setDisabled(true);
+                    } if (record.getId() == 1){
+                        addPrivilegeModuleItem.setDisabled(true);
+                        editPrivilegeMenuItem.setDisabled(true);
+                    } if (record.getId() == 2){
+                        addPrivilegeModuleItem.setDisabled(true);
+                        editPrivilegeModuleItem.setDisabled(true);
+                        addPrivilegeMenuItem.setDisabled(true);           
+                    }
+                },this);
+                //右键菜单
+                var addPrivilegeModuleItem = Ext.create('Ext.menu.Item', {
+                    iconCls: 'addItem',
+                    text: '添加模块(权限)',
+                    handler: rightMenuPTZFn
+                });
+                var editPrivilegeModuleItem = Ext.create('Ext.menu.Item', {
+                    iconCls: 'editItem',
+                    text: '编辑模块(权限)',
+                    handler: rightMenuPTZFn
+                });
+                var addPrivilegeMenuItem = Ext.create('Ext.menu.Item', {
+                    iconCls: 'addItem',
+                    text: '添加菜单(权限)',
+                    handler: rightMenuPTZFn
+                });
+                var editPrivilegeMenuItem = Ext.create('Ext.menu.Item', {
+                    iconCls: 'editItem',
+                    text: '编辑菜单(权限)',
+                    handler: rightMenuPTZFn
+                });
+                var delPrivilegeMenuItem = Ext.create('Ext.menu.Item', {
+                    iconCls: 'remove',
+                    text: '删除权限',
+                    handler: rightMenuPTZFn
+                });
+                var refreshMenuItem = Ext.create('Ext.menu.Item', {
+                    iconCls: 'refresh',
+                    text: '刷新',
+                    handler: rightMenuPTZFn
+                });
+                //菜单排序
+                var sortUpMenuItem = Ext.create('Ext.menu.Item', {
+                    iconCls: 'arrow_up',
+                    text: '上移',
+                    handler: rightMenuPTZFn
+                });
+                var sortDownMenuItem = Ext.create('Ext.menu.Item', {
+                    iconCls: 'arrow_down',
+                    text: '下移',
+                    handler: rightMenuPTZFn
+                });
+                var PTZMenu = Ext.create('Ext.menu.Menu', {
+                    //id: 'privilege_right_menu',
+                    items: [
+                        addPrivilegeModuleItem,
+                        editPrivilegeModuleItem,
+                        '-',
+                        addPrivilegeMenuItem,
+                        editPrivilegeMenuItem,
+                        '-',
+                        delPrivilegeMenuItem,
+                        '-',
+                        sortUpMenuItem,
+                        sortDownMenuItem,
+                        '-',
+                        refreshMenuItem            
+                    ]});
+                //添加模块（权限）
+                //添加菜单（权限）
+                function rightMenuPTZFn(item,e){
+                    if (item.text=="添加模块(权限)"){
+                        newPrivilegeModuleWin = Ext.create('Ext.window.Window', {
+                            layout: 'fit',
+                            width: 350,
+                            height: 190,
+                            closeAction: 'destroy',
+                            plain: true,
+                            modal: true,
+                            constrain:true,
+                            //modal: true,
+                            title: '添加模块(权限)',
+                            autoLoad: {
+                                url: "<%=basePath%>privilege/newPrivilegeModule.htm?parent_id=" + currentNode.get('id'),
+                                scripts: true
+                            }
+                        });
+                        newPrivilegeModuleWin.on("destroy",function(){
+                            //刷新整个树
+                            PTZDS.load();
+                        });
+                        newPrivilegeModuleWin.resizable = false;
+                        newPrivilegeModuleWin.show();
+                    }else if (item.text=="编辑模块(权限)"){
+                        editPrivilegeModuleWin = Ext.create('Ext.window.Window', {
+                            layout: 'fit',
+                            width: 350,
+                            height: 190,
+                            closeAction: 'destroy',
+                            plain: true,
+                            modal: true,
+                            constrain:true,
+                            //modal: true,
+                            title: '编辑模块(权限)',
+                            autoLoad: {
+                                url: "<%=basePath%>privilege/editPrivilegeModule.htm?id=" + currentNode.get('id'),
+                                scripts: true
+                            }
+                        });
+                        editPrivilegeModuleWin.on("destroy",function(){
+                            //刷新整个树
+                            PTZDS.load();
+                        });
+                        editPrivilegeModuleWin.resizable = false;
+                        editPrivilegeModuleWin.show();
+                    }else if (item.text=="添加菜单(权限)"){
+                        newPrivilegeMenuWin = Ext.create('Ext.window.Window', {
+                            layout: 'fit',
+                            width: 350,
+                            height: 235,
+                            closeAction: 'destroy',
+                            plain: true,
+                            modal: true,
+                            constrain:true,
+                            //modal: true,
+                            title: '添加菜单(权限)',
+                            autoLoad: {
+                                url: "<%=basePath%>privilege/newPrivilegeMenu.htm?parent_id=" + currentNode.get('id'),
+                                scripts: true
+                            }
+                        });
+                        newPrivilegeMenuWin.on("destroy",function(){
+                            //刷新整个树
+                            PTZDS.load({
+                                node: currentNode.parentNode
+                            });
+                        });
+                        newPrivilegeMenuWin.resizable = false;
+                        newPrivilegeMenuWin.show();
+                    }else if (item.text=="编辑菜单(权限)"){
+                        editPrivilegeMenuWin = Ext.create('Ext.window.Window', {
+                            layout: 'fit',
+                            width: 350,
+                            height: 265,
+                            closeAction: 'destroy',
+                            plain: true,
+                            modal: true,
+                            constrain:true,
+                            //modal: true,
+                            title: '编辑权限',
+                            autoLoad: {
+                                url: "<%=basePath%>privilege/editPrivilegeMenu.htm?id=" + currentNode.get('id'),
+                                scripts: true
+                            }
+                        });
+                        editPrivilegeMenuWin.on("destroy",function(){
+                            //刷新整个树
+                            PTZDS.load({
+                                node: currentNode.parentNode
+                            });
+                        });
+                        editPrivilegeMenuWin.resizable = false;
+                        editPrivilegeMenuWin.show();
+                    }else if (item.text=="刷新"){
+                        if (currentNode.isLeaf()){
+                            PTZDS.load({
+                                node: currentNode.parentNode
+                            });
+                        }else{
+                            //判断是否导入过，就是是否被人点击过，因为这是Ajax的，一但点击，就会导入数据。
+                            if (currentNode.isLoaded()){
+                                //如果导入过，就要刷新后，再expand();
+                                sysPrivilegeTree.loader.dataUrl = "<%=basePath%>privilege/getSysPrivilegeChildrenById.htm?node=" + currentNode.get('id'); //定义子节点的Loader
+                                sysPrivilegeTree.loader.load(currentNode,expandCurrentNode);
+                            }else{
+                                //如果没有导入过，触发expand事件，就可以导入，相当于刷新。
+                                currentNode.expand();
+                            }
+                            //tree.getRootNode().select();
+                            window.state = currentNode.get('id');
+                            //currentNode.load();
+                        }
+                    }else if(item.text == "删除权限"){
+                        Ext.MessageBox.confirm("提示","你确认删除 \""+currentNode.get('text')+"\" 吗？",function(btn){
+                            if(btn=="yes"){                
+                                Ext.Ajax.request({
+                                    url : '<%=basePath%>privilege/destroySysPrivilege.htm',
+                                    method:'GET',
+                                    success:function(response,opts){
+                                        var backInfo = Ext.JSON.decode(response.responseText).info;
+                                        if(backInfo === 'success') {
+                                            PTZDS.load({
+                                                node: currentNode.parentNode
+                                            });
+                                        } else {
+                                            Ext.MessageBox.alert('提示信息', backInfo);
+                                        }
+                                    },
+                                    params: {"id":currentNode.get('id')}
+                                });
+                            }else{
+                                //alert("no");
+                            }
+                        });
+                    }else if (item.text=="上移"){
+                        Ext.Ajax.request({
+                            url : '<%=basePath%>privilege/sortUp.htm',
+                            success : function (result, request) {
+                                PTZDS.load({
+                                    node: currentNode.parentNode
+                                });
+                            },
+                            failure : function (result, request){
+                                Ext.MessageBox.show({
+                                    title: '消息',
+                                    msg: "通讯失败，请从新操作",
+                                    buttons: Ext.MessageBox.OK,
+                                    icon: Ext.MessageBox.WARNING
+                                });
+                            },
+                            method : 'POST',
+                            params : {
+                                id : currentNode.get('id')
+                            }
+                        });
+                    }else if (item.text=="下移"){
+                        Ext.Ajax.request({
+                            url : '<%=basePath%>privilege/sortDown.htm',
+                            success : function (result, request) {
+                                PTZDS.load({
+                                    node: currentNode.parentNode
+                                });
+                            },
+                            failure : function (result, request){
+                                Ext.MessageBox.show({
+                                    title: '消息',
+                                    msg: "通讯失败，请从新操作",
+                                    buttons: Ext.MessageBox.OK,
+                                    icon: Ext.MessageBox.WARNING
+                                });
+                            },
+                            method : 'POST',
+                            params : {
+                                id : currentNode.get('id')
+                            }
+                        });
+                    }
+                }
+
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                 PTZGrid.render('PTZ_list');
                 
             })
