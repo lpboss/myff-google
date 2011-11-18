@@ -46,7 +46,7 @@
                         }, {
                             header: '编码器IP',
                             dataIndex: 'controllUrl',
-                            width:100
+                            width:250
                         }, {
                             header: '通过串口,发pelcod的ip',
                             dataIndex: 'pelcodCommandUrl',
@@ -62,7 +62,7 @@
                              
                         }, {
                             header: '红外RTSP流',
-                            dataIndex: 'infrared_rtsp_url',
+                            dataIndex: 'infraredRTSPUrl',
                             width:90
                         }, {
                             header: '红外摄像机地址',
