@@ -16,6 +16,18 @@
         <script type="text/javascript">
             Ext.onReady(function(){
                 var userId = <%=request.getParameter("id")%>;
+                
+                ptzBrandStore = Ext.create('Ext.data.ArrayStore', {
+                    autoDestroy: true,
+                    storeId: 'ptzBrandStore',
+                    // reader configs
+                    idIndex: 0,
+                    fields: [
+                        {name: 'text', type: 'string'},
+                        {name: 'value', type: 'string'}
+                    ],
+                    data : ptzBrandArray
+                });
  
                 var name = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '名字',
@@ -72,7 +84,9 @@
                 var northMigration = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '摄像机0角度与正北的偏移',
                     name: 'northMigration',
-                    anchor: '95%'
+                    anchor: '95%',
+                    maxValue: 90,   
+                    minValue: 0
                 });
                 
                 var gisMapUrl = Ext.create('Ext.form.field.Text', {
@@ -105,9 +119,17 @@
                     anchor: '95%'
                 });
                 
-                var brandType = Ext.create('Ext.form.field.Text', {
-                    fieldLabel: '品牌类型',
-                    name: 'brandType',
+                var brandType = Ext.create('Ext.form.ComboBox', {
+                    fieldLabel: '云台品牌',
+                    store: ptzBrandStore,
+                    allowBlank: false,
+                    valueField:'text',
+                    displayField:'text',
+                    typeAhead: true,
+                    mode: 'local',
+                    name:'brandType',
+                    emptyText:'请选择云台品牌...',
+                    //allowBlank: false,
                     anchor: '95%'
                 });
                 

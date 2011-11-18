@@ -325,3 +325,7 @@ logisticsTypeArray = [
     ['海运'],
     ['空运']
     ]
+ptzBrandArray = [
+    ['亚安','YAAN'],
+    ['飞越','FY'],
+    ]

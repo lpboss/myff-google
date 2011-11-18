@@ -37,6 +37,7 @@ public class FireAlarm {
     private Timestamp updatedAt;
     private Integer version;
     private Long isLocked = new Long(0);// '启用，停用',
+    private Short is_alarming;
 
     @Id
     @GeneratedValue
@@ -49,6 +50,7 @@ public class FireAlarm {
         this.id = id;
     }
 
+    @Column(name = "action_date", length = 100)
     public Timestamp getActionDate() {
         return actionDate;
     }
@@ -57,6 +59,7 @@ public class FireAlarm {
         this.actionDate = actionDate;
     }
 
+    @Column(name = "created_at", length = 100)
     public Timestamp getCreatedAt() {
         return createdAt;
     }
@@ -65,14 +68,25 @@ public class FireAlarm {
         this.createdAt = createdAt;
     }
 
+    @Column(name = "deal_date", length = 100)
     public Timestamp getDealDate() {
         return dealDate;
+    }
+
+    @Column(name = "is_alarming")
+    public Short getIs_alarming() {
+        return is_alarming;
+    }
+
+    public void setIs_alarming(Short is_alarming) {
+        this.is_alarming = is_alarming;
     }
 
     public void setDealDate(Timestamp dealDate) {
         this.dealDate = dealDate;
     }
 
+    @Column(name = "description", length = 100)
     public String getDescription() {
         return description;
     }
@@ -81,6 +95,7 @@ public class FireAlarm {
         this.description = description;
     }
 
+    @Column(name = "heat_avg", length = 100)
     public Integer getHeatAvg() {
         return heatAvg;
     }
@@ -89,6 +104,7 @@ public class FireAlarm {
         this.heatAvg = heatAvg;
     }
 
+    @Column(name = "heat_max", length = 100)
     public Integer getHeatMax() {
         return heatMax;
     }
@@ -97,6 +113,7 @@ public class FireAlarm {
         this.heatMax = heatMax;
     }
 
+    @Column(name = "heat_min", length = 100)
     public Integer getHeatMin() {
         return heatMin;
     }
@@ -105,6 +122,7 @@ public class FireAlarm {
         this.heatMin = heatMin;
     }
 
+    @Column(name = "is_locked", length = 100)
     public Long getIsLocked() {
         return isLocked;
     }
@@ -113,6 +131,7 @@ public class FireAlarm {
         this.isLocked = isLocked;
     }
 
+    @Column(name = "ptz_h_angle", length = 100)
     public float getPTZHAngle() {
         return ptzHAngle;
     }
@@ -121,6 +140,7 @@ public class FireAlarm {
         this.ptzHAngle = ptzHAngle;
     }
 
+    @Column(name = "ptz_id", length = 100)
     public Integer getPTZId() {
         return ptzId;
     }
@@ -129,6 +149,7 @@ public class FireAlarm {
         this.ptzId = ptzId;
     }
 
+    @Column(name = "ptz_v_angle", length = 100)
     public float getPTZVAngle() {
         return ptzVAngle;
     }
@@ -137,6 +158,7 @@ public class FireAlarm {
         this.ptzVAngle = ptzVAngle;
     }
 
+    @Column(name = "updated_at", length = 100)
     public Timestamp getUpdatedAt() {
         return updatedAt;
     }
@@ -145,6 +167,7 @@ public class FireAlarm {
         this.updatedAt = updatedAt;
     }
 
+    @Column(name = "user_id", length = 100)
     public Integer getUserId() {
         return userId;
     }
@@ -153,6 +176,7 @@ public class FireAlarm {
         this.userId = userId;
     }
 
+    @Column(name = "version", length = 100)
     public Integer getVersion() {
         return version;
     }
