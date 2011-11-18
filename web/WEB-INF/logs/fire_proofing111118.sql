@@ -10,10 +10,34 @@ Target Server Type    : MYSQL
 Target Server Version : 50517
 File Encoding         : 65001
 
-Date: 2011-11-18 10:54:43
+Date: 2011-11-18 12:09:37
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for `alarm_ignore_areas`
+-- ----------------------------
+DROP TABLE IF EXISTS `alarm_ignore_areas`;
+CREATE TABLE `alarm_ignore_areas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ptz_id` int(11) NOT NULL COMMENT '云台的编号',
+  `ptz_angel_x` smallint(6) DEFAULT '0' COMMENT '火警时云台的水平角度',
+  `ptz_angel_y` smallint(6) DEFAULT NULL COMMENT '火警时云台的Y角度',
+  `ccd_area` smallint(6) DEFAULT '0' COMMENT '热成像起火面积值',
+  `heat_max` smallint(6) DEFAULT '0' COMMENT '最大热值',
+  `begin_date` datetime DEFAULT NULL COMMENT '火警时间范围',
+  `end_date` datetime DEFAULT NULL COMMENT '火警时间范围',
+  `is_locked` tinyint(4) DEFAULT '0',
+  `updated_at` datetime NOT NULL,
+  `created_at` datetime NOT NULL,
+  `version` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of alarm_ignore_areas
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `fire_alarms`
@@ -23,8 +47,8 @@ CREATE TABLE `fire_alarms` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ptz_id` int(11) DEFAULT NULL COMMENT '云台ID',
   `action_date` datetime DEFAULT NULL COMMENT '火警时间',
-  `ptz_h_angle` float DEFAULT NULL COMMENT '水平角度',
-  `ptz_v_angle` float DEFAULT NULL COMMENT '垂直角度',
+  `ptz_angle_x` float DEFAULT NULL COMMENT '水平角度',
+  `ptz_angle_y` float DEFAULT NULL COMMENT '垂直角度',
   `heat_max` int(11) DEFAULT NULL COMMENT ' 最高热值',
   `heat_min` int(11) DEFAULT NULL,
   `heat_avg` int(11) DEFAULT NULL COMMENT '平均热值',
