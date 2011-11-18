@@ -32,13 +32,13 @@
                     pageSize : pageSize,
                     autoLoad : true
                 });
-                        
+        
                 var PTZGrid =  Ext.create('Ext.grid.Panel',
                 
                 {
                     store: PTZDS,
                     width: screenWidth-190,
-                    height: screenHeight-285,                   
+                    height: screenHeight-285,   
                     columns : [Ext.create('Ext.grid.RowNumberer'), {
                             header: '名字',
                             dataIndex: 'name',
