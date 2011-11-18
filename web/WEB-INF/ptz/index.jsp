@@ -21,7 +21,6 @@
                 }
                 // soundManager is initialised, ready to use. Create a sound for this demo page.
                 soundManager.play('mySound3','<%=basePath%>javascripts/sound/alarmsound.mp3');
-                console.info("Fuck.....You.....................................");
             });
 
             //当前云台是否转动。
