@@ -39,11 +39,16 @@ public class PTZ {
     private Integer infraredPixelX;//'红外摄像机X方向像素'
     private Integer infraredPixelY;//'红外摄像机Y方向像素'
     private String brandType; //品牌类型,不同品牌，特性不同，plcod命令拼接方式不同。
-    private Integer cruiseStep;//巡航步长
+    private Integer cruiseStep;//云台巡航步长
     private Timestamp createdAt;
     private Timestamp updatedAt;
-    private Integer version;
+    private Integer version;//版本
     private Long isLocked = new Long(0);// '启用，停用',
+    //巡航右边界
+    //巡航左边界
+    //最大上仰角度
+    //巡航时最大俯角
+    
     
     @Id
     @GeneratedValue

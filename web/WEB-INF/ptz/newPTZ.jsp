@@ -142,7 +142,7 @@
                 
                 var cruiseStep = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '巡航步长',
-                    name: 'cruiseStep',
+                    name: 'cruise_step',
                     maxValue: 100,   
                     minValue: 0,
                     anchor: '95%'
