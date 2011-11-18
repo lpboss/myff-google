@@ -264,6 +264,14 @@
                         }, {
                             name: 'cruiseStep'
                         }, {
+                            name: 'cruiseRightLimitf'
+                        }, {
+                            name: 'cruiseLeftLimit'
+                        }, {
+                            name: 'cruiseUpLimit'
+                        }, {
+                            name: 'cruiseDownLimit'
+                        }, {
                             name: 'version'
                         }, {
                             name: 'isLocked'
@@ -300,6 +308,10 @@
                         { name: 'infraredPixelY'},
                         { name: 'brandType'},
                         { name: 'cruiseStep'},
+                        { name: 'cruiseRightLimitf'},
+                        { name: 'cruiseLeftLimit'},
+                        { name: 'cruiseUpLimit'},
+                        { name: 'cruiseDownLimit'},
                         { name: 'version'},
                         { name: 'isLocked'}
                     ]

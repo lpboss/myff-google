@@ -44,12 +44,11 @@ public class PTZ {
     private Timestamp updatedAt;
     private Integer version;//版本
     private Long isLocked = new Long(0);// '启用，停用',
-    //巡航右边界
-    //巡航左边界
-    //最大上仰角度
-    //巡航时最大俯角
-    
-    
+    private Integer cruiseRightLimitf; //巡航右边界
+    private Integer cruiseLeftLimit; //巡航左边界
+    private Integer cruiseUpLimit; //最大上仰角度
+    private Integer cruiseDownLimit; //巡航时最大俯角
+
     @Id
     @GeneratedValue
     @Column(name = "id", unique = true, nullable = false)
@@ -233,12 +232,47 @@ public class PTZ {
     }
 
     @Column(name = "cruise_step", length = 100)
-
     public Integer getCruiseStep() {
         return cruiseStep;
     }
 
     public void setCruiseStep(Integer cruiseStep) {
         this.cruiseStep = cruiseStep;
+    }
+
+    @Column(name = "cruise_down_limit", length = 6)
+    public Integer getCruiseDownLimit() {
+        return cruiseDownLimit;
+    }
+
+    public void setCruiseDownLimit(Integer cruiseDownLimit) {
+        this.cruiseDownLimit = cruiseDownLimit;
+    }
+
+    @Column(name = "cruise_left_limit", length = 6)
+    public Integer getCruiseLeftLimit() {
+        return cruiseLeftLimit;
+    }
+
+    public void setCruiseLeftLimit(Integer cruiseLeftLimit) {
+        this.cruiseLeftLimit = cruiseLeftLimit;
+    }
+
+    @Column(name = "cruise_right_limitf", length = 6)
+    public Integer getCruiseRightLimitf() {
+        return cruiseRightLimitf;
+    }
+
+    public void setCruiseRightLimitf(Integer cruiseRightLimitf) {
+        this.cruiseRightLimitf = cruiseRightLimitf;
+    }
+
+    @Column(name = "cruise_up_limit", length = 6)
+    public Integer getCruiseUpLimit() {
+        return cruiseUpLimit;
+    }
+
+    public void setCruiseUpLimit(Integer cruiseUpLimit) {
+        this.cruiseUpLimit = cruiseUpLimit;
     }
 }

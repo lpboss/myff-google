@@ -148,6 +148,30 @@
                     anchor: '95%'
                 });
                 
+                var cruiseRightLimitf = Ext.create('Ext.form.field.Number', {
+                    fieldLabel: '巡航右边界',
+                    name: 'cruise_right_limitf',
+                    anchor: '95%'
+                });
+                
+                var cruiseLeftLimit = Ext.create('Ext.form.field.Number', {
+                    fieldLabel: '巡航左边界',
+                    name: 'cruise_left_limit',
+                    anchor: '95%'
+                });
+                
+                var cruiseUpLimit = Ext.create('Ext.form.field.Number', {
+                    fieldLabel: '最大上仰角度',
+                    name: 'cruise_up_limit',
+                    anchor: '95%'
+                });
+                
+                var cruiseDownLimit = Ext.create('Ext.form.field.Number', {
+                    fieldLabel: '巡航时最大俯角',
+                    name: 'cruise_down_limit',
+                    anchor: '95%'
+                });
+                
                 var version = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '版本',
                     name: 'version',
@@ -169,7 +193,7 @@
                     frame:true,
                     bodyStyle:'padding:5px 5px 0',
                     width: 1190,
-                    height: 220,
+                    height: 265,
                     items: [{
                             layout: 'column',
                             xtype: 'container',
@@ -177,17 +201,17 @@
                                     columnWidth: .38,
                                     layout: 'anchor',                                  
                                     xtype: 'container',
-                                    items: [name,controllUrl,pelcodCommandUrl,gisMapUrl,cruiseStep,brandType]
+                                    items: [name,controllUrl,pelcodCommandUrl,gisMapUrl,cruiseStep,brandType,cruiseRightLimitf,cruiseLeftLimit]
                                 }, {
                                     columnWidth: .38,
                                     layout: 'anchor',
                                     xtype: 'container',                                  
-                                    items: [infraredRTSPUrl,infraredCameraUrl,infraredCircuitUrl,northMigration,visibleCameraUrl,visibleRTSPUrl]
+                                    items: [infraredRTSPUrl,infraredCameraUrl,infraredCircuitUrl,northMigration,visibleCameraUrl,visibleRTSPUrl,cruiseUpLimit]
                                 }, {
                                     columnWidth: .23,
                                     layout: 'anchor',
                                     xtype: 'container',
-                                    items: [visualAngleX,visualAngleY,infraredPixelX,infraredPixelY,version,isLocked]
+                                    items: [visualAngleX,visualAngleY,infraredPixelX,infraredPixelY,version,isLocked,cruiseDownLimit]
                                 }]
                         }],
                     buttons: [{
