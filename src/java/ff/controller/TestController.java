@@ -115,4 +115,10 @@ public class TestController extends MultiActionController {
         Long time = dt.getTime();//这就是距离1970年1月1日0点0分0秒的毫秒数
         System.out.println("time:" + time + ", SECOND...............................");
     }
+    
+    public ModelAndView sound(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("sound page ++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        ModelAndView mav = new ModelAndView();
+        return mav;
+    }
 }
