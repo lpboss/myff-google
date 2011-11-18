@@ -98,17 +98,6 @@ function ptzAction(ptzActionStr){
 	});
 }
 
-//切换监控通道
-function setChannel(ptzControlIP,ptzAlertIP,visibleRTSPUrl,infraredRTSPUrl,gisMapUrl){
-	document.getElementById("map").setChannel(ptzControlIP,ptzAlertIP,"../images/"+gisMapUrl);
-
-	document.getElementById("infraredPlayer").playlist.add(infraredRTSPUrl,infraredRTSPUrl, " :rtsp-caching=200");
-	document.getElementById("infraredPlayer").playlist.play();
-	
-	document.getElementById("visiblePlayer").playlist.add(visibleRTSPUrl,visibleRTSPUrl, " :rtsp-caching=200");
-	document.getElementById("visiblePlayer").playlist.play();
-}
-
 //显示当前系统时间
 function showTime(){
 	var myDate = new Date();
@@ -145,13 +134,28 @@ function showTime(){
 //根据窗口大小自动等比例缩放控件大小
 function resizeWindow(){
 	var clientWidth=document.body.clientWidth;
-	document.getElementById("infraredPlayer").style.width=parseInt(clientWidth*0.256)+"px";
-	document.getElementById("infraredPlayer").style.height=parseInt(clientWidth*0.256*0.818)+"px";
+	if(clientWidth == window.screen.width){//有些时候在某些分辨率下，clientWidth会与屏幕分辨率相同，很奇怪
+		clientWidth=clientWidth-18;//减掉滚动条的宽度
+	}
+	
 	document.getElementById("map").style.width=parseInt(clientWidth*0.256)+"px";
 	document.getElementById("map").style.height=parseInt(clientWidth*0.256*0.818)+"px";
+	
+	document.getElementById("infraredPlayer").style.width=parseInt(clientWidth*0.256)+"px";
+	document.getElementById("infraredPlayer").style.height=parseInt(clientWidth*0.256*0.818)+"px";
 	document.getElementById("visiblePlayer").style.width=parseInt(clientWidth*0.744)+"px";
 	document.getElementById("visiblePlayer").style.height=parseInt(clientWidth*0.744*0.563)+"px";
-	//alert(clientWidth+document.getElementById("infraredPlayer").style.width+document.getElementById("visiblePlayer").style.width);
+}
+
+//切换监控通道
+function setChannel(ptzControlIP,ptzAlertIP,visibleRTSPUrl,infraredRTSPUrl,gisMapUrl){
+	document.getElementById("map").setChannel(ptzControlIP,ptzAlertIP,"../images/"+gisMapUrl);
+	
+	document.getElementById("infraredPlayer").playlist.add(infraredRTSPUrl,infraredRTSPUrl, " :rtsp-caching=500");
+	document.getElementById("infraredPlayer").playlist.play();
+	
+	document.getElementById("visiblePlayer").playlist.add(visibleRTSPUrl,visibleRTSPUrl, " :rtsp-caching=500");
+	document.getElementById("visiblePlayer").playlist.play();
 }
 
 //启动客户端报警，本方法由flex调用
@@ -309,6 +313,7 @@ function picrun_init(){
                 <param name="ShowDisplay" value="True" />
                 <param name="AutoLoop" value="False" />
                 <param name="AutoPlay" value="true" />
+                <embed id="infraredPlayer2" type="application/x-google-vlc-plugin" version="VideoLAN.VLCPlugin.2" autoplay="no" loop="no" width="100%" height="100%"></embed>
             </OBJECT>
             </div>
         <div class="cleft2">
@@ -327,7 +332,8 @@ function picrun_init(){
                 <param name="ShowDisplay" value="True" />
                 <param name="AutoLoop" value="False" />
                 <param name="AutoPlay" value="true" />
-            </OBJECT>    
+                <embed id="visiblePlayer2" type="application/x-google-vlc-plugin" version="VideoLAN.VLCPlugin.2" autoplay="yes" loop="no" width="100%" height="100%" target="" ></embed>
+          </OBJECT>    
          <div id="apDiv3" style="background-color:black">
            <iframe id='iframebar' src="about:blank" frameBorder="0" marginHeight="0" marginWidth="0" style=" z-index:-1;position:absolute;top:0px;left:0px;height:100%;width:100%;filter:alpha(opacity=0);"></iframe>
           <table width="100%" height="132" border="0" cellpadding="0" cellspacing="0">
@@ -413,6 +419,5 @@ function picrun_init(){
 </body>
 </html>
 <script type="text/javascript">
-
-
+//alert("document.documentElement.clientWidth:"+document.documentElement.clientWidth+"\n"+"document.body.clientWidth:"+document.body.clientWidth+"\n"+"window.screen.width:"+window.screen.width);
 </script>
