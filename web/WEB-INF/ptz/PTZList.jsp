@@ -32,20 +32,20 @@
                     pageSize : pageSize,
                     autoLoad : true
                 });
-                        
+        
                 var PTZGrid =  Ext.create('Ext.grid.Panel',
                 
                 {
                     store: PTZDS,
                     width: screenWidth-190,
-                    height: screenHeight-285,                   
+                    height: screenHeight-285,                     
                     columns : [Ext.create('Ext.grid.RowNumberer'), {
                             header: '名字',
                             dataIndex: 'name',
                             width:90
                         }, {
                             header: '编码器IP',
-                            dataIndex: 'controllUrl',
+                            dataIndex: 'controllUrl',                         
                             width:250
                         }, {
                             header: '通过串口,发pelcod的ip',

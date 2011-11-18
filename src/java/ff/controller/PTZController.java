@@ -126,9 +126,10 @@ public class PTZController extends MultiActionController {
         ptz.setInfraredPixelX(Integer.valueOf(request.getParameter("infrared_pixel_x")));//红外摄像机X方向像素
         ptz.setInfraredPixelY(Integer.valueOf(request.getParameter("infrared_pixel_y")));//红外摄像机Y方向像素    
         ptz.setBrandType(request.getParameter("brand_type"));//品牌类型,不同品牌，特性不同，plcod命令拼接方式不同。
+        logger.info(request.getParameter("cruise_step"));
         ptz.setCruiseStep(Integer.valueOf(request.getParameter("cruise_step")));//巡航步长
         ptz.setVersion(Integer.valueOf(request.getParameter("version")));//版本
-        ptz.setIsLocked(Long.getLong("isLocked"));//状态
+        ptz.setIsLocked(Long.getLong("isLocked"));//状态isLocked
         ptzService.saveOrUpdate(ptz);
         String info = "success";
         String jsonStr = "{success:true,info:'" + info + "'}";
