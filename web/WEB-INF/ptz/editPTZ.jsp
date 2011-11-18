@@ -119,7 +119,7 @@
                     anchor: '95%'
                 });
                 
-                var brandType = Ext.create('Ext.form.ComboBox', {
+                var brandType2 = Ext.create('Ext.form.ComboBox', {
                     fieldLabel: '云台品牌',
                     store: ptzBrandStore,
                     allowBlank: false,
@@ -129,7 +129,6 @@
                     mode: 'local',
                     name:'brandType',
                     emptyText:'请选择云台品牌...',
-                    //allowBlank: false,
                     anchor: '95%'
                 });
                 
@@ -183,17 +182,17 @@
                             layout: 'column',
                             xtype: 'container',
                             items: [{
-                                    columnWidth: .33,
+                                    columnWidth: .38,
                                     layout: 'anchor',                                  
                                     xtype: 'container',
-                                    items: [name,controllUrl,pelcodCommandUrl,visibleCameraUrl,visibleRTSPUrl,brandType]
+                                    items: [name,controllUrl,pelcodCommandUrl,gisMapUrl,cruiseStep,brandType2]
                                 }, {
-                                    columnWidth: .33,
+                                    columnWidth: .38,
                                     layout: 'anchor',
                                     xtype: 'container',                                  
-                                    items: [infraredRTSPUrl,infraredCameraUrl,infraredCircuitUrl,northMigration,gisMapUrl,cruiseStep]
+                                    items: [infraredRTSPUrl,infraredCameraUrl,infraredCircuitUrl,northMigration,visibleCameraUrl,visibleRTSPUrl]
                                 }, {
-                                    columnWidth: .33,
+                                    columnWidth: .23,
                                     layout: 'anchor',
                                     xtype: 'container',
                                     items: [visualAngleX,visualAngleY,infraredPixelX,infraredPixelY,version,isLocked]
