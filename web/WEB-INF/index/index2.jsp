@@ -12,8 +12,27 @@
         <link href="<%=basePath%>javascripts/ext4/resources/css/ext-all.css" media="screen" rel="stylesheet" type="text/css" />
         <script src="<%=basePath%>javascripts/ext4/ext-all.js" type="text/javascript"></script>
         <script src="<%=basePath%>javascripts/ext4/locale/ext-lang-zh_CN.js" type="text/javascript"></script>
-
+        <script src="<%=basePath%>javascripts/sound/soundmanager2.js" type="text/javascript"></script>
         <script type="text/javascript">
+            // flash version URL switch (for this demo page)
+            var winLoc = window.location.toString();
+            console.info(winLoc);
+            soundManager.preferFlash = (winLoc.match(/usehtml5audio=1/i) ? false : true);
+            if (winLoc.match(/flash9/i)) {
+                soundManager.flashVersion = 9;
+                if (winLoc.match(/highperformance/i)) {
+                    soundManager.useHighPerformance = true;
+                    soundManager.useFastPolling = true;
+                }
+            } else if (winLoc.match(/flash8/i)) {
+                soundManager.flashVersion = 8;
+            }
+
+            soundManager.useFlashBlock = false;
+            soundManager.url = '<%=basePath%>javascripts/sound/'; // path to SoundManager2 SWF files (note trailing slash)
+            soundManager.debugMode = false;
+            soundManager.consoleOnly = false;
+            
             var pageSize = 10;
             Ext.require([
                 'Ext.grid.*',
@@ -207,7 +226,7 @@
                 }
                 renderMenu();
                 
-               //PTZ编辑 
+                //PTZ编辑 
                 Ext.define('PTZEdit', {
                     extend : 'Ext.data.Model',
                     fields : [{
@@ -257,7 +276,7 @@
                         }, {
                             name: 'isLocked'
                         }
-                      /*  , {
+                        /*  , {
                             name: 'createAt',
                             mapping:'createAt.id'
                         }, {
@@ -268,7 +287,7 @@
                 });
                 
                 
-                 //PTZList
+                //PTZList
                 Ext.define('PTZ', {
                     extend : 'Ext.data.Model',
                     fields : [

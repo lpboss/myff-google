@@ -69,8 +69,10 @@
 
 			//发送数据到服务器
 			private function sendMsg(msg:String):void{
-				socket.writeUTFBytes(msg+"\n");
-				socket.flush();
+				if(socket!=null && socket.connected){
+					socket.writeUTFBytes(msg+"\n");
+					socket.flush();
+				}
 			}
 			
 			//从服务器接收数据
@@ -82,22 +84,26 @@
 					
 				}
 				if(!pause){
-					var myXML:XML = new XML(msg);
-					angleX2=Number(myXML.angleX);
-					angleY=Number(myXML.angleY);
-					show_angleX.text="水平角度：" + myXML.angleX;
-					show_angleY.text="垂直角度：" + myXML.angleY;
-					show_alertMax.text="最大热值：" + myXML.alertMax;
-					
-					//判断当前节点是否有火警
-					if(myXML.myAlarm=="true"){
-						show_alert.text="当前状态：火警！";
-					}
-					
-					//判断所有节点是否有火警
-					if(myXML.globalAlarm=="true"){
-						//处理报警
-						ExternalInterface.call("startAlarm");
+					try{
+						var myXML:XML = new XML(msg);
+						angleX2=Number(myXML.angleX);
+						angleY=Number(myXML.angleY);
+						show_angleX.text="水平角度：" + myXML.angleX;
+						show_angleY.text="垂直角度：" + myXML.angleY;
+						show_alertMax.text="最大热值：" + myXML.alertMax;
+						
+						//判断当前节点是否有火警
+						if(myXML.myAlarm=="true"){
+							show_alert.text="当前状态：火警！";
+						}
+						
+						//判断所有节点是否有火警
+						if(myXML.globalAlarm=="true"){
+							//处理报警
+							ExternalInterface.call("startAlarm");
+						}
+					}catch(e:Error){      
+						//Alert.show(msg);      
 					}
 					
 					//根据回传的水平角度旋转指针
@@ -115,6 +121,7 @@
 							angleX=angleX2;
 						}
 					}
+						
 				}
 				
 				
@@ -140,7 +147,11 @@
 			//Socket建立连接时的回调函数
 			private function toConnected(event:Event):void{
 				status.text ="已经成功连接到服务器！";
-				sendMsg("{ptzIp:"+ptzIp+",alertIp:"+alertIp+"}");//发送云台IP，json格式
+				
+				//向服务器循环发送请求
+				flash.utils.setInterval(function():void{
+					sendMsg("{ptzIp:"+ptzIp+",alertIp:"+alertIp+"}")
+				},100,null);
 			}
 			
 			//Socket关闭连接时的回调函数
