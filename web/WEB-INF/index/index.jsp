@@ -102,10 +102,10 @@ function ptzAction(ptzActionStr){
 function setChannel(ptzControlIP,ptzAlertIP,visibleRTSPUrl,infraredRTSPUrl,gisMapUrl){
 	document.getElementById("map").setChannel(ptzControlIP,ptzAlertIP,"../images/"+gisMapUrl);
 
-	document.getElementById("infraredPlayer").playlist.add(infraredRTSPUrl,infraredRTSPUrl, " :rtsp-caching=50");
+	document.getElementById("infraredPlayer").playlist.add(infraredRTSPUrl,infraredRTSPUrl, " :rtsp-caching=200");
 	document.getElementById("infraredPlayer").playlist.play();
 	
-	document.getElementById("visiblePlayer").playlist.add(visibleRTSPUrl,visibleRTSPUrl, " :rtsp-caching=50");
+	document.getElementById("visiblePlayer").playlist.add(visibleRTSPUrl,visibleRTSPUrl, " :rtsp-caching=200");
 	document.getElementById("visiblePlayer").playlist.play();
 }
 
@@ -143,13 +143,15 @@ function showTime(){
 }
 
 //根据窗口大小自动等比例缩放控件大小
-function resizeWindow(clientWidth){
-	document.getElementById("infraredPlayer").style.width=clientWidth*0.256;
-	document.getElementById("infraredPlayer").style.height=clientWidth*0.256*0.818;
-	document.getElementById("map").style.width=clientWidth*0.256;
-	document.getElementById("map").style.height=clientWidth*0.256*0.818;
-	document.getElementById("visiblePlayer").style.width=clientWidth*0.744;
-	document.getElementById("visiblePlayer").style.height=clientWidth*0.744*0.563;
+function resizeWindow(){
+	var clientWidth=document.body.clientWidth;
+	document.getElementById("infraredPlayer").style.width=parseInt(clientWidth*0.256)+"px";
+	document.getElementById("infraredPlayer").style.height=parseInt(clientWidth*0.256*0.818)+"px";
+	document.getElementById("map").style.width=parseInt(clientWidth*0.256)+"px";
+	document.getElementById("map").style.height=parseInt(clientWidth*0.256*0.818)+"px";
+	document.getElementById("visiblePlayer").style.width=parseInt(clientWidth*0.744)+"px";
+	document.getElementById("visiblePlayer").style.height=parseInt(clientWidth*0.744*0.563)+"px";
+	//alert(clientWidth+document.getElementById("infraredPlayer").style.width+document.getElementById("visiblePlayer").style.width);
 }
 
 //启动客户端报警，本方法由flex调用
@@ -161,7 +163,7 @@ function startAlarm(){
 }
 
 //关闭客户端报警
-function stopAlarm(obj){
+function switchAlarm(obj){
 	if(alarming){
 		alarming=false;
 		document.getElementById("alarmPlayer").stop();
@@ -271,7 +273,7 @@ function picrun_init(){
 
 </script>   
 </head>
-<body onresize="resizeWindow(document.documentElement.clientWidth);" onload="resizeWindow(document.documentElement.clientWidth);showTime();picrun_init();">
+<body onresize="resizeWindow();" onload="showTime();picrun_init();resizeWindow();">
 <div class="top" >
   <div class="top1"><img src="<%=basePath%>images/toplname.jpg" width="315" height="69" /></div>
   <div class="top2"><embed id="alarmPlayer" src="<%=basePath%>images/alarm.wav" type="audio/mpeg" autostart="false" loop="true" hidden="true"></embed></div>
@@ -302,7 +304,7 @@ function picrun_init(){
     <div class="center">
       <div class="content_left">
          <div class="cleft1">
-            <OBJECT classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="300" height="270" id="infraredPlayer" events="True">
+            <OBJECT classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="100%" height="100%" id="infraredPlayer" events="True">
                 <param name="Src" value="" />
                 <param name="ShowDisplay" value="True" />
                 <param name="AutoLoop" value="False" />
@@ -320,7 +322,7 @@ function picrun_init(){
        </div>
       </div>
       <div class="content_right">
-            <OBJECT classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="800" height="600" id="visiblePlayer" events="True">
+            <OBJECT classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="100%" height="100%" id="visiblePlayer" events="True">
                 <param name="Src" value="" />
                 <param name="ShowDisplay" value="True" />
                 <param name="AutoLoop" value="False" />
@@ -404,7 +406,7 @@ function picrun_init(){
     <td height="24" class="apple"><a href="#">苹果皮</a></td>
     <td class="touwu"><a href="#">透雾</a></td>
     <td class="jianshi"><a href="#">轮循监视</a></td>
-    <td class="duijiang"><a id="alarmSwitch" href="javascript:stopAlarm(document.getElementById('alarmSwitch'));">关闭报警</a></td>
+    <td class="duijiang"><a id="alarmSwitch" href="javascript:switchAlarm(document.getElementById('alarmSwitch'));">关闭报警</a></td>
   </tr>
 </table></div>
 </div>
