@@ -46,7 +46,7 @@
                         }, {
                             header: '编码器IP',
                             dataIndex: 'controllUrl',
-                            width:100
+                            width:250
                         }, {
                             header: '通过串口,发pelcod的ip',
                             dataIndex: 'pelcodCommandUrl',
@@ -62,7 +62,7 @@
                              
                         }, {
                             header: '红外RTSP流',
-                            dataIndex: 'infrared_rtsp_url',
+                            dataIndex: 'infraredRTSPUrl',
                             width:90
                         }, {
                             header: '红外摄像机地址',
@@ -114,8 +114,7 @@
                             width:40
                         }],
                     selModel :Ext.create('Ext.selection.CheckboxModel'),
-                    
-                    
+                                    
                     iconCls: 'icon-grid',
                     bbar: Ext.create('Ext.PagingToolbar', {
                         pageSize: pageSize + 15,
@@ -149,6 +148,54 @@
                                 newPTZWin.resizable = false;
                                 newPTZWin.show();
                             }
+                        },'-',{                    
+                            text: '删除',
+                            width: 50,
+                            iconCls: 'remove',
+                            handler:function(){
+                                var records = PTZGrid.getSelectionModel().getSelection();
+                                if(records.length==0){
+                                    Ext.MessageBox.show({
+                                        title: '提示信息',
+                                        msg: "请先选中一条记录后，再删除。",
+                                        buttons: Ext.MessageBox.OK,
+                                        icon: Ext.MessageBox.WARNING
+                                    });
+                                }else{
+                                    Ext.MessageBox.confirm('警告', '确定要删除该信息？',function(button){
+                                        var ids = [];
+                                        var name = '';
+                                        for(var i = 0 ; i < records.length ; i++){
+                                            var data = records[i].data
+                                            ids.push(data.id);
+                                            name += data.name + '<br />'
+                                        }
+                                       
+                                        console.info(ids)
+                                    //    var keys = Ext.util.JSON.encode(ids)
+                                    
+                                        if(button == 'yes'){
+                                            Ext.Ajax.request({
+                                                url:"<%=basePath%>ptz/deletePTZ.htm?key="+ids,
+                                                method:'post',
+                                                success:function(response,opts){
+                                                    var data = Ext.JSON.decode(response.responseText);
+                                                    if(data.success&&data.info=='success') {
+                                                        PTZDS.load();
+                                                        Ext.MessageBox.alert('提示信息', '已成功删除PTZ信息。');
+                                                    } else {
+                                                        Ext.MessageBox.alert('提示信息', data.info);
+                                                    }
+                                                },
+                                                params:{
+                                                    ids:ids
+                                                }
+                                            });
+                                        }
+                                    });
+          
+                                }
+                            }       
                         },'-',{
                             text: '编辑',
                             iconCls: 'editItem',

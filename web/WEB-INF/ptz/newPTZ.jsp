@@ -16,6 +16,18 @@
         <title>添加云台信息</title>
         <script type="text/javascript">
             Ext.onReady(function(){
+                              
+                ptzBrandStore = Ext.create('Ext.data.ArrayStore', {
+                    autoDestroy: true,
+                    storeId: 'ptzBrandStore',
+                    // reader configs
+                    idIndex: 0,
+                    fields: [
+                        {name: 'text', type: 'string'},
+                        {name: 'value', type: 'string'}
+                    ],
+                    data : ptzBrandArray
+                });
                 
                 var name = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '名字',
@@ -71,6 +83,8 @@
                 var northMigration = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '摄像机0角度与正北的偏移',
                     name: 'north_migration',
+                    maxValue: 100,   
+                    minValue: 0,
                     anchor: '95%'
                 });
                 
@@ -83,36 +97,54 @@
                 var visualAngleX = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '红外视角X',
                     name: 'visual_angle_x',
-                    anchor: '95%'
+                    anchor: '95%',
+                    maxValue: 90,   
+                    minValue: 0
                 });
                 
                 var visualAngleY = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '红外视角Y',
                     name: 'visual_angle_y',
-                    anchor: '95%'
+                    anchor: '95%',
+                    maxValue: 90,   
+                    minValue: 0
                 });
                 
                 var infraredPixelX = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '红外摄像机X方向像素',
                     name: 'infrared_pixel_x',
-                    anchor: '95%'
+                    anchor: '95%',
+                    maxValue: 90,   
+                    minValue: 0
                 });
                 
                 var infraredPixelY = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '红外摄像机Y方向像素',
                     name: 'infrared_pixel_y',
-                    anchor: '95%'
+                    anchor: '95%',
+                    maxValue: 90,   
+                    minValue: 0
                 });
                 
-                var brandType = Ext.create('Ext.form.field.Text', {
-                    fieldLabel: '品牌类型',
-                    name: 'brandType',
+                var brandType = Ext.create('Ext.form.ComboBox', {
+                    fieldLabel: '云台品牌',
+                    store: ptzBrandStore,
+                    allowBlank: false,
+                    valueField:'text',
+                    displayField:'text',
+                    typeAhead: true,
+                    mode: 'local',
+                    name:'brand_type',
+                    emptyText:'请选择云台品牌...',
+                    //allowBlank: false,
                     anchor: '95%'
                 });
                 
                 var cruiseStep = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '巡航步长',
                     name: 'cruiseStep',
+                    maxValue: 100,   
+                    minValue: 0,
                     anchor: '95%'
                 });
                 
@@ -142,17 +174,17 @@
                             layout: 'column',
                             xtype: 'container',
                             items: [{
-                                    columnWidth: .33,
+                                    columnWidth: .38,
                                     layout: 'anchor',                                  
                                     xtype: 'container',
-                                    items: [name,controllUrl,pelcodCommandUrl,visibleCameraUrl,visibleRTSPUrl,brandType]
+                                    items: [name,controllUrl,pelcodCommandUrl,gisMapUrl,cruiseStep,brandType]
                                 }, {
-                                    columnWidth: .33,
+                                    columnWidth: .38,
                                     layout: 'anchor',
                                     xtype: 'container',                                  
-                                    items: [infraredRTSPUrl,infraredCameraUrl,infraredCircuitUrl,northMigration,gisMapUrl,cruiseStep]
+                                    items: [infraredRTSPUrl,infraredCameraUrl,infraredCircuitUrl,northMigration,visibleCameraUrl,visibleRTSPUrl]
                                 }, {
-                                    columnWidth: .33,
+                                    columnWidth: .23,
                                     layout: 'anchor',
                                     xtype: 'container',
                                     items: [visualAngleX,visualAngleY,infraredPixelX,infraredPixelY,version,isLocked]
