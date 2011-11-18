@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50517
 File Encoding         : 65001
 
-Date: 2011-11-16 18:33:43
+Date: 2011-11-18 10:54:43
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -31,6 +31,7 @@ CREATE TABLE `fire_alarms` (
   `description` text,
   `user_id` int(11) DEFAULT NULL,
   `deal_date` datetime DEFAULT NULL COMMENT '处理时间',
+  `is_alarming` tinyint(4) DEFAULT '1' COMMENT '是否正在进行火警广播（起火时播放火警音频）',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `version` int(11) DEFAULT NULL,
@@ -135,6 +136,10 @@ CREATE TABLE `ptzs` (
   `infrared_pixel_y` smallint(6) DEFAULT '0' COMMENT '红外摄像机Y方向像素',
   `brand_type` varchar(255) DEFAULT NULL COMMENT '品牌与型号',
   `cruise_step` smallint(6) DEFAULT '5' COMMENT '云台巡航步长',
+  `cruise_right_limit` smallint(6) DEFAULT '0' COMMENT '巡航右边界',
+  `cruise_left_limit` smallint(6) DEFAULT '0' COMMENT '巡航左边界',
+  `cruise_up_limit` smallint(6) DEFAULT '90' COMMENT '最大上仰角度',
+  `cruise_down_limit` smallint(6) DEFAULT '0' COMMENT '巡航时最大俯角',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `version` int(11) DEFAULT NULL,
@@ -145,7 +150,7 @@ CREATE TABLE `ptzs` (
 -- ----------------------------
 -- Records of ptzs
 -- ----------------------------
-INSERT INTO `ptzs` VALUES ('1', '测试机1', 'rtsp://admin:12345@192.168.254.64/h264/ch1/main/av_stream', '192.168.254.65', null, null, null, '192.168.1.50', '192.168.1.50', '0', null, '50', '38', '382', '288', 'FY', '5', null, null, null, '0');
+INSERT INTO `ptzs` VALUES ('1', '测试机1', 'rtsp://admin:12345@192.168.254.64/h264/ch1/main/av_stream', '192.168.254.65', null, null, null, '192.168.1.50', '192.168.1.50', '0', null, '50', '38', '382', '288', 'FY', '5', '0', '0', '90', '0', null, null, null, '0');
 
 -- ----------------------------
 -- Table structure for `roles`
