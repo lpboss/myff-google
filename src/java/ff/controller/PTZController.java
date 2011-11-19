@@ -70,7 +70,6 @@ public class PTZController extends MultiActionController {
      *描述：返回PTZ页面
      */
     public ModelAndView PTZList(HttpServletRequest request, HttpServletResponse response) {
-        logger.info("PTZ PTZList page");
         ModelAndView mav = new ModelAndView();
         return mav;
     }
@@ -86,6 +85,7 @@ public class PTZController extends MultiActionController {
         ModelAndView mav = new ModelAndView();
         return mav;
     }
+    
 
     /**
      *作者：Haoqingmeng
