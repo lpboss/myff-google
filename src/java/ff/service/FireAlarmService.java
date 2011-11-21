@@ -12,7 +12,7 @@ import ff.model.FireAlarm;
  */
 public interface FireAlarmService {
 
-    String getFireAlarmList();
+    String getFireAlarmList(Integer ptzId);
 
     String create(FireAlarm fireAlarm);
 

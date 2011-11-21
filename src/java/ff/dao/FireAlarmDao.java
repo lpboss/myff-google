@@ -20,5 +20,8 @@ public interface FireAlarmDao {
     void delete(FireAlarm fireAlarm);
 
     FireAlarm getFireAlarmById(Long id);
+
     void delFireAlarmAll(String id);
+
+    List<FireAlarm> getFireAlarmsByPtzId(Integer ptzId);
 }

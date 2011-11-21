@@ -22,26 +22,7 @@
           
       
             Ext.onReady(function(){
-                Ext.define('FireAlarm', {
-                    extend : 'Ext.data.Model',
-                    fields : [{name: 'id'},
-                        { name: 'ptzId'},
-                        { name: 'actionDate'},
-                        {name: 'ptzHAngle'},
-                        {name: 'ptzVAngle'},
-                        {name: 'heatMax'},
-                        {name: 'heatMin'},
-                        {name: 'heatAvg'}, 
-                        {name: 'description'},
-                        {name: 'userId'},
-                        {name: 'dealDate'},
-                        {name: 'updatedAt'},
-                        {name: 'createdAt'},
-                        {name: 'version'},
-                        {name: 'isLocked'}
-                           
-                    ]
-                });
+            
                 //用户设置---------------------------------------------------------
                 //生成有关用户的Grid
                 fireAlarmDS =  Ext.create('Ext.data.Store', {
@@ -77,14 +58,13 @@
                         }, {
                             header: '云台ID',
                             dataIndex: 'ptzId',
-            
                             autoWidth: true
                         }, {
                             header: '火警时间',
                             sortable : true,
 
                             dataIndex: 'actionDate',
-                            width:130
+                            width:150
                         }, {
                             header: '最高热值',
                             dataIndex: 'heatMax',
@@ -108,7 +88,7 @@
                             sortable : true,
 
                             dataIndex: 'dealDate',
-                            width:130
+                            width:150
                         }, {
                             header: '详情',
                             dataIndex: 'description',
@@ -139,14 +119,14 @@
                             handler : function(){
                                 newUserWin = Ext.create('Ext.window.Window', {
                                     layout: 'fit',
-                                    width:617,
+                                    width:740,
                                     height:330,
                                     closeAction: 'destroy',
                                     plain: true,
                                     modal: true,
                                     constrain:true,
                                     //modal: true,
-                                    title:     '添加用户',
+                                    title:     '添加火警信息',
                                     autoLoad: {
                                         url: "<%=basePath%>firealarm/newFireAlarm.htm",
                                         scripts: true
@@ -176,8 +156,8 @@
                                     editUserWin = Ext.create('Ext.window.Window', {
                                         title: '编辑用户',
                                         layout:'fit',
-                                        width:617,
-                                        height:335,
+                                        width:740,
+                                        height:330,
                                         closeAction:'destroy',
                                         constrain:true,
                                         plain: true,
@@ -256,12 +236,12 @@
                             }
                         }]
                 });
-                var user =  Ext.create('Ext.data.Store', {
+                var ptz =  Ext.create('Ext.data.Store', {
                     //autoDestroy : true,
-                    model : 'User',
+                    model : 'PTZ',
                     proxy : {
                         type : 'ajax',
-                        url : '<%=basePath%>user/getAllUsers.htm',
+                        url : '<%=basePath%>ptz/getAllPTZs.htm',
                         reader : {
                             type : 'json',
                             root : 'root',// JSON数组对象名
@@ -271,8 +251,9 @@
                     //pageSize : pageSize,
                     autoLoad : true
                 });
+           
                 var ptzId = Ext.create('Ext.form.ComboBox', {
-                    store: user,
+                    store: ptz,
                     fieldLabel: '云台ID',
                     allowBlank: false,
                     blankText: "云台ID必须选择",
@@ -321,7 +302,7 @@
                     },
                     frame:true,
                     autoScroll:true,
-                    width: screenWidth-175,
+                    width: screenWidth-100,
                     //                    height: totalHeight,autoScroll:true,
                     frame:false,
                     layout: {

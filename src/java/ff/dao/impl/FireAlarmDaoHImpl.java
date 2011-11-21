@@ -34,7 +34,7 @@ public class FireAlarmDaoHImpl extends HibernateDaoSupport implements FireAlarmD
             fireAlarm.setCreatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
         }
         fireAlarm.setUpdatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
-        
+
 
         this.getHibernateTemplate().saveOrUpdate(fireAlarm);
         this.getHibernateTemplate().flush();
@@ -69,5 +69,11 @@ public class FireAlarmDaoHImpl extends HibernateDaoSupport implements FireAlarmD
 
 
 
+    }
+
+    @Override
+    public List<FireAlarm> getFireAlarmsByPtzId(Integer ptzId) {
+        List<FireAlarm> fireAlarms = this.getHibernateTemplate().find("from FireAlarm f where f.ptzId = ?", ptzId);
+        return fireAlarms;
     }
 }

@@ -33,9 +33,13 @@ public class FireAlarmServiceImpl implements FireAlarmService {
     }
 
     @Override
-    public String getFireAlarmList() {
-
-        List fireAlarms = fireAlarmDao.getAllFireAlarms();
+    public String getFireAlarmList(Integer ptzId) {
+        List fireAlarms;
+        if (ptzId == null) {
+            fireAlarms = fireAlarmDao.getAllFireAlarms();
+        }else{
+            fireAlarms =fireAlarmDao.getFireAlarmsByPtzId(ptzId);
+        }
 
         JsonConfig jsonConfig = new JsonConfig();
         //这是需要过滤掉的变量名。
@@ -67,10 +71,10 @@ public class FireAlarmServiceImpl implements FireAlarmService {
         fireAlarmDao.delFireAlarmAll(id);
 
 
-       
-            
-            info = "success";
-      
+
+
+        info = "success";
+
 
         String jsonStr = "{success:true,info:'" + info + "'}";
         return jsonStr;
