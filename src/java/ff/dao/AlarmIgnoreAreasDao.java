@@ -17,4 +17,9 @@ public interface AlarmIgnoreAreasDao {
     
     AlarmIgnoreAreas saveOrUpdate(AlarmIgnoreAreas alarmIgnoreAreas); //保存
     
+    AlarmIgnoreAreas getAlarmIgnoreAreasById(Long id);   //得到某一条数据
+    
+    AlarmIgnoreAreas getAlarmIgnoreAreasByName(String name); //添加
+
+    
 }

@@ -27,7 +27,7 @@ public class AlarmIgnoreAreas {
     private Integer heatMax; //最大热值
     private Timestamp beginDate;//火警时间范围(开始)
     private Timestamp endDate; //火警时间范围(结束)
-    private Long isLocked = new Long(0);// '启用，停用',
+    private Long isLocked = new Long(0);// 状态 '启用，停用',
     private Integer version;//版本
     private Timestamp createdAt;
     private Timestamp updatedAt;
