@@ -2,6 +2,7 @@
 1、dispatcher-servlet配置中的，<bean id="test" class="ff.controller.TestController" />
  id必须小写
 2、完成了右键菜单的初步设计
+3、注意缺省包中的，配置文件applicationContext-dao，applicationContext-service中的注入问题id="小写"
 --------------------------------------------------------------------------------------
 2011-11-18
 1、增加了一些新字段，更新了数据库，并且修改了，添加、修改、删除功能

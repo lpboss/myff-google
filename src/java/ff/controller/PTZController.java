@@ -167,7 +167,6 @@ public class PTZController extends MultiActionController {
     //更新PTZ
     public void update(HttpServletRequest request, HttpServletResponse response) {
         Long id = Long.valueOf(request.getParameter("id"));
-
         String name = request.getParameter("name"); //名称
         String controllUrl = request.getParameter("controllUrl");//编码器IP
         String pelcodCommandUrl = request.getParameter("pelcodCommandUrl"); //通过串口,发pelcod的ip
