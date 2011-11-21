@@ -132,9 +132,9 @@
                     anchor: '95%'
                 });
                 
-                var cruiseRightLimitf = Ext.create('Ext.form.field.Number', {
+                var cruiseRightLimit = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '巡航右边界',
-                    name: 'cruiseRightLimitf',
+                    name: 'cruiseRightLimit',
                     anchor: '95%'
                 });
                 
@@ -209,7 +209,7 @@
                                     columnWidth: .38,
                                     layout: 'anchor',                                  
                                     xtype: 'container',
-                                    items: [name,controllUrl,pelcodCommandUrl,gisMapUrl,cruiseStep,brandType2,cruiseRightLimitf,cruiseLeftLimit]
+                                    items: [name,controllUrl,pelcodCommandUrl,gisMapUrl,cruiseStep,brandType2,cruiseRightLimit,cruiseLeftLimit]
                                 }, {
                                     columnWidth: .38,
                                     layout: 'anchor',

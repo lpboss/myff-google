@@ -108,7 +108,7 @@
                             width:80
                         },{
                             header: '巡航右边界',
-                            dataIndex: 'cruiseRightLimitf',
+                            dataIndex: 'cruiseRightLimit',
                             width:80
                         },{
                             header: '巡航左边界',

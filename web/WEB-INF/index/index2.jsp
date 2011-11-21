@@ -264,7 +264,7 @@
                         }, {
                             name: 'cruiseStep'
                         }, {
-                            name: 'cruiseRightLimitf'
+                            name: 'cruiseRightLimit'
                         }, {
                             name: 'cruiseLeftLimit'
                         }, {
@@ -328,7 +328,7 @@
                         { name: 'infraredPixelY'},
                         { name: 'brandType'},
                         { name: 'cruiseStep'},
-                        { name: 'cruiseRightLimitf'},
+                        { name: 'cruiseRightLimit'},
                         { name: 'cruiseLeftLimit'},
                         { name: 'cruiseUpLimit'},
                         { name: 'cruiseDownLimit'},
