@@ -92,7 +92,6 @@ public class PTZController extends MultiActionController {
      *描述：得到PTZ列表
      */
     public void getAllPTZs(HttpServletRequest request, HttpServletResponse response) {
-
         String jsonStr = ptzService.getPTZList();
         logger.info(jsonStr);
         PrintWriter pw;
