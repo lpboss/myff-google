@@ -36,5 +36,22 @@ public class AlarmIgnoreAreasDaoHImpl extends HibernateDaoSupport implements Ala
         this.getHibernateTemplate().clear();
         return alarmIgnoreAreas;
     }
+
+    @Override
+    public AlarmIgnoreAreas getAlarmIgnoreAreasById(Long id) {
+        AlarmIgnoreAreas alarmIgnoreAreas = (AlarmIgnoreAreas) this.getHibernateTemplate().get(AlarmIgnoreAreas.class, id);
+        return alarmIgnoreAreas;
+    }
+
+    @Override
+    public AlarmIgnoreAreas getAlarmIgnoreAreasByName(String name) {
+         List<AlarmIgnoreAreas> alarmIgnoreAreases = this.getHibernateTemplate().findByNamedParam("from PTZ where name=:name", new String[]{"name"}, new String[]{name});
+        if (alarmIgnoreAreases.size() > 0) {
+            return alarmIgnoreAreases.get(0);
+        } else {
+            return null;
+        }
+    }
+
     
 }
