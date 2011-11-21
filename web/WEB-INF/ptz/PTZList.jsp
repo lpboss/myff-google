@@ -357,7 +357,7 @@
                             //modal: true,
                             title: '报警忽视地区',
                             autoLoad: {
-                                url: "<%=basePath%>alarmIgnoreAreas/alarmIgnoreAreasList.htm?parent_id=" + currentNode.get('id'),
+                                url: "<%=basePath%>ignoreAreas/alarmIgnoreAreasList.htm?parent_id=" + currentNode.get('id'),
                                 scripts: true
                             }
                         });

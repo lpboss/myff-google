@@ -24,7 +24,7 @@ public class AlarmIgnoreAreasController extends MultiActionController{
     
 
     //返回报警忽视地区页面
-    public ModelAndView alarmIgnoreAreasList(HttpServletRequest request, HttpServletResponse response) {     
+    public ModelAndView alarmIgnoreAreasList(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView mav = new ModelAndView();
         return mav;
     }
