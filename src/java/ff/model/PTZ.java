@@ -258,7 +258,7 @@ public class PTZ {
         this.cruiseLeftLimit = cruiseLeftLimit;
     }
 
-    @Column(name = "cruise_right_limitf", length = 6)
+    @Column(name = "cruise_right_limit", length = 6)
     public Integer getCruiseRightLimitf() {
         return cruiseRightLimitf;
     }

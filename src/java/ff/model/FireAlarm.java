@@ -25,8 +25,8 @@ public class FireAlarm {
     private Long id;
     private Integer ptzId;// '云台ID',
     private Timestamp actionDate; //` datetime DEFAULT NULL COMMENT '火警时间',
-    private float ptzHAngle;//` float DEFAULT NULL COMMENT '水平角度',
-    private float ptzVAngle;//` float DEFAULT NULL COMMENT '垂直角度',
+    private float ptzAngleX;//` float DEFAULT NULL COMMENT '水平角度',
+    private float ptzAngleY;//` float DEFAULT NULL COMMENT '垂直角度',
     private Integer heatMax; // ' 最高热值',
     private Integer heatMin;
     private Integer heatAvg;//'平均热值',
@@ -71,15 +71,6 @@ public class FireAlarm {
     @Column(name = "deal_date", length = 100)
     public Timestamp getDealDate() {
         return dealDate;
-    }
-
-    @Column(name = "is_alarming")
-    public Short getIs_alarming() {
-        return is_alarming;
-    }
-
-    public void setIs_alarming(Short is_alarming) {
-        this.is_alarming = is_alarming;
     }
 
     public void setDealDate(Timestamp dealDate) {
@@ -131,31 +122,40 @@ public class FireAlarm {
         this.isLocked = isLocked;
     }
 
-    @Column(name = "ptz_h_angle", length = 100)
-    public float getPTZHAngle() {
-        return ptzHAngle;
+    @Column(name = "is_alarming", length = 100)
+    public Short getIs_alarming() {
+        return is_alarming;
     }
 
-    public void setPTZHAngle(float ptzHAngle) {
-        this.ptzHAngle = ptzHAngle;
+    public void setIs_alarming(Short is_alarming) {
+        this.is_alarming = is_alarming;
+    }
+
+    @Column(name = "ptz_angle_x", length = 100)
+    public float getPtzAngleX() {
+        return ptzAngleX;
+    }
+
+    public void setPtzAngleX(float ptzAngleX) {
+        this.ptzAngleX = ptzAngleX;
+    }
+
+    @Column(name = "ptz_angle_y", length = 100)
+    public float getPtzAngleY() {
+        return ptzAngleY;
+    }
+
+    public void setPtzAngleY(float ptzAngleY) {
+        this.ptzAngleY = ptzAngleY;
     }
 
     @Column(name = "ptz_id", length = 100)
-    public Integer getPTZId() {
+    public Integer getPtzId() {
         return ptzId;
     }
 
-    public void setPTZId(Integer ptzId) {
+    public void setPtzId(Integer ptzId) {
         this.ptzId = ptzId;
-    }
-
-    @Column(name = "ptz_v_angle", length = 100)
-    public float getPTZVAngle() {
-        return ptzVAngle;
-    }
-
-    public void setPTZVAngle(float ptzVAngle) {
-        this.ptzVAngle = ptzVAngle;
     }
 
     @Column(name = "updated_at", length = 100)

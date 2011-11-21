@@ -286,7 +286,26 @@
                     ]
                 });
                 
-                
+                Ext.define('FireAlarm', {
+                    extend : 'Ext.data.Model',
+                    fields : [{name: 'id'},
+                        { name: 'ptzId'},
+                        { name: 'actionDate'},
+                        {name: 'ptzHAngle'},
+                        {name: 'ptzVAngle'},
+                        {name: 'heatMax'},
+                        {name: 'heatMin'},
+                        {name: 'heatAvg'}, 
+                        {name: 'description'},
+                        {name: 'userId'},
+                        {name: 'dealDate'},
+                        {name: 'updatedAt'},
+                        {name: 'createdAt'},
+                        {name: 'version'},
+                        {name: 'isLocked'}
+                           
+                    ]
+                });
                 //PTZList
                 Ext.define('PTZ', {
                     extend : 'Ext.data.Model',
@@ -507,5 +526,8 @@
     </head>
     <body>
         <script src="<%=basePath%>javascripts/application.js" type="text/javascript"></script>
+        <script src="<%=basePath%>javascripts/ext4/dateTimePicker.js" type="text/javascript"></script>
+        <script src="<%=basePath%>javascripts/ext4/DateTimeFieldBetween.js" type="text/javascript"></script>
+        <script src="<%=basePath%>javascripts/ext4/dateTimeField.js" type="text/javascript"></script>
     </body>
 </html>
