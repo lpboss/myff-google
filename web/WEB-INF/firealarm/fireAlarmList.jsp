@@ -14,9 +14,9 @@
         <title>火警信息</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script type="text/javascript">
-            var newUserWin;
-            var editUserWin;
-            var userId;
+            var newFireAlarmWin;
+            var editFireAlarmWin;
+            var fireAlarmId;
             var fireAlarmDS;
             //处理员工锁定
           
@@ -43,7 +43,7 @@
             
               
         
-                var userGrid =  Ext.create('Ext.grid.Panel', {
+                var fireAlarmGrid =  Ext.create('Ext.grid.Panel', {
                  
                
 
@@ -78,7 +78,7 @@
                         }, {
                             header: '用户ID',
                             sortable : true,
-                            dataIndex: 'userId',
+                            dataIndex: 'fireAlarmId',
                            
 
                             width:100
@@ -117,7 +117,7 @@
                             text: '添加',
                             iconCls: 'addItem',
                             handler : function(){
-                                newUserWin = Ext.create('Ext.window.Window', {
+                                newFireAlarmWin = Ext.create('Ext.window.Window', {
                                     layout: 'fit',
                                     width:740,
                                     height:330,
@@ -132,17 +132,17 @@
                                         scripts: true
                                     }
                                 });
-                                newUserWin.on("destroy",function(){
+                                newFireAlarmWin.on("destroy",function(){
                                     fireAlarmDS.load();
                                 });
-                                newUserWin.resizable = false;
-                                newUserWin.show();
+                                newFireAlarmWin.resizable = false;
+                                newFireAlarmWin.show();
                             }
                         },'-',{
                             text: '编辑',
                             iconCls: 'editItem',
                             handler : function(){
-                                var records = userGrid.getSelectionModel().getSelection();
+                                var records = fireAlarmGrid.getSelectionModel().getSelection();
                                 if(records.length==0){
                                     Ext.MessageBox.show({
                                         title: '提示信息',
@@ -153,8 +153,8 @@
                                 }else{
                                     //把表单添加到窗口中
                                     fireAlarmId = records[0].get('id');
-                                    editUserWin = Ext.create('Ext.window.Window', {
-                                        title: '编辑用户',
+                                    editFireAlarmWin = Ext.create('Ext.window.Window', {
+                                        title: '编辑火警信息',
                                         layout:'fit',
                                         width:740,
                                         height:330,
@@ -168,17 +168,17 @@
                                         }
                                     });
                                 }
-                                editUserWin.on("destroy",function(){
+                                editFireAlarmWin.on("destroy",function(){
                                     fireAlarmDS.load();
                                 });
-                                editUserWin.resizable = false;
-                                editUserWin.show();
+                                editFireAlarmWin.resizable = false;
+                                editFireAlarmWin.show();
                             }
                         },'-',{
                             text: '删除',
                             iconCls: 'remove',
                             handler : function(){
-                                var records = userGrid.getSelectionModel().getSelection();
+                                var records = fireAlarmGrid.getSelectionModel().getSelection();
                                 var ids=[];
                                 var fireAlarmID='';
                                 for(var i=0;i<records.length;i++){
@@ -217,7 +217,7 @@
                                                     var data = Ext.JSON.decode(response.responseText);
                                                     if(data.success&&data.info=='success') {
                                                         fireAlarmDS.load();
-                                                        Ext.MessageBox.alert('提示信息', '已成功删除用户。');
+                                                        Ext.MessageBox.alert('提示信息', '已成功删除火警信息。');
                                                     } else {
                                                         Ext.MessageBox.alert('提示信息', data.info);
                                                     }
@@ -284,7 +284,7 @@
                         })
                     }
                 });
-                var newUserForm = Ext.create('Ext.form.Panel', {
+                var newFireAlarmForm = Ext.create('Ext.form.Panel', {
                     fieldDefaults: {
                         labelWidth: 55,
                         labelAlign: 'right'
@@ -309,13 +309,13 @@
                         type: 'table',
                         columns:1
                     },
-                    items:[newUserForm,userGrid]        });
+                    items:[newFireAlarmForm,fireAlarmGrid]        });
 
-                workbenchPanel.render('user_list');
+                workbenchPanel.render('fireAlarm_list');
             })
         </script>
     </head>
     <body>
-        <div id="user_list"></div>
+        <div id="fireAlarm_list"></div>
     </body>
 </html>

@@ -16,8 +16,8 @@ import javax.persistence.Table;
  * @author Administrator
  */
 @Entity
-@Table(name = "alarm_ignore_areases")
-public class AlarmIgnoreAreas {
+@Table(name = "alarm_ignore_areas")
+public class IgnoreAreas {
 
     private Long id;
     private Long ptzId; //云台的编号

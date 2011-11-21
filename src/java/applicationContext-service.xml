@@ -13,5 +13,5 @@
     <bean id="adminService" class="ff.service.impl.AdminServiceImpl" />
     <bean id="ptzService" class="ff.service.impl.PTZServiceImpl" />
     <bean id="fireAlarmService" class="ff.service.impl.FireAlarmServiceImpl" />
-    <bean id="alarmIgnoreAreasService" class="ff.service.impl.AlarmIgnoreAreasServiceImpl" />
+    <bean id="ignoreAreasService" class="ff.service.impl.IgnoreAreasServiceServiceImpl" />
 </beans>

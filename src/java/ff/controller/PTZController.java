@@ -129,7 +129,7 @@ public class PTZController extends MultiActionController {
         ptz.setCruiseStep(Integer.valueOf(request.getParameter("cruise_step")));//巡航步长
         ptz.setVersion(Integer.valueOf(request.getParameter("version")));//版本
         ptz.setIsLocked(Long.getLong("isLocked"));//状态isLocked
-        ptz.setCruiseRightLimitf(Integer.valueOf(request.getParameter("cruise_right_limitf"))); //巡航右边界
+        ptz.setCruiseRightLimit(Integer.valueOf(request.getParameter("cruise_right_limit"))); //巡航右边界
         ptz.setCruiseLeftLimit(Integer.valueOf(request.getParameter("cruise_left_limit"))); //巡航左边界
         ptz.setCruiseUpLimit(Integer.valueOf(request.getParameter("cruise_up_limit"))); //最大上仰角度
         ptz.setCruiseDownLimit(Integer.valueOf(request.getParameter("cruise_down_limit"))); //巡航时最大俯角
@@ -184,7 +184,7 @@ public class PTZController extends MultiActionController {
         String brandType = request.getParameter("brandType");//品牌类型
         Integer cruiseStep = Integer.valueOf(request.getParameter("cruiseStep")); //巡航步长
         Integer version = Integer.valueOf(request.getParameter("version")); //版本
-        Integer cruiseRightLimitf = Integer.valueOf(request.getParameter("cruiseRightLimitf")); //巡航右边界
+        Integer cruiseRightLimit = Integer.valueOf(request.getParameter("cruiseRightLimit")); //巡航右边界
         Integer cruiseLeftLimit = Integer.valueOf(request.getParameter("cruiseLeftLimit")); //巡航左边界
         Integer cruiseUpLimit = Integer.valueOf(request.getParameter("cruiseUpLimit")); //最大上仰角度
         Integer cruiseDownLimit = Integer.valueOf(request.getParameter("cruiseDownLimit")); //巡航时最大俯角
@@ -209,7 +209,7 @@ public class PTZController extends MultiActionController {
         ptz.setBrandType(brandType);
         ptz.setCruiseStep(Integer.valueOf(cruiseStep));
         ptz.setVersion(Integer.valueOf(version));
-        ptz.setInfraredPixelX(Integer.valueOf(cruiseRightLimitf));
+        ptz.setInfraredPixelX(Integer.valueOf(cruiseRightLimit));
         ptz.setInfraredPixelX(Integer.valueOf(cruiseLeftLimit));
         ptz.setInfraredPixelX(Integer.valueOf(cruiseUpLimit));
         ptz.setInfraredPixelX(Integer.valueOf(cruiseDownLimit));

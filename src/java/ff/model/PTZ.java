@@ -44,7 +44,7 @@ public class PTZ {
     private Timestamp updatedAt;
     private Integer version;//版本
     private Long isLocked = new Long(0);// '启用，停用',
-    private Integer cruiseRightLimitf; //巡航右边界
+    private Integer cruiseRightLimit; //巡航右边界
     private Integer cruiseLeftLimit; //巡航左边界
     private Integer cruiseUpLimit; //最大上仰角度
     private Integer cruiseDownLimit; //巡航时最大俯角
@@ -259,12 +259,12 @@ public class PTZ {
     }
 
     @Column(name = "cruise_right_limitf", length = 6)
-    public Integer getCruiseRightLimitf() {
-        return cruiseRightLimitf;
+    public Integer getCruiseRightLimit() {
+        return cruiseRightLimit;
     }
 
-    public void setCruiseRightLimitf(Integer cruiseRightLimitf) {
-        this.cruiseRightLimitf = cruiseRightLimitf;
+    public void setCruiseRightLimit(Integer cruiseRightLimit) {
+        this.cruiseRightLimit = cruiseRightLimit;
     }
 
     @Column(name = "cruise_up_limit", length = 6)
