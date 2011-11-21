@@ -51,14 +51,17 @@ public class FireAlarmController extends MultiActionController {
 
     public void getAllFireAlarm(HttpServletRequest request, HttpServletResponse response) {
         Integer ptzId;
-        if (!(request.getParameter("ptzId") == null || "".equals(request.getParameter("ptzId")))) {
 
-            ptzId = Integer.valueOf(request.getParameter("ptzId"));
+        if (!(request.getParameter("PTZId") == null || "".equals(request.getParameter("PTZId")))) {
+            logger.info(request.getParameter("PTZId"));
+            ptzId = Integer.valueOf(request.getParameter("PTZId"));
+        } else {
+            ptzId = null;
         }
 
 
 
-        String jsonStr = fireAlarmService.getFireAlarmList();
+        String jsonStr = fireAlarmService.getFireAlarmList(ptzId);
 
         PrintWriter pw;
         try {

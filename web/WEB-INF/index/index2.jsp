@@ -286,7 +286,26 @@
                     ]
                 });
                 
-                
+                Ext.define('FireAlarm', {
+                    extend : 'Ext.data.Model',
+                    fields : [{name: 'id'},
+                        { name: 'ptzId'},
+                        { name: 'actionDate'},
+                        {name: 'ptzHAngle'},
+                        {name: 'ptzVAngle'},
+                        {name: 'heatMax'},
+                        {name: 'heatMin'},
+                        {name: 'heatAvg'}, 
+                        {name: 'description'},
+                        {name: 'userId'},
+                        {name: 'dealDate'},
+                        {name: 'updatedAt'},
+                        {name: 'createdAt'},
+                        {name: 'version'},
+                        {name: 'isLocked'}
+                           
+                    ]
+                });
                 //PTZList
                 Ext.define('PTZ', {
                     extend : 'Ext.data.Model',

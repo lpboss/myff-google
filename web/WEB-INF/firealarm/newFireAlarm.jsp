@@ -85,50 +85,23 @@
                     height:110,
                     anchor: '95%'
                 });
-                Ext.define('PTZ', {
-                    extend : 'Ext.data.Model',
-                    fields : [{
-                            name: 'id'
-                        }, {
-                            name: 'name'
-                        }, {
-                            name: 'controllUrl'
-                        }, {
-                            name: 'pelcod_command_url'
-                        }, {
-                            name: 'visible_camera_url'
-                        }, {
-                            name: 'visible_rtsp_url'
-                        }, {
-                            name: 'identity_card'
-                        }, {
-                            name: 'infrared_rtsp_url'
-                        }, {
-                            name: 'infrared_camera_url'
-                        }, {
-                            name: 'infrared_circuit_url'
-                        }, {
-                            name: 'north_migration'
-                        }, {
-                            name: 'gis_map_url'
-                        }, {
-                            name: 'visual_angle_x'
-                        }, {
-                            name: 'visual_angle_y'
-                        }, {
-                            name: 'infrared_pixel_x'
-                        }, {
-                            name: 'infrared_pixel_y'
-                        }, {
-                            name: 'version'
-                        }, {
-                            name: 'is_locked'
-                        },{name:'ptz_id'}
-                     
-                    ]
-                });
+            
 
-             
+                var ptz =  Ext.create('Ext.data.Store', {
+                    //autoDestroy : true,
+                    model : 'PTZ',
+                    proxy : {
+                        type : 'ajax',
+                        url : '<%=basePath%>ptz/getAllPTZs.htm',
+                        reader : {
+                            type : 'json',
+                            root : 'root',// JSON数组对象名
+                            totalProperty : 'totalProperty'// 数据集记录总数
+                        }
+                    },
+                    //pageSize : pageSize,
+                    autoLoad : true
+                });
                 var user =  Ext.create('Ext.data.Store', {
                     //autoDestroy : true,
                     model : 'User',
@@ -163,7 +136,7 @@
                     editable:false
                 });
                 var ptzId = Ext.create('Ext.form.ComboBox', {
-                    store: user,
+                    store: ptz,
                     fieldLabel: '云台ID',
                     allowBlank: false,
                     blankText: "云台ID必须选择",
@@ -187,8 +160,8 @@
                     url:'<%=basePath%>firealarm/create.htm',
                     frame:true,
                     bodyStyle:'padding:5px 5px 0',
-                    width: 605,
-                  
+                    width: 740,
+                    height:300,
                     items: [{
                             layout: 'column',
                             xtype: 'container',

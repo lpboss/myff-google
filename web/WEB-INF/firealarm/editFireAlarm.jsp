@@ -38,14 +38,14 @@
                     fieldLabel: '水平角度',
                     allowBlank: false,
                     blankText: "水平角度不能为空",
-                    name: 'ptzHAngle',
+                    name: 'ptzAngleX',
                     anchor: '95%'
                 });
                 var ptzVAngle = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '垂直角度',
                     allowBlank: false,
                     blankText: "垂直角度不能为空",
-                    name: 'ptzVAngle',
+                    name: 'ptzAngleY',
                     anchor: '95%'
                 });
 
@@ -86,50 +86,23 @@
                     height:110,
                     anchor: '95%'
                 });
-                Ext.define('PTZ', {
-                    extend : 'Ext.data.Model',
-                    fields : [{
-                            name: 'id'
-                        }, {
-                            name: 'name'
-                        }, {
-                            name: 'controllUrl'
-                        }, {
-                            name: 'pelcod_command_url'
-                        }, {
-                            name: 'visible_camera_url'
-                        }, {
-                            name: 'visible_rtsp_url'
-                        }, {
-                            name: 'identity_card'
-                        }, {
-                            name: 'infrared_rtsp_url'
-                        }, {
-                            name: 'infrared_camera_url'
-                        }, {
-                            name: 'infrared_circuit_url'
-                        }, {
-                            name: 'north_migration'
-                        }, {
-                            name: 'gis_map_url'
-                        }, {
-                            name: 'visual_angle_x'
-                        }, {
-                            name: 'visual_angle_y'
-                        }, {
-                            name: 'infrared_pixel_x'
-                        }, {
-                            name: 'infrared_pixel_y'
-                        }, {
-                            name: 'version'
-                        }, {
-                            name: 'is_locked'
-                        },{name:'ptz_id'}
-                     
-                    ]
-                });
+              
 
-             
+                var ptz =  Ext.create('Ext.data.Store', {
+                    //autoDestroy : true,
+                    model : 'PTZ',
+                    proxy : {
+                        type : 'ajax',
+                        url : '<%=basePath%>ptz/getAllPTZs.htm',
+                        reader : {
+                            type : 'json',
+                            root : 'root',// JSON数组对象名
+                            totalProperty : 'totalProperty'// 数据集记录总数
+                        }
+                    },
+                    //pageSize : pageSize,
+                    autoLoad : true
+                });
                 var user =  Ext.create('Ext.data.Store', {
                     //autoDestroy : true,
                     model : 'User',
@@ -151,8 +124,8 @@
                         {name: 'id'},       
                         {name: 'ptzId'},  
                         {name: 'actionDate'},    
-                        {name: 'PTZHAngle'},    
-                        {name: 'PTZVAngle'},    
+                        {name: 'ptzAngleX'},    
+                        {name: 'ptzAngleY'},    
                         {name: 'heatMax'},    
                         {name: 'heatMin'},    
                         {name: 'heatAvg'},    
@@ -199,7 +172,7 @@
                     editable:false
                 });
                 var ptzId = Ext.create('Ext.form.ComboBox', {
-                    store: user,
+                    store: ptz,
                     fieldLabel: '云台ID',
                     allowBlank: false,
                     blankText: "云台ID必须选择",
@@ -228,7 +201,8 @@
                         root: ''
                     }),
                     bodyStyle:'padding:5px 5px 0',
-                    width: 605,
+                    width:740,
+                    height:300,
                   
                     items: [{
                             layout: 'column',
