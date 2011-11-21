@@ -1,10 +1,12 @@
 
 2011-11-21
-1、解决了路径找不到错误，源文件存放位置文件名大小写问题一定要注意导入包不能导错了
+1、解决了路径找不到错误，源文件存放位置文件名大小写问题，一定要注意导入包不能导错了
    例如：import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
+2、注入问题
+3、对右键菜单进行了设计，并完成了主页面、添加、删除、修改的基本功能，明天对其条件进行细化
 --------------------------------------------------------------------------------------
 2011-11-19
 1、dispatcher-servlet配置中的，<bean id="test" class="ff.controller.TestController" />
