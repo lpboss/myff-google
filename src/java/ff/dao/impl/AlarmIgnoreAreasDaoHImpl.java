@@ -4,10 +4,37 @@
  */
 package ff.dao.impl;
 
+import ff.dao.AlarmIgnoreAreasDao;
+import ff.model.AlarmIgnoreAreas;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.List;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+
 /**
  *
  * @author Administrator
  */
-public class AlarmIgnoreAreasDaoHImpl {
+public class AlarmIgnoreAreasDaoHImpl extends HibernateDaoSupport implements AlarmIgnoreAreasDao {
+
+    @Override
+    public List<AlarmIgnoreAreas> getAlarmIgnoreAreases() {
+        List<AlarmIgnoreAreas> alarmIgnoreAreases = this.getHibernateTemplate().find("from AlarmIgnoreAreas");
+        return alarmIgnoreAreases;
+    }
+
+    @Override
+    public AlarmIgnoreAreas saveOrUpdate(AlarmIgnoreAreas alarmIgnoreAreas) {
+        if (alarmIgnoreAreas.getId() == null) {
+            alarmIgnoreAreas.setCreatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
+        }
+        alarmIgnoreAreas.setUpdatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
+
+        //正式开始存储数据
+        this.getHibernateTemplate().saveOrUpdate(alarmIgnoreAreas);
+        this.getHibernateTemplate().flush();
+        this.getHibernateTemplate().clear();
+        return alarmIgnoreAreas;
+    }
     
 }
