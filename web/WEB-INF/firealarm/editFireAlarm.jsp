@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>编辑用户</title>
+        <title>编辑火警信息</title>
         <meta http-equiv="content-type" content="text/html; charset=utf-8">
         <script type="text/javascript">
             Ext.onReady(function(){
@@ -118,27 +118,7 @@
                     //pageSize : pageSize,
                     autoLoad : true
                 });
-                Ext.define('FireAlarm', {
-                    extend : 'Ext.data.Model',
-                    fields : [
-                        {name: 'id'},       
-                        {name: 'ptzId'},  
-                        {name: 'actionDate'},    
-                        {name: 'ptzAngleX'},    
-                        {name: 'ptzAngleY'},    
-                        {name: 'heatMax'},    
-                        {name: 'heatMin'},    
-                        {name: 'heatAvg'},    
-                        {name: 'description'},    
-                        {name: 'userId'},    
-                        {name: 'dealDate'},    
-                        {name: 'createdAt'},    
-                        {name: 'updatedAt'},    
-                        {name: 'version'},    
-                        {name: 'isLocked'}
-                          
-                    ]
-                });
+             
                 var fireAlarm =  Ext.create('Ext.data.Store', {
                     //autoDestroy : true,
                     model : 'FireAlarm',
@@ -188,7 +168,7 @@
                 });
                 
         
-                var newUserForm = Ext.create('Ext.form.Panel', {
+                var newFireAlarmForm = Ext.create('Ext.form.Panel', {
                     fieldDefaults: {
                         labelWidth: 55,
                         labelAlign: 'right'
@@ -285,14 +265,14 @@
                             iconCls: 'icon-save',
                             handler: function(){
                                 // check form value
-                                if (newUserForm.form.isValid()) {
+                                if (newFireAlarmForm.form.isValid()) {
                                     this.disable();
-                                    newUserForm.form.submit({
+                                    newFireAlarmForm.form.submit({
                                         method : 'POST',
                                         success: function(result, response){
                                             if (response.result.info == "success") {
                                                 //添加成功后，隐藏窗口，并刷新Grid
-                                                editUserWin.destroy();
+                                                editFireAlarmWin.destroy();
                                             }
                                             else {
                                                 Ext.MessageBox.alert('消息', response.result.info);
@@ -300,7 +280,7 @@
                                         },
                                         failure: function(result, response){
                                             Ext.MessageBox.alert('提示', result.responseText);
-                                            editUserWin.destroy();
+                                            editFireAlarmWin.destroy();
                                         }
                                     });
                                 }
@@ -312,13 +292,13 @@
                             text: '取消',
                             iconCls: 'exit',
                             handler: function(){
-                                editUserWin.destroy();
+                                editFireAlarmWin.destroy();
                             }
                         }]
                 });
                 fireAlarm.load({callback: function(record, options, success){
                         if(success){
-                            newUserForm.form.load({
+                            newFireAlarmForm.form.load({
                                 url: '<%=basePath%>firealarm/getFireAlarmById.htm?id='+fireAlarmId,
                                 method : 'POST',
                                 waitMsg: '正在载入数据...',
@@ -335,11 +315,11 @@
 
               
 
-                newUserForm.render('edit_user_form');
+                newFireAlarmForm.render('edit_fireAlarm_form');
             })
         </script>
     </head>
     <body>
-        <div id="edit_user_form"></div>
+        <div id="edit_fireAlarm_form"></div>
     </body>
 </html>

@@ -30,25 +30,25 @@ public class FireAlarmController extends MultiActionController {
     public FireAlarmService getFireAlarmService() {
         return fireAlarmService;
     }
-
+//显示火警信息页面
     public ModelAndView fireAlarmList(HttpServletRequest request, HttpServletResponse response) {
         logger.info("Fk");
         ModelAndView mav = new ModelAndView();
         return mav;
     }
-
+//添加页面
     public ModelAndView newFireAlarm(HttpServletRequest request, HttpServletResponse response) {
         logger.info("Fuc............................................k");
         ModelAndView mav = new ModelAndView();
         return mav;
     }
-
+//编辑页面
     public ModelAndView editFireAlarm(HttpServletRequest request, HttpServletResponse response) {
         logger.info("Fuc............................................k");
         ModelAndView mav = new ModelAndView();
         return mav;
     }
-
+//  得到火警信息    包含条件筛选
     public void getAllFireAlarm(HttpServletRequest request, HttpServletResponse response) {
         Integer ptzId;
 
@@ -74,7 +74,7 @@ public class FireAlarmController extends MultiActionController {
             logger.info(e);
         }
     }
-
+// 创建
     public void create(HttpServletRequest request, HttpServletResponse response) {
 
         String description = request.getParameter("description");
@@ -110,7 +110,7 @@ public class FireAlarmController extends MultiActionController {
             logger.info(e);
         }
     }
-
+//删除
     public void deleteFireAlarm(HttpServletRequest request, HttpServletResponse response) {
 
         String ids = request.getParameter("id");

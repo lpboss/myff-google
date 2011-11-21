@@ -31,7 +31,7 @@ public class FireAlarmServiceImpl implements FireAlarmService {
     public void setFireAlarmDao(FireAlarmDao fireAlarmDao) {
         this.fireAlarmDao = fireAlarmDao;
     }
-
+//得到火警信息
     @Override
     public String getFireAlarmList(Integer ptzId) {
         List fireAlarms;
@@ -50,7 +50,7 @@ public class FireAlarmServiceImpl implements FireAlarmService {
         String jsonStr = "{totalProperty:" + fireAlarms.size() + ",root:" + fireAlarmJS.toString() + "}";
         return jsonStr;
     }
-
+//创建
     @Override
     public String create(FireAlarm fireAlarm) {
         String info = null;
@@ -61,7 +61,7 @@ public class FireAlarmServiceImpl implements FireAlarmService {
         String jsonStr = "{success:true,info:'" + info + "'}";
         return jsonStr;
     }
-
+//删除
     @Override
     public String deleteFireAlarm(String id) {
         String info = null;
@@ -79,7 +79,7 @@ public class FireAlarmServiceImpl implements FireAlarmService {
         String jsonStr = "{success:true,info:'" + info + "'}";
         return jsonStr;
     }
-
+//得到某一个火警信息JSON
     @Override
     public String getFireAlarmJSONById(Long id) {
         System.out.println("bbbbbbbbbbbb");
@@ -91,7 +91,7 @@ public class FireAlarmServiceImpl implements FireAlarmService {
         String jsonStr = userJS.toString();
         return jsonStr;
     }
-
+//更新
     @Override
     public String update(FireAlarm fireAlarm) {
         String info = null;
@@ -106,7 +106,7 @@ public class FireAlarmServiceImpl implements FireAlarmService {
         String jsonStr = "{success:true,info:'" + info + "'}";
         return jsonStr;
     }
-
+//得到某一个记录
     @Override
     public FireAlarm getFireAlarmById(Long id) {
         System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbb");
