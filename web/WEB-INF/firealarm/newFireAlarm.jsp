@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>添加用户</title>
+        <title>添加火警信息</title>
         <meta http-equiv="content-type" content="text/html; charset=utf-8">
         <script type="text/javascript">
             Ext.onReady(function(){
@@ -152,7 +152,7 @@
                 });
                
         
-                var newUserForm = Ext.create('Ext.form.Panel', {
+                var newFireAlarmForm = Ext.create('Ext.form.Panel', {
                     fieldDefaults: {
                         labelWidth: 55,
                         labelAlign: 'right'
@@ -243,14 +243,14 @@
                             iconCls: 'icon-save',
                             handler: function(){
                                 // check form value
-                                if (newUserForm.form.isValid()) {
+                                if (newFireAlarmForm.form.isValid()) {
                                     this.disable();
-                                    newUserForm.form.submit({
+                                    newFireAlarmForm.form.submit({
                                         method : 'POST',
                                         success: function(result, response){
                                             if (response.result.info == "success") {
                                                 //添加成功后，隐藏窗口，并刷新Grid
-                                                newUserWin.destroy();
+                                                newFireAlarmWin.destroy();
                                             }
                                             else {
                                                 Ext.MessageBox.alert('消息', response.result.info);
@@ -258,7 +258,7 @@
                                         },
                                         failure: function(result, response){
                                             Ext.MessageBox.alert('提示', result.responseText);
-                                            newUserWin.destroy();
+                                            newFireAlarmWin.destroy();
                                         }
                                     });
                                 }
@@ -270,16 +270,16 @@
                             text: '取消',
                             iconCls: 'exit',
                             handler: function(){
-                                newUserWin.destroy();
+                                newFireAlarmWin.destroy();
                             }
                         }]
                 });
-                newUserForm.render('new_user_form');
+                newFireAlarmForm.render('new_fireAlarm_form');
             })
         </script>
     </head>
     <body>
-        <div id="new_user_form"></div>
+        <div id="new_fireAlarm_form"></div>
     </body>
 </html>
 
