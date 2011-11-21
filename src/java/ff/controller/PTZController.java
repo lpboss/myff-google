@@ -70,7 +70,6 @@ public class PTZController extends MultiActionController {
      *描述：返回PTZ页面
      */
     public ModelAndView PTZList(HttpServletRequest request, HttpServletResponse response) {
-        logger.info("PTZ PTZList page");
         ModelAndView mav = new ModelAndView();
         return mav;
     }
@@ -86,13 +85,13 @@ public class PTZController extends MultiActionController {
         ModelAndView mav = new ModelAndView();
         return mav;
     }
+    
 
     /**
      *作者：Haoqingmeng
      *描述：得到PTZ列表
      */
     public void getAllPTZs(HttpServletRequest request, HttpServletResponse response) {
-
         String jsonStr = ptzService.getPTZList();
         logger.info(jsonStr);
         PrintWriter pw;
@@ -168,7 +167,6 @@ public class PTZController extends MultiActionController {
     //更新PTZ
     public void update(HttpServletRequest request, HttpServletResponse response) {
         Long id = Long.valueOf(request.getParameter("id"));
-
         String name = request.getParameter("name"); //名称
         String controllUrl = request.getParameter("controllUrl");//编码器IP
         String pelcodCommandUrl = request.getParameter("pelcodCommandUrl"); //通过串口,发pelcod的ip

@@ -24,6 +24,7 @@
     <bean id="ptz" class="ff.controller.PTZController" />
     <bean id="test" class="ff.controller.TestController" />
     <bean id="firealarm" class="ff.controller.FireAlarmController" />
+    <bean id="alarmIgnoreAreas" class="ff.controller.AlarmIgnoreAreasController" />
     <!--<bean id="leadership" class="com.psychol.controller.LeadershipController" />
     <bean id="studentcareer" class="com.psychol.controller.StudentCareerController" />
     <bean id="careerpsychol" class="com.psychol.controller.CareerPsycholController" />

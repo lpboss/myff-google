@@ -265,7 +265,7 @@
                     nodeId = record.get('id');
                     //window.status = currentNode.get('id');
                     //alert(typeof(currentNode.get('id'))==="string");
-                    addPrivilegeModuleItem.setDisabled(false);
+                    AlarmIgnoreAreasItem.setDisabled(false);
                     editPrivilegeModuleItem.setDisabled(false);
                     addPrivilegeMenuItem.setDisabled(false);
                     editPrivilegeMenuItem.setDisabled(false);          
@@ -276,18 +276,18 @@
                         editPrivilegeMenuItem.setDisabled(true);
                         delPrivilegeMenuItem.setDisabled(true);
                     } if (record.getId() == 1){
-                        addPrivilegeModuleItem.setDisabled(true);
+                        AlarmIgnoreAreasItem.setDisabled(true);
                         editPrivilegeMenuItem.setDisabled(true);
                     } if (record.getId() == 2){
-                        addPrivilegeModuleItem.setDisabled(true);
+                        AlarmIgnoreAreasItem.setDisabled(true);
                         editPrivilegeModuleItem.setDisabled(true);
                         addPrivilegeMenuItem.setDisabled(true);           
                     }
                 },this);
                 //右键菜单
-                var addPrivilegeModuleItem = Ext.create('Ext.menu.Item', {
+                var AlarmIgnoreAreasItem = Ext.create('Ext.menu.Item', {
                     iconCls: 'addItem',
-                    text: '添加模块(权限)',
+                    text: '报警忽视地区',
                     handler: rightMenuPTZFn
                 });
                 var editPrivilegeModuleItem = Ext.create('Ext.menu.Item', {
@@ -329,7 +329,7 @@
                 var PTZMenu = Ext.create('Ext.menu.Menu', {
                     //id: 'privilege_right_menu',
                     items: [
-                        addPrivilegeModuleItem,
+                        AlarmIgnoreAreasItem,
                         editPrivilegeModuleItem,
                         '-',
                         addPrivilegeMenuItem,
@@ -345,8 +345,8 @@
                 //添加模块（权限）
                 //添加菜单（权限）
                 function rightMenuPTZFn(item,e){
-                    if (item.text=="添加模块(权限)"){
-                        newPrivilegeModuleWin = Ext.create('Ext.window.Window', {
+                    if (item.text=="报警忽视地区"){
+                        newAlarmIgnoreAreasWin = Ext.create('Ext.window.Window', {
                             layout: 'fit',
                             width: 350,
                             height: 190,
@@ -355,18 +355,18 @@
                             modal: true,
                             constrain:true,
                             //modal: true,
-                            title: '添加模块(权限)',
+                            title: '报警忽视地区',
                             autoLoad: {
-                                url: "<%=basePath%>privilege/newPrivilegeModule.htm?parent_id=" + currentNode.get('id'),
+                                url: "<%=basePath%>alarmIgnoreAreas/alarmIgnoreAreasList.htm?parent_id=" + currentNode.get('id'),
                                 scripts: true
                             }
                         });
-                        newPrivilegeModuleWin.on("destroy",function(){
+                        newAlarmIgnoreAreasWin.on("destroy",function(){
                             //刷新整个树
                             PTZDS.load();
                         });
-                        newPrivilegeModuleWin.resizable = false;
-                        newPrivilegeModuleWin.show();
+                        newAlarmIgnoreAreasWin.resizable = false;
+                        newAlarmIgnoreAreasWin.show();
                     }else if (item.text=="编辑模块(权限)"){
                         editPrivilegeModuleWin = Ext.create('Ext.window.Window', {
                             layout: 'fit',
