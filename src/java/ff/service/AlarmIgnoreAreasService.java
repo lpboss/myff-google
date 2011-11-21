@@ -4,10 +4,16 @@
  */
 package ff.service;
 
+import ff.model.AlarmIgnoreAreas;
+
 /**
  *
- * @author Administrator
+ * @author Haoqingmeng
  */
-public class AlarmIgnoreAreasService {
+public interface AlarmIgnoreAreasService {
+    
+   String getAlarmIgnoreAreasList(); //得到数据列表
+   
+   AlarmIgnoreAreas saveOrUpdate(AlarmIgnoreAreas alarmIgnoreAreas); //保存
     
 }
