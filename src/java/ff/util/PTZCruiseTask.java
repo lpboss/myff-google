@@ -77,6 +77,7 @@ public class PTZCruiseTask {
     @Scheduled(fixedDelay = 15)
     public synchronized void PTZCruise() {
         for (PTZ ptz : ptzs) {
+            
             //System.out.println("public void PTZCruise()+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
             //判断所有的云台，如果没有key添加值并巡航，如果有值，则依次判断巡航方向，比如是向上还是向下。如果角度在359度时，则上跳或下跳X度。
             //如果ptzOrientation中无值，默认向下转动云台。
