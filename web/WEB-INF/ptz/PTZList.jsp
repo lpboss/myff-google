@@ -348,8 +348,8 @@
                     if (item.text=="报警忽视地区"){
                         newAlarmIgnoreAreasWin = Ext.create('Ext.window.Window', {
                             layout: 'fit',
-                            width: 350,
-                            height: 190,
+                            width: 900,
+                            height: 350,
                             closeAction: 'destroy',
                             plain: true,
                             modal: true,
@@ -357,7 +357,7 @@
                             //modal: true,
                             title: '报警忽视地区',
                             autoLoad: {
-                                url: "<%=basePath%>ignoreareas/alarmIgnoreAreasList.htm?parent_id=" + currentNode.get('id'),
+                                url: "<%=basePath%>ignoreareas/ignoreAreasList.htm?parent_id=" + currentNode.get('id'),
                                 scripts: true
                             }
                         });

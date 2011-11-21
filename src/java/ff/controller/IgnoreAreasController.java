@@ -4,46 +4,54 @@
  */
 package ff.controller;
 
-import ff.model.AlarmIgnoreAreas;
-import ff.service.AlarmIgnoreAreasService;
+import ff.model.IgnoreAreas;
+import ff.service.IgnoreAreasService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.web.portlet.ModelAndView;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
 /**
  *
  * @author Administrator
  */
-public class AlarmIgnoreAreasController extends MultiActionController{
+public class IgnoreAreasController extends MultiActionController{
     
-    private AlarmIgnoreAreasService alarmIgnoreAreasService;
+    private IgnoreAreasService ignoreAreasService;
+
+    public IgnoreAreasService getIgnoreAreasService() {
+        return ignoreAreasService;
+    }
+
+    public void setIgnoreAreasService(IgnoreAreasService ignoreAreasService) {
+        this.ignoreAreasService = ignoreAreasService;
+    }
     
 
     //返回报警忽视地区页面
-    public ModelAndView alarmIgnoreAreasList(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView ignoreAreasList(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView mav = new ModelAndView();
         return mav;
     }
     
     //返回 添加页面
-    public ModelAndView newAlarmIgnoreAreas(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView newIgnoreAreas(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView mav = new ModelAndView();
         return mav;
     }
 
     //返回 修改页面
-    public ModelAndView editAlarmIgnoreAreas(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView editIgnoreAreas(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView mav = new ModelAndView();
         return mav;
     }
     
     //得到报警忽视地区信息
-    public void getAllAlarmIgnoreAreases(HttpServletRequest request, HttpServletResponse response) {
-        String jsonStr = alarmIgnoreAreasService.getAlarmIgnoreAreasList();
+    public void getAllIgnoreAreases(HttpServletRequest request, HttpServletResponse response) {
+        String jsonStr = ignoreAreasService.getIgnoreAreasList();
         logger.info(jsonStr);
         PrintWriter pw;
         try {
@@ -60,7 +68,7 @@ public class AlarmIgnoreAreasController extends MultiActionController{
     //添加报警忽视地区信息
     public void create(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("id");
-        AlarmIgnoreAreas alarmIgnoreAreas = new AlarmIgnoreAreas();            
+        IgnoreAreas alarmIgnoreAreas = new IgnoreAreas();            
         alarmIgnoreAreas.setPtzAngelX(Integer.valueOf(request.getParameter("ptz_angel_x"))); //火警时云台的水平角度       
         alarmIgnoreAreas.setPtzAngelY(Integer.valueOf(request.getParameter("ptz_angel_y"))); //火警时云台的Y角度
         alarmIgnoreAreas.setCcdArea(Integer.valueOf(request.getParameter("ccd_area"))); //热成像起火面积值
@@ -69,7 +77,7 @@ public class AlarmIgnoreAreasController extends MultiActionController{
         alarmIgnoreAreas.setEndDate(Timestamp.valueOf(request.getParameter("endDate"))); //火警时间范围(结束)
         alarmIgnoreAreas.setVersion(Integer.valueOf(request.getParameter("version"))); //版本
         alarmIgnoreAreas.setIsLocked(Long.getLong("isLocked")); //状态isLocked
-        alarmIgnoreAreasService.saveOrUpdate(alarmIgnoreAreas);
+        ignoreAreasService.saveOrUpdate(alarmIgnoreAreas);
         String info = "success";
         String jsonStr = "{success:true,info:'" + info + "'}";
         PrintWriter pw;
@@ -85,9 +93,9 @@ public class AlarmIgnoreAreasController extends MultiActionController{
     }
     
     //编辑AllAlarmIgnoreAreases
-    public void getAllAlarmIgnoreAreasesById(HttpServletRequest request, HttpServletResponse response) {
+    public void getIgnoreAreasesById(HttpServletRequest request, HttpServletResponse response) {
         Long id = Long.valueOf(request.getParameter("id"));
-        String jsonStr = alarmIgnoreAreasService.getAlarmIgnoreAreasJSONById(id);
+        String jsonStr = ignoreAreasService.getIgnoreAreasJSONById(id);
         PrintWriter pw;
         try {
             response.setContentType("text/json; charset=utf-8");
@@ -100,7 +108,7 @@ public class AlarmIgnoreAreasController extends MultiActionController{
         }
     }
     
-     //更新PTZ
+     //更新报警忽视地区
     public void update(HttpServletRequest request, HttpServletResponse response) {
         Long id = Long.valueOf(request.getParameter("id"));
         Integer ptzAngelX = Integer.valueOf(request.getParameter("ptzAngelX")); //火警时云台的水平角度    
@@ -112,7 +120,7 @@ public class AlarmIgnoreAreasController extends MultiActionController{
         Integer version = Integer.valueOf(request.getParameter("version")); //版本
       //  Long isLocked = Long.valueOf(request.getParameter("isLocked"));//状态
      //   Long ptzId = Long.valueOf(request.getParameter("roleId"));
-        AlarmIgnoreAreas alarmIgnoreAreas = alarmIgnoreAreasService.getAlarmIgnoreAreasById(id);
+        IgnoreAreas alarmIgnoreAreas = ignoreAreasService.getIgnoreAreasById(id);
         alarmIgnoreAreas.setId(id);
         alarmIgnoreAreas.setPtzAngelX(ptzAngelX);
         alarmIgnoreAreas.setPtzAngelY(ptzAngelY);
@@ -126,7 +134,7 @@ public class AlarmIgnoreAreasController extends MultiActionController{
         PrintWriter pw;
         try {
             logger.info("user update..............................................Begin..........");
-            String jsonStr = alarmIgnoreAreasService.update(alarmIgnoreAreas);
+            String jsonStr = ignoreAreasService.update(alarmIgnoreAreas);
             logger.info("user update..............................................");
             logger.info(jsonStr);
 
@@ -139,6 +147,29 @@ public class AlarmIgnoreAreasController extends MultiActionController{
             logger.info(e);
         }
     } 
+    
+     //删除报警忽视地区
+    public void deleteIgnoreAreas(HttpServletRequest request, HttpServletResponse response) {
+        Long id = Long.valueOf(request.getParameter("key"));
+        logger.info ("sss");
+        logger.info (id);
+        logger.info ("www");
+      String jsonStr = ignoreAreasService.deleteIgnoreAreas(id);
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
+    
+    
+    
+    
     
     
 }

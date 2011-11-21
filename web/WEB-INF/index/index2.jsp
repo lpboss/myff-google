@@ -306,6 +306,7 @@
                            
                     ]
                 });
+                
                 //PTZList
                 Ext.define('PTZ', {
                     extend : 'Ext.data.Model',
@@ -333,6 +334,23 @@
                         { name: 'cruiseDownLimit'},
                         { name: 'version'},
                         { name: 'isLocked'}
+                    ]
+                });
+                
+                //alarmIgnoreAreasList
+                Ext.define('alarmIgnoreAreas', {
+                    extend : 'Ext.data.Model',
+                    fields : [
+                        {name: 'id'},
+                        { name: 'ptzId'},
+                        { name: 'ptzAngelX'},
+                        { name: 'ptzAngelY'},
+                        { name: 'ccdArea'},
+                        { name: 'heatMax'},
+                        { name: 'beginDate'},
+                        { name: 'endDate'},
+                        { name: 'isLocked'},
+                        { name: 'version'}             
                     ]
                 });
       
