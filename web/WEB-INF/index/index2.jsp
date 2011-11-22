@@ -95,7 +95,7 @@
             Ext.onReady(function() {
 
                 var logoutButton = Ext.create('Ext.Button', {
-                    text: '退出系统',
+                    text: '退出系系统',
                     iconCls: 'exit',
                     handler: function(){
                         Ext.Ajax.request({
@@ -118,7 +118,7 @@
 
                 var topPanel = Ext.create('Ext.panel.Panel', {
                     height: 30,
-                    bbar: ["<b style='font-size:14px;'>您好�<%=session.getAttribute("userName")%>", '->','-',logoutButton],
+                    bbar: ["<b style='font-size:14px;'>您好<%=session.getAttribute("userId")%>", '->','-',logoutButton],
                     region:'north'
                 });
 

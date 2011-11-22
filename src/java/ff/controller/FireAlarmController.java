@@ -76,7 +76,7 @@ public class FireAlarmController extends MultiActionController {
         }
 
 
-        String jsonStr = fireAlarmService.getFireAlarmList(ptzId,beginTime,endTime);
+        String jsonStr = fireAlarmService.getFireAlarmList(ptzId, beginTime, endTime);
 
         PrintWriter pw;
         try {
@@ -111,7 +111,8 @@ public class FireAlarmController extends MultiActionController {
         fireAlarm.setDealDate(java.sql.Timestamp.valueOf(request.getParameter("dealDate")));
         fireAlarm.setActionDate(java.sql.Timestamp.valueOf(request.getParameter("actionDate")));
         fireAlarm.setUserId(userId);
-        fireAlarm.setVersion(6);
+        fireAlarm.setVersion(0);
+        fireAlarm.setIs_alarming(Short.valueOf("1"));
 
         logger.info(description);
         String jsonStr = fireAlarmService.create(fireAlarm);
@@ -166,6 +167,30 @@ public class FireAlarmController extends MultiActionController {
         }
     }
 
+    public void fireAlarmLock(HttpServletRequest request, HttpServletResponse response) {
+        Long id = Long.valueOf(request.getParameter("id"));
+        FireAlarm fireAlarm = fireAlarmService.getFireAlarmById(id);
+        if (fireAlarm.getIsLocked() == Long.valueOf("1")) {
+            fireAlarm.setIsLocked(Long.valueOf("0"));
+        } else {
+            fireAlarm.setIsLocked(Long.valueOf("1"));
+        }
+
+        PrintWriter pw;
+        try {
+            String jsonStr = fireAlarmService.fireAlarmLock(fireAlarm);
+          
+
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
+
     public void update(HttpServletRequest request, HttpServletResponse response) {
         Long id = Long.valueOf(request.getParameter("id"));
 
@@ -180,7 +205,6 @@ public class FireAlarmController extends MultiActionController {
         Integer heatMin = Integer.valueOf(request.getParameter("heatMin"));
         Integer userId = Integer.valueOf(request.getParameter("userId"));
         FireAlarm fireAlarm = fireAlarmService.getFireAlarmById(id);
-        logger.info("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
         fireAlarm.setDescription(description);
         fireAlarm.setPtzId(userId);
@@ -192,7 +216,7 @@ public class FireAlarmController extends MultiActionController {
         fireAlarm.setDealDate(java.sql.Timestamp.valueOf(request.getParameter("dealDate")));
         fireAlarm.setActionDate(java.sql.Timestamp.valueOf(request.getParameter("actionDate")));
         fireAlarm.setUserId(userId);
-        fireAlarm.setVersion(6);
+        fireAlarm.setVersion(fireAlarm.getVersion() + 1);
 
 
 

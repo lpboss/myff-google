@@ -24,4 +24,6 @@ public interface FireAlarmService {
     String update(FireAlarm fireAlarm);
 
     FireAlarm getFireAlarmById(Long id);
+
+    public String fireAlarmLock(FireAlarm fireAlarm);
 }
