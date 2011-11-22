@@ -149,4 +149,14 @@ public class PTZServiceImpl implements PTZService {
         String jsonStr = "{success:true,info:'" + info + "'}";
         return jsonStr;
     }
+
+    @Override
+    public String getIsAlarmPTZsJSON() {
+        List<PTZ> ptzs = ptzDao.getIsAlarmPTZs();
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.setExcludes(new String[]{"users", "rolesPrivilegeDetails"});
+        JSONArray rolesJS = JSONArray.fromObject(ptzs, jsonConfig);
+        String jsonStr = "{totalProperty:" + ptzs.size() + ",root:" + rolesJS.toString() + "}";
+        return jsonStr;
+    }
 }

@@ -55,9 +55,29 @@ public class PTZController extends MultiActionController {
         } else {
             ptzUtil.PTZAction(ptzId, request.getParameter("action_type"));
         }
-        
+
         String info = "success";
         String jsonStr = "{success:true,info:'" + info + "'}";
+
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
+
+    /**
+     *作者：jerry
+     *描述：得到正在报警的云台。  
+     */
+    public void getIsAlarmPTZs(HttpServletRequest request, HttpServletResponse response) {
+        
+        String jsonStr = ptzService.getIsAlarmPTZsJSON();
 
         PrintWriter pw;
         try {
