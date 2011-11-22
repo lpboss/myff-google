@@ -14,15 +14,22 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <script>
-
+            //默认只只控一个云台，这是测试时预置为1.
+            var ptzId = 1;
+            var alarmSound ;
             soundManager.onready(function(oStatus) {
                 if (!oStatus.success) {
                     return false;
                 }
-                // soundManager is initialised, ready to use. Create a sound for this demo page.
-                soundManager.play('mySound3','<%=basePath%>javascripts/sound/alarmsound.mp3');
+                
+                alarmSound = soundManager.createSound({
+                    id:'alarm_sound',
+                    url:'<%=basePath%>javascripts/sound/alarmsound.mp3'
+                });
+                
             });
 
+  
             //当前云台是否转动。
             var isTurning = false;
             //当前正在转动的方向
@@ -31,12 +38,20 @@
             Ext.onReady(function() {
                 getPTZAlarmsInfo = function(){
                     Ext.Ajax.request({
-                        url : '/sys_msg/getUnreadSysMsgsSize',
+                        url : '<%=basePath%>ptz/getIsAlarmPTZs.htm',
                         success : function (result, request) {
-                            if (parseInt(result.responseText) > 0){
-                                sysMsgButton.setText('系统消息<font color=red>('+parseInt(result.responseText)+')</font>');
+                            var alarmJSON = result.responseText
+                            alarmJSON =  Ext.JSON.decode(alarmJSON);
+                            if (alarmJSON.root.length > 0){
+                                ptzAlarmLabel.setText("当前火警情况:"+alarmJSON.root[0].name);
+                                alarmSound.play({
+                                    onfinish: function() {
+                                        loopSound(alarmSound);
+                                    }
+                                });
                             }else{
-                                sysMsgButton.setText('系统消息');
+                                alarmSound.stop(alarmSound);
+                                ptzAlarmLabel.setText("当前火警情况:无");
                             }
                         },
                         failure : function (result, request){
@@ -51,7 +66,7 @@
                     run: function(){
                         getPTZAlarmsInfo();
                     },
-                    interval: 3000 //3 second
+                    interval: 8000 //3 second
                 }
                 Ext.TaskManager.start(task);
                 
@@ -61,9 +76,7 @@
                 })
                 ptzAlarmLabel.setText("当前火警情况:无");
         
-                //按钮
-                //默认只只控一个云台，这是测试时预置为1.
-                var ptzId = 1;
+                //按钮                
                 var cruise = Ext.create('Ext.Button', {
                     text: '巡航',
                     iconCls: 'blue_point',
@@ -109,7 +122,6 @@
                     }
                 })
 
-
                 var downLeftButton = Ext.create('Ext.Button', {
                     text: '左下',
                     iconCls: 'arrow_down_left',
@@ -127,8 +139,6 @@
                         ptzAction("down_right");
                     }
                 })
-
-
 
                 var rightButton = Ext.create('Ext.Button', {
                     text: '右&nbsp;&nbsp;&nbsp;&nbsp;',
@@ -162,7 +172,7 @@
                     //iconCls: 'arrow_down_right',
                     renderTo:'stop_fire_alarm',
                     handler: function(){
-                        ptzAction("stop_fire_alarm");
+                        ptzAction("stop_fire_alarm");                        
                     }
                 })
             });
@@ -268,7 +278,7 @@
                                 <td></td>
                             </tr>
                             <tr>
-                                <td id="ptz_alarm_label"></td>
+                                <td id="ptz_alarm_label" colspan="4"></td>
                             </tr>     
                         </table>
                     </div>

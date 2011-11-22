@@ -37,13 +37,13 @@ public class RTSPStreamServerHandler implements Runnable{
 		for(String ip:ptzs){	
 			//转发第一通道
 			String input_ch1 = "rtsp://admin:12345@"+ip+"/h264/ch1/main/av_stream";
-			String output_ch1 = ":sout=#rtp{sdp=rtsp://:"+port+"/"+ip+"/ch1}";	
+			String output_ch1 = ":sout=#rtp{sdp=rtsp://:"+port+"/"+ip+"/ch1}";
 			
 			HeadlessMediaPlayer player_ch1 = mediaPlayerFactory.newHeadlessMediaPlayer();
 			player_ch1.setStandardMediaOptions(mediaOptions);
 			player_ch1.playMedia(input_ch1, output_ch1);
 			
-			players.put(ip+".ch1", player_ch1);	
+			players.put(ip+".ch1", player_ch1);
 			System.out.println("Streaming '" + input_ch1 + "' to '" + output_ch1 + "'");
 			
 			//转发第二通道
