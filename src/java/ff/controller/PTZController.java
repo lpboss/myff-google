@@ -130,7 +130,6 @@ public class PTZController extends MultiActionController {
         ptz.setInfraredPixelX(Integer.valueOf(request.getParameter("infrared_pixel_x")));//红外摄像机X方向像素
         ptz.setInfraredPixelY(Integer.valueOf(request.getParameter("infrared_pixel_y")));//红外摄像机Y方向像素    
         ptz.setBrandType(request.getParameter("brand_type"));//品牌类型,不同品牌，特性不同，plcod命令拼接方式不同。
-        logger.info(request.getParameter("cruise_step"));
         ptz.setCruiseStep(Integer.valueOf(request.getParameter("cruise_step")));//巡航步长
         ptz.setVersion(Integer.valueOf(request.getParameter("version")));//版本
         ptz.setIsLocked(Long.getLong("is_locked"));//状态isLocked
@@ -138,6 +137,8 @@ public class PTZController extends MultiActionController {
         ptz.setCruiseLeftLimit(Integer.valueOf(request.getParameter("cruise_left_limit"))); //巡航左边界
         ptz.setCruiseUpLimit(Integer.valueOf(request.getParameter("cruise_up_limit"))); //最大上仰角度
         ptz.setCruiseDownLimit(Integer.valueOf(request.getParameter("cruise_down_limit"))); //巡航时最大俯角
+        ptz.setIsAlarm(Integer.valueOf(request.getParameter("is_alarm"))); //是否正在报警
+        ptz.setAlarmHeatValue(Integer.valueOf(request.getParameter("alarm_heat_value"))); //报警最高热值
         ptzService.saveOrUpdate(ptz);
         String info = "success";
         String jsonStr = "{success:true,info:'" + info + "'}";
@@ -193,7 +194,9 @@ public class PTZController extends MultiActionController {
         Integer cruiseLeftLimit = Integer.valueOf(request.getParameter("cruiseLeftLimit")); //巡航左边界
         Integer cruiseUpLimit = Integer.valueOf(request.getParameter("cruiseUpLimit")); //最大上仰角度
         Integer cruiseDownLimit = Integer.valueOf(request.getParameter("cruiseDownLimit")); //巡航时最大俯角
-        //  Long isLocked = Long.valueOf(request.getParameter("isLocked"));//状态
+        Long isLocked = Long.valueOf(request.getParameter("isLocked"));//状态
+    //    Integer version = Integer.valueOf(request.getParameter("version")); //版本
+     //   Integer version = Integer.valueOf(request.getParameter("version")); //版本
         //   Long ptzId = Long.valueOf(request.getParameter("roleId"));
         PTZ ptz = ptzService.getPTZById(id);
         ptz.setId(id);
@@ -218,7 +221,7 @@ public class PTZController extends MultiActionController {
         ptz.setInfraredPixelX(Integer.valueOf(cruiseLeftLimit));
         ptz.setInfraredPixelX(Integer.valueOf(cruiseUpLimit));
         ptz.setInfraredPixelX(Integer.valueOf(cruiseDownLimit));
-        //    ptz.setIsLocked(Long.valueOf(isLocked));
+        ptz.setIsLocked(Long.valueOf(isLocked));
 
 
         //  logger.info(ptzId);

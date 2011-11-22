@@ -7,9 +7,12 @@ package ff.model;
 import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -20,7 +23,7 @@ import javax.persistence.Table;
 public class IgnoreAreas {
 
     private Integer id;
-    private Integer ptzId; //云台的编号
+    private PTZ ptz;   //云台的外键
     private Integer ptzAngelX; //火警时云台的水平角度
     private Integer ptzAngelY; //火警时云台的Y角度
     private Integer ccdArea; //热成像起火面积值
@@ -31,6 +34,7 @@ public class IgnoreAreas {
     private Integer version;//版本
     private Timestamp createdAt;
     private Timestamp updatedAt;
+    
 
     @Id
     @GeneratedValue
@@ -83,12 +87,6 @@ public class IgnoreAreas {
         return ptzAngelY;
     }
 
-    @Column(name = "ptz_id", length = 11)
-    // @Column(name = "ptz_id", unique = true, nullable = false)
-    public Integer getPtzId() {
-        return ptzId;
-    }
-
     @Column(name = "updated_at", nullable = false, length = 19)
     public Timestamp getUpdatedAt() {
         return updatedAt;
@@ -131,10 +129,6 @@ public class IgnoreAreas {
         this.ptzAngelY = ptzAngelY;
     }
 
-    public void setPtzId(Integer ptzId) {
-        this.ptzId = ptzId;
-    }
-
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
@@ -142,4 +136,19 @@ public class IgnoreAreas {
     public void setVersion(Integer version) {
         this.version = version;
     }
+
+    //设置多对一关系：
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ptz_id")
+    public PTZ getPtz() {
+        return ptz;
+    }
+
+    public void setPtz(PTZ ptz) {
+        this.ptz = ptz;
+    }
+    
+    
+    
+    
 }
