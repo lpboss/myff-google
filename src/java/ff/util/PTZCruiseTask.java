@@ -264,10 +264,13 @@ public class PTZCruiseTask {
             String ptzIP = ptz.getPelcodCommandUrl();//"192.168.254.65";
             String infraredSetupIP = ptz.getInfraredCircuitUrl();//"192.168.1.50";
 
-            //判断，如果当前没有进行置中操作，则从新判断热��
+            //判断，如果当前没有进行置中操作，则从新判断热
             if (serialPortCommServer.getIsMovingCenterForFireAlarm().get(ptzIP) == null && (serialPortCommServer.getAllowAlarm().get(ptzIP) == null || serialPortCommServer.getAllowAlarm().get(ptzIP) == Boolean.TRUE)) {
                 System.out.println("serialPortCommServer.getAlertMax(infraredSetupIP):" + serialPortCommServer.getAlertMax(infraredSetupIP));
-                if (serialPortCommServer.getAlertMax(infraredSetupIP) > 1300) {
+                if (serialPortCommServer.getAlertMax(infraredSetupIP) > ptz.getAlarmHeatValue()) {
+                    //超过热值后，首先设置云台的报警状态。
+                    ptz.setIsAlarm(1);
+                    ptzService.saveOrUpdate(ptz);
                     int heatPosX = serialPortCommServer.getAlertX(infraredSetupIP);
                     int heatPosY = serialPortCommServer.getAlertY(infraredSetupIP);
 
