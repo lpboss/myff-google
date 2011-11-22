@@ -43,11 +43,13 @@ public class PTZ {
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private Integer version;//版本
-    private Long isLocked = new Long(0);// '启用，停用',
+    private Integer isAlarm;// 是否正在报警
+    private Integer alarmHeatValue;// 报警最高热值。
     private Integer cruiseRightLimit; //巡航右边界
     private Integer cruiseLeftLimit; //巡航左边界
     private Integer cruiseUpLimit; //最大上仰角度
     private Integer cruiseDownLimit; //巡航时最大俯角
+    private Long isLocked = new Long(0);// 状态 '启用，停用',
 
     @Id
     @GeneratedValue
@@ -274,5 +276,23 @@ public class PTZ {
 
     public void setCruiseUpLimit(Integer cruiseUpLimit) {
         this.cruiseUpLimit = cruiseUpLimit;
+    }
+
+    @Column(name = "alarm_heat_value")
+    public Integer getAlarmHeatValue() {
+        return alarmHeatValue;
+    }
+
+    public void setAlarmHeatValue(Integer alarmHeatValue) {
+        this.alarmHeatValue = alarmHeatValue;
+    }
+
+    @Column(name = "is_alarm")
+    public Integer getIsAlarm() {
+        return isAlarm;
+    }
+
+    public void setIsAlarm(Integer isAlarm) {
+        this.isAlarm = isAlarm;
     }
 }
