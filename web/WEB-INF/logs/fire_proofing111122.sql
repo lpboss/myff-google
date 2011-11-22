@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50517
 File Encoding         : 65001
 
-Date: 2011-11-22 12:01:07
+Date: 2011-11-22 17:51:00
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -97,8 +97,8 @@ CREATE TABLE `privileges` (
 -- Records of privileges
 -- ----------------------------
 INSERT INTO `privileges` VALUES ('1', '系统设置', null, '3', null, null, '0', '0', '0', null, 'false', null, '0', '2', '0', '0', '2011-09-13 12:10:52', '2011-09-30 10:06:01');
-INSERT INTO `privileges` VALUES ('2', '用户设置', null, '1', '24', null, '1', '0', '0', null, 'true', '', '1', '2', '0', '0', '2011-09-13 12:10:44', '2011-09-19 09:48:41');
-INSERT INTO `privileges` VALUES ('3', '系统权限', null, '2', '12', null, '1', '0', '0', null, 'true', '', '1', '1', '0', '0', '2011-09-13 12:10:38', '2011-09-17 11:56:56');
+INSERT INTO `privileges` VALUES ('2', '用户设置', null, '1', '24', null, '1', '0', '0', null, 'true', '', '1', '1', '0', '0', '2011-09-13 12:10:44', '2011-11-22 16:06:31');
+INSERT INTO `privileges` VALUES ('3', '系统权限', null, '2', '12', null, '1', '0', '0', null, 'true', '', '1', '2', '0', '0', '2011-09-13 12:10:38', '2011-11-22 16:06:31');
 INSERT INTO `privileges` VALUES ('7', '角色设置', null, '3', '32', null, '1', null, '0', null, 'true', '', '1', '4', '0', '0', '2011-09-19 14:16:38', '2011-09-19 14:16:38');
 INSERT INTO `privileges` VALUES ('8', '防火监控', null, null, null, null, '0', null, '0', null, 'false', '包括PTZ控制，起火点确认，历史记录查询', '0', '1', '0', '0', '2011-09-30 10:05:57', '2011-11-16 18:28:55');
 INSERT INTO `privileges` VALUES ('9', '云台信息', null, '5', '50', null, '1', null, '0', null, 'true', '云台信息，通过其中的云台列表，取得控制权', '8', '1', '0', '0', '2011-09-30 10:55:19', '2011-09-30 10:55:19');
@@ -160,6 +160,7 @@ CREATE TABLE `ptzs` (
   `infrared_pixel_y` smallint(6) DEFAULT '0' COMMENT '红外摄像机Y方向像素',
   `brand_type` varchar(255) DEFAULT NULL COMMENT '品牌与型号',
   `cruise_step` smallint(6) DEFAULT '5' COMMENT '云台巡航步长',
+  `shift_step` smallint(6) DEFAULT '10' COMMENT '云台非巡航状态下默认移动步长',
   `cruise_right_limit` smallint(6) DEFAULT '0' COMMENT '巡航右边界',
   `cruise_left_limit` smallint(6) DEFAULT '0' COMMENT '巡航左边界',
   `cruise_up_limit` smallint(6) DEFAULT '90' COMMENT '最大上仰角度',
@@ -176,7 +177,7 @@ CREATE TABLE `ptzs` (
 -- ----------------------------
 -- Records of ptzs
 -- ----------------------------
-INSERT INTO `ptzs` VALUES ('1', '测试机1', 'rtsp://admin:12345@192.168.254.64/h264/ch1/main/av_stream', '192.168.254.65', null, null, null, '192.168.1.50', '192.168.1.50', '0', null, '50', '38', '382', '288', 'FY', '5', '0', '0', '90', '0', '30000', '0', null, null, null, '0');
+INSERT INTO `ptzs` VALUES ('1', '测试机，主云台1', 'rtsp://admin:12345@192.168.254.64/h264/ch1/main/av_stream', '192.168.254.65', null, null, null, '192.168.1.50', '192.168.1.50', '0', null, '50', '38', '382', '288', 'FY', '5', '10', '0', '0', '90', '0', '1300', '0', '2011-11-22 15:34:39', '2011-11-22 15:52:46', null, '0');
 
 -- ----------------------------
 -- Table structure for `roles`
