@@ -53,11 +53,15 @@ public class IgnoreAreasServiceServiceImpl implements IgnoreAreasService {
         System.out.print("333333333333");
          System.out.print(id);
         List<IgnoreAreas> ignoreAreas = ignoreAreasDao.getById(id);
+        System.out.print("121212");
+        System.out.print(ignoreAreas);
+        System.out.print("2323232");
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.setExcludes(new String[]{"videos", "users"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm"));
-        JSONObject userJS = JSONObject.fromObject(ignoreAreas, jsonConfig);
-        String jsonStr = userJS.toString();
+    //    JSONObject userJS = JSONObject.fromObject(ignoreAreas, jsonConfig);
+        JSONArray  ignoreAreasJS = JSONArray.fromObject(ignoreAreas, jsonConfig);
+        String jsonStr = ignoreAreasJS.toString();
         return jsonStr;
         
     }
