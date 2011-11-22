@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author Administrator
  */
-public interface ignoreAreasDao {
+public interface IgnoreAreasDao {
     
     List<IgnoreAreas> getIgnoreAreases();    //得到所有的报警忽视地区信息
     
@@ -21,7 +21,7 @@ public interface ignoreAreasDao {
     
     IgnoreAreas getIgnoreAreasByName(String name); //添加
     
-    String deleteIgnoreAreas(Long id); //删除
+    String deleteIgnoreAreas(Long id); //删除,删除，删除
 
     
 }

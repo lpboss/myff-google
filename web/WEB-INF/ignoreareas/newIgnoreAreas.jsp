@@ -16,52 +16,53 @@
         <title>添加报警忽视地区信息</title>
         <script type="text/javascript">
             Ext.onReady(function(){
+                var userId = <%=request.getParameter("parent_id")%>;
                 
                 var ptzId = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '云台的编号',
                     allowBlank: false,
                     blankText: "云台的编号不能为空",
-                    name: 'ptzId',
+                    name: 'ptz_id',
+                    value: userId,
                     anchor: '95%'
                 });
                 
                 var ptzAngelX = Ext.create('Ext.form.field.Number', {
-                    fieldLabel: '火警时云台的水平角度',
-                    allowBlank: true,                  
-                    name: 'ptzAngelX',
+                    fieldLabel: '火警时云台的水平角度',                 
+                    name: 'ptz_angel_x',
                     anchor: '95%'
                 });
                 
                 var ptzAngelY = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '火警时云台的Y角度',
                     lableWidth:100,
-                    name: 'ptzAngelY',
+                    name: 'ptz_angel_y',
                     anchor: '95%'
                 });
                 
                 var ccdArea = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '热成像起火面积值',
-                    name: 'ccdArea',
+                    name: 'ccd_area',
                     anchor: '95%'
                 });
                 
                 var heatMax = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '最大热值',            
-                    name: 'heatMax',
+                    name: 'heat_max',
                     anchor: '95%'
                 });
                 
                 var beginDate = Ext.create('Ext.form.field.DateTime', {
                     fieldLabel: '火警时间范围(开始)',
                     format : 'Y-m-d H:i:s',
-                    name: 'beginDate',
+                    name: 'begin_date',
                     anchor: '95%'
                 });
                 
                 var endDate = Ext.create('Ext.form.field.DateTime', {
                     fieldLabel: '火警时间范围(结束)',
                     format : 'Y-m-d H:i:s',
-                    name: 'endDate',
+                    name: 'end_date',
                     anchor: '95%'
                 });
 

@@ -4,7 +4,7 @@
  */
 package ff.dao.impl;
 
-import ff.dao.ignoreAreasDao;
+import ff.dao.IgnoreAreasDao;
 import ff.model.IgnoreAreas;
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -15,7 +15,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
  *
  * @author Administrator
  */
-public class ignoreAreasDaoHImpl extends HibernateDaoSupport implements ignoreAreasDao {
+public class IgnoreAreasDaoHImpl extends HibernateDaoSupport implements IgnoreAreasDao {
 
     @Override
     public List<IgnoreAreas> getIgnoreAreases() {
@@ -39,8 +39,14 @@ public class ignoreAreasDaoHImpl extends HibernateDaoSupport implements ignoreAr
 
     @Override
     public IgnoreAreas getIgnoreAreasById(Long id) {
-        IgnoreAreas ignoreAreases = (IgnoreAreas) this.getHibernateTemplate().get(IgnoreAreas.class, id);
-        return ignoreAreases;
+      //  IgnoreAreas ignoreAreases = (IgnoreAreas) this.getHibernateTemplate().get(IgnoreAreas.class, id);       
+      //  return ignoreAreases;
+         List<IgnoreAreas> ignoreAreases = this.getHibernateTemplate().find("from IgnoreAreas where ptz_id=?",id);
+        if (ignoreAreases.size() > 0) {
+            return (IgnoreAreas) ignoreAreases;
+        } else {
+            return null;
+        }
     }
 
     @Override
