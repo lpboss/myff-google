@@ -29,7 +29,41 @@
             var turningDirection = "stop";
 
             Ext.onReady(function() {
+                getPTZAlarmsInfo = function(){
+                    Ext.Ajax.request({
+                        url : '/sys_msg/getUnreadSysMsgsSize',
+                        success : function (result, request) {
+                            if (parseInt(result.responseText) > 0){
+                                sysMsgButton.setText('系统消息<font color=red>('+parseInt(result.responseText)+')</font>');
+                            }else{
+                                sysMsgButton.setText('系统消息');
+                            }
+                        },
+                        failure : function (result, request){
+                        },
+                        method : 'GET'
+                    });
+                }
+
+                //Extjs 4
+                //
+                var task = {
+                    run: function(){
+                        getPTZAlarmsInfo();
+                    },
+                    interval: 3000 //3 second
+                }
+                Ext.TaskManager.start(task);
+                
+                var ptzAlarmLabel = Ext.create('Ext.form.Label', {
+                    name: 'ptz_alarm_label',
+                    renderTo:'ptz_alarm_label'
+                })
+                ptzAlarmLabel.setText("当前火警情况:无");
+        
                 //按钮
+                //默认只只控一个云台，这是测试时预置为1.
+                var ptzId = 1;
                 var cruise = Ext.create('Ext.Button', {
                     text: '巡航',
                     iconCls: 'blue_point',
@@ -163,7 +197,8 @@
                     },
                     method : 'GET',
                     params : {
-                        action_type : ptzActionStr
+                        action_type : ptzActionStr,
+                        ptz_id: ptzId
                     }
                 });
             }    
@@ -231,7 +266,10 @@
                                 <td></td>
                                 <td id="ptz_setChannel"></td>
                                 <td></td>
-                            </tr>                            
+                            </tr>
+                            <tr>
+                                <td id="ptz_alarm_label"></td>
+                            </tr>     
                         </table>
                     </div>
                 </td>
