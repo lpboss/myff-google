@@ -7,6 +7,7 @@ package ff.util;
 import java.util.logging.Logger;
 
 import ff.server.SerialPortCommServer;
+import ff.service.PTZService;
 
 /**
  *
@@ -17,15 +18,20 @@ public class PTZUtil {
 
     static Logger logger = Logger.getLogger(PTZUtil.class.getName());
     private SerialPortCommServer serialPortCommServer;
+    private PTZService ptzService;
+
+    public void setPtzService(PTZService ptzService) {
+        this.ptzService = ptzService;
+    }
 
     public void setSerialPortCommServer(SerialPortCommServer serialPortCommServer) {
         this.serialPortCommServer = serialPortCommServer;
     }
 
-    public void PTZAction(String ptzAction) {
+    public void PTZAction(Long ptzId, String ptzAction) {
         logger.info("ptzAction:" + ptzAction + ",   0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
         //先固定一个云台测试。
-        String testIP = "192.168.254.65";
+        String testIP = ptzService.getPTZById(ptzId).getPelcodCommandUrl();
 
         boolean connResult;
 

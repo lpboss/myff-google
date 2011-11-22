@@ -47,9 +47,15 @@ public class PTZController extends MultiActionController {
      */
     public void ptzAction(HttpServletRequest request, HttpServletResponse response) {
         logger.info("PTZ index page");
-
-        ptzUtil.PTZAction(request.getParameter("action_type"));
-
+        long ptzId = Long.parseLong(request.getParameter("ptz_id"));
+        if (request.getParameter("action_type").equalsIgnoreCase("stop_fire_alarm")) {
+            PTZ ptz = ptzService.getPTZById(ptzId);
+            ptz.setIsAlarm(0);
+            ptzService.saveOrUpdate(ptz);
+        } else {
+            ptzUtil.PTZAction(ptzId, request.getParameter("action_type"));
+        }
+        
         String info = "success";
         String jsonStr = "{success:true,info:'" + info + "'}";
 
@@ -85,7 +91,6 @@ public class PTZController extends MultiActionController {
         ModelAndView mav = new ModelAndView();
         return mav;
     }
-    
 
     /**
      *作者：Haoqingmeng
@@ -188,8 +193,8 @@ public class PTZController extends MultiActionController {
         Integer cruiseLeftLimit = Integer.valueOf(request.getParameter("cruiseLeftLimit")); //巡航左边界
         Integer cruiseUpLimit = Integer.valueOf(request.getParameter("cruiseUpLimit")); //最大上仰角度
         Integer cruiseDownLimit = Integer.valueOf(request.getParameter("cruiseDownLimit")); //巡航时最大俯角
-      //  Long isLocked = Long.valueOf(request.getParameter("isLocked"));//状态
-     //   Long ptzId = Long.valueOf(request.getParameter("roleId"));
+        //  Long isLocked = Long.valueOf(request.getParameter("isLocked"));//状态
+        //   Long ptzId = Long.valueOf(request.getParameter("roleId"));
         PTZ ptz = ptzService.getPTZById(id);
         ptz.setId(id);
         ptz.setName(name);
@@ -213,10 +218,10 @@ public class PTZController extends MultiActionController {
         ptz.setInfraredPixelX(Integer.valueOf(cruiseLeftLimit));
         ptz.setInfraredPixelX(Integer.valueOf(cruiseUpLimit));
         ptz.setInfraredPixelX(Integer.valueOf(cruiseDownLimit));
-    //    ptz.setIsLocked(Long.valueOf(isLocked));
+        //    ptz.setIsLocked(Long.valueOf(isLocked));
 
 
-      //  logger.info(ptzId);
+        //  logger.info(ptzId);
         PrintWriter pw;
         try {
             logger.info("user update..............................................Begin..........");
@@ -233,14 +238,14 @@ public class PTZController extends MultiActionController {
             logger.info(e);
         }
     }
-    
+
     //删除PTZ
     public void deletePTZ(HttpServletRequest request, HttpServletResponse response) {
         Long id = Long.valueOf(request.getParameter("key"));
-        logger.info ("sss");
-        logger.info (id);
-        logger.info ("www");
-      String jsonStr = ptzService.deletePTZ(id);
+        logger.info("sss");
+        logger.info(id);
+        logger.info("www");
+        String jsonStr = ptzService.deletePTZ(id);
         PrintWriter pw;
         try {
             response.setContentType("text/json; charset=utf-8");
@@ -252,8 +257,4 @@ public class PTZController extends MultiActionController {
             logger.info(e);
         }
     }
-    
-    
-    
-    
 }
