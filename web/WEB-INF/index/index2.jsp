@@ -337,7 +337,7 @@
                     ]
                 });
                 
-                //alarmIgnoreAreasList
+                //报警忽视地区alarmIgnoreAreasList
                 Ext.define('alarmIgnoreAreas', {
                     extend : 'Ext.data.Model',
                     fields : [

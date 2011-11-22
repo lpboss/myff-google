@@ -4,7 +4,7 @@
  */
 package ff.service.impl;
 
-import ff.dao.ignoreAreasDao;
+import ff.dao.IgnoreAreasDao;
 import ff.model.IgnoreAreas;
 import ff.service.IgnoreAreasService;
 import ff.util.DateJsonValueProcessor;
@@ -20,13 +20,13 @@ import net.sf.json.JsonConfig;
  */
 public class IgnoreAreasServiceServiceImpl implements IgnoreAreasService {
 
-    private ignoreAreasDao ignoreAreasDao;
+    private IgnoreAreasDao ignoreAreasDao;
 
-    public ignoreAreasDao getIgnoreAreasDao() {
+    public IgnoreAreasDao getIgnoreAreasDao() {
         return ignoreAreasDao;
     }
 
-    public void setIgnoreAreasDao(ignoreAreasDao ignoreAreasDao) {
+    public void setIgnoreAreasDao(IgnoreAreasDao ignoreAreasDao) {
         this.ignoreAreasDao = ignoreAreasDao;
     }
 
@@ -50,11 +50,11 @@ public class IgnoreAreasServiceServiceImpl implements IgnoreAreasService {
 
     @Override
     public String getIgnoreAreasJSONById(Long id) {
-        IgnoreAreas ptz = ignoreAreasDao.getIgnoreAreasById(id);
+        IgnoreAreas ignoreAreas = ignoreAreasDao.getIgnoreAreasById(id);
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.setExcludes(new String[]{"videos", "users"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm"));
-        JSONObject userJS = JSONObject.fromObject(ptz, jsonConfig);
+        JSONObject userJS = JSONObject.fromObject(ignoreAreas, jsonConfig);
         String jsonStr = userJS.toString();
         return jsonStr;
     }

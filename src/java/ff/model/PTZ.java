@@ -43,7 +43,7 @@ public class PTZ {
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private Integer version;//版本
-    private Long isLocked = new Long(0);// '启用，停用',
+    private Long isLocked = new Long(0);//状态 '启用，停用',
     private Integer cruiseRightLimit; //巡航右边界
     private Integer cruiseLeftLimit; //巡航左边界
     private Integer cruiseUpLimit; //最大上仰角度
