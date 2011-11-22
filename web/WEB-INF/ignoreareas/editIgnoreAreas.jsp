@@ -18,17 +18,17 @@
             Ext.onReady(function(){
                 var userId = <%=request.getParameter("id")%>;
  
-                var ptzId = Ext.create('Ext.form.field.Number', {
+                 var ptzId = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '云台的编号',
                     allowBlank: false,
                     blankText: "云台的编号不能为空",
                     name: 'ptzId',
+                    value: userId,
                     anchor: '95%'
                 });
                 
                 var ptzAngelX = Ext.create('Ext.form.field.Number', {
-                    fieldLabel: '火警时云台的水平角度',
-                    allowBlank: true,                  
+                    fieldLabel: '火警时云台的水平角度',                 
                     name: 'ptzAngelX',
                     anchor: '95%'
                 });
@@ -74,15 +74,15 @@
                 
                 var isLocked = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '状态',
-                    name: 'is_locked',
+                    name: 'isLocked',
                     anchor: '95%'
                 });
                 
                 var alarmIgnoreAreasStore =  Ext.create('Ext.data.Store', {
-                    model : 'PTZEdit',
+                    model : 'alarmIgnoreAreas',
                     proxy : {
                         type : 'ajax',
-                        url : '<%=basePath%>ptz/getAllPTZs.htm?for_cbb=true',
+                        url : '<%=basePath%>ignoreareas/getAllIgnoreAreases.htm?for_cbb=true',
                         reader : {
                             type : 'json',
                             root : 'root',// JSON数组对象名
