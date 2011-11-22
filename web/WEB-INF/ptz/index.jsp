@@ -14,7 +14,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <script>
-
+            //默认只只控一个云台，这是测试时预置为1.
+            var ptzId = 1;
+                
             soundManager.onready(function(oStatus) {
                 if (!oStatus.success) {
                     return false;
@@ -31,7 +33,7 @@
             Ext.onReady(function() {
                 getPTZAlarmsInfo = function(){
                     Ext.Ajax.request({
-                        url : '/sys_msg/getUnreadSysMsgsSize',
+                        url : '/ptz/getIsAlarmPTZs',
                         success : function (result, request) {
                             if (parseInt(result.responseText) > 0){
                                 sysMsgButton.setText('系统消息<font color=red>('+parseInt(result.responseText)+')</font>');
@@ -61,9 +63,7 @@
                 })
                 ptzAlarmLabel.setText("当前火警情况:无");
         
-                //按钮
-                //默认只只控一个云台，这是测试时预置为1.
-                var ptzId = 1;
+                //按钮                
                 var cruise = Ext.create('Ext.Button', {
                     text: '巡航',
                     iconCls: 'blue_point',
@@ -109,7 +109,6 @@
                     }
                 })
 
-
                 var downLeftButton = Ext.create('Ext.Button', {
                     text: '左下',
                     iconCls: 'arrow_down_left',
@@ -127,8 +126,6 @@
                         ptzAction("down_right");
                     }
                 })
-
-
 
                 var rightButton = Ext.create('Ext.Button', {
                     text: '右&nbsp;&nbsp;&nbsp;&nbsp;',
@@ -268,7 +265,7 @@
                                 <td></td>
                             </tr>
                             <tr>
-                                <td id="ptz_alarm_label"></td>
+                                <td id="ptz_alarm_label" colspan="4"></td>
                             </tr>     
                         </table>
                     </div>
