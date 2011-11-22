@@ -16,11 +16,11 @@ import javax.persistence.Table;
  * @author Administrator
  */
 @Entity
-@Table(name = "alarm_ignore_areas")
+@Table(name = "ignore_areas") //alarm_ignore_areas
 public class IgnoreAreas {
 
     private Long id;
-    private Long ptzId; //云台的编号
+    private Integer ptzId; //云台的编号
     private Integer ptzAngelX; //火警时云台的水平角度
     private Integer ptzAngelY; //火警时云台的Y角度
     private Integer ccdArea; //热成像起火面积值
@@ -84,8 +84,9 @@ public class IgnoreAreas {
         return ptzAngelY;
     }
 
-    @Column(name = "ptz_id", unique = true, nullable = false)
-    public Long getPtzId() {
+    @Column(name = "ptz_id",  length = 11)
+   // @Column(name = "ptz_id", unique = true, nullable = false)
+    public Integer getPtzId() {
         return ptzId;
     }
 
@@ -131,7 +132,7 @@ public class IgnoreAreas {
         this.ptzAngelY = ptzAngelY;
     }
 
-    public void setPtzId(Long ptzId) {
+    public void setPtzId(Integer ptzId) {
         this.ptzId = ptzId;
     }
 
