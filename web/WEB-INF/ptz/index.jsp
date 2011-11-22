@@ -179,7 +179,7 @@
                         <param name="AutoLoop" value="False" />
                         <param name="AutoPlay" value="true" />
                         <param name="rtsp-caching" value="80" />
-                        <embed id="vlcEmb"  type="application/x-google-vlc-plugin" version="VideoLAN.VLCPlugin.2" autoplay="yes" loop="no" width="400" height="300" rtsp-caching="80" target="rtsp://admin:12345@192.168.254.64/h264/ch1/main/av_stream" ></embed>
+                        <embed id="vlcEmb"  type="application/x-google-vlc-plugin" version="VideoLAN.VLCPlugin.2" autoplay="yes" loop="no" width="400" height="300" rtsp-caching="60" target="rtsp://admin:12345@192.168.254.64/h264/ch1/main/av_stream" ></embed>
                     </OBJECT>
                 </td>
                 <td>
@@ -190,7 +190,7 @@
                             <param name="AutoLoop" value="False" />
                             <param name="AutoPlay" value="true" />
                             <param name="rtsp-caching" value="80" />
-                            <embed id="vlcEmb"  type="application/x-google-vlc-plugin" version="VideoLAN.VLCPlugin.2" autoplay="yes" loop="no" width="400" height="300" rtsp-caching="80" target="rtsp://admin:12345@192.168.254.64/h264/ch2/main/av_stream" ></embed>
+                            <embed id="vlcEmb"  type="application/x-google-vlc-plugin" version="VideoLAN.VLCPlugin.2" autoplay="yes" loop="no" width="400" height="300" rtsp-caching="60" target="rtsp://admin:12345@192.168.254.64/h264/ch2/main/av_stream" ></embed>
                         </OBJECT>
                     </div>
                 </td>
