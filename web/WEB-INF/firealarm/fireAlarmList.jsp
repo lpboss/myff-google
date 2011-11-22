@@ -41,7 +41,13 @@
                     autoLoad : true
                 });
             
-              
+                function renderRoleIsLucked(value){
+                    if (value =="1"){
+                        return "<font color=red>锁定</font>";
+                    }else{
+                        return "<font color=green>未锁定</font>";
+                    }
+                }
         
                 var fireAlarmGrid =  Ext.create('Ext.grid.Panel', {
                  
@@ -62,7 +68,6 @@
                         }, {
                             header: '火警时间',
                             sortable : true,
-
                             dataIndex: 'actionDate',
                             width:150
                         }, {
@@ -76,11 +81,15 @@
                             header: '平均热值',
                             dataIndex: 'heatAvg'
                         }, {
+                            header: '水平',
+                            dataIndex: 'ptzAngleX'
+                        }, {
+                            header: '垂直',
+                            dataIndex: 'ptzAngleY'
+                        }, {
                             header: '用户ID',
                             sortable : true,
-                            dataIndex: 'fireAlarmId',
-                           
-
+                            dataIndex: 'userId',
                             width:100
                         }, {
                            
@@ -96,6 +105,7 @@
                         },{
                             header: '是否锁定',
                             dataIndex: 'isLocked',
+                            renderer: renderRoleIsLucked,
                             width: 110
                         }],
                     selModel :Ext.create('Ext.selection.CheckboxModel'),
@@ -167,12 +177,13 @@
                                             scripts: true
                                         }
                                     });
+                                    editFireAlarmWin.on("destroy",function(){
+                                        fireAlarmDS.load();
+                                    });
+                                    editFireAlarmWin.resizable = false;
+                                    editFireAlarmWin.show();
                                 }
-                                editFireAlarmWin.on("destroy",function(){
-                                    fireAlarmDS.load();
-                                });
-                                editFireAlarmWin.resizable = false;
-                                editFireAlarmWin.show();
+                             
                             }
                         },'-',{
                             text: '删除',
@@ -263,25 +274,51 @@
                     id:"ptzId",
                     emptyText: '请选择...',          
                     loadingText: '搜索中...',
-                    anchor: '20%',
+                    anchor: '95%',
                     readOnly:false,
                     minChars: 0,          
                     editable:false
+                });
+                var BeginTime = Ext.create('Ext.form.field.DateTime', {
+                    fieldLabel: '火警开始时间',
+                    format : 'Y-m-d H:i:s',
+                    id:"beginTime",
+                    name: 'beginTime',
+                    anchor: '95%'
+                });
+             
+                var EndTime = Ext.create('Ext.form.field.DateTime', {
+                    fieldLabel: '火警结束时间',
+                    format : 'Y-m-d H:i:s',
+                    id:'endTime',
+                    name: 'endTime',
+                    anchor: '95%'
                 });
                 var searchButton = Ext.create((Ext.Button),{
                     text:'搜索',
                     fieldLabel:'点击搜索',
                     iconCls: 'searchItem',
                     handler: function(){
-                       
+                        alert(Ext.getCmp('beginTime').getValue());
                         fireAlarmDS.load({
                             params:{
                              
                                 start : 0,
                                 limit : pageSize,
-                                PTZId:Ext.getCmp('ptzId').getValue()
+                                PTZId: Ext.getCmp('ptzId').getValue(),
+                                BeginTime: Ext.getCmp('beginTime').getRawValue(),
+                                EndTime: Ext.getCmp('endTime').getRawValue()
                             }
                         })
+                    }
+                });
+                var resetButton = Ext.create((Ext.Button),{
+                    text:'重置',
+                    fieldLabel:'点击重置',
+                    iconCls: 'searchItem',
+                    handler: function(){
+                       
+                        newFireAlarmForm.form.reset();
                     }
                 });
                 var newFireAlarmForm = Ext.create('Ext.form.Panel', {
@@ -293,7 +330,41 @@
                     frame:true,
                     bodyStyle:'padding:5px 5px 0',
                     width: screenWidth-190,
-                    items:[ptzId,searchButton] 
+                    items: [{      
+                            layout: 'column',
+                            xtype: 'container',
+                            items: [{
+                                    columnWidth: .2,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [BeginTime]
+                                }, {
+                                    columnWidth: .2,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [EndTime]
+                                }, {
+                                    columnWidth: .2,
+                                    layout: 'column',
+                                    xtype: 'container',
+                                    items: [ptzId]
+                                },{
+                                    columnWidth: .1,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [searchButton]
+                                },{
+                                    columnWidth: .1,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [resetButton]
+                                }]
+                        },{
+                            layout: 'column',
+                            xtype: 'container',
+                            items: []
+                        }
+                    ]
                 })
                 var workbenchPanel = Ext.create('Ext.panel.Panel', {
                     style: {
