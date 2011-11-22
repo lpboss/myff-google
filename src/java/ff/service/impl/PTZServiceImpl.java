@@ -149,4 +149,6 @@ public class PTZServiceImpl implements PTZService {
         String jsonStr = "{success:true,info:'" + info + "'}";
         return jsonStr;
     }
+
+ 
 }

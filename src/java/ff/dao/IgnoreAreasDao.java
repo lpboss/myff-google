@@ -17,7 +17,7 @@ public interface IgnoreAreasDao {
 
     IgnoreAreas saveOrUpdate(IgnoreAreas ignoreAreas); //保存
 
-    List<IgnoreAreas> getById(Integer id);   //得到某一条数据
+    List<IgnoreAreas> getById(Integer id);   //得到某一条数据   
     
     IgnoreAreas getIgnoreAreasById(Integer id); 
 

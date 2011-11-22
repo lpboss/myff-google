@@ -5,6 +5,7 @@
 package ff.controller;
 
 import ff.model.IgnoreAreas;
+import ff.model.PTZ;
 import ff.service.IgnoreAreasService;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -73,7 +74,10 @@ public class IgnoreAreasController extends MultiActionController {
     public void create(HttpServletRequest request, HttpServletResponse response) {
         //   String id = request.getParameter("id");
         IgnoreAreas ignoreAreas = new IgnoreAreas();
-        ignoreAreas.setPtzId(Integer.valueOf(request.getParameter("ptz_id"))); //云台ID
+    //    ignoreAreas.setPtzId(Integer.valueOf(request.getParameter("ptz_id"))); //云台ID
+        PTZ ptz = new PTZ();
+        ptz.setId(Long.valueOf(request.getParameter("ptz_id"))); //云台ID
+        ignoreAreas.setPtz(ptz);
         ignoreAreas.setPtzAngelX(Integer.valueOf(request.getParameter("ptz_angel_x"))); //火警时云台的水平角度       
         ignoreAreas.setPtzAngelY(Integer.valueOf(request.getParameter("ptz_angel_y"))); //火警时云台的Y角度
         ignoreAreas.setCcdArea(Integer.valueOf(request.getParameter("ccd_area"))); //热成像起火面积值

@@ -172,6 +172,18 @@
                     anchor: '95%'
                 });
                 
+                var isAlarm = Ext.create('Ext.form.field.Number', {
+                    fieldLabel: '是否正在报警',
+                    name: 'is_alarm',
+                    anchor: '95%'
+                });
+                
+                var alarmHeatValue = Ext.create('Ext.form.field.Number', {
+                    fieldLabel: '报警最高热值',
+                    name: 'alarm_heat_value',
+                    anchor: '95%'
+                });
+                
                 var version = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '版本',
                     name: 'version',
@@ -206,12 +218,12 @@
                                     columnWidth: .38,
                                     layout: 'anchor',
                                     xtype: 'container',                                  
-                                    items: [infraredRTSPUrl,infraredCameraUrl,infraredCircuitUrl,northMigration,visibleCameraUrl,visibleRTSPUrl,cruiseUpLimit]
+                                    items: [infraredRTSPUrl,infraredCameraUrl,infraredCircuitUrl,northMigration,visibleCameraUrl,visibleRTSPUrl,cruiseUpLimit,isAlarm]
                                 }, {
                                     columnWidth: .23,
                                     layout: 'anchor',
                                     xtype: 'container',
-                                    items: [visualAngleX,visualAngleY,infraredPixelX,infraredPixelY,version,isLocked,cruiseDownLimit]
+                                    items: [visualAngleX,visualAngleY,infraredPixelX,infraredPixelY,version,isLocked,cruiseDownLimit,alarmHeatValue]
                                 }]
                         }],
                     buttons: [{
