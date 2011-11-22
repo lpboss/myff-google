@@ -14,5 +14,5 @@
     <bean id="adminDao" class="ff.dao.impl.AdminDaoHImpl" />
     <bean id="ptzDao" class="ff.dao.impl.PTZDaoHImpl" />
     <bean id="fireAlarmDao" class="ff.dao.impl.FireAlarmDaoHImpl" />
-    <bean id="ignoreAreasDao" class="ff.dao.impl.ignoreAreasDaoHImpl" />
+    <bean id="ignoreAreasDao" class="ff.dao.impl.IgnoreAreasDaoHImpl" />
 </beans>
