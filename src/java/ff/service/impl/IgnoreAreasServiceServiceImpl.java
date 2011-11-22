@@ -49,18 +49,21 @@ public class IgnoreAreasServiceServiceImpl implements IgnoreAreasService {
     }
 
     @Override
-    public String getIgnoreAreasJSONById(Long id) {
-        IgnoreAreas ignoreAreas = ignoreAreasDao.getIgnoreAreasById(id);
+    public String getIgnoreAreasJSONById(Integer id) {
+        System.out.print("333333333333");
+         System.out.print(id);
+        List<IgnoreAreas> ignoreAreas = ignoreAreasDao.getById(id);
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.setExcludes(new String[]{"videos", "users"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm"));
         JSONObject userJS = JSONObject.fromObject(ignoreAreas, jsonConfig);
         String jsonStr = userJS.toString();
         return jsonStr;
+        
     }
 
     @Override
-    public IgnoreAreas getIgnoreAreasById(Long id) {
+    public IgnoreAreas getIgnoreAreasById(Integer id) {
         return ignoreAreasDao.getIgnoreAreasById(id);
     }
 
@@ -83,4 +86,6 @@ public class IgnoreAreasServiceServiceImpl implements IgnoreAreasService {
         String jsonStr = "{success:true,info:\"" + info + "\"}";
         return jsonStr;
     }
+
+    
 }
