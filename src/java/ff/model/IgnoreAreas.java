@@ -19,7 +19,7 @@ import javax.persistence.Table;
 @Table(name = "ignore_areas") //alarm_ignore_areas
 public class IgnoreAreas {
 
-    private Long id;
+    private Integer id;
     private Integer ptzId; //云台的编号
     private Integer ptzAngelX; //火警时云台的水平角度
     private Integer ptzAngelY; //火警时云台的Y角度
@@ -31,16 +31,15 @@ public class IgnoreAreas {
     private Integer version;//版本
     private Timestamp createdAt;
     private Timestamp updatedAt;
-    
 
     @Id
     @GeneratedValue
     @Column(name = "id", unique = true, nullable = false)
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -84,8 +83,8 @@ public class IgnoreAreas {
         return ptzAngelY;
     }
 
-    @Column(name = "ptz_id",  length = 11)
-   // @Column(name = "ptz_id", unique = true, nullable = false)
+    @Column(name = "ptz_id", length = 11)
+    // @Column(name = "ptz_id", unique = true, nullable = false)
     public Integer getPtzId() {
         return ptzId;
     }
@@ -95,7 +94,7 @@ public class IgnoreAreas {
         return updatedAt;
     }
 
-     @Column(name = "version")
+    @Column(name = "version")
     public Integer getVersion() {
         return version;
     }
@@ -143,9 +142,4 @@ public class IgnoreAreas {
     public void setVersion(Integer version) {
         this.version = version;
     }
-    
-    
-    
-    
-    
 }
