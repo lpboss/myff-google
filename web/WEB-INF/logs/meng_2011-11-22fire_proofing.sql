@@ -4,29 +4,10 @@ Source Host: localhost
 Source Database: fire_proofing
 Target Host: localhost
 Target Database: fire_proofing
-Date: 2011/11/21 8:52:39
+Date: 2011/11/22 11:38:39
 */
 
 SET FOREIGN_KEY_CHECKS=0;
--- ----------------------------
--- Table structure for alarm_ignore_areas
--- ----------------------------
-CREATE TABLE `alarm_ignore_areas` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ptz_id` int(11) NOT NULL COMMENT '云台的编号',
-  `ptz_angel_x` smallint(6) DEFAULT '0' COMMENT '火警时云台的水平角度',
-  `ptz_angel_y` smallint(6) DEFAULT NULL COMMENT '火警时云台的Y角度',
-  `ccd_area` smallint(6) DEFAULT '0' COMMENT '热成像起火面积值',
-  `heat_max` smallint(6) DEFAULT '0' COMMENT '最大热值',
-  `begin_date` datetime DEFAULT NULL COMMENT '火警时间范围',
-  `end_date` datetime DEFAULT NULL COMMENT '火警时间范围',
-  `is_locked` tinyint(4) DEFAULT '0',
-  `updated_at` datetime NOT NULL,
-  `created_at` datetime NOT NULL,
-  `version` int(11) DEFAULT '0' COMMENT '本版',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 -- ----------------------------
 -- Table structure for fire_alarms
 -- ----------------------------
@@ -49,6 +30,25 @@ CREATE TABLE `fire_alarms` (
   `is_locked` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for ignore_areas
+-- ----------------------------
+CREATE TABLE `ignore_areas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ptz_id` int(11) NOT NULL COMMENT '云台的编号',
+  `ptz_angel_x` smallint(6) DEFAULT '0' COMMENT '火警时云台的水平角度',
+  `ptz_angel_y` smallint(6) DEFAULT NULL COMMENT '火警时云台的Y角度',
+  `ccd_area` smallint(6) DEFAULT '0' COMMENT '热成像起火面积值',
+  `heat_max` smallint(6) DEFAULT '0' COMMENT '最大热值',
+  `begin_date` datetime DEFAULT NULL COMMENT '火警时间范围',
+  `end_date` datetime DEFAULT NULL COMMENT '火警时间范围',
+  `is_locked` tinyint(4) DEFAULT '0',
+  `updated_at` datetime NOT NULL,
+  `created_at` datetime NOT NULL,
+  `version` int(11) DEFAULT '0' COMMENT '本版',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for privilege_details
@@ -117,7 +117,7 @@ CREATE TABLE `ptzs` (
   `infrared_pixel_y` smallint(6) DEFAULT '0' COMMENT '红外摄像机Y方向像素',
   `brand_type` varchar(255) DEFAULT NULL COMMENT '品牌与型号',
   `cruise_step` smallint(6) DEFAULT '5' COMMENT '云台巡航步长',
-  `cruise_right_limitf` smallint(6) DEFAULT '0' COMMENT '巡航右边界',
+  `cruise_right_limit` smallint(6) DEFAULT '0' COMMENT '巡航右边界',
   `cruise_left_limit` smallint(6) DEFAULT '0' COMMENT '巡航左边界',
   `cruise_up_limit` smallint(6) DEFAULT '90' COMMENT '最大上仰角度',
   `cruise_down_limit` smallint(6) DEFAULT '0' COMMENT '巡航时最大俯角',
@@ -126,7 +126,7 @@ CREATE TABLE `ptzs` (
   `version` int(11) DEFAULT NULL COMMENT '本版',
   `is_locked` tinyint(4) DEFAULT NULL COMMENT '启用，停用',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for roles
@@ -216,6 +216,8 @@ CREATE TABLE `users` (
 -- ----------------------------
 -- Records 
 -- ----------------------------
+INSERT INTO `ignore_areas` VALUES ('1', '1', '1', '1', '11', '11', '2011-11-01 17:00:31', '2011-11-30 17:00:36', '1', '2011-11-02 17:00:43', '2011-11-04 17:00:48', '1');
+INSERT INTO `ignore_areas` VALUES ('2', '3', '3', '3', '3', '3', '2011-11-01 10:35:11', '2011-11-02 10:35:13', null, '2011-11-22 10:35:17', '2011-11-22 10:35:17', '3');
 INSERT INTO `privilege_details` VALUES ('1', '2', '所到所有用户', '1', '1', null, null, null, '', null, '0', '2011-09-14 12:30:16', '2011-09-16 16:21:38', '0');
 INSERT INTO `privilege_details` VALUES ('2', '2', '新增用户', '1', '2', null, null, null, '', null, null, '2011-09-14 12:48:15', '2011-09-15 13:58:16', '0');
 INSERT INTO `privilege_details` VALUES ('3', '2', '更新用户', '1', '3', null, null, null, '', null, '0', '2011-09-14 13:00:59', '2011-09-15 14:33:14', '0');
@@ -235,6 +237,8 @@ INSERT INTO `ptzs` VALUES ('1', '测试机1', 'rtsp://admin:12345@192.168.254.64
 INSERT INTO `ptzs` VALUES ('2', '11', '11', '11', '11', '11', '11', '11', '11', '11', '11', '11', '11', '11', '11', '亚安', '11', '11', '11', '11', '11', '2011-11-18 15:17:48', '2011-11-18 15:17:48', '11', '11');
 INSERT INTO `ptzs` VALUES ('3', '33', '33', '33', '33', '33', '33', '33', '33', '33', '33', '33', '33', '33', '33', '飞越', '33', null, null, null, null, '2011-11-18 15:34:45', '2011-11-18 15:34:45', '33', null);
 INSERT INTO `ptzs` VALUES ('4', '44', '44', '44', '44', '44', '44', '44', '44', '44', '44', '44', '44', '44', '44', '飞越', '44', '44', '44', '44', '44', '2011-11-18 15:39:48', '2011-11-18 15:39:48', '44', null);
+INSERT INTO `ptzs` VALUES ('5', '55', '55', '55', '55', '55', '55', '55', '55', '55', '55', '55', '55', '55', '55', '亚安', '55', '55', '55', '55', '55', '2011-11-22 10:11:41', '2011-11-22 10:11:41', '55', null);
+INSERT INTO `ptzs` VALUES ('6', '66', '66', '66', '66', '66', '66', '66', '66', '66', '66', '66', '66', '66', '66', '飞越', '66', '66', '66', '66', '66', '2011-11-22 10:35:55', '2011-11-22 10:35:55', '66', null);
 INSERT INTO `roles` VALUES ('1', '管理员', '管理员', '0', '12', '2011-09-09 15:25:30', '2011-09-20 17:41:56');
 INSERT INTO `roles` VALUES ('2', 'æµè¯', 'æµè¯', '0', '0', '2011-09-20 17:46:37', '2011-09-20 17:46:37');
 INSERT INTO `roles` VALUES ('3', '测试', '测试', '0', '0', '2011-09-20 17:57:03', '2011-09-20 17:57:03');

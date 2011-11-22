@@ -16,13 +16,13 @@
         <title>报警忽视地区</title>
         <script type="text/javascript">
             Ext.onReady(function(){                            
-                
+                var userId = <%=request.getParameter("parent_id")%>;
                 alarmIgnoreAreasDS =  Ext.create('Ext.data.Store', {
                     //autoDestroy : true,
                     model : 'alarmIgnoreAreas',
                     proxy : {
                         type : 'ajax',
-                        url : '<%=basePath%>ignoreareas/getAllIgnoreAreases.htm',
+                        url : '<%=basePath%>ignoreareas/getAllIgnoreAreases.htm?id='+userId,
                         reader : {
                             type : 'json',
                             root : 'root',// JSON数组对象名
@@ -103,7 +103,7 @@
                                     //modal: true,
                                     title: '添加报警忽视地区信息',
                                     autoLoad: {
-                                        url: "<%=basePath%>ignoreareas/newIgnoreAreas.htm",
+                                        url: "<%=basePath%>ignoreareas/newIgnoreAreas.htm?parent_id=" + userId,
                                         scripts: true
                                     }
                                 });
@@ -198,13 +198,10 @@
                                 editAlarmIgnoreAreasWin.show();
                             }
                         }]
-                        
-                        
-                        
+                                            
                 });
                       
-                alarmIgnoreAreasGrid.render('alarm_Ignore_Areas_list');
-                
+                alarmIgnoreAreasGrid.render('alarm_Ignore_Areas_list');               
             })
         </script>
     </head>

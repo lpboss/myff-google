@@ -128,7 +128,7 @@ public class PTZController extends MultiActionController {
         logger.info(request.getParameter("cruise_step"));
         ptz.setCruiseStep(Integer.valueOf(request.getParameter("cruise_step")));//巡航步长
         ptz.setVersion(Integer.valueOf(request.getParameter("version")));//版本
-        ptz.setIsLocked(Long.getLong("isLocked"));//状态isLocked
+        ptz.setIsLocked(Long.getLong("is_locked"));//状态isLocked
         ptz.setCruiseRightLimit(Integer.valueOf(request.getParameter("cruise_right_limit"))); //巡航右边界
         ptz.setCruiseLeftLimit(Integer.valueOf(request.getParameter("cruise_left_limit"))); //巡航左边界
         ptz.setCruiseUpLimit(Integer.valueOf(request.getParameter("cruise_up_limit"))); //最大上仰角度
