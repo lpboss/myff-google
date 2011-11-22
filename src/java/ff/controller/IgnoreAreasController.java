@@ -51,7 +51,11 @@ public class IgnoreAreasController extends MultiActionController{
     
     //得到报警忽视地区信息
     public void getAllIgnoreAreases(HttpServletRequest request, HttpServletResponse response) {
-        String jsonStr = ignoreAreasService.getIgnoreAreasList();
+        String id = request.getParameter("id");
+        logger.info("88888888888");
+        logger.info(id);
+        String jsonStr = ignoreAreasService.getIgnoreAreasJSONById(Long.parseLong(request.getParameter("id")));
+     //   String jsonStr = ignoreAreasService.getIgnoreAreasList();
         logger.info(jsonStr);
         PrintWriter pw;
         try {
@@ -67,17 +71,18 @@ public class IgnoreAreasController extends MultiActionController{
     
     //添加报警忽视地区信息
     public void create(HttpServletRequest request, HttpServletResponse response) {
-        String id = request.getParameter("id");
-        IgnoreAreas alarmIgnoreAreas = new IgnoreAreas();            
-        alarmIgnoreAreas.setPtzAngelX(Integer.valueOf(request.getParameter("ptz_angel_x"))); //火警时云台的水平角度       
-        alarmIgnoreAreas.setPtzAngelY(Integer.valueOf(request.getParameter("ptz_angel_y"))); //火警时云台的Y角度
-        alarmIgnoreAreas.setCcdArea(Integer.valueOf(request.getParameter("ccd_area"))); //热成像起火面积值
-        alarmIgnoreAreas.setHeatMax(Integer.valueOf(request.getParameter("heat_max"))); //最大热值
-        alarmIgnoreAreas.setBeginDate(Timestamp.valueOf(request.getParameter("beginDate"))); //火警时间范围(开始)
-        alarmIgnoreAreas.setEndDate(Timestamp.valueOf(request.getParameter("endDate"))); //火警时间范围(结束)
-        alarmIgnoreAreas.setVersion(Integer.valueOf(request.getParameter("version"))); //版本
-        alarmIgnoreAreas.setIsLocked(Long.getLong("isLocked")); //状态isLocked
-        ignoreAreasService.saveOrUpdate(alarmIgnoreAreas);
+     //   String id = request.getParameter("id");
+        IgnoreAreas ignoreAreas = new IgnoreAreas();  
+        ignoreAreas.setPtzId(Integer.valueOf(request.getParameter("ptz_id"))); //云台ID
+        ignoreAreas.setPtzAngelX(Integer.valueOf(request.getParameter("ptz_angel_x"))); //火警时云台的水平角度       
+        ignoreAreas.setPtzAngelY(Integer.valueOf(request.getParameter("ptz_angel_y"))); //火警时云台的Y角度
+        ignoreAreas.setCcdArea(Integer.valueOf(request.getParameter("ccd_area"))); //热成像起火面积值
+        ignoreAreas.setHeatMax(Integer.valueOf(request.getParameter("heat_max"))); //最大热值
+        ignoreAreas.setBeginDate(Timestamp.valueOf(request.getParameter("begin_date"))); //火警时间范围(开始)
+        ignoreAreas.setEndDate(Timestamp.valueOf(request.getParameter("end_date"))); //火警时间范围(结束)
+        ignoreAreas.setVersion(Integer.valueOf(request.getParameter("version"))); //版本
+        ignoreAreas.setIsLocked(Long.getLong("is_locked")); //状态isLocked
+        ignoreAreasService.saveOrUpdate(ignoreAreas);
         String info = "success";
         String jsonStr = "{success:true,info:'" + info + "'}";
         PrintWriter pw;
@@ -111,30 +116,31 @@ public class IgnoreAreasController extends MultiActionController{
      //更新报警忽视地区
     public void update(HttpServletRequest request, HttpServletResponse response) {
         Long id = Long.valueOf(request.getParameter("id"));
-        Integer ptzAngelX = Integer.valueOf(request.getParameter("ptzAngelX")); //火警时云台的水平角度    
-        Integer ptzAngelY = Integer.valueOf(request.getParameter("ptzAngelY")); //火警时云台的Y角度
-        Integer ccdArea = Integer.valueOf(request.getParameter("ccdArea")); //热成像起火面积值
-        Integer heatMax = Integer.valueOf(request.getParameter("heatMax"));  //最大热值
-        Timestamp beginDate = Timestamp.valueOf(request.getParameter("beginDate"));  //火警时间范围(开始)
-        Timestamp endDate = Timestamp.valueOf(request.getParameter("endDate")); //火警时间范围(结束)
+        Integer ptzAngelX = Integer.valueOf(request.getParameter("ptz_angel_x")); //火警时云台的水平角度    
+        Integer ptzAngelY = Integer.valueOf(request.getParameter("ptz_angel_y")); //火警时云台的Y角度
+        Integer ccdArea = Integer.valueOf(request.getParameter("ccd_area")); //热成像起火面积值
+        Integer heatMax = Integer.valueOf(request.getParameter("heat_max"));  //最大热值
+        Timestamp beginDate = Timestamp.valueOf(request.getParameter("begin_date"));  //火警时间范围(开始)
+        Timestamp endDate = Timestamp.valueOf(request.getParameter("end_date")); //火警时间范围(结束)
         Integer version = Integer.valueOf(request.getParameter("version")); //版本
-      //  Long isLocked = Long.valueOf(request.getParameter("isLocked"));//状态
+        Long isLocked = Long.valueOf(request.getParameter("is_locked"));//状态
      //   Long ptzId = Long.valueOf(request.getParameter("roleId"));
-        IgnoreAreas alarmIgnoreAreas = ignoreAreasService.getIgnoreAreasById(id);
-        alarmIgnoreAreas.setId(id);
-        alarmIgnoreAreas.setPtzAngelX(ptzAngelX);
-        alarmIgnoreAreas.setPtzAngelY(ptzAngelY);
-        alarmIgnoreAreas.setCcdArea(ccdArea);
-        alarmIgnoreAreas.setHeatMax(heatMax);
-        alarmIgnoreAreas.setBeginDate(beginDate);
-        alarmIgnoreAreas.setEndDate(endDate);
-        alarmIgnoreAreas.setVersion(version);
-    //  ptz.setIsLocked(Long.valueOf(isLocked));
+        IgnoreAreas ignoreAreas = ignoreAreasService.getIgnoreAreasById(id);
+        ignoreAreas.setId(id);
+        ignoreAreas.setPtzAngelX(ptzAngelX);
+        ignoreAreas.setPtzAngelY(ptzAngelY);
+        ignoreAreas.setCcdArea(ccdArea);
+        ignoreAreas.setHeatMax(heatMax);
+        ignoreAreas.setBeginDate(beginDate);
+        ignoreAreas.setEndDate(endDate);
+        ignoreAreas.setVersion(version);
+        ignoreAreas.setIsLocked(isLocked);
+       // ignoreAreas.setIsLocked(Long.valueOf(isLocked));
       //  logger.info(ptzId);
         PrintWriter pw;
         try {
             logger.info("user update..............................................Begin..........");
-            String jsonStr = ignoreAreasService.update(alarmIgnoreAreas);
+            String jsonStr = ignoreAreasService.update(ignoreAreas);
             logger.info("user update..............................................");
             logger.info(jsonStr);
 
