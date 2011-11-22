@@ -53,7 +53,6 @@ public class FireAlarmDaoHImpl extends HibernateDaoSupport implements FireAlarmD
     public FireAlarm getFireAlarmById(Long id) {
         FireAlarm fireAlarm = (FireAlarm) this.getHibernateTemplate().get(FireAlarm.class, id);
 
-        System.out.println("cccccccccccccccccccccccccccccccccccccccccc");
         return fireAlarm;
     }
 
@@ -74,6 +73,42 @@ public class FireAlarmDaoHImpl extends HibernateDaoSupport implements FireAlarmD
     @Override
     public List<FireAlarm> getFireAlarmsByPtzId(Integer ptzId) {
         List<FireAlarm> fireAlarms = this.getHibernateTemplate().find("from FireAlarm f where f.ptzId = ?", ptzId);
+        return fireAlarms;
+    }
+
+    @Override
+    public List getFireAlarmsByBeginTime(Timestamp beginTime) {
+        List<FireAlarm> fireAlarms = this.getHibernateTemplate().find("from FireAlarm f where f.actionDate > ?", beginTime);
+        return fireAlarms;
+    }
+
+    @Override
+    public List getFireAlarmsByEndTime(Timestamp endTime) {
+        List<FireAlarm> fireAlarms = this.getHibernateTemplate().find("from FireAlarm f where f.actionDate <= ?", endTime);
+        return fireAlarms;
+    }
+
+    @Override
+    public List getFireAlarmsByEndTimeBeginTime(Timestamp endTime, Timestamp beginTime) {
+        List<FireAlarm> fireAlarms = this.getHibernateTemplate().find("from FireAlarm f where f.actionDate <= ? and f.actionDate >= ?", endTime, beginTime);
+        return fireAlarms;
+    }
+
+    @Override
+    public List getFireAlarmsByBeginTimePtzId(Integer ptzId, Timestamp beginTime) {
+        List<FireAlarm> fireAlarms = this.getHibernateTemplate().find("from FireAlarm f where f.actionDate >= ? and f.ptzId = ?", beginTime, ptzId);
+        return fireAlarms;
+    }
+
+    @Override
+    public List getFireAlarmsByEndTimePtzId(Integer ptzId, Timestamp endTime) {
+        List<FireAlarm> fireAlarms = this.getHibernateTemplate().find("from FireAlarm f where f.actionDate <= ? and f.ptzId = ?", endTime, ptzId);
+        return fireAlarms;
+    }
+
+    @Override
+    public List getFireAlarmsByBeginTimePtzId(Integer ptzId, Timestamp beginTime, Timestamp endTime) {
+        List<FireAlarm> fireAlarms = this.getHibernateTemplate().find("from FireAlarm f where f.actionDate <= ? and f.ptzId = ? and f.actionDate >= ?", endTime, ptzId, beginTime);
         return fireAlarms;
     }
 }

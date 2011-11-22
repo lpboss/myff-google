@@ -32,15 +32,44 @@ public class FireAlarmServiceImpl implements FireAlarmService {
         this.fireAlarmDao = fireAlarmDao;
     }
 //得到火警信息
-    @Override
-    public String getFireAlarmList(Integer ptzId) {
-        List fireAlarms;
-        if (ptzId == null) {
-            fireAlarms = fireAlarmDao.getAllFireAlarms();
-        }else{
-            fireAlarms =fireAlarmDao.getFireAlarmsByPtzId(ptzId);
-        }
 
+    @Override
+    public String getFireAlarmList(Integer ptzId, Timestamp beginTime, Timestamp endTime) {
+        List fireAlarms = null;
+
+        // 云台ID 不为空
+        if (ptzId != null && beginTime == null && endTime == null) {
+            fireAlarms = fireAlarmDao.getFireAlarmsByPtzId(ptzId);
+        }
+        // 开始时间  不为空
+        if (beginTime != null && ptzId == null && endTime == null) {
+            fireAlarms = fireAlarmDao.getFireAlarmsByBeginTime(beginTime);
+        }
+        // 结束时间  不为空
+        if (endTime != null && beginTime == null && ptzId == null) {
+            fireAlarms = fireAlarmDao.getFireAlarmsByEndTime(endTime);
+        }
+        // 开始时间   结束时间 
+        if (endTime != null && beginTime != null && ptzId == null) {
+            fireAlarms = fireAlarmDao.getFireAlarmsByEndTimeBeginTime(endTime, beginTime);
+        }
+        //结束时间    云台ID
+        if (endTime != null && beginTime == null && ptzId != null) {
+            fireAlarms = fireAlarmDao.getFireAlarmsByEndTimePtzId(ptzId, endTime);
+        }
+        // 开始时间  云台ID
+        if (endTime == null && beginTime != null && ptzId != null) {
+            fireAlarms = fireAlarmDao.getFireAlarmsByBeginTimePtzId(ptzId, beginTime);
+        }
+        // 开始时间   结束时间   云台ID
+        if (endTime != null && beginTime != null && ptzId != null) {
+            fireAlarms = fireAlarmDao.getFireAlarmsByBeginTimePtzId(ptzId, beginTime, endTime);
+        }
+        //   都为空
+        if (ptzId == null && beginTime == null && endTime == null) {
+            fireAlarms = fireAlarmDao.getAllFireAlarms();
+      
+        }
         JsonConfig jsonConfig = new JsonConfig();
         //这是需要过滤掉的变量名。
         jsonConfig.setExcludes(new String[]{"videos", "users", "user", "rolesPrivilegeDetails"});
@@ -51,6 +80,7 @@ public class FireAlarmServiceImpl implements FireAlarmService {
         return jsonStr;
     }
 //创建
+
     @Override
     public String create(FireAlarm fireAlarm) {
         String info = null;
@@ -62,6 +92,7 @@ public class FireAlarmServiceImpl implements FireAlarmService {
         return jsonStr;
     }
 //删除
+
     @Override
     public String deleteFireAlarm(String id) {
         String info = null;
@@ -80,6 +111,7 @@ public class FireAlarmServiceImpl implements FireAlarmService {
         return jsonStr;
     }
 //得到某一个火警信息JSON
+
     @Override
     public String getFireAlarmJSONById(Long id) {
         System.out.println("bbbbbbbbbbbb");
@@ -92,6 +124,7 @@ public class FireAlarmServiceImpl implements FireAlarmService {
         return jsonStr;
     }
 //更新
+
     @Override
     public String update(FireAlarm fireAlarm) {
         String info = null;
@@ -107,6 +140,7 @@ public class FireAlarmServiceImpl implements FireAlarmService {
         return jsonStr;
     }
 //得到某一个记录
+
     @Override
     public FireAlarm getFireAlarmById(Long id) {
         System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbb");
