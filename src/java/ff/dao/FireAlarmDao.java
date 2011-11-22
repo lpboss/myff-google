@@ -5,6 +5,7 @@
 package ff.dao;
 
 import ff.model.FireAlarm;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -24,4 +25,18 @@ public interface FireAlarmDao {
     void delFireAlarmAll(String id);
 
     List<FireAlarm> getFireAlarmsByPtzId(Integer ptzId);
+
+    public List getFireAlarmsByBeginTime(Timestamp beginTime);
+
+    public List getFireAlarmsByEndTime(Timestamp endTime);
+
+    public List getFireAlarmsByEndTimeBeginTime(Timestamp endTime, Timestamp beginTime);
+
+    public List getFireAlarmsByBeginTimePtzId(Integer ptzId, Timestamp endTime);
+
+    public List getFireAlarmsByEndTimePtzId(Integer ptzId, Timestamp endTime);
+
+    public List getFireAlarmsByBeginTimePtzId(Integer ptzId, Timestamp beginTime, Timestamp endTime);
+
+   
 }
