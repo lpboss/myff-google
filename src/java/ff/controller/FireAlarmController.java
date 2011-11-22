@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
+import java.sql.Timestamp;
 
 /**
  *
@@ -31,37 +32,51 @@ public class FireAlarmController extends MultiActionController {
         return fireAlarmService;
     }
 //显示火警信息页面
+
     public ModelAndView fireAlarmList(HttpServletRequest request, HttpServletResponse response) {
         logger.info("Fk");
         ModelAndView mav = new ModelAndView();
         return mav;
     }
 //添加页面
+
     public ModelAndView newFireAlarm(HttpServletRequest request, HttpServletResponse response) {
         logger.info("Fuc............................................k");
         ModelAndView mav = new ModelAndView();
         return mav;
     }
 //编辑页面
+
     public ModelAndView editFireAlarm(HttpServletRequest request, HttpServletResponse response) {
         logger.info("Fuc............................................k");
         ModelAndView mav = new ModelAndView();
         return mav;
     }
 //  得到火警信息    包含条件筛选
+
     public void getAllFireAlarm(HttpServletRequest request, HttpServletResponse response) {
         Integer ptzId;
-
+        java.sql.Timestamp beginTime;
+        java.sql.Timestamp endTime;
+        logger.info("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         if (!(request.getParameter("PTZId") == null || "".equals(request.getParameter("PTZId")))) {
-            logger.info(request.getParameter("PTZId"));
             ptzId = Integer.valueOf(request.getParameter("PTZId"));
         } else {
             ptzId = null;
         }
+        if (!(request.getParameter("BeginTime") == null || "".equals(request.getParameter("BeginTime")))) {
+            beginTime = java.sql.Timestamp.valueOf(request.getParameter("BeginTime"));
+        } else {
+            beginTime = null;
+        }
+        if (!(request.getParameter("EndTime") == null || "".equals(request.getParameter("EndTime")))) {
+            endTime = java.sql.Timestamp.valueOf(request.getParameter("EndTime"));
+        } else {
+            endTime = null;
+        }
 
 
-
-        String jsonStr = fireAlarmService.getFireAlarmList(ptzId);
+        String jsonStr = fireAlarmService.getFireAlarmList(ptzId,beginTime,endTime);
 
         PrintWriter pw;
         try {
@@ -75,6 +90,7 @@ public class FireAlarmController extends MultiActionController {
         }
     }
 // 创建
+
     public void create(HttpServletRequest request, HttpServletResponse response) {
 
         String description = request.getParameter("description");
@@ -111,6 +127,7 @@ public class FireAlarmController extends MultiActionController {
         }
     }
 //删除
+
     public void deleteFireAlarm(HttpServletRequest request, HttpServletResponse response) {
 
         String ids = request.getParameter("id");
@@ -135,7 +152,6 @@ public class FireAlarmController extends MultiActionController {
 
     public void getFireAlarmById(HttpServletRequest request, HttpServletResponse response) {
         Long id = Long.valueOf(request.getParameter("id"));
-        System.out.println("aaaaaaaaaaaaaaaaa");
         String jsonStr = fireAlarmService.getFireAlarmJSONById(id);
         logger.info(jsonStr);
         PrintWriter pw;
@@ -157,8 +173,8 @@ public class FireAlarmController extends MultiActionController {
 
         String description = request.getParameter("description");
         Integer heatMax = Integer.valueOf(request.getParameter("heatMax"));
-        Float ptzAngleX = Float.valueOf(request.getParameter("ptzHAngle"));
-        Float ptzAngleY = Float.valueOf(request.getParameter("ptzVAngle"));
+        Float ptzAngleX = Float.valueOf(request.getParameter("ptzAngleX"));
+        Float ptzAngleY = Float.valueOf(request.getParameter("ptzAngleY"));
 
         Integer heatAvg = Integer.valueOf(request.getParameter("heatAvg"));
         Integer heatMin = Integer.valueOf(request.getParameter("heatMin"));

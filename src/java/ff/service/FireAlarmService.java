@@ -5,6 +5,7 @@
 package ff.service;
 
 import ff.model.FireAlarm;
+import java.sql.Timestamp;
 
 /**
  *
@@ -12,7 +13,7 @@ import ff.model.FireAlarm;
  */
 public interface FireAlarmService {
 
-    String getFireAlarmList(Integer ptzId);
+    String getFireAlarmList(Integer ptzId, Timestamp beginTime, Timestamp endTime);
 
     String create(FireAlarm fireAlarm);
 

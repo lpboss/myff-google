@@ -49,7 +49,7 @@
             Ext.QuickTips.init();
             //Ext.Ajax.defaultPostHeader += ";charset=UTF-8";
             Ext.data.Connection.prototype.method = 'POST';
-            //这是一个小补丁，阻止在IE下按Backspce引起乱跳转页面
+            //这是一个小补丁，阻止在IE下按Backspce引起乱跳转页�
 
 
             // Add the additional 'advanced' VTypes
@@ -118,7 +118,7 @@
 
                 var topPanel = Ext.create('Ext.panel.Panel', {
                     height: 30,
-                    bbar: ["<b style='font-size:14px;'>您好：<%=session.getAttribute("userName")%>", '->','-',logoutButton],
+                    bbar: ["<b style='font-size:14px;'>您好�<%=session.getAttribute("userName")%>", '->','-',logoutButton],
                     region:'north'
                 });
 
@@ -291,8 +291,8 @@
                     fields : [{name: 'id'},
                         { name: 'ptzId'},
                         { name: 'actionDate'},
-                        {name: 'ptzHAngle'},
-                        {name: 'ptzVAngle'},
+                        {name: 'ptzAngleX'},
+                        {name: 'ptzAngleY'},
                         {name: 'heatMax'},
                         {name: 'heatMin'},
                         {name: 'heatAvg'}, 
@@ -354,7 +354,7 @@
                     ]
                 });
       
-                //员工下拉框模型
+                //员工下拉框模�
                 Ext.define('User', {
                     extend : 'Ext.data.Model',
                     fields : [{name: 'id'},
@@ -391,7 +391,7 @@
                         url : '<%=basePath%>user/getAllUsers.htm?for_cbb=true',
                         reader : {
                             type : 'json',
-                            root : 'root',// JSON数组对象名
+                            root : 'root',// JSON数组对象�
                             totalProperty : 'totalProperty'// 数据集记录总数
                         }
                     },
@@ -399,7 +399,7 @@
                 });
 
 
-                //员工下拉框模型
+                //员工下拉框模�
                 Ext.define('Role', {
                     extend : 'Ext.data.Model',
                     fields : [{name: 'id'},
@@ -427,7 +427,7 @@
                         url : '<%=basePath%>admin/getAllSysActions.htm',
                         reader : {
                             type : 'json',
-                            root : 'root',// JSON数组对象名
+                            root : 'root',// JSON数组对象�
                             totalProperty : 'totalProperty'// 数据集记录总数
                         }
                     },
@@ -449,7 +449,7 @@
                         url : '<%=basePath%>admin/getAllSysControllers.htm',
                         reader : {
                             type : 'json',
-                            root : 'root',// JSON数组对象名
+                            root : 'root',// JSON数组对象�
                             totalProperty : 'totalProperty'// 数据集记录总数
                         }
                     },
@@ -520,7 +520,7 @@
                         url : '<%=basePath%>privilege/getAllModules.htm',
                         reader : {
                             type : 'json',
-                            root : 'root',// JSON数组对象名
+                            root : 'root',// JSON数组对象�
                             totalProperty : 'totalProperty'// 数据集记录总数
                         }
                     },
