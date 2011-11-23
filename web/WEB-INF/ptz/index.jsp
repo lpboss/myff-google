@@ -15,6 +15,29 @@
         <title>JSP Page</title>
         <script>
             //默认只只控一个云台，这是测试时预置为1.
+            ptzAssignedStepStore = Ext.create('Ext.data.ArrayStore', {
+                autoDestroy: true,
+                storeId: 'ptz_assigned_step_store',
+                // reader configs
+                idIndex: 0,
+                fields: ['text'],
+                data : ptzAssignedStepArray
+            });
+            
+            var ptzAssignedStep = Ext.create('Ext.form.ComboBox', {
+                fieldLabel: '移动步长',
+                store: ptzAssignedStepStore,
+                valueField:'text',
+                displayField:'text',
+                allowBlank: false,
+                typeAhead: true,
+                mode: 'local',
+                name:'ptz_assigned_step',
+                emptyText:'选择步长...',
+                anchor: '95%',
+                renderTo:'ptz_assigned_step'
+            });
+        
             var ptzId = 1;
             var alarmSound ;
             soundManager.onready(function(oStatus) {
@@ -208,7 +231,8 @@
                     method : 'GET',
                     params : {
                         action_type : ptzActionStr,
-                        ptz_id: ptzId
+                        ptz_id: ptzId,
+                        assigned_step:ptzAssignedStep.getValue()                        
                     }
                 });
             }    
@@ -280,6 +304,9 @@
                             <tr>
                                 <td id="ptz_alarm_label" colspan="4"></td>
                             </tr>     
+                            <tr>
+                                <td id="ptz_assigned_step" colspan="4"></td>
+                            </tr>   
                         </table>
                     </div>
                 </td>
