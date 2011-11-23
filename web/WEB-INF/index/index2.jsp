@@ -289,7 +289,10 @@
                 Ext.define('FireAlarm', {
                     extend : 'Ext.data.Model',
                     fields : [{name: 'id'},
-                        { name: 'ptzId'},
+                        { name: 'ptz',
+                            convert:function(value){
+                                return value.name;                 
+                            } },
                         { name: 'actionDate'},
                         {name: 'ptzAngleX'},
                         {name: 'ptzAngleY'},
@@ -297,7 +300,10 @@
                         {name: 'heatMin'},
                         {name: 'heatAvg'}, 
                         {name: 'description'},
-                        {name: 'userId'},
+                        {name: 'userId',
+                            convert:function(value){
+                                return value.name;                 
+                            }},
                         {name: 'dealDate'},
                         {name: 'updatedAt'},
                         {name: 'createdAt'},
