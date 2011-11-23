@@ -40,6 +40,7 @@ public class PTZ {
     private Integer infraredPixelY;//'红外摄像机Y方向像素'
     private String brandType; //品牌类型,不同品牌，特性不同，plcod命令拼接方式不同。
     private Integer cruiseStep;//云台巡航步长
+    private Integer shiftStep;//云台移动步长
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private Integer version;//版本
@@ -240,6 +241,15 @@ public class PTZ {
 
     public void setCruiseStep(Integer cruiseStep) {
         this.cruiseStep = cruiseStep;
+    }
+
+    @Column(name = "shift_step")
+    public Integer getShiftStep() {
+        return shiftStep;
+    }
+
+    public void setShiftStep(Integer shiftStep) {
+        this.shiftStep = shiftStep;
     }
 
     @Column(name = "cruise_down_limit", length = 6)
