@@ -48,12 +48,16 @@ public class PTZController extends MultiActionController {
     public void ptzAction(HttpServletRequest request, HttpServletResponse response) {
         logger.info("PTZ index page");
         long ptzId = Long.parseLong(request.getParameter("ptz_id"));
+        int assignedStep = 0;
+        if (request.getParameter("assigned_step") != null && !request.getParameter("assigned_step").equalsIgnoreCase("")) {
+            assignedStep = Integer.parseInt(request.getParameter("assigned_step"));
+        }
         if (request.getParameter("action_type").equalsIgnoreCase("stop_fire_alarm")) {
             PTZ ptz = ptzService.getPTZById(ptzId);
             ptz.setIsAlarm(0);
             ptzService.saveOrUpdate(ptz);
         } else {
-            ptzUtil.PTZAction(ptzId, request.getParameter("action_type"));
+            ptzUtil.PTZAction(ptzId, request.getParameter("action_type"), assignedStep);
         }
 
         String info = "success";
@@ -76,7 +80,7 @@ public class PTZController extends MultiActionController {
      *描述：得到正在报警的云台。  
      */
     public void getIsAlarmPTZs(HttpServletRequest request, HttpServletResponse response) {
-        
+
         String jsonStr = ptzService.getIsAlarmPTZsJSON();
 
         PrintWriter pw;
@@ -215,8 +219,8 @@ public class PTZController extends MultiActionController {
         Integer cruiseUpLimit = Integer.valueOf(request.getParameter("cruiseUpLimit")); //最大上仰角度
         Integer cruiseDownLimit = Integer.valueOf(request.getParameter("cruiseDownLimit")); //巡航时最大俯角
         Long isLocked = Long.valueOf(request.getParameter("isLocked"));//状态
-    //    Integer version = Integer.valueOf(request.getParameter("version")); //版本
-     //   Integer version = Integer.valueOf(request.getParameter("version")); //版本
+        //    Integer version = Integer.valueOf(request.getParameter("version")); //版本
+        //   Integer version = Integer.valueOf(request.getParameter("version")); //版本
         //   Long ptzId = Long.valueOf(request.getParameter("roleId"));
         PTZ ptz = ptzService.getPTZById(id);
         ptz.setId(id);
