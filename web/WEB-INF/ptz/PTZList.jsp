@@ -15,6 +15,29 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>云台信息设置</title>
         <script type="text/javascript">
+            
+             //处理PTZ是否锁定
+            function lockPTZFn(id){              
+                Ext.Ajax.request({                     
+                    url : '<%=basePath%>ptz/ptzLock.htm',
+                    success : function (result, request) {
+                        PTZDS.load();
+                    },
+                    failure : function (result, request){
+                        Ext.MessageBox.show({
+                            title: '消息',
+                            msg: "通讯失败，请从新操作",
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.WARNING
+                        });
+                    },
+                    method : 'POST',
+                    params : {
+                        id : id
+                    }
+                });
+            }
+            
             Ext.onReady(function(){                            
                 
                 PTZDS =  Ext.create('Ext.data.Store', {
@@ -33,11 +56,11 @@
                     autoLoad : true
                 });
                 
-                function renderFireAlarmIsLucked(value, cellmeta, record, index, columnIndex, store){
+                function renderPTZIsLucked(value, cellmeta, record, index, columnIndex, store){
                     if (record.get("isLocked")=="1"){
-                        return "<a style=cursor:pointer onclick=lockFireAlarmFn(" + store.getAt(index).get('id')+")><font color=red>启用</font></a>";
+                        return "<a style=cursor:pointer onclick=lockPTZFn(" + store.getAt(index).get('id')+")><font color=red>启用</font></a>";
                     }else{
-                        return "<a style=cursor:pointer onclick=lockFireAlarmFn(" + store.getAt(index).get('id')+")><font color=blue>未启用</font></a>";
+                        return "<a style=cursor:pointer onclick=lockPTZFn(" + store.getAt(index).get('id')+")><font color=blue>未启用</font></a>";
                     }
                 }
 
@@ -149,7 +172,7 @@
                         },{
                             header: '状态',
                             dataIndex: 'isLocked',  
-                            renderer: renderFireAlarmIsLucked,
+                            renderer: renderPTZIsLucked,
                             width:80
                         }],
        

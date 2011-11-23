@@ -176,9 +176,9 @@ public class FireAlarm {
     public void setVersion(Integer version) {
         this.version = version;
     }
-
+ 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "ptz_id")    
+    @JoinColumn(name = "ptz_id")
     public PTZ getPtz() {
         return ptz;
     }

@@ -35,7 +35,7 @@ public class FireAlarmServiceImpl implements FireAlarmService {
 
     @Override
     public String getFireAlarmList(Long ptzId, Timestamp beginTime, Timestamp endTime) {
-        List fireAlarms = null;
+        List<FireAlarm> fireAlarms = null;
 
         // 云台ID 不为空
         if (ptzId != null && beginTime == null && endTime == null) {
@@ -72,8 +72,10 @@ public class FireAlarmServiceImpl implements FireAlarmService {
         }
         JsonConfig jsonConfig = new JsonConfig();
         //这是需要过滤掉的变量名。
-        jsonConfig.setExcludes(new String[]{"videos", "users", "user", "rolesPrivilegeDetails","ptz"});
-
+        jsonConfig.setExcludes(new String[]{"users", "user", "rolesPrivilegeDetails","ptz"});
+        System.out.println("121212121");
+        System.out.println(fireAlarms.get(0).getPtz().getId());
+        System.out.println("43534534");
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm:ss"));
         JSONArray fireAlarmJS = JSONArray.fromObject(fireAlarms, jsonConfig);
         String jsonStr = "{totalProperty:" + fireAlarms.size() + ",root:" + fireAlarmJS.toString() + "}";
