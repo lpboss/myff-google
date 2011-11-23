@@ -59,6 +59,7 @@ public class TestController extends MultiActionController {
         cMap.put("privilege", "ff.controller.PrivilegeController");
         cMap.put("user", "ff.controller.UserController");
         cMap.put("ptz", "ff.controller.PTZController");
+        cMap.put("fireAlarm", "ff.controller.FireAlarmController");
         //循环控制器中的所有方法
         Iterator keyIterator = cMap.keySet().iterator();
         while (keyIterator.hasNext()) {
@@ -71,15 +72,16 @@ public class TestController extends MultiActionController {
                 SysController sysController = sysControllerDao.getSysControllerByName(key);
                 if (sysController == null) {
                     sysController = new SysController();
-                    sysController.setName(key);
+                    sysController.setName(key.toLowerCase());
                     sysControllerService.saveOrUpdate(sysController);
                 }
 
                 Method[] methods = cls.getMethods();//得到某类的所有Public方法,getDeclaredMethods() 
                 for (Method method : methods) {
+                    System.out.println(method.getName() + "  " + method.getReturnType().getName() + " " + method.getModifiers());
                     logger.info(method.getName() + "  " + method.getReturnType().getName() + " " + method.getModifiers());
                     //只有本类的方法，才加入。
-                    if (method.getDeclaringClass().getName() == cls.getName()) {
+                    if (method.getDeclaringClass().getName().equals(cls.getName())) {
                         //排除掉注入方法
                         if (method.getName().indexOf("set") == -1 && method.getName().indexOf("Service") == -1) {
                             logger.info("method.getName():" + method.getName());
@@ -112,5 +114,11 @@ public class TestController extends MultiActionController {
         Date dt = new Date();
         Long time = dt.getTime();//这就是距离1970年1月1日0点0分0秒的毫秒数
         System.out.println("time:" + time + ", SECOND...............................");
+    }
+    
+    public ModelAndView sound(HttpServletRequest request, HttpServletResponse response) {
+        logger.info("sound page ++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        ModelAndView mav = new ModelAndView();
+        return mav;
     }
 }

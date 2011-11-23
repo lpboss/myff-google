@@ -23,20 +23,21 @@ import javax.persistence.ManyToOne;
 public class FireAlarm {
 
     private Long id;
-    private Integer ptz_id;// '云台ID',
-    private Timestamp action_date; //` datetime DEFAULT NULL COMMENT '火警时间',
-    private float ptz_h_angle;//` float DEFAULT NULL COMMENT '水平角度',
-    private float ptz_v_angle;//` float DEFAULT NULL COMMENT '垂直角度',
-    private Integer heat_max; // ' 最高热值',
-    private Integer heat_min;
-    private Integer heat_avg;//'平均热值',
+    private PTZ ptz;
+    private Timestamp actionDate; //` datetime DEFAULT NULL COMMENT '火警时间',
+    private float ptzAngleX;//` float DEFAULT NULL COMMENT '水平角度',
+    private float ptzAngleY;//` float DEFAULT NULL COMMENT '垂直角度',
+    private Integer heatMax; // ' 最高热值',
+    private Integer heatMin;
+    private Integer heatAvg;//'平均热值',
     private String description;//` text,
-    private Integer user_id;
-    private Timestamp deal_date;
-    private Timestamp created_at;
-    private Timestamp updated_at;
+    private User userId;
+    private Timestamp dealDate;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
     private Integer version;
     private Long isLocked = new Long(0);// '启用，停用',
+    private Short is_alarming;
 
     @Id
     @GeneratedValue
@@ -49,30 +50,34 @@ public class FireAlarm {
         this.id = id;
     }
 
-    public Timestamp getAction_date() {
-        return action_date;
+    @Column(name = "action_date", length = 100)
+    public Timestamp getActionDate() {
+        return actionDate;
     }
 
-    public void setAction_date(Timestamp action_date) {
-        this.action_date = action_date;
+    public void setActionDate(Timestamp actionDate) {
+        this.actionDate = actionDate;
     }
 
-    public Timestamp getCreated_at() {
-        return created_at;
+    @Column(name = "created_at", length = 100)
+    public Timestamp getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(Timestamp created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Timestamp getDeal_date() {
-        return deal_date;
+    @Column(name = "deal_date", length = 100)
+    public Timestamp getDealDate() {
+        return dealDate;
     }
 
-    public void setDeal_date(Timestamp deal_date) {
-        this.deal_date = deal_date;
+    public void setDealDate(Timestamp dealDate) {
+        this.dealDate = dealDate;
     }
 
+    @Column(name = "description", length = 100)
     public String getDescription() {
         return description;
     }
@@ -81,30 +86,34 @@ public class FireAlarm {
         this.description = description;
     }
 
-    public Integer getHeat_avg() {
-        return heat_avg;
+    @Column(name = "heat_avg", length = 100)
+    public Integer getHeatAvg() {
+        return heatAvg;
     }
 
-    public void setHeat_avg(Integer heat_avg) {
-        this.heat_avg = heat_avg;
+    public void setHeatAvg(Integer heatAvg) {
+        this.heatAvg = heatAvg;
     }
 
-    public Integer getHeat_max() {
-        return heat_max;
+    @Column(name = "heat_max", length = 100)
+    public Integer getHeatMax() {
+        return heatMax;
     }
 
-    public void setHeat_max(Integer heat_max) {
-        this.heat_max = heat_max;
+    public void setHeatMax(Integer heatMax) {
+        this.heatMax = heatMax;
     }
 
-    public Integer getHeat_min() {
-        return heat_min;
+    @Column(name = "heat_min", length = 100)
+    public Integer getHeatMin() {
+        return heatMin;
     }
 
-    public void setHeat_min(Integer heat_min) {
-        this.heat_min = heat_min;
+    public void setHeatMin(Integer heatMin) {
+        this.heatMin = heatMin;
     }
 
+    @Column(name = "is_locked", length = 100)
     public Long getIsLocked() {
         return isLocked;
     }
@@ -113,51 +122,69 @@ public class FireAlarm {
         this.isLocked = isLocked;
     }
 
-    public float getPtz_h_angle() {
-        return ptz_h_angle;
+    @Column(name = "is_alarming", length = 100)
+    public Short getIs_alarming() {
+        return is_alarming;
     }
 
-    public void setPtz_h_angle(float ptz_h_angle) {
-        this.ptz_h_angle = ptz_h_angle;
+    public void setIs_alarming(Short is_alarming) {
+        this.is_alarming = is_alarming;
     }
 
-    public Integer getPtz_id() {
-        return ptz_id;
+    @Column(name = "ptz_angle_x", length = 100)
+    public float getPtzAngleX() {
+        return ptzAngleX;
     }
 
-    public void setPtz_id(Integer ptz_id) {
-        this.ptz_id = ptz_id;
+    public void setPtzAngleX(float ptzAngleX) {
+        this.ptzAngleX = ptzAngleX;
     }
 
-    public float getPtz_v_angle() {
-        return ptz_v_angle;
+    @Column(name = "ptz_angle_y", length = 100)
+    public float getPtzAngleY() {
+        return ptzAngleY;
     }
 
-    public void setPtz_v_angle(float ptz_v_angle) {
-        this.ptz_v_angle = ptz_v_angle;
+    public void setPtzAngleY(float ptzAngleY) {
+        this.ptzAngleY = ptzAngleY;
     }
 
-    public Timestamp getUpdated_at() {
-        return updated_at;
+    @Column(name = "updated_at", length = 100)
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdated_at(Timestamp updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
-    public Integer getUser_id() {
-        return user_id;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    public User getUserId() {
+        return userId;
     }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+    public void setUserId(User userId) {
+        this.userId = userId;
     }
 
+    @Column(name = "version", length = 100)
     public Integer getVersion() {
         return version;
     }
 
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ptz_id")
+    
+    public PTZ getPtz() {
+        return ptz;
+    }
+
+    public void setPtz(PTZ ptz) {
+        this.ptz = ptz;
     }
 }

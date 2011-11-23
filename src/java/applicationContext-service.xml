@@ -11,4 +11,7 @@
     <bean id="sysActionService" class="ff.service.impl.SysActionServiceImpl" />
     <bean id="sysControllerService" class="ff.service.impl.SysControllerServiceImpl" />
     <bean id="adminService" class="ff.service.impl.AdminServiceImpl" />
+    <bean id="ptzService" class="ff.service.impl.PTZServiceImpl" />
+    <bean id="fireAlarmService" class="ff.service.impl.FireAlarmServiceImpl" />
+    <bean id="ignoreAreasService" class="ff.service.impl.IgnoreAreasServiceImpl" />
 </beans>
