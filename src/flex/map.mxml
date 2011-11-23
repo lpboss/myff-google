@@ -14,7 +14,7 @@
 	<s:Label id="show_alert" x="200" y="10" width="100" text="当前状态：正常" visible="true" color="0xFFFFFF" fontFamily="微软雅黑" fontSize="11" />
 	<s:Label id="show_alertMax" x="200" y="30" width="100" text="" visible="true" color="0xFFFFFF" fontFamily="微软雅黑" fontSize="11" />
 	<fx:Script>
-		<![CDATA[			
+		<![CDATA[
 			import flash.display.Stage;
 			import flash.display.StageAlign;
 			import flash.display.StageDisplayState;
