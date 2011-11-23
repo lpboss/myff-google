@@ -5,7 +5,11 @@
 package ff.controller;
 
 import ff.model.FireAlarm;
+import ff.model.PTZ;
+import ff.model.User;
 import ff.service.FireAlarmService;
+import ff.service.PTZService;
+import ff.service.UserService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
@@ -23,6 +27,24 @@ import java.sql.Timestamp;
 public class FireAlarmController extends MultiActionController {
 
     private FireAlarmService fireAlarmService;
+    private PTZService ptzService;
+    private UserService userService;
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
+    public PTZService getPtzService() {
+        return ptzService;
+    }
+
+    public void setPtzService(PTZService ptzService) {
+        this.ptzService = ptzService;
+    }
 
     public void setFireAlarmService(FireAlarmService fireAlarmService) {
         this.fireAlarmService = fireAlarmService;
@@ -55,12 +77,12 @@ public class FireAlarmController extends MultiActionController {
 //  得到火警信息    包含条件筛选
 
     public void getAllFireAlarm(HttpServletRequest request, HttpServletResponse response) {
-        Integer ptzId;
+        Long ptzId;
         java.sql.Timestamp beginTime;
         java.sql.Timestamp endTime;
         logger.info("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         if (!(request.getParameter("PTZId") == null || "".equals(request.getParameter("PTZId")))) {
-            ptzId = Integer.valueOf(request.getParameter("PTZId"));
+            ptzId = Long.valueOf(request.getParameter("PTZId"));
         } else {
             ptzId = null;
         }
@@ -99,10 +121,12 @@ public class FireAlarmController extends MultiActionController {
         Float ptzAngleY = Float.valueOf(request.getParameter("ptzVAngle"));
         Integer heatAvg = Integer.valueOf(request.getParameter("heatAvg"));
         Integer heatMin = Integer.valueOf(request.getParameter("heatMin"));
-        Integer userId = Integer.valueOf(request.getParameter("userId"));
+        Long userid = Long.valueOf(request.getParameter("userId"));
+        Long ptzid = Long.valueOf(request.getParameter("ptz"));
+        PTZ ptz = ptzService.getPTZById(ptzid);
         FireAlarm fireAlarm = new FireAlarm();
         fireAlarm.setDescription(description);
-        fireAlarm.setPtzId(userId);
+        fireAlarm.setPtz(ptz);
         fireAlarm.setHeatMax(heatMax);
         fireAlarm.setHeatMin(heatMin);
         fireAlarm.setPtzAngleX(ptzAngleX);
@@ -110,10 +134,10 @@ public class FireAlarmController extends MultiActionController {
         fireAlarm.setHeatAvg(heatAvg);
         fireAlarm.setDealDate(java.sql.Timestamp.valueOf(request.getParameter("dealDate")));
         fireAlarm.setActionDate(java.sql.Timestamp.valueOf(request.getParameter("actionDate")));
+        User userId = userService.getUserById(userid);
         fireAlarm.setUserId(userId);
         fireAlarm.setVersion(0);
         fireAlarm.setIs_alarming(Short.valueOf("1"));
-
         logger.info(description);
         String jsonStr = fireAlarmService.create(fireAlarm);
         PrintWriter pw;
@@ -179,7 +203,7 @@ public class FireAlarmController extends MultiActionController {
         PrintWriter pw;
         try {
             String jsonStr = fireAlarmService.fireAlarmLock(fireAlarm);
-          
+
 
             response.setContentType("text/json; charset=utf-8");
             response.setHeader("Cache-Control", "no-cache");
@@ -203,11 +227,13 @@ public class FireAlarmController extends MultiActionController {
 
         Integer heatAvg = Integer.valueOf(request.getParameter("heatAvg"));
         Integer heatMin = Integer.valueOf(request.getParameter("heatMin"));
-        Integer userId = Integer.valueOf(request.getParameter("userId"));
+        Long userid = Long.valueOf(request.getParameter("userId"));
+        Long ptzid = Long.valueOf(request.getParameter("ptz"));
+        PTZ ptz = ptzService.getPTZById(ptzid);
         FireAlarm fireAlarm = fireAlarmService.getFireAlarmById(id);
 
         fireAlarm.setDescription(description);
-        fireAlarm.setPtzId(userId);
+        fireAlarm.setPtz(ptz);
         fireAlarm.setHeatMax(heatMax);
         fireAlarm.setHeatMin(heatMin);
         fireAlarm.setPtzAngleX(ptzAngleX);
@@ -215,6 +241,7 @@ public class FireAlarmController extends MultiActionController {
         fireAlarm.setHeatAvg(heatAvg);
         fireAlarm.setDealDate(java.sql.Timestamp.valueOf(request.getParameter("dealDate")));
         fireAlarm.setActionDate(java.sql.Timestamp.valueOf(request.getParameter("actionDate")));
+        User userId = userService.getUserById(userid);
         fireAlarm.setUserId(userId);
         fireAlarm.setVersion(fireAlarm.getVersion() + 1);
 

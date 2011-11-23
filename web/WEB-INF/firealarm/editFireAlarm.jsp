@@ -15,6 +15,30 @@
         <meta http-equiv="content-type" content="text/html; charset=utf-8">
         <script type="text/javascript">
             Ext.onReady(function(){
+                Ext.define('FireAlarmEdit', {
+                    extend : 'Ext.data.Model',
+                    fields : [{name: 'id'},
+                        { name: 'ptz',
+                            mapping:'ptz.id' 
+                        },
+                        { name: 'actionDate'},
+                        {name: 'ptzAngleX'},
+                        {name: 'ptzAngleY'},
+                        {name: 'heatMax'},
+                        {name: 'heatMin'},
+                        {name: 'heatAvg'}, 
+                        {name: 'description'},
+                        {name: 'userId',
+                            mapping:'userId.id'                
+                        },
+                        {name: 'dealDate'},
+                        {name: 'updatedAt'},
+                        {name: 'createdAt'},
+                        {name: 'version'},
+                        {name: 'isLocked'}
+                           
+                    ]
+                });
                 var fireAlarmId = <%=request.getParameter("id")%>;
                 var number = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '编号',
@@ -125,22 +149,19 @@
                     //pageSize : pageSize,
                     autoLoad : true
                 });
-             
                 var fireAlarm =  Ext.create('Ext.data.Store', {
-                    //autoDestroy : true,
-                    model : 'FireAlarm',
+                    model : 'FireAlarmEdit',
                     proxy : {
                         type : 'ajax',
-                        url : '<%=basePath%>user/getAllUsers.htm',
+                        url : '<%=basePath%>firealarm/getAllFireAlarm.htm',
                         reader : {
                             type : 'json',
                             root : 'root',// JSON数组对象名
                             totalProperty : 'totalProperty'// 数据集记录总数
                         }
-                    },
-                    //pageSize : pageSize,
-                    autoLoad : true
+                    }
                 });
+          
                 //供应商
                 var userId = Ext.create('Ext.form.ComboBox', {
                     store: user,
@@ -158,14 +179,14 @@
                     minChars: 0,          
                     editable:false
                 });
-                var ptzId = Ext.create('Ext.form.ComboBox', {
+            var ptzId = Ext.create('Ext.form.ComboBox', {
                     store: ptz,
                     fieldLabel: '云台ID',
                     allowBlank: false,
                     blankText: "云台ID必须选择",
                     valueField: 'id',
                     displayField: 'name',
-                    name: 'ptzId',//如果不想提交displayField，则在这儿指定要提交的Key，value就是valueField．
+                    name: 'ptz',//如果不想提交displayField，则在这儿指定要提交的Key，value就是valueField．
                     emptyText: '请选择...',          
                     loadingText: '搜索中...',
                     anchor: '95%',
@@ -184,7 +205,7 @@
                     frame:true,
                     url: '<%=basePath%>firealarm/update.htm?id='+fireAlarmId,
                     reader: Ext.create('Ext.data.reader.Json',{
-                        model: 'FireAlarm',
+                        model: 'FireAlarmEdit',
                         root: ''
                     }),
                     bodyStyle:'padding:5px 5px 0',

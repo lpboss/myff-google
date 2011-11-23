@@ -174,6 +174,12 @@
                     anchor: '95%'
                 });
                 
+                var shiftStep = Ext.create('Ext.form.field.Number', {
+                    fieldLabel: '云台非巡航状态下默认移动步长',
+                    name: 'shiftStep',
+                    anchor: '95%'
+                });
+                
                 var version = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '版本',
                     name: 'version',
@@ -221,7 +227,7 @@
                                     columnWidth: .38,
                                     layout: 'anchor',                                  
                                     xtype: 'container',
-                                    items: [name,controllUrl,pelcodCommandUrl,gisMapUrl,cruiseStep,brandType2,cruiseRightLimit,cruiseLeftLimit]
+                                    items: [name,controllUrl,pelcodCommandUrl,gisMapUrl,cruiseStep,brandType2,cruiseRightLimit,cruiseLeftLimit,shiftStep]
                                 }, {
                                     columnWidth: .38,
                                     layout: 'anchor',

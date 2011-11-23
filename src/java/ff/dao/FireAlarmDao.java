@@ -24,7 +24,7 @@ public interface FireAlarmDao {
 
     void delFireAlarmAll(String id);
 
-    List<FireAlarm> getFireAlarmsByPtzId(Integer ptzId);
+    List<FireAlarm> getFireAlarmsByPtzId(Long ptzId);
 
     public List getFireAlarmsByBeginTime(Timestamp beginTime);
 
@@ -32,11 +32,9 @@ public interface FireAlarmDao {
 
     public List getFireAlarmsByEndTimeBeginTime(Timestamp endTime, Timestamp beginTime);
 
-    public List getFireAlarmsByBeginTimePtzId(Integer ptzId, Timestamp endTime);
+    public List getFireAlarmsByBeginTimePtzId(Long ptzId, Timestamp endTime);
 
-    public List getFireAlarmsByEndTimePtzId(Integer ptzId, Timestamp endTime);
+    public List getFireAlarmsByEndTimePtzId(Long ptzId, Timestamp endTime);
 
-    public List getFireAlarmsByBeginTimePtzId(Integer ptzId, Timestamp beginTime, Timestamp endTime);
-
-   
+    public List getFireAlarmsByBeginTimePtzId(Long ptzId, Timestamp beginTime, Timestamp endTime);
 }

@@ -32,6 +32,14 @@
                     pageSize : pageSize,
                     autoLoad : true
                 });
+                
+                function renderFireAlarmIsLucked(value, cellmeta, record, index, columnIndex, store){
+                    if (record.get("isLocked")=="1"){
+                        return "<a style=cursor:pointer onclick=lockFireAlarmFn(" + store.getAt(index).get('id')+")><font color=red>锁定</font></a>";
+                    }else{
+                        return "<a style=cursor:pointer onclick=lockFireAlarmFn(" + store.getAt(index).get('id')+")><font color=green>未锁定</font></a>";
+                    }
+                }
 
                 var PTZGrid =  Ext.create('Ext.grid.Panel',
                 
@@ -131,12 +139,17 @@
                             dataIndex: 'alarmHeatValue',
                             width:80
                         },{
+                            header: '云台非巡航状态下默认移动步长',
+                            dataIndex: 'shiftStep',
+                            width:150
+                        },{
                             header: '版本',
                             dataIndex: 'version',
                             width:80
                         },{
                             header: '状态',
-                            dataIndex: 'isLocked',                          
+                            dataIndex: 'isLocked',  
+                            renderer: renderFireAlarmIsLucked,
                             width:40
                         }],
        
