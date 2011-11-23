@@ -19,7 +19,7 @@ public interface IgnoreAreasDao {
 
     List<IgnoreAreas> getById(Integer id);   //得到某一条数据   
     
-    IgnoreAreas getIgnoreAreasById(Integer id); 
+    IgnoreAreas getIgnoreAreasById(Integer id);  //得到要修改的某一条数据
 
     IgnoreAreas getIgnoreAreasByName(String name); //添加
 

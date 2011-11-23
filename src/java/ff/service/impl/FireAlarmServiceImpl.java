@@ -72,7 +72,7 @@ public class FireAlarmServiceImpl implements FireAlarmService {
         }
         JsonConfig jsonConfig = new JsonConfig();
         //这是需要过滤掉的变量名。
-        jsonConfig.setExcludes(new String[]{"videos", "users", "user", "rolesPrivilegeDetails"});
+        jsonConfig.setExcludes(new String[]{"videos", "users", "user", "rolesPrivilegeDetails","ptz"});
 
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm:ss"));
         JSONArray fireAlarmJS = JSONArray.fromObject(fireAlarms, jsonConfig);
