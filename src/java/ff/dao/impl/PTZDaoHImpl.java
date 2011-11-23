@@ -24,7 +24,7 @@ public class PTZDaoHImpl extends HibernateDaoSupport implements PTZDao {
         }
         ptz.setUpdatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
 
-        //正式开始存储数�        this.getHibernateTemplate().saveOrUpdate(ptz);
+        //正式开始存储数this.getHibernateTemplate().saveOrUpdate(ptz);
         this.getHibernateTemplate().flush();
         this.getHibernateTemplate().clear();
         return ptz;
@@ -34,7 +34,7 @@ public class PTZDaoHImpl extends HibernateDaoSupport implements PTZDao {
     public String deletePTZ(Long id) {
         logger.info("ggg");
         try {
-            Object role = this.getHibernateTemplate().load(PTZ.class, new Long(id));    //先加载特定实�
+            Object role = this.getHibernateTemplate().load(PTZ.class, new Long(id));//先加载特定实�
             getHibernateTemplate().delete(role);                                 //删除特定实例
         } catch (Exception e) {
             return e.toString();
