@@ -30,7 +30,7 @@ public class User implements java.io.Serializable {
 
     private Timestamp updatedAt;
     private Timestamp createdAt;
-
+   
     // Constructors
     /** default constructor */
     public User() {

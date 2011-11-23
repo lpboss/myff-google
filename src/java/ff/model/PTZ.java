@@ -49,7 +49,7 @@ public class PTZ {
     private Integer cruiseLeftLimit; //巡航左边�
     private Integer cruiseUpLimit; //最大上仰角�
     private Integer cruiseDownLimit; //巡航时最大俯�
-    private Long isLocked = new Long(0);// 启用，停�,
+    private Long isLocked = new Long(0);// 状�'启用，停�,
     private Integer shiftStep; //云台非巡航状态下默认移动步长
 
     @Id
