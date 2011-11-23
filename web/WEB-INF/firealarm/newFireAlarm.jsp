@@ -155,7 +155,7 @@
                     blankText: "云台ID必须选择",
                     valueField: 'id',
                     displayField: 'name',
-                    name: 'ptzId',//如果不想提交displayField，则在这儿指定要提交的Key，value就是valueField．
+                    name: 'ptz',//如果不想提交displayField，则在这儿指定要提交的Key，value就是valueField．
                     emptyText: '请选择...',          
                     loadingText: '搜索中...',
                     anchor: '95%',
