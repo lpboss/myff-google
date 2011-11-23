@@ -29,13 +29,16 @@ public class PTZUtil {
         this.serialPortCommServer = serialPortCommServer;
     }
 
-    public void PTZAction(Long ptzId, String ptzAction) {
+    public void PTZAction(Long ptzId, String ptzAction, int assignedStep) {
         logger.info("ptzAction:" + ptzAction + ",   0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
         //先固定一个云台测试。
         PTZ ptz = ptzService.getPTZById(ptzId);
         String ptzIP = ptz.getPelcodCommandUrl();
         Integer shiftStep = ptz.getShiftStep();
-
+        //如果有人为指定步长，则按指定步长操作。
+        if (assignedStep != 0) {
+            shiftStep = assignedStep;
+        }
         boolean connResult;
 
         //先停止再发送新命令。
