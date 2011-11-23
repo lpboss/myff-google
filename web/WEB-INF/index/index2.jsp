@@ -12,8 +12,27 @@
         <link href="<%=basePath%>javascripts/ext4/resources/css/ext-all.css" media="screen" rel="stylesheet" type="text/css" />
         <script src="<%=basePath%>javascripts/ext4/ext-all.js" type="text/javascript"></script>
         <script src="<%=basePath%>javascripts/ext4/locale/ext-lang-zh_CN.js" type="text/javascript"></script>
-
+        <script src="<%=basePath%>javascripts/sound/soundmanager2.js" type="text/javascript"></script>
         <script type="text/javascript">
+            // flash version URL switch (for this demo page)
+            var winLoc = window.location.toString();
+            console.info(winLoc);
+            soundManager.preferFlash = (winLoc.match(/usehtml5audio=1/i) ? false : true);
+            if (winLoc.match(/flash9/i)) {
+                soundManager.flashVersion = 9;
+                if (winLoc.match(/highperformance/i)) {
+                    soundManager.useHighPerformance = true;
+                    soundManager.useFastPolling = true;
+                }
+            } else if (winLoc.match(/flash8/i)) {
+                soundManager.flashVersion = 8;
+            }
+
+            soundManager.useFlashBlock = false;
+            soundManager.url = '<%=basePath%>javascripts/sound/'; // path to SoundManager2 SWF files (note trailing slash)
+            soundManager.debugMode = false;
+            soundManager.consoleOnly = false;
+            
             var pageSize = 10;
             Ext.require([
                 'Ext.grid.*',
@@ -30,7 +49,7 @@
             Ext.QuickTips.init();
             //Ext.Ajax.defaultPostHeader += ";charset=UTF-8";
             Ext.data.Connection.prototype.method = 'POST';
-            //这是一个小补丁，阻止在IE下按Backspce引起乱跳转页面
+            //这是一个小补丁，阻止在IE下按Backspce引起乱跳转页�
 
 
             // Add the additional 'advanced' VTypes
@@ -76,7 +95,7 @@
             Ext.onReady(function() {
 
                 var logoutButton = Ext.create('Ext.Button', {
-                    text: '退出系统',
+                    text: '退出系系统',
                     iconCls: 'exit',
                     handler: function(){
                         Ext.Ajax.request({
@@ -99,7 +118,7 @@
 
                 var topPanel = Ext.create('Ext.panel.Panel', {
                     height: 30,
-                    bbar: ["<b style='font-size:14px;'>您好：<%=session.getAttribute("userName")%>", '->','-',logoutButton],
+                    bbar: ["<b style='font-size:14px;'>您好<%=session.getAttribute("userId")%>", '->','-',logoutButton],
                     region:'north'
                 });
 
@@ -206,10 +225,143 @@
                     accordition.doLayout();
                 }
                 renderMenu();
-
-
-        
-                //员工下拉框模型
+                
+                //PTZ编辑 
+                Ext.define('PTZEdit', {
+                    extend : 'Ext.data.Model',
+                    fields : [{
+                            name: 'id'
+                        }, {
+                            name: 'name'
+                        }, {
+                            name: 'controllUrl'
+                        }, {
+                            name: 'pelcodCommandUrl'
+                        }, {
+                            name: 'visibleCameraUrl'
+                        }, {
+                            name: 'visibleRTSPUrl'
+                        }, {
+                            name: 'infraredRTSPUrl'
+                        }, {
+                            name: 'infraredCameraUrl'
+                        }, {
+                            name: 'infraredCircuitUrl'
+                        }, {
+                            name: 'northMigration'
+                        }, {
+                            name: 'gisMapUrl'
+                        }, {
+                            name: 'visualAngleX'
+                        }, {
+                            name: 'visualAngleY'
+                        }, {
+                            name: 'infraredPixelX'
+                        }, {
+                            name: 'infraredPixelY'
+                        }, {
+                            name: 'brandType'
+                        }, {
+                            name: 'cruiseStep'
+                        }, {
+                            name: 'cruiseRightLimit'
+                        }, {
+                            name: 'cruiseLeftLimit'
+                        }, {
+                            name: 'cruiseUpLimit'
+                        }, {
+                            name: 'cruiseDownLimit'
+                        }, {
+                            name: 'version'
+                        }, {
+                            name: 'isLocked'
+                        }
+                        /*  , {
+                            name: 'createAt',
+                            mapping:'createAt.id'
+                        }, {
+                            name: 'updateAt',
+                            mapping:'updateAt.id'
+                        }*/
+                    ]
+                });
+                
+                Ext.define('FireAlarm', {
+                    extend : 'Ext.data.Model',
+                    fields : [{name: 'id'},
+                        { name: 'ptz',
+                            convert:function(value){
+                                return value.name;                 
+                            } },
+                        { name: 'actionDate'},
+                        {name: 'ptzAngleX'},
+                        {name: 'ptzAngleY'},
+                        {name: 'heatMax'},
+                        {name: 'heatMin'},
+                        {name: 'heatAvg'}, 
+                        {name: 'description'},
+                        {name: 'userId',
+                            convert:function(value){
+                                return value.name;                 
+                            }},
+                        {name: 'dealDate'},
+                        {name: 'updatedAt'},
+                        {name: 'createdAt'},
+                        {name: 'version'},
+                        {name: 'isLocked'}
+                           
+                    ]
+                });
+                
+                //PTZList
+                Ext.define('PTZ', {
+                    extend : 'Ext.data.Model',
+                    fields : [
+                        {name: 'id'},
+                        { name: 'name'},
+                        { name: 'controllUrl'},
+                        { name: 'pelcodCommandUrl'},
+                        { name: 'visibleCameraUrl'},
+                        { name: 'visibleRTSPUrl'},
+                        { name: 'infraredRTSPUrl'},
+                        { name: 'infraredCameraUrl'},
+                        { name: 'infraredCircuitUrl'},
+                        { name: 'northMigration'},
+                        { name: 'gisMapUrl'},
+                        { name: 'visualAngleX'},
+                        { name: 'visualAngleY'},
+                        { name: 'infraredPixelX'},
+                        { name: 'infraredPixelY'},
+                        { name: 'brandType'},
+                        { name: 'cruiseStep'},
+                        { name: 'cruiseRightLimit'},
+                        { name: 'cruiseLeftLimit'},
+                        { name: 'cruiseUpLimit'},
+                        { name: 'cruiseDownLimit'},
+                        { name: 'shiftStep'},
+                        { name: 'version'},
+                        { name: 'isLocked'}
+                    ]
+                });
+                
+                //报警忽视地区alarmIgnoreAreasList
+                Ext.define('alarmIgnoreAreas', {
+                    extend : 'Ext.data.Model',
+                    fields : [
+                        {name: 'id'},
+                        { name: 'ptzId',mapping:'ptz.id'},
+                        { name: 'ptzAngelX'},
+                        { name: 'ptzAngelY'},
+                        { name: 'ccdArea'},
+                        { name: 'heatMax'},
+                        { name: 'beginDate'},
+                        { name: 'endDate'},
+                        { name: 'isLocked'},
+                        { name: 'version'}             
+                    ]
+                });
+      
+                //员工下拉框模�
                 Ext.define('User', {
                     extend : 'Ext.data.Model',
                     fields : [{name: 'id'},
@@ -246,7 +398,7 @@
                         url : '<%=basePath%>user/getAllUsers.htm?for_cbb=true',
                         reader : {
                             type : 'json',
-                            root : 'root',// JSON数组对象名
+                            root : 'root',// JSON数组对象�
                             totalProperty : 'totalProperty'// 数据集记录总数
                         }
                     },
@@ -254,7 +406,7 @@
                 });
 
 
-                //员工下拉框模型
+                //员工下拉框模�
                 Ext.define('Role', {
                     extend : 'Ext.data.Model',
                     fields : [{name: 'id'},
@@ -265,7 +417,7 @@
                         {name: 'createdAt'},
                         {name: 'updatedAt'}
                     ]
-                });
+                });                             
 
                 Ext.define('SysAction', {
                     extend : 'Ext.data.Model',
@@ -282,7 +434,7 @@
                         url : '<%=basePath%>admin/getAllSysActions.htm',
                         reader : {
                             type : 'json',
-                            root : 'root',// JSON数组对象名
+                            root : 'root',// JSON数组对象�
                             totalProperty : 'totalProperty'// 数据集记录总数
                         }
                     },
@@ -304,7 +456,7 @@
                         url : '<%=basePath%>admin/getAllSysControllers.htm',
                         reader : {
                             type : 'json',
-                            root : 'root',// JSON数组对象名
+                            root : 'root',// JSON数组对象�
                             totalProperty : 'totalProperty'// 数据集记录总数
                         }
                     },
@@ -375,7 +527,7 @@
                         url : '<%=basePath%>privilege/getAllModules.htm',
                         reader : {
                             type : 'json',
-                            root : 'root',// JSON数组对象名
+                            root : 'root',// JSON数组对象�
                             totalProperty : 'totalProperty'// 数据集记录总数
                         }
                     },
@@ -391,13 +543,13 @@
                     ]
                 });
         
-        
-        
-        
             });      
         </script>
     </head>
     <body>
         <script src="<%=basePath%>javascripts/application.js" type="text/javascript"></script>
+        <script src="<%=basePath%>javascripts/ext4/dateTimePicker.js" type="text/javascript"></script>
+        <script src="<%=basePath%>javascripts/ext4/DateTimeFieldBetween.js" type="text/javascript"></script>
+        <script src="<%=basePath%>javascripts/ext4/dateTimeField.js" type="text/javascript"></script>
     </body>
 </html>

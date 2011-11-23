@@ -75,17 +75,7 @@ public class FlexServerHandler implements IDataHandler, IConnectHandler,
             String alertIp = jsonObject.getString("alertIp");
             
             //根据云台ip，发送相关云台信息
-            while (connection != null && connection.isOpen()) {
-                serialPortCommServer.sendHeadInfo(connection, ptzIp,alertIp);
-
-                //以0.1秒为间隔，循环发送
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
+            serialPortCommServer.sendHeadInfo(connection, ptzIp,alertIp);
         }
 
         return true;

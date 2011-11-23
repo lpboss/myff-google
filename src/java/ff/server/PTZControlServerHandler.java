@@ -69,26 +69,51 @@ public class PTZControlServerHandler implements IDataHandler, IConnectHandler,
             ClosedChannelException, MaxReadSizeExceededException {
         if (connection != null && connection.isOpen()) {
             String ip = connection.getRemoteAddress().getHostAddress();
-            
+
             //接收从云台发送的角度信息
-            ByteBuffer buffer = ByteBuffer.allocate(7);
-            connection.read(buffer);
-            byte[] b = buffer.array();
+            byte[] b = connection.readBytesByLength(7);
             String s = serialPortCommServer.byteArray2HexString(b);
-            
+
+            //亚安云台算法
+            /*
             if (s.indexOf("FF010059") > -1) {//水平角度信息回传
+            //System.out.println("S 变量全值：" + s);
+            float angle_x = (float) Integer.parseInt(s.substring(s.indexOf("FF010059") + 8, s.indexOf("FF010059") + 12), 16) / 100;
+            serialPortCommServer.setAngleX(ip, angle_x);
+            
+            //System.out.println("云台水平角度：" + serialPortCommServer.getAngleXString(ip));
+            } else if (s.indexOf("FF01005B") > -1) {//垂直角度信息回传
+            float angle_y = 0f;
+            int y = Integer.parseInt(s.substring(s.indexOf("FF01005B") + 8, s.indexOf("FF01005B") + 12), 16);
+            if (y < 18000) {
+            angle_y = 0 - (float) y / 100;
+            } else if (y > 18000) {
+            angle_y = (float) (36000 - y) / 100;
+            }
+            serialPortCommServer.setAngleY(ip, angle_y);
+            
+            //System.out.println("云台垂直角度：" + serialPortCommServer.getAngleY(ip));
+            }
+             */
+
+            //飞跃云台算法
+            if (s.indexOf("FF010059") > -1) {//水平角度信息回传
+                //System.out.println("S 变量全值：" + s);
                 float angle_x = (float) Integer.parseInt(s.substring(s.indexOf("FF010059") + 8, s.indexOf("FF010059") + 12), 16) / 100;
                 serialPortCommServer.setAngleX(ip, angle_x);
 
                 //System.out.println("云台水平角度：" + serialPortCommServer.getAngleXString(ip));
-            } else if (s.indexOf("FF01005B") > -1) {//垂直角度信息回传
+            } else if (s.indexOf("FF01005B") > -1) {//垂直角度信息回传，正角度
                 float angle_y = 0f;
                 int y = Integer.parseInt(s.substring(s.indexOf("FF01005B") + 8, s.indexOf("FF01005B") + 12), 16);
-                if (y < 18000) {
-                    angle_y = 0 - (float) y / 100;
-                } else if (y > 18000) {
-                    angle_y = (float) (36000 - y) / 100;
-                }
+                angle_y = (float) y / 100;
+                serialPortCommServer.setAngleY(ip, angle_y);
+
+                //System.out.println("云台垂直角度：" + serialPortCommServer.getAngleY(ip));
+            } else if (s.indexOf("FF01015B") > -1) {//垂直角度信息回传，负角度
+                float angle_y = 0f;
+                int y = Integer.parseInt(s.substring(s.indexOf("FF01005B") + 8, s.indexOf("FF01005B") + 12), 16);
+                angle_y = -(float) y / 100;
                 serialPortCommServer.setAngleY(ip, angle_y);
 
                 //System.out.println("云台垂直角度：" + serialPortCommServer.getAngleY(ip));

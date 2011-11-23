@@ -13,6 +13,7 @@
 .comments{background-image:url(../../images/icons/comments.png) !important;}
 .contactUs {background-image:url(../../images/icons/telephone.png) !important;}
 .demo { background-image:url(../../images/icons/demo.png) !important;}
+.searchItem { background-image:url(../images/system/search.png) !important;}
 .document{background-image:url(../../images/icons/page.png) !important;}
 .donate{background-image:url(../../images/icons/money_dollar.png) !important;}
 .download{background-image:url(../../images/icons/download.png) !important;}
@@ -49,7 +50,7 @@
 .blue_triangle { background-image:url(/images/system/blue_triangle.gif) !important;}
 .blue_point { background-image:url(../images/system/blue_point.gif) !important;}
 .user { background-image:url(/images/system/user.gif) !important;}
-.refresh { background-image:url(/images/system/refresh.gif) !important;}
+.refresh { background-image:url(../images/system/refresh.gif) !important;}
 .arrow_up { background-image:url(../images/system/arrow_up.png) !important;}
 .arrow_down { background-image:url(../images/system/arrow_down.png) !important;}
 .arrow_left { background-image:url(../images/system/arrow_left.png) !important;}
