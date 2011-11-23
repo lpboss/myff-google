@@ -19,6 +19,8 @@ public interface IgnoreAreasService {
     String getIgnoreAreasJSONById(Integer id);
 
     IgnoreAreas getIgnoreAreasById(Integer id);
+    
+    String getEditIgnoreAreasJSONById(Integer id);
 
     String update(IgnoreAreas ignoreAreas);
 

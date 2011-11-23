@@ -38,7 +38,9 @@ public class RolePtz implements java.io.Serializable {
         this.id = id;
     }
 
-    @Column(name = "ptz_id", length = 100)
+   //设置多对一关系：ptz(1)--rolePtz(多)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ptz_id")
     public Integer getPtzId() {
         return ptzId;
     }

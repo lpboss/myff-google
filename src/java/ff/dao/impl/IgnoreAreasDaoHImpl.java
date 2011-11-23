@@ -71,6 +71,10 @@ public class IgnoreAreasDaoHImpl extends HibernateDaoSupport implements IgnoreAr
 
     @Override
     public IgnoreAreas getIgnoreAreasById(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+       System.out.println("222ccc");
+        IgnoreAreas ignoreAreas = (IgnoreAreas) this.getHibernateTemplate().get(IgnoreAreas.class, id);
+        return ignoreAreas;
     }
+
+  
 }

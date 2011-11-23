@@ -24,6 +24,8 @@
                     blankText: "云台的编号不能为空",
                     name: 'ptz_id',
                     value: userId,
+                    readOnly:true,                   
+                    style: 'color:#8A2BE2;font-family:黑体;background:#C7C7C7',
                     anchor: '95%'
                 });
                 

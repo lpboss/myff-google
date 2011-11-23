@@ -17,6 +17,7 @@
         <script type="text/javascript">
             Ext.onReady(function(){                            
                 var userId = <%=request.getParameter("parent_id")%>;
+                
                 alarmIgnoreAreasDS =  Ext.create('Ext.data.Store', {
                     //autoDestroy : true,
                     model : 'alarmIgnoreAreas',
@@ -196,7 +197,7 @@
                                         plain: true,
                                         modal: true,
                                         autoLoad: {
-                                            url: "<%=basePath%>ignoreareas/editIgnoreAreas.htm?id=" + ptzId,
+                                            url: "<%=basePath%>ignoreareas/editIgnoreAreas.htm?id=" + ptzId+'&iddd='+userId,
                                             scripts: true
                                         }
                                     });

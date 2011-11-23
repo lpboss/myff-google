@@ -5,6 +5,9 @@
 package ff.model;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,6 +16,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import org.hibernate.annotations.Cascade;
 
 /**
  *
@@ -25,6 +31,7 @@ public class PTZ {
 
     private Long id;
     private String name;
+    private Set<FireAlarm> fireAlarmDetails = new HashSet<FireAlarm>(0);
     private String controllUrl; //编码器IP',
     private String pelcodCommandUrl; //'通过串口,发pelcod的ip',
     private String visibleCameraUrl; //'可见光摄像机地址,模拟请参考controll_url',
@@ -305,6 +312,18 @@ public class PTZ {
 
     public void setIsAlarm(Integer isAlarm) {
         this.isAlarm = isAlarm;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "ptz")
+    @Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN) //只是加这一步才可以实现。
+    @OrderBy("id")
+
+    public Set<FireAlarm> getFireAlarmDetails() {
+        return fireAlarmDetails;
+    }
+
+    public void setFireAlarmDetails(Set<FireAlarm> fireAlarmDetails) {
+        this.fireAlarmDetails = fireAlarmDetails;
     }
 
     

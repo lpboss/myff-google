@@ -35,9 +35,9 @@
                 
                 function renderFireAlarmIsLucked(value, cellmeta, record, index, columnIndex, store){
                     if (record.get("isLocked")=="1"){
-                        return "<a style=cursor:pointer onclick=lockFireAlarmFn(" + store.getAt(index).get('id')+")><font color=red>锁定</font></a>";
+                        return "<a style=cursor:pointer onclick=lockFireAlarmFn(" + store.getAt(index).get('id')+")><font color=red>启用</font></a>";
                     }else{
-                        return "<a style=cursor:pointer onclick=lockFireAlarmFn(" + store.getAt(index).get('id')+")><font color=green>未锁定</font></a>";
+                        return "<a style=cursor:pointer onclick=lockFireAlarmFn(" + store.getAt(index).get('id')+")><font color=blue>未启用</font></a>";
                     }
                 }
 
@@ -150,7 +150,7 @@
                             header: '状态',
                             dataIndex: 'isLocked',  
                             renderer: renderFireAlarmIsLucked,
-                            width:40
+                            width:80
                         }],
        
                     selModel :Ext.create('Ext.selection.CheckboxModel'),                                 
@@ -170,7 +170,7 @@
                                 newPTZWin = Ext.create('Ext.window.Window', {
                                     layout: 'fit',
                                     width:1200,
-                                    height:300,
+                                    height:320,
                                     closeAction: 'destroy',
                                     plain: true,
                                     modal: true,
@@ -255,7 +255,7 @@
                                         title: '编辑云台',
                                         layout:'fit',
                                         width:1200,
-                                        height:300,
+                                        height:320,
                                         closeAction:'destroy',
                                         constrain:true,
                                         plain: true,
