@@ -87,7 +87,7 @@ public class PTZCruiseTask {
             SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss SSS");
             Date date = new Date(milliseconds);
             String ptzIP = ptz.getPelcodCommandUrl();
-            //System.out.println("Angle (" + ptzIP + ") X:" + serialPortCommServer.getAngleXString(ptzIP) + ",Y:" + serialPortCommServer.getAngleYString(ptzIP) + "------------------,Date:" + timeFormat.format(date));
+            System.out.println("Angle (" + ptzIP + ") X:" + serialPortCommServer.getAngleXString(ptzIP) + ",Y:" + serialPortCommServer.getAngleYString(ptzIP) + "------------------,Date:" + timeFormat.format(date));
             //System.out.println("当前的云� + ptzIP + "是否允许巡航� + serialPortCommServer.getAllowCruise().get(ptzIP));
 
             if (serialPortCommServer.getAllowCruise().get(ptzIP) == null) {
@@ -194,15 +194,12 @@ public class PTZCruiseTask {
                             //上扬角度，由参数决定，默认10�
                             int angleY1 = Integer.parseInt(currentAngleY.split("\\.")[0]) + ptz.getCruiseAngleYStep();
                             int angleY2 = Integer.parseInt(currentAngleY.split("\\.")[1]);
-                            if (angleY1 > 90) {
-                                angleY1 = 90;
-                                angleY1 = 0;
-                            } else if (angleY1 == 100) {
-                                angleY1 = 0;
-                                angleY1 = 0;
-                            } else {
-                                //小角度不计算�
-                                angleY2 = 0;
+                            angleY2 = 0;//呼略小角度。
+                            //如果将要上仰的角度大于最大上仰角度，但不高于最大上仰角与上仰步长之合时
+                            if (angleY1 > ptz.getCruiseUpLimit() && angleY1 != (ptz.getCruiseUpLimit() + ptz.getCruiseAngleYStep())) {
+                                angleY1 = ptz.getCruiseUpLimit();
+                            } else if (angleY1 == (ptz.getCruiseUpLimit() + ptz.getCruiseAngleYStep())) {
+                                angleY1 = ptz.getCruiseDownLimit();
                             }
                             serialPortCommServer.getIsCruisingPresetAngleY().put(ptzIP, angleY1);
                             try {
