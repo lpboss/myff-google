@@ -14,8 +14,34 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>报警忽视地区</title>
-        <script type="text/javascript">
-            Ext.onReady(function(){                            
+        <script type="text/javascript">                      
+            function lockIgnoreAreasFn(id){              
+                Ext.Ajax.request({                     
+                    url : '<%=basePath%>ignoreareas/ignoreareasLock.htm',
+                    success : function (result, request) {
+                        alarmIgnoreAreasDS.load();
+                    },
+                    failure : function (result, request){
+                        Ext.MessageBox.show({
+                            title: '消息',
+                            msg: "通讯失败，请从新操作",
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.WARNING
+                        });
+                    },
+                    method : 'POST',
+                    params : {
+                        id : id
+                    }
+                });
+            }
+            
+            Ext.onReady(function(){      
+                
+                //处理锁定状态，
+            
+                
+                
                 var userId = <%=request.getParameter("parent_id")%>;
                 
                 alarmIgnoreAreasDS =  Ext.create('Ext.data.Store', {
@@ -23,8 +49,8 @@
                     model : 'alarmIgnoreAreas',
                     proxy : {
                         type : 'ajax',
-                     //   url : '<%=basePath%>ignoreareas/getAllIgnoreAreases.htm',
-                         url: "<%=basePath%>ignoreareas/getAllIgnoreAreases.htm?id=" + userId,
+                        //   url : '<%=basePath%>ignoreareas/getAllIgnoreAreases.htm',
+                        url: "<%=basePath%>ignoreareas/getAllIgnoreAreases.htm?id=" + userId,
                         reader : {
                             type : 'json',
                             root : 'root',// JSON数组对象名
@@ -37,9 +63,9 @@
                 
                 function renderFireAlarmIsLucked(value, cellmeta, record, index, columnIndex, store){
                     if (record.get("isLocked")=="1"){
-                        return "<a style=cursor:pointer onclick=lockFireAlarmFn(" + store.getAt(index).get('id')+")><font color=red>启用</font></a>";
+                        return "<a style=cursor:pointer onclick=lockIgnoreAreasFn(" + store.getAt(index).get('id')+")><font color=red>启用</font></a>";
                     }else{
-                        return "<a style=cursor:pointer onclick=lockFireAlarmFn(" + store.getAt(index).get('id')+")><font color=green>未启用</font></a>";
+                        return "<a style=cursor:pointer onclick=lockIgnoreAreasFn(" + store.getAt(index).get('id')+")><font color=green>未启用</font></a>";
                     }
                 }
 

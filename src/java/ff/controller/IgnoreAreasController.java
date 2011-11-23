@@ -52,12 +52,8 @@ public class IgnoreAreasController extends MultiActionController {
     //得到报警忽视地区信息
     public void getAllIgnoreAreases(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("id");
-        logger.info("88888888888");
-        logger.info(id);
         String jsonStr = ignoreAreasService.getIgnoreAreasJSONById(Integer.parseInt(request.getParameter("id")));
         //   String jsonStr = ignoreAreasService.getIgetIgnoreAreasJSONByIdgnoreAreasList();
-        logger.info(jsonStr);
-        logger.info("666666666");
         PrintWriter pw;
         try {
             response.setContentType("text/json; charset=utf-8");
@@ -74,7 +70,7 @@ public class IgnoreAreasController extends MultiActionController {
     public void create(HttpServletRequest request, HttpServletResponse response) {
         //   String id = request.getParameter("id");
         IgnoreAreas ignoreAreas = new IgnoreAreas();
-    //    ignoreAreas.setPtzId(Integer.valueOf(request.getParameter("ptz_id"))); //云台ID
+        //    ignoreAreas.setPtzId(Integer.valueOf(request.getParameter("ptz_id"))); //云台ID
         PTZ ptz = new PTZ();
         ptz.setId(Long.valueOf(request.getParameter("ptz_id"))); //云台ID
         ignoreAreas.setPtz(ptz);
@@ -104,8 +100,6 @@ public class IgnoreAreasController extends MultiActionController {
     //编辑AllAlarmIgnoreAreases
     public void getIgnoreAreasesById(HttpServletRequest request, HttpServletResponse response) {
         Integer id = Integer.valueOf(request.getParameter("id"));
-        logger.info("1111");
-        logger.info(id);
         String jsonStr = ignoreAreasService.getEditIgnoreAreasJSONById(id);
         PrintWriter pw;
         try {
@@ -122,14 +116,14 @@ public class IgnoreAreasController extends MultiActionController {
     //更新报警忽视地区
     public void update(HttpServletRequest request, HttpServletResponse response) {
         Integer id = Integer.valueOf(request.getParameter("id"));
-        Integer ptzAngelX = Integer.valueOf(request.getParameter("ptz_angel_x")); //火警时云台的水平角度    
-        Integer ptzAngelY = Integer.valueOf(request.getParameter("ptz_angel_y")); //火警时云台的Y角度
-        Integer ccdArea = Integer.valueOf(request.getParameter("ccd_area")); //热成像起火面积值
-        Integer heatMax = Integer.valueOf(request.getParameter("heat_max"));  //最大热值
-        Timestamp beginDate = Timestamp.valueOf(request.getParameter("begin_date"));  //火警时间范围(开始)
-        Timestamp endDate = Timestamp.valueOf(request.getParameter("end_date")); //火警时间范围(结束)
+        Integer ptzAngelX = Integer.valueOf(request.getParameter("ptzAngelX")); //火警时云台的水平角度    
+        Integer ptzAngelY = Integer.valueOf(request.getParameter("ptzAngelY")); //火警时云台的Y角度
+        Integer ccdArea = Integer.valueOf(request.getParameter("ccdArea")); //热成像起火面积值
+        Integer heatMax = Integer.valueOf(request.getParameter("heatMax"));  //最大热值
+        Timestamp beginDate = Timestamp.valueOf(request.getParameter("beginDate"));  //火警时间范围(开始)
+        Timestamp endDate = Timestamp.valueOf(request.getParameter("endDate")); //火警时间范围(结束)
         Integer version = Integer.valueOf(request.getParameter("version")); //版本
-        Long isLocked = Long.valueOf(request.getParameter("is_locked"));//状态
+        Long isLocked = Long.valueOf(request.getParameter("isLocked"));//状态
         //   Long ptzId = Long.valueOf(request.getParameter("roleId"));
         IgnoreAreas ignoreAreas = ignoreAreasService.getIgnoreAreasById(id);
         ignoreAreas.setId(id);
@@ -163,12 +157,35 @@ public class IgnoreAreasController extends MultiActionController {
     //删除报警忽视地区
     public void deleteIgnoreAreas(HttpServletRequest request, HttpServletResponse response) {
         Long id = Long.valueOf(request.getParameter("key"));
-        logger.info("sss");
-        logger.info(id);
-        logger.info("www");
         String jsonStr = ignoreAreasService.deleteIgnoreAreas(id);
         PrintWriter pw;
         try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
+
+    //处理是否锁定状态
+    public void ignoreareasLock(HttpServletRequest request, HttpServletResponse response) {
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        IgnoreAreas ignoreAreas = ignoreAreasService.getIgnoreAreasById(id);
+        System.out.println(ignoreAreas.getIsLocked());
+        System.out.println("aaaaa");
+        if (ignoreAreas.getIsLocked()==1) {
+            System.out.println("bbbbb");
+            ignoreAreas.setIsLocked(Long.valueOf("0"));
+        } else {
+            System.out.println("cccc");
+            ignoreAreas.setIsLocked(Long.valueOf("1"));
+        }
+        PrintWriter pw;
+        try {
+            String jsonStr = ignoreAreasService.ignoreAreasLock(ignoreAreas);
             response.setContentType("text/json; charset=utf-8");
             response.setHeader("Cache-Control", "no-cache");
             pw = response.getWriter();

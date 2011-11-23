@@ -178,8 +178,7 @@ public class FireAlarm {
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "ptz_id")
-    
+    @JoinColumn(name = "ptz_id")    
     public PTZ getPtz() {
         return ptz;
     }

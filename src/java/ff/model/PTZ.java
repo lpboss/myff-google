@@ -31,6 +31,7 @@ public class PTZ {
 
     private Long id;
     private String name;
+//    private Set<RolePtz> rolePtzDetails = new HashSet<RolePtz>(0);
     private Set<FireAlarm> fireAlarmDetails = new HashSet<FireAlarm>(0);
     private String controllUrl; //编码器IP',
     private String pelcodCommandUrl; //'通过串口,发pelcod的ip',
@@ -326,7 +327,17 @@ public class PTZ {
         this.fireAlarmDetails = fireAlarmDetails;
     }
 
-    
+//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "ptzId")
+//    @OrderBy("id")
+//    public Set<RolePtz> getRolePtzDetails() {
+//        return rolePtzDetails;
+//    }
+//
+//    public void setRolePtzDetails(Set<RolePtz> rolePtzDetails) {
+//        this.rolePtzDetails = rolePtzDetails;
+//    }
+
+   
     
     
     

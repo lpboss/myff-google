@@ -24,8 +24,8 @@ import javax.persistence.Version;
 public class RolePtz implements java.io.Serializable {
 
     private Long id;
-    private Integer roleId;
-    private Integer ptzId;
+    private Role roleId;
+    private PTZ ptzId;
 
     @Id
     @GeneratedValue
@@ -37,24 +37,25 @@ public class RolePtz implements java.io.Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
-   //设置多对一关系：ptz(1)--rolePtz(多)
+    
+    //设置多对一关系：ptz(1)--rolePtz(多)
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ptz_id")
-    public Integer getPtzId() {
+    public PTZ getPtzId() {
         return ptzId;
     }
 
-    public void setPtzId(Integer ptzId) {
+    public void setPtzId(PTZ ptzId) {
         this.ptzId = ptzId;
     }
 
-    @Column(name = "role_id", length = 100)
-    public Integer getRoleId() {
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id")
+    public Role getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(Integer roleId) {
+    public void setRoleId(Role roleId) {
         this.roleId = roleId;
     }
 }

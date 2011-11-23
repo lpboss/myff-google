@@ -25,4 +25,6 @@ public interface IgnoreAreasService {
     String update(IgnoreAreas ignoreAreas);
 
     String deleteIgnoreAreas(Long id); //删除
+    
+    String ignoreAreasLock(IgnoreAreas ignoreAreas);
 }
