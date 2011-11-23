@@ -295,7 +295,7 @@
                             } },
                           
 
-                        { name: 'actionDate'},
+                        {name: 'actionDate'},
                         {name: 'ptzAngleX'},
                         {name: 'ptzAngleY'},
                         {name: 'heatMax'},

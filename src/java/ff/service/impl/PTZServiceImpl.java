@@ -87,7 +87,7 @@ public class PTZServiceImpl implements PTZService {
     public String getAllPTZsJSON() {
         List<PTZ> ptzs = ptzDao.getAllPTZs();
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[]{"users", "rolesPrivilegeDetails","fireAlarmDetails"});
+        jsonConfig.setExcludes(new String[]{"users", "rolesPrivilegeDetails", "fireAlarmDetails"});
         JSONArray rolesJS = JSONArray.fromObject(ptzs, jsonConfig);
         String jsonStr = "{totalProperty:" + ptzs.size() + ",root:" + rolesJS.toString() + "}";
         return jsonStr;
@@ -99,7 +99,7 @@ public class PTZServiceImpl implements PTZService {
         List ptzs = ptzDao.getAllPTZs();
         JsonConfig jsonConfig = new JsonConfig();
         //这是需要过滤掉的变量名�        jsonConfig.setExcludes(new String[]{});
-         jsonConfig.setExcludes(new String[]{"users", "rolesPrivilegeDetails","fireAlarmDetails"});
+        jsonConfig.setExcludes(new String[]{"users", "rolesPrivilegeDetails", "fireAlarmDetails"});
         JSONArray ptzJS = JSONArray.fromObject(ptzs, jsonConfig);
         String jsonStr = "{totalProperty:" + ptzs.size() + ",root:" + ptzJS.toString() + "}";
         return jsonStr;
@@ -158,6 +158,15 @@ public class PTZServiceImpl implements PTZService {
         jsonConfig.setExcludes(new String[]{"users", "rolesPrivilegeDetails"});
         JSONArray rolesJS = JSONArray.fromObject(ptzs, jsonConfig);
         String jsonStr = "{totalProperty:" + ptzs.size() + ",root:" + rolesJS.toString() + "}";
+        return jsonStr;
+    }
+
+    @Override
+    public String ptzLock(PTZ ptz) {
+        String info = null;
+        ptzDao.saveOrUpdate(ptz);
+        info = "success";
+        String jsonStr = "{success:true,info:'" + info + "'}";
         return jsonStr;
     }
 }
