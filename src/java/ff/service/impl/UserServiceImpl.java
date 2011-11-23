@@ -120,6 +120,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             info = "'用户名或密码错误!'";
         } else {
+          
             info = "'success',id:" + String.valueOf(user.getId());                                //如果验证成功，就将id返回
         }
         String jsonStr = "{success:true,info:" + info + "}";

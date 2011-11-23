@@ -24,6 +24,7 @@ public class FireAlarm {
 
     private Long id;
     private Integer ptzId;// '云台ID',
+    private PTZ ptz;
     private Timestamp actionDate; //` datetime DEFAULT NULL COMMENT '火警时间',
     private float ptzAngleX;//` float DEFAULT NULL COMMENT '水平角度',
     private float ptzAngleY;//` float DEFAULT NULL COMMENT '垂直角度',
@@ -183,5 +184,15 @@ public class FireAlarm {
 
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ptz_id")
+    public PTZ getPtz() {
+        return ptz;
+    }
+
+    public void setPtz(PTZ ptz) {
+        this.ptz = ptz;
     }
 }

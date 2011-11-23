@@ -19,7 +19,26 @@
             var fireAlarmId;
             var fireAlarmDS;
             //处理员工锁定
-          
+            function lockFireAlarmFn(id){              
+                Ext.Ajax.request({                     
+                    url : '<%=basePath%>firealarm/fireAlarmLock.htm',
+                    success : function (result, request) {
+                        fireAlarmDS.load();
+                    },
+                    failure : function (result, request){
+                        Ext.MessageBox.show({
+                            title: '消息',
+                            msg: "通讯失败，请从新操作",
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.WARNING
+                        });
+                    },
+                    method : 'POST',
+                    params : {
+                        id : id
+                    }
+                });
+            }
       
             Ext.onReady(function(){
             
@@ -41,11 +60,11 @@
                     autoLoad : true
                 });
             
-                function renderRoleIsLucked(value){
-                    if (value =="1"){
-                        return "<font color=red>锁定</font>";
+                function renderFireAlarmIsLucked(value, cellmeta, record, index, columnIndex, store){
+                    if (record.get("isLocked")=="1"){
+                        return "<a style=cursor:pointer onclick=lockFireAlarmFn(" + store.getAt(index).get('id')+")><font color=red>锁定</font></a>";
                     }else{
-                        return "<font color=green>未锁定</font>";
+                        return "<a style=cursor:pointer onclick=lockFireAlarmFn(" + store.getAt(index).get('id')+")><font color=green>未锁定</font></a>";
                     }
                 }
         
@@ -105,7 +124,7 @@
                         },{
                             header: '是否锁定',
                             dataIndex: 'isLocked',
-                            renderer: renderRoleIsLucked,
+                            renderer: renderFireAlarmIsLucked,
                             width: 110
                         }],
                     selModel :Ext.create('Ext.selection.CheckboxModel'),
@@ -315,7 +334,8 @@
                 var resetButton = Ext.create((Ext.Button),{
                     text:'重置',
                     fieldLabel:'点击重置',
-                    iconCls: 'searchItem',
+                    iconCls: 'refresh',
+
                     handler: function(){
                        
                         newFireAlarmForm.form.reset();

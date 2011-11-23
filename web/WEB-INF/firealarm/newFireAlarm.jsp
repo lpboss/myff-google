@@ -20,28 +20,39 @@
                     allowBlank: false,
                     blankText: "编号不能为空",
                     name: 'id',
+                 
                     anchor: '95%'
                 });
                 
-
+                
               
 
                 var heatMax =Ext.create('Ext.form.field.Number', {
                     fieldLabel: '最高热值',
                     allowBlank: false,
                     blankText: "最高热值不能为空",
+                    id: 'heatMax',
+                    minValue: 0,
                     name: 'heatMax',
                     anchor: '95%'
                 });
+                
+            
+              
+                
                 var ptzHAngle = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '水平角度',
                     allowBlank: false,
                     blankText: "水平角度不能为空",
+                    maxValue: 360,   
+                    minValue: 0,
                     name: 'ptzHAngle',
                     anchor: '95%'
                 });
                 var ptzVAngle = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '垂直角度',
+                    maxValue: 360,   
+                    minValue: 0,
                     allowBlank: false,
                     blankText: "垂直角度不能为空",
                     name: 'ptzVAngle',
@@ -50,6 +61,7 @@
 
                 var heatMin = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '最低热值',
+                    minValue: 0,
                     allowBlank: false,
                     blankText: "最低热值不能为空",
                     name: 'heatMin',
@@ -58,6 +70,7 @@
         
                 var heatAvg = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '平均热值',
+                    minValue: 0,
                     name: 'heatAvg',
                     anchor: '95%'
                 });

@@ -68,7 +68,7 @@ public class FireAlarmServiceImpl implements FireAlarmService {
         //   都为空
         if (ptzId == null && beginTime == null && endTime == null) {
             fireAlarms = fireAlarmDao.getAllFireAlarms();
-      
+
         }
         JsonConfig jsonConfig = new JsonConfig();
         //这是需要过滤掉的变量名。
@@ -145,5 +145,14 @@ public class FireAlarmServiceImpl implements FireAlarmService {
     public FireAlarm getFireAlarmById(Long id) {
         System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbb");
         return fireAlarmDao.getFireAlarmById(id);
+    }
+
+    @Override
+    public String fireAlarmLock(FireAlarm fireAlarm) {
+        String info = null;
+        fireAlarmDao.saveOrUpdate(fireAlarm);
+        info = "success";
+        String jsonStr = "{success:true,info:'" + info + "'}";
+        return jsonStr;
     }
 }
