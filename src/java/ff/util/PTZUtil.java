@@ -4,6 +4,7 @@
  */
 package ff.util;
 
+import ff.model.PTZ;
 import java.util.logging.Logger;
 
 import ff.server.SerialPortCommServer;
@@ -31,74 +32,77 @@ public class PTZUtil {
     public void PTZAction(Long ptzId, String ptzAction) {
         logger.info("ptzAction:" + ptzAction + ",   0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
         //先固定一个云台测试。
-        String testIP = ptzService.getPTZById(ptzId).getPelcodCommandUrl();
+        PTZ ptz = ptzService.getPTZById(ptzId);
+        String ptzIP = ptz.getPelcodCommandUrl();
+        Integer shiftStep = ptz.getShiftStep();
 
         boolean connResult;
 
         //先停止再发送新命令。
-        serialPortCommServer.pushCommand(testIP, "FF 01 00 00 00 00 01");
+        serialPortCommServer.pushCommand(ptzIP, "FF 01 00 00 00 00 01");
 
 
         //发送命令前，先设置停止巡航状态位。
-        serialPortCommServer.getAllowCruise().put(testIP, Boolean.FALSE);
+        serialPortCommServer.getAllowCruise().put(ptzIP, Boolean.FALSE);
         //动手控制前，先清空云台的所有命令。
-        serialPortCommServer.getCommandMap().remove(testIP);
-
+        serialPortCommServer.getCommandMap().remove(ptzIP);
+        String pelcodCommand = "";
         if (ptzAction.equals("up")) {
-            setCruiseBreakpoint(testIP);
-            serialPortCommServer.pushCommand(testIP, "FF 01 00 08 00 3F 48");
+            setCruiseBreakpoint(ptzIP);
+            pelcodCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x08, 0, shiftStep, "right", ptz.getBrandType());
+            serialPortCommServer.pushCommand(ptzIP, pelcodCommand);
             //logger.info("FF 01 00 08 00 3F 48 UP..........................." + connResult);
         } else if (ptzAction.equals("up_left")) {
-            setCruiseBreakpoint(testIP);
-            serialPortCommServer.pushCommand(testIP, "FF 01 00 0C 3F 3F 8B");
+            setCruiseBreakpoint(ptzIP);
+            pelcodCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x0C, shiftStep, shiftStep, "up_left", ptz.getBrandType());
+            serialPortCommServer.pushCommand(ptzIP, pelcodCommand);
             //logger.info("FF 01 00 10 00 3F 50 DOWN........................." + connResult);FF 01 00 14 2F 2F 73
         } else if (ptzAction.equals("up_right")) {
-            setCruiseBreakpoint(testIP);
-            serialPortCommServer.pushCommand(testIP, "FF 01 00 0A 3F 3F 89");
-            //logger.info("FF 01 00 10 00 3F 50 DOWN........................." + connResult);FF 01 00 14 2F 2F 73
+            setCruiseBreakpoint(ptzIP);
+            pelcodCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x0A, shiftStep, shiftStep, "up_right", ptz.getBrandType());
+            serialPortCommServer.pushCommand(ptzIP, pelcodCommand);
         } else if (ptzAction.equals("down")) {
-            setCruiseBreakpoint(testIP);
-            serialPortCommServer.pushCommand(testIP, "FF 01 00 10 00 3F 50");
-            //logger.info("FF 01 00 10 00 3F 50 DOWN........................." + connResult);FF 01 00 14 2F 2F 73
+            setCruiseBreakpoint(ptzIP);
+            pelcodCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x10, 0, shiftStep, "down", ptz.getBrandType());
+            serialPortCommServer.pushCommand(ptzIP, pelcodCommand);
         } else if (ptzAction.equals("down_left")) {
-            setCruiseBreakpoint(testIP);
-            serialPortCommServer.pushCommand(testIP, "FF 01 00 14 3F 3F 93");
-            //logger.info("FF 01 00 10 00 3F 50 DOWN........................." + connResult);FF 01 00 14 2F 2F 73
+            setCruiseBreakpoint(ptzIP);
+            pelcodCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x14, shiftStep, shiftStep, "down_left", ptz.getBrandType());
+            serialPortCommServer.pushCommand(ptzIP, pelcodCommand);
         } else if (ptzAction.equals("down_right")) {
-            setCruiseBreakpoint(testIP);
-            serialPortCommServer.pushCommand(testIP, "FF 01 00 12 3F 3F 91");
-            //logger.info("FF 01 00 10 00 3F 50 DOWN........................." + connResult);FF 01 00 14 2F 2F 73
+            setCruiseBreakpoint(ptzIP);
+            pelcodCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x12, shiftStep, shiftStep, "down_right", ptz.getBrandType());
+            serialPortCommServer.pushCommand(ptzIP, pelcodCommand);
         } else if (ptzAction.equals("right")) {
-            setCruiseBreakpoint(testIP);
-            serialPortCommServer.pushCommand(testIP, "FF 01 00 02 3F 00 42");
-            //logger.info("FF 01 00 02 3F 00 42 RIGHT........................" + connResult);
+            setCruiseBreakpoint(ptzIP);
+            pelcodCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x02, shiftStep, 0, "right", ptz.getBrandType());
+            serialPortCommServer.pushCommand(ptzIP, pelcodCommand);
         } else if (ptzAction.equals("left")) {
-            setCruiseBreakpoint(testIP);
-            serialPortCommServer.pushCommand(testIP, "FF 01 00 04 3F 00 44");
-            //logger.info("FF 01 00 04 30 00 35 LEFT........................." + connResult);
+            setCruiseBreakpoint(ptzIP);
+            pelcodCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x04, shiftStep, 0, "left", ptz.getBrandType());
+            serialPortCommServer.pushCommand(ptzIP, pelcodCommand);
         } else if (ptzAction.equals("stop")) {
-            setCruiseBreakpoint(testIP);
-            serialPortCommServer.pushCommand(testIP, "FF 01 00 00 00 00 01");
+            setCruiseBreakpoint(ptzIP);
+            serialPortCommServer.pushCommand(ptzIP, "FF 01 00 00 00 00 01");
             //logger.info("FF 01 00 00 00 00 01 STOP........................." + connResult);
         } else if (ptzAction.equals("cruise")) {
-            serialPortCommServer.getAllowCruise().put(testIP, Boolean.TRUE);
-            serialPortCommServer.getIsCruising().put(testIP, Boolean.FALSE);
-            serialPortCommServer.getIsCruisingPresetAngleY().remove(testIP);
-            serialPortCommServer.getIsAdjustingXYForBreakpoint().remove(testIP);
+            serialPortCommServer.getAllowCruise().put(ptzIP, Boolean.TRUE);
+            serialPortCommServer.getIsCruising().put(ptzIP, Boolean.FALSE);
+            serialPortCommServer.getIsCruisingPresetAngleY().remove(ptzIP);
+            serialPortCommServer.getIsAdjustingXYForBreakpoint().remove(ptzIP);
             //为了方便测试程度，下面取消返回断点的行为。
-            serialPortCommServer.getCruiseBreakpoint().remove(testIP);
+            serialPortCommServer.getCruiseBreakpoint().remove(ptzIP);
             //允许再次报火警
-            serialPortCommServer.getAllowAlarm().put(testIP, Boolean.TRUE);
+            serialPortCommServer.getAllowAlarm().put(ptzIP, Boolean.TRUE);
         } else if (ptzAction.equals("clear_fire_alarm")) {
             //清了火警信息后，只有点巡航按钮后，方可再次对火情发出火警
             System.out.println("已经清空有关火警状态的信息。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
-            serialPortCommServer.getAllowCruise().put(testIP, Boolean.FALSE);
-            serialPortCommServer.getCruiseBreakpoint().remove(testIP);
-            serialPortCommServer.getIsAdjustingXYForBreakpoint().remove(testIP);
-
-            serialPortCommServer.getIsMovingCenterForFireAlarm().remove(testIP);
+            serialPortCommServer.getAllowCruise().put(ptzIP, Boolean.FALSE);
+            serialPortCommServer.getCruiseBreakpoint().remove(ptzIP);
+            serialPortCommServer.getIsAdjustingXYForBreakpoint().remove(ptzIP);
+            serialPortCommServer.getIsMovingCenterForFireAlarm().remove(ptzIP);
             //不允许再次报火警
-            serialPortCommServer.getAllowAlarm().put(testIP, Boolean.FALSE);
+            serialPortCommServer.getAllowAlarm().put(ptzIP, Boolean.FALSE);
         }
     }
 
