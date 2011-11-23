@@ -211,7 +211,7 @@
                     frame:true,
                     bodyStyle:'padding:5px 5px 0',
                     width: 1190,
-                    height: 265,
+                    height: 290,
                     items: [{
                             layout: 'column',
                             xtype: 'container',
