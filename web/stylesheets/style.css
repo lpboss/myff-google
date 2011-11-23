@@ -199,6 +199,17 @@ body {
 	height: 79px;
 	width: 685px;
 }
+.blk_29 .pcont {
+ width:630px;
+ float:left;
+ overflow:hidden;
+}
+.blk_29 .ScrCont {
+ width:32766px;
+}
+.blk_29 #List1_1, .blk_18 #List2_1 {
+ float:left;
+}
 .blk_29 .LeftBotton a{
 	LEFT: 8px;
 	FLOAT: left;

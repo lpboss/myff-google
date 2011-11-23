@@ -37,21 +37,7 @@
 	z-index:200;
 	overflow:visible;
 }
-.blk_29 {
- overflow:hidden;
- width:685px;
-}
-.blk_29 .pcont {
- width:630px;
- float:left;
- overflow:hidden;
-}
-.blk_29 .ScrCont {
- width:32766px;
-}
-.blk_29 #List1_1, .blk_18 #List2_1 {
- float:left;
-}
+
 
 -->
 </style>
@@ -93,7 +79,8 @@ function ptzAction(ptzActionStr){
 		},
 		method : 'GET',
 		params : {
-			action_type : ptzActionStr
+			action_type : ptzActionStr,
+			ptz_id: 1
 		}
 	});
 }
@@ -399,25 +386,20 @@ function picrun_init(){
     </div>
   </div>
 <div class="f_c"> 
-<table width="520" height="69" border="0" cellpadding="0" cellspacing="1">
+<table width="300" height="69" border="0" cellpadding="0" cellspacing="1">
   <tr>
-    <td width="96" height="24" class="yushua" ><a href="#">雨刷</a></td>
-    <td width="96" height="24" class="sudu"><a href="#">速度</a></td>
-    <td width="96" height="24" class="luoxuansaomiao"><a href="#">螺旋扫描</a></td>
-    <td width="96"  class="piczhuapai"><a href="#">图像抓拍</a></td>
-    <td width="96"  class="moshi"><a href="#">显示模式</a></td>
+    <td width="96" height="24"><span class="apple"><a href="javascript:switchAlarm(document.getElementById('alarmSwitch'));">苹果皮扫描</a></span></td>
+    <td width="96"><span class="piczhuapai"><a href="javascript:switchAlarm(document.getElementById('alarmSwitch'));">图像抓拍</a></span></td>
+    <td width="96" ><span class="yushua"><a id="wiperSwitch" href="javascript:switchWiper(document.getElementById('wiperSwitch'));">开启雨刷</a></span></td>
   </tr>
   <tr>
-    <td  class="xunhang"><a href="#">巡航</a></td>
-    <td height="24" class="apple"><a href="#">苹果皮</a></td>
-    <td class="touwu"><a href="#">透雾</a></td>
-    <td class="jianshi"><a href="#">轮循监视</a></td>
-    <td class="duijiang"><a id="alarmSwitch" href="javascript:switchAlarm(document.getElementById('alarmSwitch'));">关闭报警</a></td>
+    <td><span class="luoxuansaomiao"><a href="javascript:switchAlarm(document.getElementById('alarmSwitch'));">螺旋扫描</a></span></td>
+    <td><span class="xunhang"><a href="javascript:switchAlarm(document.getElementById('alarmSwitch'));">自动巡航</a></span></td>
+    <td><span class="duijiang"><a id="alarmSwitch" href="javascript:switchAlarm(document.getElementById('alarmSwitch'));">关闭报警</a></span></td>
   </tr>
 </table></div>
 </div>
 </body>
 </html>
 <script type="text/javascript">
-//alert("document.documentElement.clientWidth:"+document.documentElement.clientWidth+"\n"+"document.body.clientWidth:"+document.body.clientWidth+"\n"+"window.screen.width:"+window.screen.width);
 </script>

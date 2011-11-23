@@ -5,6 +5,9 @@
 package ff.model;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,6 +16,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import org.hibernate.annotations.Cascade;
 
 /**
  *
@@ -25,31 +31,32 @@ public class PTZ {
 
     private Long id;
     private String name;
+    private Set<FireAlarm> fireAlarmDetails = new HashSet<FireAlarm>(0);
     private String controllUrl; //编码器IP',
     private String pelcodCommandUrl; //'通过串口,发pelcod的ip',
     private String visibleCameraUrl; //'可见光摄像机地址,模拟请参考controll_url',
-    private String visibleRTSPUrl; //'可见光RTSP�,
-    private String infraredRTSPUrl; //'红外RTSP�,
+    private String visibleRTSPUrl; //'可见光RTSP�,
+    private String infraredRTSPUrl; //'红外RTSP�,
     private String infraredCameraUrl; //'红外摄像机地址',
     private String infraredCircuitUrl; //'红外电路板设备地址',
-    private float northMigration; //'摄像�角度与正北的便宜。顺时针为正�,
+    private float northMigration; //'摄像�角度与正北的便宜。顺时针为正�,
     private String gisMapUrl; //'地图文件存放位置',
     private float visualAngleX;//'红外视角X'
     private float visualAngleY;//'红外视角Y'
     private Integer infraredPixelX;//'红外摄像机X方向像素'
     private Integer infraredPixelY;//'红外摄像机Y方向像素'
-    private String brandType; //品牌类型,不同品牌，特性不同，plcod命令拼接方式不同�
+    private String brandType; //品牌类型,不同品牌，特性不同，plcod命令拼接方式不同�
     private Integer cruiseStep;//云台巡航步长
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private Integer version;//版本
     private Integer isAlarm;// 是否正在报警
-    private Integer alarmHeatValue;// 报警最高热值�
-    private Integer cruiseRightLimit; //巡航右边�
-    private Integer cruiseLeftLimit; //巡航左边�
-    private Integer cruiseUpLimit; //最大上仰角�
-    private Integer cruiseDownLimit; //巡航时最大俯�
-    private Long isLocked = new Long(0);// 状�'启用，停�,
+    private Integer alarmHeatValue;// 报警最高热值�
+    private Integer cruiseRightLimit; //巡航右边�
+    private Integer cruiseLeftLimit; //巡航左边�
+    private Integer cruiseUpLimit; //最大上仰角�
+    private Integer cruiseDownLimit; //巡航时最大俯�
+    private Long isLocked = new Long(0);// 状�'启用，停�,
     private Integer shiftStep; //云台非巡航状态下默认移动步长
 
     @Id
@@ -305,6 +312,18 @@ public class PTZ {
 
     public void setIsAlarm(Integer isAlarm) {
         this.isAlarm = isAlarm;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "ptz")
+    @Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN) //只是加这一步才可以实现。
+    @OrderBy("id")
+
+    public Set<FireAlarm> getFireAlarmDetails() {
+        return fireAlarmDetails;
+    }
+
+    public void setFireAlarmDetails(Set<FireAlarm> fireAlarmDetails) {
+        this.fireAlarmDetails = fireAlarmDetails;
     }
 
     

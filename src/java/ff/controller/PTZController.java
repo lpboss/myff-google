@@ -48,12 +48,16 @@ public class PTZController extends MultiActionController {
     public void ptzAction(HttpServletRequest request, HttpServletResponse response) {
         logger.info("PTZ index page");
         long ptzId = Long.parseLong(request.getParameter("ptz_id"));
+        int assignedStep = 0;
+        if (request.getParameter("assigned_step") != null && !request.getParameter("assigned_step").equalsIgnoreCase("")) {
+            assignedStep = Integer.parseInt(request.getParameter("assigned_step"));
+        }
         if (request.getParameter("action_type").equalsIgnoreCase("stop_fire_alarm")) {
             PTZ ptz = ptzService.getPTZById(ptzId);
             ptz.setIsAlarm(0);
             ptzService.saveOrUpdate(ptz);
         } else {
-            ptzUtil.PTZAction(ptzId, request.getParameter("action_type"));
+            ptzUtil.PTZAction(ptzId, request.getParameter("action_type"), assignedStep);
         }
 
         String info = "success";

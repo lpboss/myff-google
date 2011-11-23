@@ -17,13 +17,15 @@
         <script type="text/javascript">
             Ext.onReady(function(){
                 var userId = <%=request.getParameter("id")%>;
+                var editId = <%=request.getParameter("iddd")%>;
  
                  var ptzId = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '云台的编号',
                     allowBlank: false,
                     blankText: "云台的编号不能为空",
                     name: 'ptzId',
-                    value: userId,
+                    readOnly:true,                   
+                    style: 'color:#8A2BE2;font-family:黑体;background:#C7C7C7',
                     anchor: '95%'
                 });
                 
@@ -82,7 +84,8 @@
                     model : 'alarmIgnoreAreas',
                     proxy : {
                         type : 'ajax',
-                        url : '<%=basePath%>ignoreareas/getAllIgnoreAreases.htm?for_cbb=true',
+                     //   url : '<%=basePath%>ignoreareas/getAllIgnoreAreases.htm?for_cbb=true',
+                        url: "<%=basePath%>ignoreareas/getAllIgnoreAreases.htm?id=" + editId,
                         reader : {
                             type : 'json',
                             root : 'root',// JSON数组对象名

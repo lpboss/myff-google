@@ -104,7 +104,9 @@ public class IgnoreAreasController extends MultiActionController {
     //编辑AllAlarmIgnoreAreases
     public void getIgnoreAreasesById(HttpServletRequest request, HttpServletResponse response) {
         Integer id = Integer.valueOf(request.getParameter("id"));
-        String jsonStr = ignoreAreasService.getIgnoreAreasJSONById(id);
+        logger.info("1111");
+        logger.info(id);
+        String jsonStr = ignoreAreasService.getEditIgnoreAreasJSONById(id);
         PrintWriter pw;
         try {
             response.setContentType("text/json; charset=utf-8");
