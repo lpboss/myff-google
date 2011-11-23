@@ -121,6 +121,14 @@
                         },{
                             header: '巡航时最大俯角',
                             dataIndex: 'cruiseDownLimit',
+                            width:100
+                        },{
+                            header: '是否正在报警',
+                            dataIndex: 'isAlarm',
+                            width:80
+                        },{
+                            header: '报警最高热值',
+                            dataIndex: 'alarmHeatValue',
                             width:80
                         },{
                             header: '版本',

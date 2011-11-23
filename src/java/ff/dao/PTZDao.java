@@ -24,4 +24,5 @@ public interface PTZDao {
     PTZ getPTZById(Long id);   //得到某一条数据
     
     List<PTZ> getIsAlarmPTZs();  //得到所有正在报火警的云台
+
 }

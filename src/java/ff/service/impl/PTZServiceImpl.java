@@ -159,4 +159,5 @@ public class PTZServiceImpl implements PTZService {
         String jsonStr = "{totalProperty:" + ptzs.size() + ",root:" + rolesJS.toString() + "}";
         return jsonStr;
     }
+
 }

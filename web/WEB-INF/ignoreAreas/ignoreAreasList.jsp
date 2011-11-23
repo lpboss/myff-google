@@ -22,8 +22,8 @@
                     model : 'alarmIgnoreAreas',
                     proxy : {
                         type : 'ajax',
-                        url : '<%=basePath%>ignoreareas/getAllIgnoreAreases.htm',
-                        // url: "<%=basePath%>ignoreareas/getAllIgnoreAreases.htm?id=" + "2",
+                     //   url : '<%=basePath%>ignoreareas/getAllIgnoreAreases.htm',
+                         url: "<%=basePath%>ignoreareas/getAllIgnoreAreases.htm?id=" + userId,
                         reader : {
                             type : 'json',
                             root : 'root',// JSON数组对象名

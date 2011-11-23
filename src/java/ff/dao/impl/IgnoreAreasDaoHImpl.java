@@ -38,15 +38,14 @@ public class IgnoreAreasDaoHImpl extends HibernateDaoSupport implements IgnoreAr
     }
 
     @Override
-    public IgnoreAreas getIgnoreAreasById(Long id) {
+    public  List<IgnoreAreas> getById(Integer id) {
       //  IgnoreAreas ignoreAreases = (IgnoreAreas) this.getHibernateTemplate().get(IgnoreAreas.class, id);       
       //  return ignoreAreases;
-         List<IgnoreAreas> ignoreAreases = this.getHibernateTemplate().find("from IgnoreAreas where ptz_id=?",id);
-        if (ignoreAreases.size() > 0) {
-            return (IgnoreAreas) ignoreAreases;
-        } else {
-            return null;
-        }
+         System.out.print("44444444");
+         System.out.print(id);
+         List<IgnoreAreas> ignoreAreases = this.getHibernateTemplate().findByNamedParam("from IgnoreAreas where ptz_id =:id",new String[]{"id"},new Object[]{id});
+     //     List ignoreAreases = this.getHibernateTemplate().find("from IgnoreArea as i where i.ptzId = ?",id);
+            return ignoreAreases;
     }
 
     @Override
@@ -68,5 +67,10 @@ public class IgnoreAreasDaoHImpl extends HibernateDaoSupport implements IgnoreAr
             return e.toString();
         }
         return "success";
+    }
+
+    @Override
+    public IgnoreAreas getIgnoreAreasById(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
