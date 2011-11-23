@@ -114,7 +114,6 @@ public class FireAlarmServiceImpl implements FireAlarmService {
 
     @Override
     public String getFireAlarmJSONById(Long id) {
-        System.out.println("bbbbbbbbbbbb");
         FireAlarm user = fireAlarmDao.getFireAlarmById(id);
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.setExcludes(new String[]{"videos", "users", "user", "rolesPrivilegeDetails","fireAlarm"});
@@ -143,7 +142,6 @@ public class FireAlarmServiceImpl implements FireAlarmService {
 
     @Override
     public FireAlarm getFireAlarmById(Long id) {
-        System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbb");
         return fireAlarmDao.getFireAlarmById(id);
     }
 

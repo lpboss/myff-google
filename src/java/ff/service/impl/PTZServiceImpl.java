@@ -128,7 +128,6 @@ public class PTZServiceImpl implements PTZService {
 
     @Override
     public PTZ getPTZById(Long id) {
-        System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
         return ptzDao.getPTZById(id);
     }
 
