@@ -328,9 +328,9 @@
                              
                                 start : 0,
                                 limit : pageSize,
-                                PTZId: Ext.getCmp('ptzId').getValue(),
-                                BeginTime: Ext.getCmp('beginTime').getRawValue(),
-                                EndTime: Ext.getCmp('endTime').getRawValue()
+                                ptz_id: Ext.getCmp('ptzId').getValue(),
+                                begin_time: Ext.getCmp('beginTime').getRawValue(),
+                                end_time: Ext.getCmp('endTime').getRawValue()
                             }
                         })
                     }

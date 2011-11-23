@@ -81,18 +81,18 @@ public class FireAlarmController extends MultiActionController {
         java.sql.Timestamp beginTime;
         java.sql.Timestamp endTime;
         logger.info("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-        if (!(request.getParameter("PTZId") == null || "".equals(request.getParameter("PTZId")))) {
-            ptzId = Long.valueOf(request.getParameter("PTZId"));
+        if (!(request.getParameter("ptz_id") == null || "".equals(request.getParameter("ptz_id")))) {
+            ptzId = Long.valueOf(request.getParameter("ptz_id"));
         } else {
             ptzId = null;
         }
-        if (!(request.getParameter("BeginTime") == null || "".equals(request.getParameter("BeginTime")))) {
-            beginTime = java.sql.Timestamp.valueOf(request.getParameter("BeginTime"));
+        if (!(request.getParameter("begin_time") == null || "".equals(request.getParameter("begin_time")))) {
+            beginTime = java.sql.Timestamp.valueOf(request.getParameter("begin_time"));
         } else {
             beginTime = null;
         }
-        if (!(request.getParameter("EndTime") == null || "".equals(request.getParameter("EndTime")))) {
-            endTime = java.sql.Timestamp.valueOf(request.getParameter("EndTime"));
+        if (!(request.getParameter("end_time") == null || "".equals(request.getParameter("end_time")))) {
+            endTime = java.sql.Timestamp.valueOf(request.getParameter("end_time"));
         } else {
             endTime = null;
         }
