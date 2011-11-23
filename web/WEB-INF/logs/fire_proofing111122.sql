@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50517
 File Encoding         : 65001
 
-Date: 2011-11-22 17:51:00
+Date: 2011-11-23 16:07:40
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -160,6 +160,7 @@ CREATE TABLE `ptzs` (
   `infrared_pixel_y` smallint(6) DEFAULT '0' COMMENT '红外摄像机Y方向像素',
   `brand_type` varchar(255) DEFAULT NULL COMMENT '品牌与型号',
   `cruise_step` smallint(6) DEFAULT '5' COMMENT '云台巡航步长',
+  `cruise_angle_y_step` tinyint(4) DEFAULT '10' COMMENT '巡航上扬角度步长',
   `shift_step` smallint(6) DEFAULT '10' COMMENT '云台非巡航状态下默认移动步长',
   `cruise_right_limit` smallint(6) DEFAULT '0' COMMENT '巡航右边界',
   `cruise_left_limit` smallint(6) DEFAULT '0' COMMENT '巡航左边界',
@@ -177,7 +178,7 @@ CREATE TABLE `ptzs` (
 -- ----------------------------
 -- Records of ptzs
 -- ----------------------------
-INSERT INTO `ptzs` VALUES ('1', '测试机，主云台1', 'rtsp://admin:12345@192.168.254.64/h264/ch1/main/av_stream', '192.168.254.65', null, null, null, '192.168.1.50', '192.168.1.50', '0', null, '50', '38', '382', '288', 'FY', '5', '10', '0', '0', '90', '0', '1300', '0', '2011-11-22 15:34:39', '2011-11-22 15:52:46', null, '0');
+INSERT INTO `ptzs` VALUES ('1', '测试机，主云台1', 'rtsp://admin:12345@192.168.254.64/h264/ch1/main/av_stream', '192.168.254.65', null, null, null, '192.168.1.50', '192.168.1.50', '0', null, '50', '38', '382', '288', 'FY', '5', '10', '10', '0', '0', '90', '0', '1300', '0', '2011-11-22 15:34:39', '2011-11-22 15:52:46', null, '0');
 
 -- ----------------------------
 -- Table structure for `roles`
