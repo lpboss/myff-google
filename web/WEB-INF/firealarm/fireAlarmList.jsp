@@ -81,8 +81,8 @@
                             dataIndex: 'id',
                             width: 30
                         }, {
-                            header: '云台ID',
-                            dataIndex: 'ptzId',
+                            header: '云台名称',
+                            dataIndex: 'ptz',
                             autoWidth: true
                         }, {
                             header: '火警时间',
@@ -90,23 +90,27 @@
                             dataIndex: 'actionDate',
                             width:150
                         }, {
-                            header: '最高热值',
+                            header: '最高热值(度)',
                             dataIndex: 'heatMax',
                             width:70
                         }, {
-                            header: '最低热值',
-                            dataIndex: 'heatMin'
+                            header: '最低热值(度)',
+                            dataIndex: 'heatMin',
+                            width:70
                         }, {
-                            header: '平均热值',
+                            header: '平均热值(度)',
                             dataIndex: 'heatAvg'
+                            , width:70
                         }, {
-                            header: '水平',
+                            header: '水平角度',
                             dataIndex: 'ptzAngleX'
+                            ,    width:70
                         }, {
-                            header: '垂直',
+                            header: '垂直角度',
                             dataIndex: 'ptzAngleY'
+                            ,    width:70
                         }, {
-                            header: '用户ID',
+                            header: '用户名称',
                             sortable : true,
                             dataIndex: 'userId',
                             width:100
@@ -120,7 +124,7 @@
                         }, {
                             header: '详情',
                             dataIndex: 'description',
-                            width:100
+                            width:250
                         },{
                             header: '是否锁定',
                             dataIndex: 'isLocked',
@@ -318,15 +322,15 @@
                     fieldLabel:'点击搜索',
                     iconCls: 'searchItem',
                     handler: function(){
-                        alert(Ext.getCmp('beginTime').getValue());
+                       
                         fireAlarmDS.load({
                             params:{
                              
                                 start : 0,
                                 limit : pageSize,
-                                PTZId: Ext.getCmp('ptzId').getValue(),
-                                BeginTime: Ext.getCmp('beginTime').getRawValue(),
-                                EndTime: Ext.getCmp('endTime').getRawValue()
+                                ptz_id: Ext.getCmp('ptzId').getValue(),
+                                begin_time: Ext.getCmp('beginTime').getRawValue(),
+                                end_time: Ext.getCmp('endTime').getRawValue()
                             }
                         })
                     }

@@ -23,7 +23,6 @@ import javax.persistence.ManyToOne;
 public class FireAlarm {
 
     private Long id;
-    private Integer ptzId;// '云台ID',
     private PTZ ptz;
     private Timestamp actionDate; //` datetime DEFAULT NULL COMMENT '火警时间',
     private float ptzAngleX;//` float DEFAULT NULL COMMENT '水平角度',
@@ -32,7 +31,7 @@ public class FireAlarm {
     private Integer heatMin;
     private Integer heatAvg;//'平均热值',
     private String description;//` text,
-    private Integer userId;
+    private User userId;
     private Timestamp dealDate;
     private Timestamp createdAt;
     private Timestamp updatedAt;
@@ -150,15 +149,6 @@ public class FireAlarm {
         this.ptzAngleY = ptzAngleY;
     }
 
-    @Column(name = "ptz_id", length = 100)
-    public Integer getPtzId() {
-        return ptzId;
-    }
-
-    public void setPtzId(Integer ptzId) {
-        this.ptzId = ptzId;
-    }
-
     @Column(name = "updated_at", length = 100)
     public Timestamp getUpdatedAt() {
         return updatedAt;
@@ -168,12 +158,13 @@ public class FireAlarm {
         this.updatedAt = updatedAt;
     }
 
-    @Column(name = "user_id", length = 100)
-    public Integer getUserId() {
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    public User getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(User userId) {
         this.userId = userId;
     }
 
@@ -188,6 +179,7 @@ public class FireAlarm {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ptz_id")
+    
     public PTZ getPtz() {
         return ptz;
     }

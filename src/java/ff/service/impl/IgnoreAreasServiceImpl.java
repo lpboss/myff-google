@@ -18,7 +18,7 @@ import net.sf.json.JsonConfig;
  *
  * @author Administrator
  */
-public class IgnoreAreasServiceServiceImpl implements IgnoreAreasService {
+public class IgnoreAreasServiceImpl implements IgnoreAreasService {
 
     private IgnoreAreasDao ignoreAreasDao;
 
