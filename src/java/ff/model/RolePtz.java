@@ -40,7 +40,6 @@ public class RolePtz implements java.io.Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ptz_id")
-    @Column(name = "ptz_id", length = 100)
     public PTZ getPtzId() {
         return ptzId;
     }
@@ -51,7 +50,6 @@ public class RolePtz implements java.io.Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
-    @Column(name = "role_id", length = 100)
     public Role getRoleId() {
         return roleId;
     }

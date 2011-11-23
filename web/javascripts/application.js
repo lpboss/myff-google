@@ -283,10 +283,13 @@ privilegeCallBack =  function(record, options, success){
 
 var pageSize = 10;
 
-departmentSubTypeArray = [
-    ['部门'],
-    ['店铺'],
-    ['分公司']
+//云台移动步长
+ptzAssignedStepArray = [
+    [5],
+    [10],
+    [15],
+    [20],
+    [25]
     ]
 
 saleOrderSubTypeArray = [
