@@ -43,6 +43,7 @@
                 <value>ff.model.FireAlarm</value>
                 <value>ff.model.PTZ</value>
                 <value>ff.model.IgnoreAreas</value>
+                <value>ff.model.RolePtz</value>
                 <!--<value>ff.model.UserPsycholTestResult</value>
                 <value>ff.model.PsycholTest</value>
                 <value>ff.model.PsycholTestType</value>

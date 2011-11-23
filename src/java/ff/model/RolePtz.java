@@ -24,8 +24,8 @@ import javax.persistence.Version;
 public class RolePtz implements java.io.Serializable {
 
     private Long id;
-    private Integer roleId;
-    private Integer ptzId;
+    private Role roleId;
+    private PTZ ptzId;
 
     @Id
     @GeneratedValue
@@ -38,21 +38,25 @@ public class RolePtz implements java.io.Serializable {
         this.id = id;
     }
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ptz_id")
     @Column(name = "ptz_id", length = 100)
-    public Integer getPtzId() {
+    public PTZ getPtzId() {
         return ptzId;
     }
 
-    public void setPtzId(Integer ptzId) {
+    public void setPtzId(PTZ ptzId) {
         this.ptzId = ptzId;
     }
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id")
     @Column(name = "role_id", length = 100)
-    public Integer getRoleId() {
+    public Role getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(Integer roleId) {
+    public void setRoleId(Role roleId) {
         this.roleId = roleId;
     }
 }
