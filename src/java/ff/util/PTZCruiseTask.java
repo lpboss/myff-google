@@ -191,8 +191,8 @@ public class PTZCruiseTask {
                         System.out.println("serialPortCommServer.getIsCruisingPresetAngleY().get(192.168.254.65):" + serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP));
                         if (serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP) == null) {
                             String currentAngleY = serialPortCommServer.getAngleYString(ptzIP);
-                            //上扬10�
-                            int angleY1 = Integer.parseInt(currentAngleY.split("\\.")[0]) + 10;
+                            //上扬角度，由参数决定，默认10�
+                            int angleY1 = Integer.parseInt(currentAngleY.split("\\.")[0]) + ptz.getCruiseAngleYStep();
                             int angleY2 = Integer.parseInt(currentAngleY.split("\\.")[1]);
                             if (angleY1 > 90) {
                                 angleY1 = 90;
