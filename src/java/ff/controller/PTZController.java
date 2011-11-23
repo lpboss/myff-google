@@ -76,7 +76,7 @@ public class PTZController extends MultiActionController {
      *描述：得到正在报警的云台。  
      */
     public void getIsAlarmPTZs(HttpServletRequest request, HttpServletResponse response) {
-        
+
         String jsonStr = ptzService.getIsAlarmPTZsJSON();
 
         PrintWriter pw;
@@ -159,6 +159,7 @@ public class PTZController extends MultiActionController {
         ptz.setCruiseDownLimit(Integer.valueOf(request.getParameter("cruise_down_limit"))); //巡航时最大俯角
         ptz.setIsAlarm(Integer.valueOf(request.getParameter("is_alarm"))); //是否正在报警
         ptz.setAlarmHeatValue(Integer.valueOf(request.getParameter("alarm_heat_value"))); //报警最高热值
+        ptz.setShiftStep(Integer.valueOf(request.getParameter("shift_step")));//云台非巡航状态下默认移动步长
         ptzService.saveOrUpdate(ptz);
         String info = "success";
         String jsonStr = "{success:true,info:'" + info + "'}";
@@ -215,8 +216,10 @@ public class PTZController extends MultiActionController {
         Integer cruiseUpLimit = Integer.valueOf(request.getParameter("cruiseUpLimit")); //最大上仰角度
         Integer cruiseDownLimit = Integer.valueOf(request.getParameter("cruiseDownLimit")); //巡航时最大俯角
         Long isLocked = Long.valueOf(request.getParameter("isLocked"));//状态
-    //    Integer version = Integer.valueOf(request.getParameter("version")); //版本
-     //   Integer version = Integer.valueOf(request.getParameter("version")); //版本
+        Integer isAlarm = Integer.valueOf(request.getParameter("isAlarm")); //是否正在报警
+        Integer alarmHeatValue = Integer.valueOf(request.getParameter("alarmHeatValue")); //报警最高热值
+        Integer shiftStep = Integer.valueOf(request.getParameter("shiftStep")); //云台非巡航状态下默认移动步长
+
         //   Long ptzId = Long.valueOf(request.getParameter("roleId"));
         PTZ ptz = ptzService.getPTZById(id);
         ptz.setId(id);
@@ -242,7 +245,9 @@ public class PTZController extends MultiActionController {
         ptz.setInfraredPixelX(Integer.valueOf(cruiseUpLimit));
         ptz.setInfraredPixelX(Integer.valueOf(cruiseDownLimit));
         ptz.setIsLocked(Long.valueOf(isLocked));
-
+        ptz.setIsAlarm(Integer.valueOf(isAlarm));
+        ptz.setAlarmHeatValue(Integer.valueOf(alarmHeatValue));
+        ptz.setShiftStep(Integer.valueOf(shiftStep));
 
         //  logger.info(ptzId);
         PrintWriter pw;

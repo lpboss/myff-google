@@ -40,7 +40,7 @@ public class PTZServiceImpl implements PTZService {
     public String editPTZ(Long id) {
         PTZ ptz = ptzDao.getPTZById(id);
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[]{});                         //这是需要过滤掉的变量名。不过滤会引起循环
+        jsonConfig.setExcludes(new String[]{});                         //这是需要过滤掉的变量名。不过滤会引起循�        JSONObject monitorJS = JSONObject.fromObject(ptz, jsonConfig);
         JSONObject monitorJS = JSONObject.fromObject(ptz, jsonConfig);
         String jsonStr = monitorJS.toString();
         return jsonStr;
@@ -98,8 +98,7 @@ public class PTZServiceImpl implements PTZService {
     public String getPTZList() {
         List ptzs = ptzDao.getAllPTZs();
         JsonConfig jsonConfig = new JsonConfig();
-        //这是需要过滤掉的变量名。
-        jsonConfig.setExcludes(new String[]{});
+        //这是需要过滤掉的变量名�        jsonConfig.setExcludes(new String[]{});
         JSONArray ptzJS = JSONArray.fromObject(ptzs, jsonConfig);
         String jsonStr = "{totalProperty:" + ptzs.size() + ",root:" + ptzJS.toString() + "}";
         return jsonStr;
@@ -129,6 +128,7 @@ public class PTZServiceImpl implements PTZService {
 
     @Override
     public PTZ getPTZById(Long id) {
+        System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
         return ptzDao.getPTZById(id);
     }
 
@@ -136,7 +136,7 @@ public class PTZServiceImpl implements PTZService {
     public String update(PTZ ptz) {
         String info = null;
         if (ptz == null) {
-            info = "没有该用户，不能编辑！";
+            info = "没有该用户，不能编辑";
         } else {
             PTZ userDB = ptzDao.getPTZByName(ptz.getName());
             if (userDB != null && userDB.getId() != ptz.getId()) {
@@ -159,5 +159,4 @@ public class PTZServiceImpl implements PTZService {
         String jsonStr = "{totalProperty:" + ptzs.size() + ",root:" + rolesJS.toString() + "}";
         return jsonStr;
     }
-
 }

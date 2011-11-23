@@ -13,7 +13,7 @@ import java.sql.Timestamp;
  */
 public interface FireAlarmService {
 
-    String getFireAlarmList(Integer ptzId, Timestamp beginTime, Timestamp endTime);
+    String getFireAlarmList(Long ptzId, Timestamp beginTime, Timestamp endTime);
 
     String create(FireAlarm fireAlarm);
 

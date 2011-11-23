@@ -33,6 +33,14 @@
                     pageSize : pageSize,
                     autoLoad : true
                 });
+                
+                function renderFireAlarmIsLucked(value, cellmeta, record, index, columnIndex, store){
+                    if (record.get("isLocked")=="1"){
+                        return "<a style=cursor:pointer onclick=lockFireAlarmFn(" + store.getAt(index).get('id')+")><font color=red>启用</font></a>";
+                    }else{
+                        return "<a style=cursor:pointer onclick=lockFireAlarmFn(" + store.getAt(index).get('id')+")><font color=green>未启用</font></a>";
+                    }
+                }
 
                 var alarmIgnoreAreasGrid =  Ext.create('Ext.grid.Panel',
                 
@@ -75,7 +83,8 @@
                             width:60
                         }, {
                             header: '状态',
-                            dataIndex: 'isLocked',                          
+                            dataIndex: 'isLocked',  
+                            renderer: renderFireAlarmIsLucked,
                             width:60
                         }],
        
