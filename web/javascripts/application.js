@@ -315,12 +315,9 @@ articleSubTypeArray = [
     ['问题']
     ]
 
-auditStatusArray = [
-    ['申请','申请'],
-    ['通过','通过'],
-    ['驳回','驳回'],
-    ['撤消','撤消'],
-    ['未审批',' ']
+cruiseFromToArray = [
+    ['从左向右','LR'],
+    ['从右向左','RL']
     ]
 
 logisticsTypeArray = [
