@@ -15,21 +15,38 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>编辑报警忽视地区</title>
         <script type="text/javascript">
+            
             Ext.onReady(function(){
+                Ext.define('Editignoreareas', {
+                    extend : 'Ext.data.Model',
+                    fields : [
+                        { name: 'id'},
+                        { name: 'ptzId',mapping:'ptz.id'},
+                        { name: 'ptzAngelX'},
+                        { name: 'ptzAngelY'},
+                        { name: 'ccdArea'},
+                        { name: 'heatMax'},
+                        { name: 'beginDate'},
+                        { name: 'endDate'},
+                        { name: 'isLocked'},
+                        { name: 'version'}             
+                    ]
+                });
                 var userId = <%=request.getParameter("id")%>;
                 var editId = <%=request.getParameter("iddd")%>;
  
-                 var ptzId = Ext.create('Ext.form.field.Number', {
+                var ptzId = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '云台的编号',
                     allowBlank: false,
                     blankText: "云台的编号不能为空",
                     name: 'ptzId',
+                    //  value: userId,
                     readOnly:true,                   
                     style: 'color:#8A2BE2;font-family:黑体;background:#C7C7C7',
                     anchor: '95%'
                 });
                 
-                var ptzAngelX = Ext.create('Ext.form.field.Number', {
+                var ptzAngelX2 = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '火警时云台的水平角度',                 
                     name: 'ptzAngelX',
                     anchor: '95%'
@@ -77,14 +94,15 @@
                 var isLocked = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '状态',
                     name: 'isLocked',
+                    hidden:true,
                     anchor: '95%'
                 });
                 
                 var alarmIgnoreAreasStore =  Ext.create('Ext.data.Store', {
-                    model : 'alarmIgnoreAreas',
+                    model : 'Editignoreareas',
                     proxy : {
                         type : 'ajax',
-                     //   url : '<%=basePath%>ignoreareas/getAllIgnoreAreases.htm?for_cbb=true',
+                        //   url : '<%=basePath%>ignoreareas/getAllIgnoreAreases.htm?for_cbb=true',
                         url: "<%=basePath%>ignoreareas/getAllIgnoreAreases.htm?id=" + editId,
                         reader : {
                             type : 'json',
@@ -103,7 +121,7 @@
                     frame:true,
                     url: '<%=basePath%>ignoreareas/update.htm?id=' + userId,
                     reader: Ext.create('Ext.data.reader.Json',{
-                        model: 'alarmIgnoreAreas',
+                        model: 'Editignoreareas',
                         root: ''
                     }),
                     bodyStyle:'padding:5px 5px 0',
@@ -116,12 +134,12 @@
                                     columnWidth: .45,
                                     layout: 'anchor',                                  
                                     xtype: 'container',
-                                    items: [ptzId,ptzAngelX,ptzAngelY,ccdArea,heatMax]
+                                    items: [ptzId,ptzAngelX2,ptzAngelY,ccdArea]
                                 }, {
                                     columnWidth: .53,
                                     layout: 'anchor',
                                     xtype: 'container',                                  
-                                    items: [beginDate,endDate,version,isLocked]
+                                    items: [beginDate,endDate,version,isLocked,heatMax]
                                 }]
                         }],
                     buttons: [{

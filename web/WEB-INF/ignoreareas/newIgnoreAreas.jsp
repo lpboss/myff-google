@@ -77,6 +77,7 @@
                 var isLocked = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '状态',
                     name: 'is_locked',
+                    hidden:true,
                     anchor: '95%'
                 });
                
@@ -97,12 +98,12 @@
                                     columnWidth: .45,
                                     layout: 'anchor',                                  
                                     xtype: 'container',
-                                    items: [ptzId,ptzAngelX,ptzAngelY,ccdArea,heatMax]
+                                    items: [ptzId,ptzAngelX,ptzAngelY,ccdArea]
                                 }, {
                                     columnWidth: .53,
                                     layout: 'anchor',
                                     xtype: 'container',                                  
-                                    items: [beginDate,endDate,version,isLocked]
+                                    items: [beginDate,endDate,version,isLocked,heatMax]
                                 }]
                         }],
                     buttons: [{
