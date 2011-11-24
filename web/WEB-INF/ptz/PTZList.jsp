@@ -232,11 +232,9 @@
                                             var data = records[i].data
                                             ids.push(data.id);
                                             name += data.name + '<br />'
-                                        }
-                                       
+                                        }                                      
                                         console.info(ids)
-                                        //    var keys = Ext.util.JSON.encode(ids)
-                                    
+                                        //    var keys = Ext.util.JSON.encode(ids)                                    
                                         if(button == 'yes'){
                                             Ext.Ajax.request({
                                                 url:"<%=basePath%>ptz/deletePTZ.htm?key="+ids,
