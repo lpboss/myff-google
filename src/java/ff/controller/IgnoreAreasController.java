@@ -62,7 +62,6 @@ public class IgnoreAreasController extends MultiActionController {
             pw.write(jsonStr);
             pw.close();
         } catch (IOException e) {
-            logger.info(e);
         }
     }
 
@@ -93,7 +92,6 @@ public class IgnoreAreasController extends MultiActionController {
             pw.write(jsonStr);
             pw.close();
         } catch (IOException e) {
-            logger.info(e);
         }
     }
 
@@ -139,11 +137,8 @@ public class IgnoreAreasController extends MultiActionController {
         //  logger.info(ptzId);
         PrintWriter pw;
         try {
-            logger.info("user update..............................................Begin..........");
-            String jsonStr = ignoreAreasService.update(ignoreAreas);
-            logger.info("user update..............................................");
-            logger.info(jsonStr);
-
+            
+            String jsonStr = ignoreAreasService.update(ignoreAreas);           
             response.setContentType("text/json; charset=utf-8");
             response.setHeader("Cache-Control", "no-cache");
             pw = response.getWriter();
@@ -156,7 +151,7 @@ public class IgnoreAreasController extends MultiActionController {
 
     //删除报警忽视地区
     public void deleteIgnoreAreas(HttpServletRequest request, HttpServletResponse response) {
-        Long id = Long.valueOf(request.getParameter("key"));
+        String id = request.getParameter("key");
         String jsonStr = ignoreAreasService.deleteIgnoreAreas(id);
         PrintWriter pw;
         try {
@@ -175,12 +170,10 @@ public class IgnoreAreasController extends MultiActionController {
         Integer id = Integer.valueOf(request.getParameter("id"));
         IgnoreAreas ignoreAreas = ignoreAreasService.getIgnoreAreasById(id);
         System.out.println(ignoreAreas.getIsLocked());
-        System.out.println("aaaaa");
+       
         if (ignoreAreas.getIsLocked()==1) {
-            System.out.println("bbbbb");
             ignoreAreas.setIsLocked(Long.valueOf("0"));
         } else {
-            System.out.println("cccc");
             ignoreAreas.setIsLocked(Long.valueOf("1"));
         }
         PrintWriter pw;
