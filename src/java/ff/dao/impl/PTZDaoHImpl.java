@@ -25,9 +25,13 @@ public class PTZDaoHImpl extends HibernateDaoSupport implements PTZDao {
         ptz.setUpdatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
 
         //正式开始存储数this.getHibernateTemplate().saveOrUpdate(ptz);
+        this.getHibernateTemplate().saveOrUpdate(ptz);
         this.getHibernateTemplate().flush();
         this.getHibernateTemplate().clear();
+        System.out.print("9090");
+        System.out.print(ptz);
         return ptz;
+        
     }
 
     @Override

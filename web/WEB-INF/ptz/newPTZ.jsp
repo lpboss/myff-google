@@ -129,7 +129,7 @@
                 var brandType = Ext.create('Ext.form.ComboBox', {
                     fieldLabel: '云台品牌',
                     store: ptzBrandStore,
-                    allowBlank: false,
+                    // allowBlank: false,
                     valueField:'text',
                     displayField:'text',
                     typeAhead: true,
@@ -199,6 +199,8 @@
                 var isLocked = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '状态',
                     name: 'is_locked',
+                    hidden:true,
+                    value: 1,
                     anchor: '95%'
                 });
                
@@ -238,16 +240,18 @@
                             handler: function(){
                                 // check form value
                                 if (newPTZForm.form.isValid()) {
-                                    this.disable();
+//                                    this.disable();
                                     newPTZForm.form.submit({
                                         method : 'POST',
                                         success: function(result, response){
                                             if (response.result.info == "success") {
                                                 //添加成功后，隐藏窗口，并刷新Grid
+                                                Ext.MessageBox.alert('消息', "成功");
                                                 newPTZWin.destroy();
                                             }
                                             else {
                                                 Ext.MessageBox.alert('消息', response.result.info);
+                                            
                                             }
                                         },
                                         failure: function(result, response){

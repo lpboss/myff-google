@@ -122,11 +122,14 @@
                 var brandType2 = Ext.create('Ext.form.ComboBox', {
                     fieldLabel: '云台品牌',
                     store: ptzBrandStore,
-                    allowBlank: false,
+                    //                    allowBlank: false,
                     valueField:'text',
                     displayField:'text',
                     typeAhead: true,
                     mode: 'local',
+                    readOnly:false,
+                    minChars: 0,          
+                    editable:false,
                     name:'brandType',
                     emptyText:'请选择云台品牌...',
                     anchor: '95%'
