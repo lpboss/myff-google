@@ -17,7 +17,7 @@ public interface PTZService {
 
     String editPTZ(Long id);   //修改
 
-    String create(String name); // 添加
+    String create(PTZ ptz); // 添加
 
     List<PTZ> getAllPTZs(); //得到所有的云台信息
 

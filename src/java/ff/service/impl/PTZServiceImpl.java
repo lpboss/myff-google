@@ -68,15 +68,13 @@ public class PTZServiceImpl implements PTZService {
 
     //增加
     @Override
-    public String create(String name) {
-        PTZ ptz = new PTZ();
+    public String create(PTZ ptz) {
         String info = null;
-        if (ptzDao.getPTZByName(name) == null) {
-            ptz.setName(name);
-            ptzDao.saveOrUpdate(ptz);                               //存储对象
+        if (ptzDao.getPTZByName(ptz.getName()) == null) {
+            ptzDao.saveOrUpdate(ptz);
             info = "success";
         } else {
-            info = "该云台名已使用，请更换！";
+            info = "该用户名已使用，请更换！";
         }
         String jsonStr = "{success:true,info:'" + info + "'}";
         return jsonStr;
@@ -107,7 +105,10 @@ public class PTZServiceImpl implements PTZService {
 
     @Override
     public PTZ saveOrUpdate(PTZ ptz) {
+          System.out.print("555555");
         return ptzDao.saveOrUpdate(ptz);
+      
+
     }
 
     @Override

@@ -147,48 +147,88 @@ public class PTZController extends MultiActionController {
         ptz.setInfraredRTSPUrl(request.getParameter("infrared_rtsp_url"));//红外RTSP流
         ptz.setInfraredCameraUrl(request.getParameter("infrared_camera_url"));//红外摄像机地址
         ptz.setInfraredCircuitUrl(request.getParameter("infrared_circuit_url"));//红外电路板设备地址       
-        ptz.setNorthMigration(Float.valueOf(request.getParameter("north_migration")));//摄像机0角度与正北的偏移
+        if (!request.getParameter("north_migration").equals("")) {
+            ptz.setNorthMigration(Float.valueOf(request.getParameter("north_migration")));
+        }
+        //摄像机0角度与正北的偏移
         ptz.setGisMapUrl(request.getParameter("gis_map_url"));//地图文件存放位置
-        ptz.setVisualAngleX(Float.valueOf(request.getParameter("visual_angle_x")));//红外视角X
-        ptz.setVisualAngleY(Float.valueOf(request.getParameter("visual_angle_y")));//红外视角Y
-        ptz.setInfraredPixelX(Integer.valueOf(request.getParameter("infrared_pixel_x")));//红外摄像机X方向像素
-        ptz.setInfraredPixelY(Integer.valueOf(request.getParameter("infrared_pixel_y")));//红外摄像机Y方向像素    
+        if (!request.getParameter("visual_angle_x").equals("")) {
+            ptz.setVisualAngleX(Float.valueOf(request.getParameter("visual_angle_x")));
+        }//红外视角X
+        if (!request.getParameter("visual_angle_y").equals("")) {
+            ptz.setVisualAngleY(Float.valueOf(request.getParameter("visual_angle_y")));
+        }//红外视角Y
+        if (!request.getParameter("infrared_pixel_x").equals("")) {
+            ptz.setInfraredPixelX(Integer.valueOf(request.getParameter("infrared_pixel_x")));
+        }//红外摄像机X方向像素
+        if (!request.getParameter("infrared_pixel_y").equals("")) {
+            ptz.setInfraredPixelY(Integer.valueOf(request.getParameter("infrared_pixel_y")));
+        }//红外摄像机Y方向像素    
         ptz.setBrandType(request.getParameter("brand_type"));//品牌类型,不同品牌，特性不同，plcod命令拼接方式不同。
-        ptz.setCruiseStep(Integer.valueOf(request.getParameter("cruise_step")));//巡航步长
-        ptz.setVersion(Integer.valueOf(request.getParameter("version")));//版本
-        ptz.setIsLocked(Long.getLong("is_locked"));//状态isLocked     
+        if (!request.getParameter("cruise_step").equals("")) {
+            ptz.setCruiseStep(Integer.valueOf(request.getParameter("cruise_step")));
+        }//巡航步长
+        if (!request.getParameter("version").equals("")) {
+            ptz.setVersion(Integer.valueOf(request.getParameter("version")));
+        }//版本
+        if (!request.getParameter("is_locked").equals("")) {
+            ptz.setIsLocked(Long.getLong("is_locked"));
+        }//状态isLocked     
+        if (!request.getParameter("cruise_right_limit").equals("")&&!request.getParameter("cruise_left_limit").equals("")) {
+            if (Integer.valueOf(request.getParameter("cruise_right_limit")) == Integer.valueOf(request.getParameter("cruise_left_limit"))) {
+                ptz.setCruiseRightLimit(Integer.valueOf("0")); //巡航右边界
+                ptz.setCruiseLeftLimit(Integer.valueOf("0")); //巡航左边界
+            } else {
+                ptz.setCruiseRightLimit(Integer.valueOf(request.getParameter("cruise_right_limit"))); //巡航右边界
+                ptz.setCruiseLeftLimit(Integer.valueOf(request.getParameter("cruise_left_limit"))); //巡航左边界
+            }
+        }
+            if (!request.getParameter("cruise_up_limit").equals("")) {
+                ptz.setCruiseUpLimit(Integer.valueOf(request.getParameter("cruise_up_limit")));
+            } //最大上仰角度
+            if (!request.getParameter("cruise_down_limit").equals("")) {
+                ptz.setCruiseDownLimit(Integer.valueOf(request.getParameter("cruise_down_limit")));
+            } //巡航时最大俯角
+            if (!request.getParameter("is_alarm").equals("")) {
+                ptz.setIsAlarm(Integer.valueOf(request.getParameter("is_alarm")));
+            }//是否正在报警
+            if (!request.getParameter("alarm_heat_value").equals("")) {
+                ptz.setAlarmHeatValue(Integer.valueOf(request.getParameter("alarm_heat_value")));
+            }//报警最高热值
+            if (!request.getParameter("shift_step").equals("")) {
+                ptz.setShiftStep(Integer.valueOf(request.getParameter("shift_step")));
+            }//云台非巡航状态下默认移动步长
+            String jsonStr = ptzService.create(ptz);
 
-        if (Integer.valueOf(request.getParameter("cruise_right_limit")) == Integer.valueOf(request.getParameter("cruise_left_limit"))) {
-            ptz.setCruiseRightLimit(Integer.valueOf("0")); //巡航右边界
-            ptz.setCruiseLeftLimit(Integer.valueOf("0")); //巡航左边界
-        } else {
-            ptz.setCruiseRightLimit(Integer.valueOf(request.getParameter("cruise_right_limit"))); //巡航右边界
-            ptz.setCruiseLeftLimit(Integer.valueOf(request.getParameter("cruise_left_limit"))); //巡航左边界
+            PrintWriter pw;
+            try {
+                response.setContentType("text/json; charset=utf-8");
+                response.setHeader("Cache-Control", "no-cache");
+                pw = response.getWriter();
+                pw.write(jsonStr);
+                pw.close();
+            } catch (IOException e) {
+                logger.info(e);
+            }
         }
 
+        //编辑PTZ
+    
 
+    
 
-        ptz.setCruiseUpLimit(Integer.valueOf(request.getParameter("cruise_up_limit"))); //最大上仰角度
-        ptz.setCruiseDownLimit(Integer.valueOf(request.getParameter("cruise_down_limit"))); //巡航时最大俯角
-        ptz.setIsAlarm(Integer.valueOf(request.getParameter("is_alarm"))); //是否正在报警
-        ptz.setAlarmHeatValue(Integer.valueOf(request.getParameter("alarm_heat_value"))); //报警最高热值
-        ptz.setShiftStep(Integer.valueOf(request.getParameter("shift_step")));//云台非巡航状态下默认移动步长
-        ptzService.saveOrUpdate(ptz);
-        String info = "success";
-        String jsonStr = "{success:true,info:'" + info + "'}";
-        PrintWriter pw;
-        try {
-            response.setContentType("text/json; charset=utf-8");
-            response.setHeader("Cache-Control", "no-cache");
-            pw = response.getWriter();
-            pw.write(jsonStr);
-            pw.close();
-        } catch (IOException e) {
-            logger.info(e);
-        }
-    }
+    
 
-    //编辑PTZ
+    
+
+    
+
+    
+
+    
+
+    
+
     public void getPTZById(HttpServletRequest request, HttpServletResponse response) {
         Long id = Long.valueOf(request.getParameter("id"));
         String jsonStr = ptzService.getPTZJSONById(id);
@@ -298,12 +338,12 @@ public class PTZController extends MultiActionController {
             logger.info(e);
         }
     }
-    
+
     //处理是否锁定状态
     public void ptzLock(HttpServletRequest request, HttpServletResponse response) {
         Long id = Long.valueOf(request.getParameter("id"));
-        PTZ ptz = ptzService.getPTZById(id);      
-        if (ptz.getIsLocked()==1) {
+        PTZ ptz = ptzService.getPTZById(id);
+        if (ptz.getIsLocked() == 1) {
             ptz.setIsLocked(Long.valueOf("0"));
         } else {
             ptz.setIsLocked(Long.valueOf("1"));
@@ -320,6 +360,4 @@ public class PTZController extends MultiActionController {
             logger.info(e);
         }
     }
-    
-    
 }

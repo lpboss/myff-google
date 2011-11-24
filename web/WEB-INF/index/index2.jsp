@@ -289,7 +289,7 @@
                 Ext.define('FireAlarm', {
                     extend : 'Ext.data.Model',
                     fields : [{name: 'id'},
-                       { name: 'ptz',
+                        { name: 'ptz',
                             convert:function(value){
                                 return value.name;                 
                             } },
@@ -342,7 +342,9 @@
                         { name: 'cruiseDownLimit'},
                         { name: 'shiftStep'},
                         { name: 'version'},
-                        { name: 'isLocked'}
+                        { name: 'isLocked'},
+                        { name: 'isAlarm'},
+                        {name:"alarmHeatValue"}
                     ]
                 });
                 
