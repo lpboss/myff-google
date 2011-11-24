@@ -56,7 +56,7 @@ public class IgnoreAreasServiceImpl implements IgnoreAreasService {
         System.out.print("345");
         System.out.print(ignoreAreas);
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[]{"users","fireAlarmDetails"});
+        jsonConfig.setExcludes(new String[]{"users", "fireAlarmDetails"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm"));
         //    JSONObject userJS = JSONObject.fromObject(ignoreAreas, jsonConfig);
         JSONArray ignoreAreasJS = JSONArray.fromObject(ignoreAreas, jsonConfig);
@@ -84,8 +84,11 @@ public class IgnoreAreasServiceImpl implements IgnoreAreasService {
     }
 
     @Override
-    public String deleteIgnoreAreas(Long id) {
-        String info = ignoreAreasDao.deleteIgnoreAreas(id);
+    public String deleteIgnoreAreas(String id) {
+
+        String info = "";
+        ignoreAreasDao.deleteIgnoreAreas(id);
+        info = "success";
         String jsonStr = "{success:true,info:\"" + info + "\"}";
         return jsonStr;
     }
@@ -109,5 +112,4 @@ public class IgnoreAreasServiceImpl implements IgnoreAreasService {
         String jsonStr = "{success:true,info:'" + info + "'}";
         return jsonStr;
     }
-    
 }
