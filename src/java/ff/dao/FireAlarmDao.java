@@ -22,7 +22,7 @@ public interface FireAlarmDao {
 
     FireAlarm getFireAlarmById(Long id);
 
-    void delFireAlarmAll(String id);
+    String delFireAlarmAll(String id);
 
     List<FireAlarm> getFireAlarmsByPtzId(Long ptzId);
 

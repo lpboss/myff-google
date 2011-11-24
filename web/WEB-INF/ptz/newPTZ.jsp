@@ -129,13 +129,13 @@
                 var brandType = Ext.create('Ext.form.ComboBox', {
                     fieldLabel: '云台品牌',
                     store: ptzBrandStore,
-                    allowBlank: false,
+                    // allowBlank: false,
                     valueField:'text',
                     displayField:'text',
                     typeAhead: true,
                     mode: 'local',
                     name:'brand_type',
-                    emptyText:'请选择云台品牌...',
+                 //   emptyText:'请选择云台品牌...',
                     //allowBlank: false,
                     anchor: '95%'
                 });
@@ -199,6 +199,7 @@
                 var isLocked = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '状态',
                     name: 'is_locked',
+                    hidden:true,
                     anchor: '95%'
                 });
                
@@ -211,7 +212,7 @@
                     frame:true,
                     bodyStyle:'padding:5px 5px 0',
                     width: 1190,
-                    height: 265,
+                    height: 290,
                     items: [{
                             layout: 'column',
                             xtype: 'container',
@@ -238,16 +239,18 @@
                             handler: function(){
                                 // check form value
                                 if (newPTZForm.form.isValid()) {
-                                    this.disable();
+//                                    this.disable();
                                     newPTZForm.form.submit({
                                         method : 'POST',
                                         success: function(result, response){
                                             if (response.result.info == "success") {
                                                 //添加成功后，隐藏窗口，并刷新Grid
+                                                Ext.MessageBox.alert('消息', "成功");
                                                 newPTZWin.destroy();
                                             }
                                             else {
                                                 Ext.MessageBox.alert('消息', response.result.info);
+                                            
                                             }
                                         },
                                         failure: function(result, response){

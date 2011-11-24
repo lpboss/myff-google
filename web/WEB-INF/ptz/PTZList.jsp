@@ -15,6 +15,29 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>云台信息设置</title>
         <script type="text/javascript">
+            
+             //处理PTZ是否锁定
+            function lockPTZFn(id){              
+                Ext.Ajax.request({                     
+                    url : '<%=basePath%>ptz/ptzLock.htm',
+                    success : function (result, request) {
+                        PTZDS.load();
+                    },
+                    failure : function (result, request){
+                        Ext.MessageBox.show({
+                            title: '消息',
+                            msg: "通讯失败，请从新操作",
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.WARNING
+                        });
+                    },
+                    method : 'POST',
+                    params : {
+                        id : id
+                    }
+                });
+            }
+            
             Ext.onReady(function(){                            
                 
                 PTZDS =  Ext.create('Ext.data.Store', {
@@ -33,11 +56,11 @@
                     autoLoad : true
                 });
                 
-                function renderFireAlarmIsLucked(value, cellmeta, record, index, columnIndex, store){
+                function renderPTZIsLucked(value, cellmeta, record, index, columnIndex, store){
                     if (record.get("isLocked")=="1"){
-                        return "<a style=cursor:pointer onclick=lockFireAlarmFn(" + store.getAt(index).get('id')+")><font color=red>锁定</font></a>";
+                        return "<a style=cursor:pointer onclick=lockPTZFn(" + store.getAt(index).get('id')+")><font color=red>启用</font></a>";
                     }else{
-                        return "<a style=cursor:pointer onclick=lockFireAlarmFn(" + store.getAt(index).get('id')+")><font color=green>未锁定</font></a>";
+                        return "<a style=cursor:pointer onclick=lockPTZFn(" + store.getAt(index).get('id')+")><font color=blue>未启用</font></a>";
                     }
                 }
 
@@ -60,11 +83,11 @@
                         }, {
                             header: '通过串口,发pelcod的ip',
                             dataIndex: 'pelcodCommandUrl',
-                            width:120
+                            width:250
                         }, {
                             header: '可见光摄像机地址',
                             dataIndex: 'visibleCameraUrl',                          
-                            width:120
+                            width:250
                         }, {
                             header: '可见光RTSP流',
                             dataIndex: 'visibleRTSPUrl',
@@ -81,7 +104,7 @@
                         }, {
                             header: '红外电路板设备地址',
                             dataIndex: 'infraredCircuitUrl',
-                            width:110
+                            width:250
                         },{
                             header: '摄像机0角度与正北的偏移',//。顺时针为正。
                             dataIndex: 'northMigration',
@@ -89,7 +112,7 @@
                         },{
                             header: '地图文件存放位置',
                             dataIndex: 'gisMapUrl',
-                            width:100
+                            width:250
                         },{
                             header: '红外视角X',
                             dataIndex: 'visualAngleX',
@@ -141,7 +164,7 @@
                         },{
                             header: '云台非巡航状态下默认移动步长',
                             dataIndex: 'shiftStep',
-                            width:150
+                            width:170
                         },{
                             header: '版本',
                             dataIndex: 'version',
@@ -149,8 +172,8 @@
                         },{
                             header: '状态',
                             dataIndex: 'isLocked',  
-                            renderer: renderFireAlarmIsLucked,
-                            width:40
+                            renderer: renderPTZIsLucked,
+                            width:80
                         }],
        
                     selModel :Ext.create('Ext.selection.CheckboxModel'),                                 
@@ -170,7 +193,7 @@
                                 newPTZWin = Ext.create('Ext.window.Window', {
                                     layout: 'fit',
                                     width:1200,
-                                    height:300,
+                                    height:320,
                                     closeAction: 'destroy',
                                     plain: true,
                                     modal: true,
@@ -188,7 +211,43 @@
                                 newPTZWin.resizable = false;
                                 newPTZWin.show();
                             }
-                        },'-',{                    
+                        },'-',{
+                            text: '编辑',
+                            iconCls: 'editItem',
+                            handler : function(){
+                                var records = PTZGrid.getSelectionModel().getSelection();
+                                if(records.length==0){
+                                    Ext.MessageBox.show({
+                                        title: '提示信息',
+                                        msg: "请先选中一条记录后，再编辑。",
+                                        buttons: Ext.MessageBox.OK,
+                                        icon: Ext.MessageBox.WARNING
+                                    });
+                                }else{
+                                    //把表单添加到窗口中
+                                    ptzId = records[0].get('id');
+                                    editPTZWin = Ext.create('Ext.window.Window', {
+                                        title: '编辑云台',
+                                        layout:'fit',
+                                        width:1200,
+                                        height:320,
+                                        closeAction:'destroy',
+                                        constrain:true,
+                                        plain: true,
+                                        modal: true,
+                                        autoLoad: {
+                                            url: "<%=basePath%>ptz/editPTZ.htm?id=" + ptzId,
+                                            scripts: true
+                                        }
+                                    });
+                                }
+                                editPTZWin.on("destroy",function(){
+                                    PTZDS.load();
+                                });
+                                editPTZWin.resizable = false;
+                                editPTZWin.show();
+                            }
+                        },{                    
                             text: '删除',
                             width: 50,
                             iconCls: 'remove',
@@ -209,11 +268,9 @@
                                             var data = records[i].data
                                             ids.push(data.id);
                                             name += data.name + '<br />'
-                                        }
-                                       
+                                        }                                      
                                         console.info(ids)
-                                        //    var keys = Ext.util.JSON.encode(ids)
-                                    
+                                        //    var keys = Ext.util.JSON.encode(ids)                                    
                                         if(button == 'yes'){
                                             Ext.Ajax.request({
                                                 url:"<%=basePath%>ptz/deletePTZ.htm?key="+ids,
@@ -236,42 +293,6 @@
           
                                 }
                             }       
-                        },'-',{
-                            text: '编辑',
-                            iconCls: 'editItem',
-                            handler : function(){
-                                var records = PTZGrid.getSelectionModel().getSelection();
-                                if(records.length==0){
-                                    Ext.MessageBox.show({
-                                        title: '提示信息',
-                                        msg: "请先选中一条记录后，再编辑。",
-                                        buttons: Ext.MessageBox.OK,
-                                        icon: Ext.MessageBox.WARNING
-                                    });
-                                }else{
-                                    //把表单添加到窗口中
-                                    ptzId = records[0].get('id');
-                                    editPTZWin = Ext.create('Ext.window.Window', {
-                                        title: '编辑云台',
-                                        layout:'fit',
-                                        width:1200,
-                                        height:300,
-                                        closeAction:'destroy',
-                                        constrain:true,
-                                        plain: true,
-                                        modal: true,
-                                        autoLoad: {
-                                            url: "<%=basePath%>ptz/editPTZ.htm?id=" + ptzId,
-                                            scripts: true
-                                        }
-                                    });
-                                }
-                                editPTZWin.on("destroy",function(){
-                                    PTZDS.load();
-                                });
-                                editPTZWin.resizable = false;
-                                editPTZWin.show();
-                            }
                         }]
                         
                         

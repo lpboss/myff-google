@@ -57,7 +57,7 @@ public class FireAlarmDaoHImpl extends HibernateDaoSupport implements FireAlarmD
     }
 
     @Override
-    public void delFireAlarmAll(String id) {
+    public String delFireAlarmAll(String id) {
         Session s = this.getHibernateTemplate().getSessionFactory().openSession();
 
         String sql = "delete from fire_alarms where id in " + "(" + id + ")";
@@ -65,7 +65,7 @@ public class FireAlarmDaoHImpl extends HibernateDaoSupport implements FireAlarmD
         Query q = s.createSQLQuery(sql);
         q.executeUpdate();
 
-
+        return "success";
 
 
     }
