@@ -174,7 +174,7 @@ public class PTZController extends MultiActionController {
         if (!request.getParameter("is_locked").equals("")) {
             ptz.setIsLocked(Long.getLong("is_locked"));
         }//状态isLocked     
-        if (!request.getParameter("cruise_right_limit").equals("")&&!request.getParameter("cruise_left_limit").equals("")) {
+        if (!request.getParameter("cruise_right_limit").equals("") && !request.getParameter("cruise_left_limit").equals("")) {
             if (Integer.valueOf(request.getParameter("cruise_right_limit")) == Integer.valueOf(request.getParameter("cruise_left_limit"))) {
                 ptz.setCruiseRightLimit(Integer.valueOf("0")); //巡航右边界
                 ptz.setCruiseLeftLimit(Integer.valueOf("0")); //巡航左边界
@@ -183,52 +183,36 @@ public class PTZController extends MultiActionController {
                 ptz.setCruiseLeftLimit(Integer.valueOf(request.getParameter("cruise_left_limit"))); //巡航左边界
             }
         }
-            if (!request.getParameter("cruise_up_limit").equals("")) {
-                ptz.setCruiseUpLimit(Integer.valueOf(request.getParameter("cruise_up_limit")));
-            } //最大上仰角度
-            if (!request.getParameter("cruise_down_limit").equals("")) {
-                ptz.setCruiseDownLimit(Integer.valueOf(request.getParameter("cruise_down_limit")));
-            } //巡航时最大俯角
-            if (!request.getParameter("is_alarm").equals("")) {
-                ptz.setIsAlarm(Integer.valueOf(request.getParameter("is_alarm")));
-            }//是否正在报警
-            if (!request.getParameter("alarm_heat_value").equals("")) {
-                ptz.setAlarmHeatValue(Integer.valueOf(request.getParameter("alarm_heat_value")));
-            }//报警最高热值
-            if (!request.getParameter("shift_step").equals("")) {
-                ptz.setShiftStep(Integer.valueOf(request.getParameter("shift_step")));
-            }//云台非巡航状态下默认移动步长
-            String jsonStr = ptzService.create(ptz);
+        if (!request.getParameter("cruise_up_limit").equals("")) {
+            ptz.setCruiseUpLimit(Integer.valueOf(request.getParameter("cruise_up_limit")));
+        } //最大上仰角度
+        if (!request.getParameter("cruise_down_limit").equals("")) {
+            ptz.setCruiseDownLimit(Integer.valueOf(request.getParameter("cruise_down_limit")));
+        } //巡航时最大俯角
+        if (!request.getParameter("is_alarm").equals("")) {
+            ptz.setIsAlarm(Integer.valueOf(request.getParameter("is_alarm")));
+        }//是否正在报警
+        if (!request.getParameter("alarm_heat_value").equals("")) {
+            ptz.setAlarmHeatValue(Integer.valueOf(request.getParameter("alarm_heat_value")));
+        }//报警最高热值
+        if (!request.getParameter("shift_step").equals("")) {
+            ptz.setShiftStep(Integer.valueOf(request.getParameter("shift_step")));
+        }//云台非巡航状态下默认移动步长
+        String jsonStr = ptzService.create(ptz);
 
-            PrintWriter pw;
-            try {
-                response.setContentType("text/json; charset=utf-8");
-                response.setHeader("Cache-Control", "no-cache");
-                pw = response.getWriter();
-                pw.write(jsonStr);
-                pw.close();
-            } catch (IOException e) {
-                logger.info(e);
-            }
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
         }
+    }
 
-        //编辑PTZ
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
+    //编辑PTZ
     public void getPTZById(HttpServletRequest request, HttpServletResponse response) {
         Long id = Long.valueOf(request.getParameter("id"));
         String jsonStr = ptzService.getPTZJSONById(id);
@@ -322,10 +306,8 @@ public class PTZController extends MultiActionController {
 
     //删除PTZ
     public void deletePTZ(HttpServletRequest request, HttpServletResponse response) {
-        Long id = Long.valueOf(request.getParameter("key"));
-        logger.info("sss");
-        logger.info(id);
-        logger.info("www");
+
+        String id = request.getParameter("key");
         String jsonStr = ptzService.deletePTZ(id);
         PrintWriter pw;
         try {
