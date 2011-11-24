@@ -29,18 +29,17 @@
                     data : ptzBrandArray
                 });
  
-                var name = Ext.create('Ext.form.field.Text', {
+               var name = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '名字',
                     allowBlank: false,
-                    blankText: "云台名字不能为空",
+                    blankText: "用云台名字不能为空",
                     name: 'name',
                     anchor: '95%'
                 });
                 
                 var controllUrl = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '编码器IP',
-                    allowBlank: true,                  
-                    name: 'controllUrl',//controll_url
+                    name: 'controllUrl',      //controll_url            
                     anchor: '95%'
                 });
                 
@@ -84,9 +83,9 @@
                 var northMigration = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '摄像机0角度与正北的偏移',
                     name: 'northMigration',
-                    anchor: '95%',
-                    maxValue: 90,   
-                    minValue: 0
+                    maxValue: 100,   
+                    minValue: 0,
+                    anchor: '95%'
                 });
                 
                 var gisMapUrl = Ext.create('Ext.form.field.Text', {
@@ -98,37 +97,53 @@
                 var visualAngleX = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '红外视角X',
                     name: 'visualAngleX',
-                    anchor: '95%'
+                    anchor: '95%',
+                    maxValue: 90,   
+                    minValue: 0
                 });
                 
                 var visualAngleY = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '红外视角Y',
                     name: 'visualAngleY',
-                    anchor: '95%'
+                    anchor: '95%',
+                    maxValue: 90,   
+                    minValue: 0
                 });
                 
                 var infraredPixelX = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '红外摄像机X方向像素',
                     name: 'infraredPixelX',
-                    anchor: '95%'
+                    anchor: '95%',
+                    maxValue: 90,   
+                    minValue: 0
                 });
                 
                 var infraredPixelY = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '红外摄像机Y方向像素',
                     name: 'infraredPixelY',
-                    anchor: '95%'
+                    anchor: '95%',
+                    maxValue: 90,   
+                    minValue: 0
                 });
                 
-                var brandType2 = Ext.create('Ext.form.ComboBox', {
+                var brandType = Ext.create('Ext.form.ComboBox', {
                     fieldLabel: '云台品牌',
                     store: ptzBrandStore,
-                    allowBlank: false,
+                    // allowBlank: false,
                     valueField:'text',
                     displayField:'text',
                     typeAhead: true,
                     mode: 'local',
                     name:'brandType',
-                    emptyText:'请选择云台品牌...',
+                    //allowBlank: false,
+                    anchor: '95%'
+                });
+                
+                var cruiseStep = Ext.create('Ext.form.field.Number', {
+                    fieldLabel: '巡航步长',
+                    name: 'cruiseStep',
+                    maxValue: 100,   
+                    minValue: 0,
                     anchor: '95%'
                 });
                 
@@ -153,12 +168,6 @@
                 var cruiseDownLimit = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '巡航时最大俯角',
                     name: 'cruiseDownLimit',
-                    anchor: '95%'
-                });
-                
-                var cruiseStep = Ext.create('Ext.form.field.Number', {
-                    fieldLabel: '巡航步长',
-                    name: 'cruiseStep',
                     anchor: '95%'
                 });
                 
@@ -188,7 +197,8 @@
                 
                 var isLocked = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '状态',
-                    name: 'is_locked',
+                    name: 'isLocked',
+                    hidden:true,
                     anchor: '95%'
                 });
                 
@@ -214,12 +224,12 @@
                     frame:true,
                     url: '<%=basePath%>ptz/update.htm?id=' + userId,
                     reader: Ext.create('Ext.data.reader.Json',{
-                        model: 'PTZEdit',
+                        model: 'PTZ',
                         root: ''
                     }),
                     bodyStyle:'padding:5px 5px 0',
                     width: 1190,
-                    height: 265,
+                    height: 290,
                     items: [{
                             layout: 'column',
                             xtype: 'container',
@@ -227,7 +237,7 @@
                                     columnWidth: .38,
                                     layout: 'anchor',                                  
                                     xtype: 'container',
-                                    items: [name,controllUrl,pelcodCommandUrl,gisMapUrl,cruiseStep,brandType2,cruiseRightLimit,cruiseLeftLimit,shiftStep]
+                                    items: [name,controllUrl,pelcodCommandUrl,gisMapUrl,cruiseStep,brandType,cruiseRightLimit,cruiseLeftLimit,shiftStep]
                                 }, {
                                     columnWidth: .38,
                                     layout: 'anchor',

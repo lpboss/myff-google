@@ -10,6 +10,8 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.List;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.hibernate.Query;
+import org.hibernate.Session;
 
 /**
  *
@@ -25,22 +27,15 @@ public class PTZDaoHImpl extends HibernateDaoSupport implements PTZDao {
         ptz.setUpdatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
 
         //正式开始存储数this.getHibernateTemplate().saveOrUpdate(ptz);
+        this.getHibernateTemplate().saveOrUpdate(ptz);
         this.getHibernateTemplate().flush();
         this.getHibernateTemplate().clear();
+        System.out.print("9090");
+        System.out.print(ptz);
         return ptz;
+        
     }
 
-    @Override
-    public String deletePTZ(Long id) {
-        logger.info("ggg");
-        try {
-            Object role = this.getHibernateTemplate().load(PTZ.class, new Long(id));//先加载特定实�
-            getHibernateTemplate().delete(role);                                 //删除特定实例
-        } catch (Exception e) {
-            return e.toString();
-        }
-        return "success";
-    }
 
     @Override
     public List<PTZ> getAllPTZs() {
@@ -69,5 +64,16 @@ public class PTZDaoHImpl extends HibernateDaoSupport implements PTZDao {
     public List<PTZ> getIsAlarmPTZs() {
         List<PTZ> ptzs = this.getHibernateTemplate().findByNamedParam("from PTZ where is_alarm = :is_alarm", new String[]{"is_alarm"}, new Integer[]{1});
         return ptzs;
+    }
+
+    @Override
+    public void deletePTZ(String id) {
+        Session s = this.getHibernateTemplate().getSessionFactory().openSession();
+
+        String sql = "delete from ptzs where id in " + "(" + id + ")";
+
+        Query q = s.createSQLQuery(sql);
+        q.executeUpdate();
+      
     }
 }
