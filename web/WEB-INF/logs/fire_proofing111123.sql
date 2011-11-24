@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50517
 File Encoding         : 65001
 
-Date: 2011-11-24 16:27:02
+Date: 2011-11-24 16:28:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -162,7 +162,7 @@ CREATE TABLE `ptzs` (
   `cruise_step` smallint(6) DEFAULT '5' COMMENT '云台巡航步长',
   `cruise_angle_y_step` tinyint(4) DEFAULT '10' COMMENT '巡航上扬角度步长',
   `shift_step` smallint(6) DEFAULT '10' COMMENT '云台非巡航状态下默认移动步长',
-  `from_to` varchar(10) DEFAULT 'LR' COMMENT '巡航设置左右边界时，转动方向',
+  `cruise_from_to` varchar(10) DEFAULT 'LR' COMMENT '巡航设置左右边界时，转动方向',
   `cruise_right_limit` smallint(6) DEFAULT '0' COMMENT '巡航右边界',
   `cruise_left_limit` smallint(6) DEFAULT '0' COMMENT '巡航左边界',
   `cruise_up_limit` smallint(6) DEFAULT '90' COMMENT '最大上仰角度',
