@@ -23,5 +23,5 @@ public interface IgnoreAreasDao {
 
     IgnoreAreas getIgnoreAreasByName(String name); //添加
 
-    String deleteIgnoreAreas(Long id); //删除,删除，删除
+    void deleteIgnoreAreas(String id); //删除
 }
