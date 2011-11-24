@@ -72,7 +72,7 @@ public class FireAlarmServiceImpl implements FireAlarmService {
         }
         JsonConfig jsonConfig = new JsonConfig();
         //这是需要过滤掉的变量名。
-        jsonConfig.setExcludes(new String[]{"user", "rolesPrivilegeDetails","fireAlarmDetails"});
+        jsonConfig.setExcludes(new String[]{"user", "rolesPrivilegeDetails", "fireAlarmDetails"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm:ss"));
         JSONArray fireAlarmJS = JSONArray.fromObject(fireAlarms, jsonConfig);
         String jsonStr = "{totalProperty:" + fireAlarms.size() + ",root:" + fireAlarmJS.toString() + "}";
@@ -95,17 +95,7 @@ public class FireAlarmServiceImpl implements FireAlarmService {
     @Override
     public String deleteFireAlarm(String id) {
         String info = null;
-
-
-
-        fireAlarmDao.delFireAlarmAll(id);
-
-
-
-
-        info = "success";
-
-
+        info = fireAlarmDao.delFireAlarmAll(id);
         String jsonStr = "{success:true,info:'" + info + "'}";
         return jsonStr;
     }
@@ -116,7 +106,7 @@ public class FireAlarmServiceImpl implements FireAlarmService {
         System.out.println("bbbbbbbbbbbb");
         FireAlarm user = fireAlarmDao.getFireAlarmById(id);
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[]{"videos", "users", "user", "rolesPrivilegeDetails","fireAlarm"});
+        jsonConfig.setExcludes(new String[]{"videos", "users", "user", "rolesPrivilegeDetails", "fireAlarm"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm:ss"));
         JSONObject userJS = JSONObject.fromObject(user, jsonConfig);
         String jsonStr = userJS.toString();

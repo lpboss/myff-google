@@ -25,8 +25,10 @@ public class PTZServiceImpl implements PTZService {
 
     //删除
     @Override
-    public String deletePTZ(Long id) {
-        String info = ptzDao.deletePTZ(id);
+    public String deletePTZ(String id) {
+        String info = "";
+        ptzDao.deletePTZ(id);
+        info = "success";
         String jsonStr = "{success:true,info:\"" + info + "\"}";
         return jsonStr;
     }
@@ -105,9 +107,9 @@ public class PTZServiceImpl implements PTZService {
 
     @Override
     public PTZ saveOrUpdate(PTZ ptz) {
-          System.out.print("555555");
+        System.out.print("555555");
         return ptzDao.saveOrUpdate(ptz);
-      
+
 
     }
 
