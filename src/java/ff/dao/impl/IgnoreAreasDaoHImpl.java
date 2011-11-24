@@ -10,6 +10,8 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.List;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.hibernate.Query;
+import org.hibernate.Session;
 
 /**
  *
@@ -38,14 +40,14 @@ public class IgnoreAreasDaoHImpl extends HibernateDaoSupport implements IgnoreAr
     }
 
     @Override
-    public  List<IgnoreAreas> getById(Integer id) {
-      //  IgnoreAreas ignoreAreases = (IgnoreAreas) this.getHibernateTemplate().get(IgnoreAreas.class, id);       
-      //  return ignoreAreases;
-         System.out.print("44444444");
-         System.out.print(id);
-         List<IgnoreAreas> ignoreAreases = this.getHibernateTemplate().findByNamedParam("from IgnoreAreas where ptz_id =:id",new String[]{"id"},new Object[]{id});
-     //     List ignoreAreases = this.getHibernateTemplate().find("from IgnoreArea as i where i.ptzId = ?",id);
-            return ignoreAreases;
+    public List<IgnoreAreas> getById(Integer id) {
+        //  IgnoreAreas ignoreAreases = (IgnoreAreas) this.getHibernateTemplate().get(IgnoreAreas.class, id);       
+        //  return ignoreAreases;
+        System.out.print("44444444");
+        System.out.print(id);
+        List<IgnoreAreas> ignoreAreases = this.getHibernateTemplate().findByNamedParam("from IgnoreAreas where ptz_id =:id", new String[]{"id"}, new Object[]{id});
+        //     List ignoreAreases = this.getHibernateTemplate().find("from IgnoreArea as i where i.ptzId = ?",id);
+        return ignoreAreases;
     }
 
     @Override
@@ -59,22 +61,18 @@ public class IgnoreAreasDaoHImpl extends HibernateDaoSupport implements IgnoreAr
     }
 
     @Override
-    public String deleteIgnoreAreas(Long id) {
-        try {
-            Object role = this.getHibernateTemplate().load(IgnoreAreas.class, new Long(id));    //先加载特定实例 
-            getHibernateTemplate().delete(role);                                 //删除特定实例
-        } catch (Exception e) {
-            return e.toString();
-        }
-        return "success";
+    public void deleteIgnoreAreas(String id) {
+
+        Session s = this.getHibernateTemplate().getSessionFactory().openSession();
+        String sql = "delete from ignore_areas where id in " + "(" + id + ")";
+        Query q = s.createSQLQuery(sql);
+        q.executeUpdate();
     }
 
     @Override
     public IgnoreAreas getIgnoreAreasById(Integer id) {
-       System.out.println("222ccc");
+        System.out.println("222ccc");
         IgnoreAreas ignoreAreas = (IgnoreAreas) this.getHibernateTemplate().get(IgnoreAreas.class, id);
         return ignoreAreas;
     }
-
-  
 }
