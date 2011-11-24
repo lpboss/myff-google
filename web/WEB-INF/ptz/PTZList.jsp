@@ -83,11 +83,11 @@
                         }, {
                             header: '通过串口,发pelcod的ip',
                             dataIndex: 'pelcodCommandUrl',
-                            width:120
+                            width:250
                         }, {
                             header: '可见光摄像机地址',
                             dataIndex: 'visibleCameraUrl',                          
-                            width:120
+                            width:250
                         }, {
                             header: '可见光RTSP流',
                             dataIndex: 'visibleRTSPUrl',
@@ -104,7 +104,7 @@
                         }, {
                             header: '红外电路板设备地址',
                             dataIndex: 'infraredCircuitUrl',
-                            width:110
+                            width:250
                         },{
                             header: '摄像机0角度与正北的偏移',//。顺时针为正。
                             dataIndex: 'northMigration',
@@ -112,7 +112,7 @@
                         },{
                             header: '地图文件存放位置',
                             dataIndex: 'gisMapUrl',
-                            width:100
+                            width:250
                         },{
                             header: '红外视角X',
                             dataIndex: 'visualAngleX',
@@ -164,7 +164,7 @@
                         },{
                             header: '云台非巡航状态下默认移动步长',
                             dataIndex: 'shiftStep',
-                            width:150
+                            width:170
                         },{
                             header: '版本',
                             dataIndex: 'version',
@@ -211,7 +211,43 @@
                                 newPTZWin.resizable = false;
                                 newPTZWin.show();
                             }
-                        },'-',{                    
+                        },'-',{
+                            text: '编辑',
+                            iconCls: 'editItem',
+                            handler : function(){
+                                var records = PTZGrid.getSelectionModel().getSelection();
+                                if(records.length==0){
+                                    Ext.MessageBox.show({
+                                        title: '提示信息',
+                                        msg: "请先选中一条记录后，再编辑。",
+                                        buttons: Ext.MessageBox.OK,
+                                        icon: Ext.MessageBox.WARNING
+                                    });
+                                }else{
+                                    //把表单添加到窗口中
+                                    ptzId = records[0].get('id');
+                                    editPTZWin = Ext.create('Ext.window.Window', {
+                                        title: '编辑云台',
+                                        layout:'fit',
+                                        width:1200,
+                                        height:320,
+                                        closeAction:'destroy',
+                                        constrain:true,
+                                        plain: true,
+                                        modal: true,
+                                        autoLoad: {
+                                            url: "<%=basePath%>ptz/editPTZ.htm?id=" + ptzId,
+                                            scripts: true
+                                        }
+                                    });
+                                }
+                                editPTZWin.on("destroy",function(){
+                                    PTZDS.load();
+                                });
+                                editPTZWin.resizable = false;
+                                editPTZWin.show();
+                            }
+                        },{                    
                             text: '删除',
                             width: 50,
                             iconCls: 'remove',
@@ -257,42 +293,6 @@
           
                                 }
                             }       
-                        },'-',{
-                            text: '编辑',
-                            iconCls: 'editItem',
-                            handler : function(){
-                                var records = PTZGrid.getSelectionModel().getSelection();
-                                if(records.length==0){
-                                    Ext.MessageBox.show({
-                                        title: '提示信息',
-                                        msg: "请先选中一条记录后，再编辑。",
-                                        buttons: Ext.MessageBox.OK,
-                                        icon: Ext.MessageBox.WARNING
-                                    });
-                                }else{
-                                    //把表单添加到窗口中
-                                    ptzId = records[0].get('id');
-                                    editPTZWin = Ext.create('Ext.window.Window', {
-                                        title: '编辑云台',
-                                        layout:'fit',
-                                        width:1200,
-                                        height:320,
-                                        closeAction:'destroy',
-                                        constrain:true,
-                                        plain: true,
-                                        modal: true,
-                                        autoLoad: {
-                                            url: "<%=basePath%>ptz/editPTZ.htm?id=" + ptzId,
-                                            scripts: true
-                                        }
-                                    });
-                                }
-                                editPTZWin.on("destroy",function(){
-                                    PTZDS.load();
-                                });
-                                editPTZWin.resizable = false;
-                                editPTZWin.show();
-                            }
                         }]
                         
                         

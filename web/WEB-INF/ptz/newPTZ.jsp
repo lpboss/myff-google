@@ -135,7 +135,7 @@
                     typeAhead: true,
                     mode: 'local',
                     name:'brand_type',
-                    emptyText:'请选择云台品牌...',
+                 //   emptyText:'请选择云台品牌...',
                     //allowBlank: false,
                     anchor: '95%'
                 });
@@ -200,7 +200,6 @@
                     fieldLabel: '状态',
                     name: 'is_locked',
                     hidden:true,
-                    value: 1,
                     anchor: '95%'
                 });
                
