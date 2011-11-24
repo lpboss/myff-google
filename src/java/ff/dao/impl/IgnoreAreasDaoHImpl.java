@@ -47,6 +47,11 @@ public class IgnoreAreasDaoHImpl extends HibernateDaoSupport implements IgnoreAr
         System.out.print(id);
         List<IgnoreAreas> ignoreAreases = this.getHibernateTemplate().findByNamedParam("from IgnoreAreas where ptz_id =:id", new String[]{"id"}, new Object[]{id});
         //     List ignoreAreases = this.getHibernateTemplate().find("from IgnoreArea as i where i.ptzId = ?",id);
+       System.out.println("535235");
+        System.out.println(ignoreAreases.get(0).getId());
+        System.out.println(ignoreAreases.get(1).getId());
+        System.out.println(ignoreAreases.get(2).getId());
+        System.out.println("67458568");
         return ignoreAreases;
     }
 
