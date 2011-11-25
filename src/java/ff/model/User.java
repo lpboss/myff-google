@@ -28,6 +28,7 @@ public class User implements java.io.Serializable {
     private Integer version;
     private Role role;
 
+
     private Timestamp updatedAt;
     private Timestamp createdAt;
    
@@ -126,4 +127,9 @@ public class User implements java.io.Serializable {
     public void setLoginId(String loginId) {
         this.loginId = loginId;
     }
+
+    
+    
+    
+    
 }

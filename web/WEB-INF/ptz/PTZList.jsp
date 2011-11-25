@@ -14,6 +14,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>云台信息设置</title>
+        
         <script type="text/javascript">
             
              //处理PTZ是否锁定
@@ -38,7 +39,40 @@
                 });
             }
             
-            Ext.onReady(function(){                            
+            Ext.onReady(function(){       
+            
+            //PTZList
+                Ext.define('PTZ', {
+                    extend : 'Ext.data.Model',
+                    fields : [
+                        {name: 'id'},
+                        { name: 'name'},
+                        { name: 'controllUrl'},
+                        { name: 'pelcodCommandUrl'},
+                        { name: 'visibleCameraUrl'},
+                        { name: 'visibleRTSPUrl'},
+                        { name: 'infraredRTSPUrl'},
+                        { name: 'infraredCameraUrl'},
+                        { name: 'infraredCircuitUrl'},
+                        { name: 'northMigration'},
+                        { name: 'gisMapUrl'},
+                        { name: 'visualAngleX'},
+                        { name: 'visualAngleY'},
+                        { name: 'infraredPixelX'},
+                        { name: 'infraredPixelY'},
+                        { name: 'brandType'},
+                        { name: 'cruiseStep'},
+                        { name: 'cruiseRightLimit'},
+                        { name: 'cruiseLeftLimit'},
+                        { name: 'cruiseUpLimit'},
+                        { name: 'cruiseDownLimit'},
+                        { name: 'shiftStep'},
+                        { name: 'version'},
+                        { name: 'isLocked'},
+                        { name: 'isAlarm'},
+                        { name:"alarmHeatValue"}
+                    ]
+                });
                 
                 PTZDS =  Ext.create('Ext.data.Store', {
                     //autoDestroy : true,
@@ -564,15 +598,7 @@
                         });
                     }
                 }
-
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
+   
                 PTZGrid.render('PTZ_list');
                 
             })
@@ -580,5 +606,6 @@
     </head>
     <body>
         <div id="PTZ_list"></div>
+        
     </body>
 </html>

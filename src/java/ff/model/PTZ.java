@@ -31,16 +31,16 @@ public class PTZ {
 
     private Long id;
     private String name;
-//    private Set<RolePtz> rolePtzDetails = new HashSet<RolePtz>(0);
+ //   private Set<RolePtz> rolePtzDetails = new HashSet<RolePtz>(0);
     private Set<FireAlarm> fireAlarmDetails = new HashSet<FireAlarm>(0);
     private String controllUrl; //编码器IP',
     private String pelcodCommandUrl; //'通过串口,发pelcod的ip',
     private String visibleCameraUrl; //'可见光摄像机地址,模拟请参考controll_url',
-    private String visibleRTSPUrl; //'可见光RTSP�,
-    private String infraredRTSPUrl; //'红外RTSP�,
+    private String visibleRTSPUrl; //'可见光RTSP流�,
+    private String infraredRTSPUrl; //'红外RTSP流�,
     private String infraredCameraUrl; //'红外摄像机地址',
     private String infraredCircuitUrl; //'红外电路板设备地址',
-    private float northMigration; //'摄像�角度与正北的便宜。顺时针为正�,
+    private float northMigration; //'摄像0角度与正北的便宜。顺时针为正�,
     private String gisMapUrl; //'地图文件存放位置',
     private float visualAngleX;//'红外视角X'
     private float visualAngleY;//'红外视角Y'
@@ -61,6 +61,8 @@ public class PTZ {
     private Integer cruiseAngleYStep;//巡航时抬头步长
     private Long isLocked = new Long(0);// 状�'启用，停�,
     private Integer shiftStep; //云台非巡航状态下默认移动步长
+    
+    private RolePtz rolePtz;
 
     @Id
     @GeneratedValue
@@ -339,6 +341,7 @@ public class PTZ {
     }
 
 //    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "ptzId")
+//    @JoinColumn(name = "role_ptz_id")
 //    @OrderBy("id")
 //    public Set<RolePtz> getRolePtzDetails() {
 //        return rolePtzDetails;
@@ -347,6 +350,8 @@ public class PTZ {
 //    public void setRolePtzDetails(Set<RolePtz> rolePtzDetails) {
 //        this.rolePtzDetails = rolePtzDetails;
 //    }
+    
+    
     @Column(name = "cruise_from_to")
     public String getCruiseFromTo() {
         return cruiseFromTo;
@@ -355,4 +360,17 @@ public class PTZ {
     public void setCruiseFromTo(String cruiseFromTo) {
         this.cruiseFromTo = cruiseFromTo;
     }
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_ptz_id")
+    public RolePtz getRolePtz() {
+        return rolePtz;
+    }
+
+    public void setRolePtz(RolePtz rolePtz) {
+        this.rolePtz = rolePtz;
+    }
+    
+    
+    
 }

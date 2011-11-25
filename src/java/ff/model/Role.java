@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import javax.persistence.OneToMany;
@@ -28,13 +29,15 @@ public class Role implements java.io.Serializable {
 
     private Long id;
     private String name;
-  //  private Set<RolePtz> RolePtzDetails = new HashSet<RolePtz>(0);
+ //   private Set<RolePtz> RolePtzDetails = new HashSet<RolePtz>(0);
     private Set<RolesPrivilegeDetail> rolesPrivilegeDetails = new HashSet<RolesPrivilegeDetail>(0);
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private String description;
     private Long isLocked = new Long(0);
     private Long version = new Long(0);
+    
+  
 
     public Role() {
     }
@@ -116,7 +119,8 @@ public class Role implements java.io.Serializable {
         this.description = description;
     }
 
-//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "roleId")
+//    @OneToMany(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "rolePtz_id")
 //    @OrderBy("id")
 //    public Set<RolePtz> getRolePtzDetails() {
 //        return RolePtzDetails;
@@ -125,4 +129,11 @@ public class Role implements java.io.Serializable {
 //    public void setRolePtzDetails(Set<RolePtz> RolePtzDetails) {
 //        this.RolePtzDetails = RolePtzDetails;
 //    }
+
+
+
+   
+    
+    
+    
 }

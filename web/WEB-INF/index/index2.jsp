@@ -230,7 +230,7 @@
                 Ext.define('PTZEdit', {
                     extend : 'Ext.data.Model',
                     fields : [
-                        {name: 'id'},
+                        { name: 'id'},
                         { name: 'name'},
                         { name: 'controll_url'},
                         { name: 'pelcod_command_url'},
@@ -255,7 +255,7 @@
                         { name: 'version'},
                         { name: 'is_locked'},
                         { name: 'isAlarm'},
-                        { name:"alarm_heat_value"}
+                        { name: 'alarm_heat_value'}
                     ]
                 });
                 
@@ -288,38 +288,7 @@
                     ]
                 });
                 
-                //PTZList
-                Ext.define('PTZ', {
-                    extend : 'Ext.data.Model',
-                    fields : [
-                        {name: 'id'},
-                        { name: 'name'},
-                        { name: 'controllUrl'},
-                        { name: 'pelcodCommandUrl'},
-                        { name: 'visibleCameraUrl'},
-                        { name: 'visibleRTSPUrl'},
-                        { name: 'infraredRTSPUrl'},
-                        { name: 'infraredCameraUrl'},
-                        { name: 'infraredCircuitUrl'},
-                        { name: 'northMigration'},
-                        { name: 'gisMapUrl'},
-                        { name: 'visualAngleX'},
-                        { name: 'visualAngleY'},
-                        { name: 'infraredPixelX'},
-                        { name: 'infraredPixelY'},
-                        { name: 'brandType'},
-                        { name: 'cruiseStep'},
-                        { name: 'cruiseRightLimit'},
-                        { name: 'cruiseLeftLimit'},
-                        { name: 'cruiseUpLimit'},
-                        { name: 'cruiseDownLimit'},
-                        { name: 'shiftStep'},
-                        { name: 'version'},
-                        { name: 'isLocked'},
-                        { name: 'isAlarm'},
-                        { name:"alarmHeatValue"}
-                    ]
-                });
+                
                 
                  //报警忽视地区alarmIgnoreAreasList
                 Ext.define('alarmIgnoreAreasList', {
