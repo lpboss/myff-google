@@ -43,7 +43,8 @@ public class PTZUtil {
 
         //先停止再发送新命令。
         serialPortCommServer.pushCommand(ptzIP, "FF 01 00 00 00 00 01");
-
+        //清除掉巡航方向信息
+        serialPortCommServer.getCruiseDirection().remove(ptzIP);
 
         //发送命令前，先设置停止巡航状态位。
         serialPortCommServer.getAllowCruise().put(ptzIP, Boolean.FALSE);
