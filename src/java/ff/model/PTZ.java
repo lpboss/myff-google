@@ -32,7 +32,7 @@ public class PTZ {
     private Long id;
     private String name;
 //    private Set<RolePtz> rolePtzDetails = new HashSet<RolePtz>(0);
-    private Set<FireAlarm> fireAlarmDetails = new HashSet<FireAlarm>(0);
+    private Set<FireAlarm> fireAlarms = new HashSet<FireAlarm>(0);
     private String controllUrl; //编码器IP',
     private String pelcodCommandUrl; //'通过串口,发pelcod的ip',
     private String visibleCameraUrl; //'可见光摄像机地址,模拟请参考controll_url',
@@ -319,8 +319,8 @@ public class PTZ {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "ptz")
     @Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN) //只是加这一步才可以实现。
     @OrderBy("id")
-    public Set<FireAlarm> getFireAlarmDetails() {
-        return fireAlarmDetails;
+    public Set<FireAlarm> getFireAlarms() {
+        return fireAlarms;
     }
 
     @Column(name = "cruise_angle_y_step")
@@ -329,8 +329,8 @@ public class PTZ {
 
     }
 
-    public void setFireAlarmDetails(Set<FireAlarm> fireAlarmDetails) {
-        this.fireAlarmDetails = fireAlarmDetails;
+    public void setFireAlarms(Set<FireAlarm> fireAlarmDetails) {
+        this.fireAlarms = fireAlarmDetails;
     }
 
     public void setCruiseAngleYStep(Integer cruiseAngleYStep) {
