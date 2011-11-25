@@ -11,7 +11,7 @@
 	<s:Label id="status" x="10" y="0" width="200" text="" visible="false" color="0xFFFFFF" />
 	<s:Label id="show_angleX" x="10" y="10" width="100" text="" visible="true" color="0xFFFFFF" fontFamily="微软雅黑" fontSize="11" />
 	<s:Label id="show_angleY"  x="10" y="30" width="100" text="" visible="true" color="0xFFFFFF" fontFamily="微软雅黑" fontSize="11" />
-	<s:Label id="show_alert" x="200" y="10" width="100" text="当前状态：正常" visible="true" color="0xFFFFFF" fontFamily="微软雅黑" fontSize="11" />
+	<s:Label id="show_alert" x="200" y="10" width="150" text="当前状态：正常" visible="true" color="0xFFFFFF" fontFamily="微软雅黑" fontSize="11" />
 	<s:Label id="show_alertMax" x="200" y="30" width="100" text="" visible="true" color="0xFFFFFF" fontFamily="微软雅黑" fontSize="11" />
 	<fx:Script>
 		<![CDATA[
@@ -65,6 +65,7 @@
 				
 				//注册javascript函数，用于切换云台
 				ExternalInterface.addCallback("setChannel",setChannel);
+				ExternalInterface.addCallback("setAlertMessage",setAlertMessage);
 			}
 
 			//发送数据到服务器
@@ -91,7 +92,7 @@
 						show_angleX.text="水平角度：" + myXML.angleX;
 						show_angleY.text="垂直角度：" + myXML.angleY;
 						show_alertMax.text="最大热值：" + myXML.alertMax;
-						
+						/*
 						//判断当前节点是否有火警
 						if(myXML.myAlarm=="true"){
 							show_alert.text="当前状态：火警！";
@@ -102,6 +103,7 @@
 							//处理报警
 							ExternalInterface.call("startAlarm");
 						}
+						*/
 					}catch(e:Error){      
 						//Alert.show(msg);      
 					}
@@ -213,11 +215,11 @@
 				show_angleY.y=30*scaleY;
 				show_angleY.scaleX=scaleY;
 				show_angleY.scaleY=scaleY;
-				show_alert.x=220*scaleX;
+				show_alert.x=210*scaleX;
 				show_alert.y=10*scaleY;
 				show_alert.scaleX=scaleY;
 				show_alert.scaleY=scaleY;
-				show_alertMax.x=220*scaleX;
+				show_alertMax.x=210*scaleX;
 				show_alertMax.y=30*scaleY;
 				show_alertMax.scaleX=scaleY;
 				show_alertMax.scaleY=scaleY;
@@ -237,6 +239,7 @@
 				}
 			}
 			
+			//切换云台通道
 			public function setChannel(ptzIp:String,alertIp:String,map:String):void {
 				if(ptzIp!=null&&ptzIp!=""&&ptzIp!=this.ptzIp){
 					this.ptzIp=ptzIp;
@@ -247,6 +250,12 @@
 					m.source=map;
 				}
 			}
+			
+			//从页面传递报警信息的显示
+			public function setAlertMessage(msg:String):void {
+				show_alert.text=msg;
+			}
+			
 		]]>
 	</fx:Script>
 </s:Application>
