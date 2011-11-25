@@ -17,10 +17,64 @@
 <script type="text/javascript" src="<%=basePath%>javascripts/greybox/gb_scripts.js"></script>
 <script type="text/javascript" src="<%=basePath%>javascripts/ext4/ext-all.js"></script>
 <script type="text/javascript" src="<%=basePath%>javascripts/ext4/locale/ext-lang-zh_CN.js"></script>
+<script type="text/javascript" src="<%=basePath%>javascripts/sound/soundmanager2.js"></script>
 <script type="text/javascript">
 
-var ptz_id = 1;	//当前所监控的云台节点ID
-var speed=1;	//云台转动速度
+var ptz_id = 0;	//当前所监控的云台节点ID
+var assignedStep=20;	//云台转动速度，默认步长
+var alarmSound ;
+
+soundManager.useFlashBlock = false;
+soundManager.url = '<%=basePath%>javascripts/sound/'; // path to SoundManager2 SWF files (note trailing slash)
+soundManager.debugMode = false;
+soundManager.consoleOnly = false;
+soundManager.onready(function(oStatus) {
+	if (!oStatus.success) {
+		return false;
+	}
+	
+	alarmSound = soundManager.createSound({
+		id:'alarm_sound',
+		url:'<%=basePath%>javascripts/sound/alarmsound.mp3'
+	});
+	
+});
+Ext.onReady(function() {
+	getPTZAlarmsInfo = function(){
+		Ext.Ajax.request({
+			url : '<%=basePath%>ptz/getIsAlarmPTZs.htm',
+			success : function (result, request) {
+				var alarmJSON = result.responseText;
+				alarmJSON =  Ext.JSON.decode(alarmJSON);
+				if (alarmJSON.totalProperty > 0){
+					//alert(alarmJSON.totalProperty);
+					document.getElementById("map").setAlertMessage("当前状态："+alarmJSON.totalProperty+"处火警！");
+					alarmSound.play({
+						onfinish: function() {
+							loopSound(alarmSound);
+						}
+					});
+				}else{
+					document.getElementById("map").setAlertMessage("当前状态：正常");
+					alarmSound.stop(alarmSound);
+				}
+			},
+			failure : function (result, request){
+			},
+			method : 'GET'
+		});
+	}
+	
+	//定时查询云台报警状态
+	var task = {
+		run: function(){
+			getPTZAlarmsInfo();
+		},
+		interval: 10000
+	}
+	Ext.TaskManager.start(task);
+
+});
 
 //控制云台动作
 function ptzAction(ptzActionStr){		
@@ -39,11 +93,25 @@ function ptzAction(ptzActionStr){
 		},
 		method : 'GET',
 		params : {
-			action_type : ptzActionStr,
 			ptz_id: ptz_id,
-			ptz_speed: speed
+			action_type : ptzActionStr,
+			assignedStep: assignedStep
 		}
 	});
+}
+
+//调整云台转动速度，根据pelco-d协议，速度值范围为0-63，255为turbo速度，这里设最低值为10
+function ptzSpeed(speed){
+	if(assignedStep==255 && speed<0){
+		assignedStep=63;
+	}else{
+		assignedStep=assignedStep+speed;
+		if(assignedStep>63){
+			assignedStep=255;
+		}else if(assignedStep<10){
+			assignedStep=10;
+		}
+	}
 }
 
 //显示当前系统时间
@@ -132,6 +200,16 @@ function switchAlarm(obj){
 	}
 }
 
+//打开关闭雨刷
+function switchWiper(obj){
+	if(obj.innerText=="开启雨刷"){
+		ptzAction("wiper_on");
+		obj.innerText="关闭雨刷";
+    }else{
+		ptzAction("wiper_off");
+		obj.innerText="开启雨刷";
+	}
+}
 /*begin云台节点左右翻屏*/
 var Speed_1 = 25; //速度(毫秒)
 var Space_1 = 20; //每次移动(px)
@@ -338,32 +416,32 @@ function picrun_init(){
 <div class="f_sianniu">
   <table width="100%" height="62" border="0" cellpadding="0" cellspacing="2">
     <tr>
-      <td width="12%" ><a href="javascript:void(0);" title="镜头拉近"><img src="<%=basePath%>images/jujiao1.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/jujiao_1.gif'" onmouseout="this.src='<%=basePath%>images/jujiao1.gif'" onmousedown="javascript:ptzAction('infrared_in');" onmouseup="javascript:ptzAction('stop');" /></a></td>
+      <td width="12%" ><a href="javascript:void(0);" title="镜头拉近"><img src="<%=basePath%>images/jujiao1.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/jujiao_1.gif'" onmouseout="this.src='<%=basePath%>images/jujiao1.gif'" onmousedown="javascript:ptzAction('visible_in');" onmouseup="javascript:ptzAction('visible_in_stop');" /></a></td>
       <td width="26%" align="center" nowrap="nowrap">可见光变焦</td>
-      <td width="12%"><a href="javascript:void(0);" title="镜头拉远"><img src="<%=basePath%>images/jujiao2.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/jujiao_2.gif'" onmouseout="this.src='<%=basePath%>images/jujiao2.gif'" onmousedown="javascript:ptzAction('infrared_out');" onmouseup="javascript:ptzAction('stop');" /></a></td>
+      <td width="12%"><a href="javascript:void(0);" title="镜头拉远"><img src="<%=basePath%>images/jujiao2.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/jujiao_2.gif'" onmouseout="this.src='<%=basePath%>images/jujiao2.gif'" onmousedown="javascript:ptzAction('visible_out');" onmouseup="javascript:ptzAction('visible_out_stop');" /></a></td>
       <td width="13%"><a href="javascript:void(0);" title="光圈变小"><img src="<%=basePath%>images/guangquan1.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/guangquan_1.gif'" onmouseout="this.src='<%=basePath%>images/guangquan1.gif'" onmousedown="javascript:ptzAction('aperture_in');" onmouseup="javascript:ptzAction('stop');" /></a></td>
       <td width="24%" align="center" nowrap="nowrap">光圈调节</td>
       <td width="13%"><a href="javascript:void(0);" title="光圈变大"><img src="<%=basePath%>images/guangquan2.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/guangquan_2.gif'" onmouseout="this.src='<%=basePath%>images/guangquan2.gif'" onmousedown="javascript:ptzAction('aperture_out');" onmouseup="javascript:ptzAction('stop');" /></a></td>
     </tr>
     <tr>
-      <td><a href="javascript:void(0);" title="向后聚焦"><img src="<%=basePath%>images/bianjiao1.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/bianjiao_1.gif'" onmouseout="this.src='<%=basePath%>images/bianjiao1.gif'" onmousedown="javascript:ptzAction('visible_in');" onmouseup="javascript:ptzAction('stop');" /></a></td>
+      <td><a href="javascript:void(0);" title="向后聚焦"><img src="<%=basePath%>images/bianjiao1.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/bianjiao_1.gif'" onmouseout="this.src='<%=basePath%>images/bianjiao1.gif'" onmousedown="javascript:ptzAction('infrared_in');" onmouseup="javascript:ptzAction('stop');" /></a></td>
       <td align="center" nowrap="nowrap">热成像聚焦</td>
-      <td><a href="javascript:void(0);" title="向前聚焦"><img src="<%=basePath%>images/bianjiao2.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/bianjiao_2.gif'" onmouseout="this.src='<%=basePath%>images/bianjiao2.gif'" onmousedown="javascript:ptzAction('visible_out');" onmouseup="javascript:ptzAction('stop');" /></a></td>
-      <td><a href="javascript:ptzAction('speed_down');" title="速度减小"><img src="<%=basePath%>images/sudu1.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/sudu_1.gif'" onmouseout="this.src='<%=basePath%>images/sudu1.gif'" /></a></td>
+      <td><a href="javascript:void(0);" title="向前聚焦"><img src="<%=basePath%>images/bianjiao2.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/bianjiao_2.gif'" onmouseout="this.src='<%=basePath%>images/bianjiao2.gif'" onmousedown="javascript:ptzAction('infrared_out');" onmouseup="javascript:ptzAction('stop');" /></a></td>
+      <td><a href="javascript:ptzSpeed(-10);" title="速度减小"><img src="<%=basePath%>images/sudu1.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/sudu_1.gif'" onmouseout="this.src='<%=basePath%>images/sudu1.gif'" /></a></td>
       <td align="center" nowrap="nowrap">云台速度</td>
-      <td><a href="javascript:ptzAction('speed_up');" title="速度增大"><img src="<%=basePath%>images/sudu2.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/sudu_2.gif'" onmouseout="this.src='<%=basePath%>images/sudu2.gif'" /></a></td>
+      <td><a href="javascript:ptzSpeed(10);" title="速度增大"><img src="<%=basePath%>images/sudu2.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/sudu_2.gif'" onmouseout="this.src='<%=basePath%>images/sudu2.gif'" /></a></td>
     </tr>
   </table>
 </div>
 <div class="f_c"> 
 <table width="100%" height="69" border="0" cellpadding="0" cellspacing="1">
   <tr>
-    <td width="96" height="24"><span class="apple"><a href="javascript:switchAlarm(document.getElementById('alarmSwitch'));">削苹果皮</a></span></td>
+    <td width="96" height="24"><span class="apple"><a href="javascript:ptzAction('cruise');">削苹果皮</a></span></td>
     <td width="96" ><span class="yushua"><a id="wiperSwitch" href="javascript:switchWiper(document.getElementById('wiperSwitch'));">开启雨刷</a></span></td>
   </tr>
   <tr>
-    <td><span class="luoxuansaomiao"><a href="javascript:switchAlarm(document.getElementById('alarmSwitch'));">螺旋扫描</a></span></td>
-    <td><span class="duijiang"><a id="alarmSwitch" href="javascript:switchAlarm(document.getElementById('alarmSwitch'));">关闭报警</a></span></td>
+    <td><span class="luoxuansaomiao"><a href="javascript:ptzAction('cruise');">螺旋扫描</a></span></td>
+    <td><span class="duijiang"><a id="alarmSwitch" href="javascript:ptzAction('stop_fire_alarm');">关闭报警</a></span></td>
   </tr>
 </table></div>
 </div>
