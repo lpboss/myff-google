@@ -36,6 +36,8 @@ public interface PTZService {
     String getPTZJSONById(Long id);
 
     String updatePTZ(Long id, String name); //更新
+
     String ptzLock(PTZ ptz);
-    
+
+    Boolean setIsAlarm(Long ptzId);
 }
