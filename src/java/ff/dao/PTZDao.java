@@ -17,12 +17,11 @@ public interface PTZDao {
 
     PTZ saveOrUpdate(PTZ ptz); //保存
 
-    String deletePTZ(Long id); //删除
+    void deletePTZ(String id); //删除
 
     List<PTZ> getAllPTZs();    //得到所有的云台信息
 
     PTZ getPTZById(Long id);   //得到某一条数据
-    
-    List<PTZ> getIsAlarmPTZs();  //得到所有正在报火警的云台
 
+    List<PTZ> getIsAlarmPTZs();  //得到所有正在报火警的云台
 }

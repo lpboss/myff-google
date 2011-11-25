@@ -24,6 +24,8 @@
                     blankText: "云台的编号不能为空",
                     name: 'ptz_id',
                     value: userId,
+                    readOnly:true,                   
+                    style: 'color:#8A2BE2;font-family:黑体;background:#C7C7C7',
                     anchor: '95%'
                 });
                 
@@ -75,6 +77,7 @@
                 var isLocked = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '状态',
                     name: 'is_locked',
+                    hidden:true,
                     anchor: '95%'
                 });
                
@@ -95,12 +98,12 @@
                                     columnWidth: .45,
                                     layout: 'anchor',                                  
                                     xtype: 'container',
-                                    items: [ptzId,ptzAngelX,ptzAngelY,ccdArea,heatMax]
+                                    items: [ptzId,ptzAngelX,ptzAngelY,ccdArea]
                                 }, {
                                     columnWidth: .53,
                                     layout: 'anchor',
                                     xtype: 'container',                                  
-                                    items: [beginDate,endDate,version,isLocked]
+                                    items: [beginDate,endDate,version,isLocked,heatMax]
                                 }]
                         }],
                     buttons: [{

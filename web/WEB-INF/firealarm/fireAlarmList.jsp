@@ -213,15 +213,6 @@
                             iconCls: 'remove',
                             handler : function(){
                                 var records = fireAlarmGrid.getSelectionModel().getSelection();
-                                var ids=[];
-                                var fireAlarmID='';
-                                for(var i=0;i<records.length;i++){
-                                    var data=records[i].data;
-                                    ids.push(data.id);
-                                    fireAlarmID+=data.id+'<br>';
-                                }
-                              
-                                
                                 if(records.length==0){
                                     Ext.MessageBox.show({
                                         title: '提示信息',
@@ -231,14 +222,12 @@
                                     });
                                 }else{
                                     //把表单添加到窗口中
-                                    var ids='';
+                                    var ids=[];
                                     var fireAlarmID='';
-                                    for(var i=0;i<records.length;i++){
-                                      
-                                        var data=records[i].data;
-                                        ids=ids+data.id+",";
-                                      
-                                        fireAlarmID+=data.id+'<br>';
+                                    for(var i = 0 ; i < records.length ; i++){
+                                        var data = records[i].data
+                                        ids.push(data.id);
+                                        fireAlarmID += data.id + '<br />'
                                     }
                                    
                                     Ext.MessageBox.confirm('警告','确定删除以下火警信息？<br><font color="red">' + fireAlarmID + '</font>',function (button){

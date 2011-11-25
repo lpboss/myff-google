@@ -17,7 +17,7 @@ import javax.persistence.Version;
 
 /**
  *
- * @author Administrator
+ * @author Mengqinghao
  */
 @Entity
 @Table(name = "role_ptzs")
@@ -58,3 +58,4 @@ public class RolePtz implements java.io.Serializable {
         this.roleId = roleId;
     }
 }
+

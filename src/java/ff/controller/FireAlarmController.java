@@ -155,15 +155,9 @@ public class FireAlarmController extends MultiActionController {
 
     public void deleteFireAlarm(HttpServletRequest request, HttpServletResponse response) {
 
-        String ids = request.getParameter("id");
-        String id = ids.substring(0, ids.length() - 1);
-
-
+        String id = request.getParameter("id");
         String jsonStr = fireAlarmService.deleteFireAlarm(id);
         PrintWriter pw;
-
-
-
         try {
             response.setContentType("text/json; charset=utf-8");
             response.setHeader("Cache-Control", "no-cache");

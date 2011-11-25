@@ -41,8 +41,7 @@ public class PTZUtil {
         }
         boolean connResult;
 
-        //先停止再发送新命令。
-        serialPortCommServer.pushCommand(ptzIP, "FF 01 00 00 00 00 01");
+        
         //清除掉巡航方向信息
         serialPortCommServer.getCruiseDirection().remove(ptzIP);
 
@@ -50,6 +49,9 @@ public class PTZUtil {
         serialPortCommServer.getAllowCruise().put(ptzIP, Boolean.FALSE);
         //动手控制前，先清空云台的所有命令。
         serialPortCommServer.getCommandMap().remove(ptzIP);
+        //先停止再发送新命令。
+        serialPortCommServer.pushCommand(ptzIP, "FF 01 00 00 00 00 01");
+        
         String pelcodCommand = "";
         if (ptzAction.equals("up")) {
             setCruiseBreakpoint(ptzIP);

@@ -14,16 +14,40 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>报警忽视地区</title>
-        <script type="text/javascript">
-            Ext.onReady(function(){                            
+        <script type="text/javascript">         
+            
+            //处理锁定状态，
+            function lockIgnoreAreasFn(id){              
+                Ext.Ajax.request({                     
+                    url : '<%=basePath%>ignoreareas/ignoreareasLock.htm',
+                    success : function (result, request) {
+                        alarmIgnoreAreasDS.load();
+                    },
+                    failure : function (result, request){
+                        Ext.MessageBox.show({
+                            title: '消息',
+                            msg: "通讯失败，请从新操作",
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.WARNING
+                        });
+                    },
+                    method : 'POST',
+                    params : {
+                        id : id
+                    }
+                });
+            }
+            
+            Ext.onReady(function(){      
+                
                 var userId = <%=request.getParameter("parent_id")%>;
+                
                 alarmIgnoreAreasDS =  Ext.create('Ext.data.Store', {
                     //autoDestroy : true,
-                    model : 'alarmIgnoreAreas',
+                    model : 'alarmIgnoreAreasList',
                     proxy : {
-                        type : 'ajax',
-                     //   url : '<%=basePath%>ignoreareas/getAllIgnoreAreases.htm',
-                         url: "<%=basePath%>ignoreareas/getAllIgnoreAreases.htm?id=" + userId,
+                        type : 'ajax',                      
+                        url: "<%=basePath%>ignoreareas/getAllIgnoreAreases.htm?id=" + userId,
                         reader : {
                             type : 'json',
                             root : 'root',// JSON数组对象名
@@ -36,9 +60,9 @@
                 
                 function renderFireAlarmIsLucked(value, cellmeta, record, index, columnIndex, store){
                     if (record.get("isLocked")=="1"){
-                        return "<a style=cursor:pointer onclick=lockFireAlarmFn(" + store.getAt(index).get('id')+")><font color=red>启用</font></a>";
+                        return "<a style=cursor:pointer onclick=lockIgnoreAreasFn(" + store.getAt(index).get('id')+")><font color=red>启用</font></a>";
                     }else{
-                        return "<a style=cursor:pointer onclick=lockFireAlarmFn(" + store.getAt(index).get('id')+")><font color=green>未启用</font></a>";
+                        return "<a style=cursor:pointer onclick=lockIgnoreAreasFn(" + store.getAt(index).get('id')+")><font color=green>未启用</font></a>";
                     }
                 }
 
@@ -123,54 +147,6 @@
                                 newAlarmIgnoreAreasWin.resizable = false;
                                 newAlarmIgnoreAreasWin.show();
                             }
-                        },'-',{                    
-                            text: '删除',
-                            width: 50,
-                            iconCls: 'remove',
-                            handler:function(){
-                                var records = alarmIgnoreAreasGrid.getSelectionModel().getSelection();
-                                if(records.length==0){
-                                    Ext.MessageBox.show({
-                                        title: '提示信息',
-                                        msg: "请先选中一条记录后，再删除。",
-                                        buttons: Ext.MessageBox.OK,
-                                        icon: Ext.MessageBox.WARNING
-                                    });
-                                }else{
-                                    Ext.MessageBox.confirm('警告', '确定要删除该信息？',function(button){
-                                        var ids = [];
-                                        var name = '';
-                                        for(var i = 0 ; i < records.length ; i++){
-                                            var data = records[i].data
-                                            ids.push(data.id);
-                                            name += data.name + '<br />'
-                                        }
-                                       
-                                        console.info(ids)
-                                        //    var keys = Ext.util.JSON.encode(ids)
-                                    
-                                        if(button == 'yes'){
-                                            Ext.Ajax.request({
-                                                url:"<%=basePath%>ignoreareas/deleteIgnoreAreas.htm?key="+ids,
-                                                method:'post',
-                                                success:function(response,opts){
-                                                    var data = Ext.JSON.decode(response.responseText);
-                                                    if(data.success&&data.info=='success') {
-                                                        alarmIgnoreAreasDS.load();
-                                                        Ext.MessageBox.alert('提示信息', '已成功删除报警忽视地区信息。');
-                                                    } else {
-                                                        Ext.MessageBox.alert('提示信息', data.info);
-                                                    }
-                                                },
-                                                params:{
-                                                    ids:ids
-                                                }
-                                            });
-                                        }
-                                    });
-          
-                                }
-                            }       
                         },'-',{
                             text: '编辑',
                             iconCls: 'editItem',
@@ -196,7 +172,7 @@
                                         plain: true,
                                         modal: true,
                                         autoLoad: {
-                                            url: "<%=basePath%>ignoreareas/editIgnoreAreas.htm?id=" + ptzId,
+                                            url: "<%=basePath%>ignoreareas/editIgnoreAreas.htm?id=" + ptzId+'&iddd='+userId,
                                             scripts: true
                                         }
                                     });
@@ -207,6 +183,52 @@
                                 editAlarmIgnoreAreasWin.resizable = false;
                                 editAlarmIgnoreAreasWin.show();
                             }
+                        },'-',{                    
+                            text: '删除',
+                            width: 50,
+                            iconCls: 'remove',
+                            handler:function(){
+                                var records = alarmIgnoreAreasGrid.getSelectionModel().getSelection();
+                                if(records.length==0){
+                                    Ext.MessageBox.show({
+                                        title: '提示信息',
+                                        msg: "请先选中一条记录后，再删除。",
+                                        buttons: Ext.MessageBox.OK,
+                                        icon: Ext.MessageBox.WARNING
+                                    });
+                                }else{
+                                    Ext.MessageBox.confirm('警告', '确定要删除该信息？',function(button){
+                                        var ids = [];
+                                        var name = '';
+                                        for(var i = 0 ; i < records.length ; i++){
+                                            var data = records[i].data
+                                            ids.push(data.id);
+                                            name += data.name + '<br />'
+                                        }                                      
+                                        console.info(ids) //前台显示logger信息
+                                    
+                                        if(button == 'yes'){
+                                            Ext.Ajax.request({
+                                                url:"<%=basePath%>ignoreareas/deleteIgnoreAreas.htm?key="+ids,
+                                                method:'post',
+                                                success:function(response,opts){
+                                                    var data = Ext.JSON.decode(response.responseText);
+                                                    if(data.success&&data.info=='success') {
+                                                        alarmIgnoreAreasDS.load();
+                                                        Ext.MessageBox.alert('提示信息', '已成功删除报警忽视地区信息。');
+                                                    } else {
+                                                        Ext.MessageBox.alert('提示信息', data.info);
+                                                    }
+                                                },
+                                                params:{
+                                                    ids:ids
+                                                }
+                                            });
+                                        }
+                                    });
+          
+                                }
+                            }       
                         }]
                                             
                 });

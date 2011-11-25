@@ -13,11 +13,11 @@ import java.util.List;
  */
 public interface PTZService {
 
-    String deletePTZ(Long id); //删除
+    String deletePTZ(String id); //删除
 
     String editPTZ(Long id);   //修改
 
-    String create(String name); // 添加
+    String create(PTZ ptz); // 添加
 
     List<PTZ> getAllPTZs(); //得到所有的云台信息
 
@@ -36,4 +36,6 @@ public interface PTZService {
     String getPTZJSONById(Long id);
 
     String updatePTZ(Long id, String name); //更新
+    String ptzLock(PTZ ptz);
+    
 }

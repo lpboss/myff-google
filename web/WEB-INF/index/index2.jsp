@@ -229,60 +229,33 @@
                 //PTZ编辑 
                 Ext.define('PTZEdit', {
                     extend : 'Ext.data.Model',
-                    fields : [{
-                            name: 'id'
-                        }, {
-                            name: 'name'
-                        }, {
-                            name: 'controllUrl'
-                        }, {
-                            name: 'pelcodCommandUrl'
-                        }, {
-                            name: 'visibleCameraUrl'
-                        }, {
-                            name: 'visibleRTSPUrl'
-                        }, {
-                            name: 'infraredRTSPUrl'
-                        }, {
-                            name: 'infraredCameraUrl'
-                        }, {
-                            name: 'infraredCircuitUrl'
-                        }, {
-                            name: 'northMigration'
-                        }, {
-                            name: 'gisMapUrl'
-                        }, {
-                            name: 'visualAngleX'
-                        }, {
-                            name: 'visualAngleY'
-                        }, {
-                            name: 'infraredPixelX'
-                        }, {
-                            name: 'infraredPixelY'
-                        }, {
-                            name: 'brandType'
-                        }, {
-                            name: 'cruiseStep'
-                        }, {
-                            name: 'cruiseRightLimit'
-                        }, {
-                            name: 'cruiseLeftLimit'
-                        }, {
-                            name: 'cruiseUpLimit'
-                        }, {
-                            name: 'cruiseDownLimit'
-                        }, {
-                            name: 'version'
-                        }, {
-                            name: 'isLocked'
-                        }
-                        /*  , {
-                            name: 'createAt',
-                            mapping:'createAt.id'
-                        }, {
-                            name: 'updateAt',
-                            mapping:'updateAt.id'
-                        }*/
+                    fields : [
+                        {name: 'id'},
+                        { name: 'name'},
+                        { name: 'controll_url'},
+                        { name: 'pelcod_command_url'},
+                        { name: 'visible_camera_url'},
+                        { name: 'visible_rtsp_url'},
+                        { name: 'infrared_rtsp_url'},
+                        { name: 'infrared_camera_url'},
+                        { name: 'infrared_circuit_url'},
+                        { name: 'north_migration'},
+                        { name: 'gis_map_url'},
+                        { name: 'visual_angle_x'},
+                        { name: 'visual_angle_y'},
+                        { name: 'infrared_pixel_x'},
+                        { name: 'infrared_pixel_y'},
+                        { name: 'brand_type'},
+                        { name: 'cruise_step'},
+                        { name: 'cruise_right_limit'},
+                        { name: 'cruise_left_limit'},
+                        { name: 'cruise_up_limit'},
+                        { name: 'cruise_down_limit'},
+                        { name: 'shift_step'},
+                        { name: 'version'},
+                        { name: 'is_locked'},
+                        { name: 'isAlarm'},
+                        { name:"alarm_heat_value"}
                     ]
                 });
                 
@@ -293,7 +266,9 @@
                             convert:function(value){
                                 return value.name;                 
                             } },
-                        { name: 'actionDate'},
+                          
+
+                        {name: 'actionDate'},
                         {name: 'ptzAngleX'},
                         {name: 'ptzAngleY'},
                         {name: 'heatMax'},
@@ -340,15 +315,17 @@
                         { name: 'cruiseDownLimit'},
                         { name: 'shiftStep'},
                         { name: 'version'},
-                        { name: 'isLocked'}
+                        { name: 'isLocked'},
+                        { name: 'isAlarm'},
+                        { name:"alarmHeatValue"}
                     ]
                 });
                 
-                //报警忽视地区alarmIgnoreAreasList
-                Ext.define('alarmIgnoreAreas', {
+                 //报警忽视地区alarmIgnoreAreasList
+                Ext.define('alarmIgnoreAreasList', {
                     extend : 'Ext.data.Model',
                     fields : [
-                        {name: 'id'},
+                        { name: 'id'},
                         { name: 'ptzId',mapping:'ptz.id'},
                         { name: 'ptzAngelX'},
                         { name: 'ptzAngelY'},
