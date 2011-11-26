@@ -36,14 +36,12 @@ public class Role implements java.io.Serializable {
     private Timestamp updatedAt;
     private String description;
     private Long isLocked = new Long(0);
-    private Long version = new Long(0);
-    
+    private Long version = new Long(0);    
     private PTZ ptz;
 
     public Role() {
     }
 
-    // Property accessors
     public void setId(Long id) {
         this.id = id;
     }

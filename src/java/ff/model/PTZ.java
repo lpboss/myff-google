@@ -31,7 +31,7 @@ public class PTZ {
 
     private Long id;
     private String name;
- //   private Set<RolePtz> rolePtzDetails = new HashSet<RolePtz>(0);
+     private Set<RolePtz> RolePtzDetails = new HashSet<RolePtz>(0);
     private Set<FireAlarm> fireAlarmDetails = new HashSet<FireAlarm>(0);
     private String controllUrl; //编码器IP',
     private String pelcodCommandUrl; //'通过串口,发pelcod的ip',
@@ -63,7 +63,6 @@ public class PTZ {
     private Integer shiftStep; //云台非巡航状态下默认移动步长
     private Long isDefault; // 是不是默认，'不是','是'
     
-//    private RolePtz rolePtz;
 
     @Id
     @GeneratedValue
@@ -339,19 +338,7 @@ public class PTZ {
     public void setCruiseAngleYStep(Integer cruiseAngleYStep) {
         this.cruiseAngleYStep = cruiseAngleYStep;
 
-    }
-
-//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "ptzId")
-//    @JoinColumn(name = "role_ptz_id")
-//    @OrderBy("id")
-//    public Set<RolePtz> getRolePtzDetails() {
-//        return rolePtzDetails;
-//    }
-//
-//    public void setRolePtzDetails(Set<RolePtz> rolePtzDetails) {
-//        this.rolePtzDetails = rolePtzDetails;
-//    }
-    
+    }   
     
     @Column(name = "cruise_from_to")
     public String getCruiseFromTo() {
@@ -360,18 +347,7 @@ public class PTZ {
 
     public void setCruiseFromTo(String cruiseFromTo) {
         this.cruiseFromTo = cruiseFromTo;
-    }
-
-//    @OneToMany(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "role_ptz_id")
-//    public RolePtz getRolePtz() {
-//        return rolePtz;
-//    }
-//
-//    public void setRolePtz(RolePtz rolePtz) {
-//        this.rolePtz = rolePtz;
-//    }
-//    
+    }  
 
     @Column(name = "is_default")
     public Long getIsDefault() {
@@ -380,6 +356,16 @@ public class PTZ {
 
     public void setIsDefault(Long isDefault) {
         this.isDefault = isDefault;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "ptz")
+    @OrderBy("id")
+    public Set<RolePtz> getRolePtzDetails() {
+        return RolePtzDetails;
+    }
+
+    public void setRolePtzDetails(Set<RolePtz> RolePtzDetails) {
+        this.RolePtzDetails = RolePtzDetails;
     }
     
     
