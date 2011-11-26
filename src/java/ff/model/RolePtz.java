@@ -45,7 +45,7 @@ public class RolePtz implements java.io.Serializable {
         return ptz;
     }
 
-    public void setPtzId(PTZ ptz) {
+    public void setPtz(PTZ ptz) {
         this.ptz = ptz;
     }
 
@@ -59,4 +59,3 @@ public class RolePtz implements java.io.Serializable {
         this.role = role;
     }
 }
-
