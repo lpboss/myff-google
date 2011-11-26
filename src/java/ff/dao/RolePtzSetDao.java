@@ -22,6 +22,8 @@ public interface RolePtzSetDao {
     PTZ getPTZById(Long id);   //得到某一条数据
 
     void setDefault(Long id);   //重置默认
-    
+
     List<RolePtz> getById(Integer id);   //得到某一条数据   
+
+    List<PTZ> getPtzsByIds(String ids);  //通过IDS 得到云台
 }

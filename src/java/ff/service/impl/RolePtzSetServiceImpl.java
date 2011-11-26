@@ -45,7 +45,7 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
     public String getAllRoles() {
         List<Role> roles = rolePtzSetDao.getAllRoles();
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[]{"users", "rolesPrivilegeDetails"});
+        jsonConfig.setExcludes(new String[]{"users", "rolesPrivilegeDetails", "rolePtzDetails"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm"));
         JSONArray rolesJS = JSONArray.fromObject(roles, jsonConfig);
         String jsonStr = "{totalProperty:" + roles.size() + ",root:" + rolesJS.toString() + "}";
@@ -59,7 +59,7 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
 
         JsonConfig jsonConfig = new JsonConfig();
         //这是需要过滤掉的变量名�        jsonConfig.setExcludes(new String[]{});
-        jsonConfig.setExcludes(new String[]{"users", "rolesPrivilegeDetails", "fireAlarmDetails"});
+        jsonConfig.setExcludes(new String[]{"users", "rolesPrivilegeDetails", "fireAlarmDetails","rolePtzDetails"});
         JSONArray ptzJS = JSONArray.fromObject(ptzs, jsonConfig);
         String jsonStr = "{totalProperty:" + ptzs.size() + ",root:" + ptzJS.toString() + "}";
         return jsonStr;
@@ -94,25 +94,19 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
     //得到某一条数据
     @Override
     public String getRolePtzSetJSONById(Integer id) {
-        System.out.print("12121");
-        System.out.print(id);
-        String ids ="";
+
+        String ids = "";
         List<RolePtz> ignoreAreas = rolePtzSetDao.getById(id);
         for (int i = 0; i <= ignoreAreas.size() - 1; i++) {
-            ids = ids + String.valueOf(ignoreAreas.get(i).getPtz().getId())+",";
-
+            ids = ids + String.valueOf(ignoreAreas.get(i).getPtz().getId()) + ",";
         }
-        
-        System.out.println("345");
-        System.out.println(ignoreAreas.get(0).getId());
-        System.out.println(ignoreAreas.get(1).getId());
-        System.out.println(ignoreAreas.get(2).getId());
-        System.out.println("678");
+        String ptzids = ids.substring(1, ids.length() - 1);
+        List<PTZ> ptzs = rolePtzSetDao.getPtzsByIds(ptzids);
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[]{"users", "fireAlarmDetails"});
+        jsonConfig.setExcludes(new String[]{"users","rolesPrivilegeDetails", "role"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm:ss"));
         //    JSONObject userJS = JSONObject.fromObject(ignoreAreas, jsonConfig);
-        JSONArray ignoreAreasJS = JSONArray.fromObject(ignoreAreas, jsonConfig);
+        JSONArray ignoreAreasJS = JSONArray.fromObject(ptzs, jsonConfig);
         String jsonStr = ignoreAreasJS.toString();
         return jsonStr;
     }
