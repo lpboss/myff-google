@@ -25,7 +25,7 @@ public class PTZDaoHImpl extends HibernateDaoSupport implements PTZDao {
             ptz.setCreatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
         }
         ptz.setUpdatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
-
+        System.out.println("lllllllllllllllllllllllllllll");
         //正式开始存储数this.getHibernateTemplate().saveOrUpdate(ptz);
         this.getHibernateTemplate().saveOrUpdate(ptz);
         this.getHibernateTemplate().flush();
@@ -33,9 +33,8 @@ public class PTZDaoHImpl extends HibernateDaoSupport implements PTZDao {
         System.out.print("9090");
         System.out.print(ptz);
         return ptz;
-        
-    }
 
+    }
 
     @Override
     public List<PTZ> getAllPTZs() {
@@ -43,7 +42,7 @@ public class PTZDaoHImpl extends HibernateDaoSupport implements PTZDao {
         return ptzs;
     }
 
-     @Override
+    @Override
     public PTZ getPTZById(Long id) {
         System.out.println("cccccccccccccccccccccccccccccccccc");
         PTZ ptz = (PTZ) this.getHibernateTemplate().get(PTZ.class, id);
@@ -74,6 +73,6 @@ public class PTZDaoHImpl extends HibernateDaoSupport implements PTZDao {
 
         Query q = s.createSQLQuery(sql);
         q.executeUpdate();
-      
+
     }
 }

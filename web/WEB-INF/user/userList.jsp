@@ -119,6 +119,10 @@
               dataIndex: 'updatedAt',
               //renderer: Ext.util.Format.dateRenderer('Y-m-d H:i'),
               width: 110
+            },{
+              header: '默认云台',
+              dataIndex: 'ptz_name',
+              width: 110
             }],
           selModel :Ext.create('Ext.selection.CheckboxModel'),
           width: screenWidth-190,

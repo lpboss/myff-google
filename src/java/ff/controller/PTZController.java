@@ -174,7 +174,10 @@ public class PTZController extends MultiActionController {
         }//版本
         if (!request.getParameter("is_locked").equals("")) {
             ptz.setIsLocked(Long.getLong("1"));
-        }//状态isLocked     
+        }//状态    
+        if (!request.getParameter("is_default").equals("")) {
+            ptz.setIsDefault(Long.getLong("1"));
+        }//是否是默认云台
         if (!request.getParameter("cruise_right_limit").equals("") && !request.getParameter("cruise_left_limit").equals("")) {
             if (Integer.valueOf(request.getParameter("cruise_right_limit")) == Integer.valueOf(request.getParameter("cruise_left_limit"))) {
                 ptz.setCruiseRightLimit(Integer.valueOf("0")); //巡航右边界

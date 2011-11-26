@@ -61,8 +61,9 @@ public class PTZ {
     private Integer cruiseAngleYStep;//巡航时抬头步长
     private Long isLocked = new Long(0);// 状�'启用，停�,
     private Integer shiftStep; //云台非巡航状态下默认移动步长
+    private Long isDefault; // 是不是默认，'不是','是'
     
-    private RolePtz rolePtz;
+//    private RolePtz rolePtz;
 
     @Id
     @GeneratedValue
@@ -361,14 +362,24 @@ public class PTZ {
         this.cruiseFromTo = cruiseFromTo;
     }
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_ptz_id")
-    public RolePtz getRolePtz() {
-        return rolePtz;
+//    @OneToMany(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "role_ptz_id")
+//    public RolePtz getRolePtz() {
+//        return rolePtz;
+//    }
+//
+//    public void setRolePtz(RolePtz rolePtz) {
+//        this.rolePtz = rolePtz;
+//    }
+//    
+
+    @Column(name = "is_default")
+    public Long getIsDefault() {
+        return isDefault;
     }
 
-    public void setRolePtz(RolePtz rolePtz) {
-        this.rolePtz = rolePtz;
+    public void setIsDefault(Long isDefault) {
+        this.isDefault = isDefault;
     }
     
     
