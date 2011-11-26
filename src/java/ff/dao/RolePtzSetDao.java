@@ -6,6 +6,7 @@ package ff.dao;
 
 import ff.model.PTZ;
 import ff.model.Role;
+import ff.model.RolePtz;
 import java.util.List;
 
 /**
@@ -21,4 +22,6 @@ public interface RolePtzSetDao {
     PTZ getPTZById(Long id);   //得到某一条数据
 
     void setDefault(Long id);   //重置默认
+    
+    List<RolePtz> getById(Integer id);   //得到某一条数据   
 }

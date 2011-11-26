@@ -73,20 +73,13 @@ public class RolePtzSetController extends MultiActionController {
         Long id = Long.valueOf(request.getParameter("id"));
         Long roleid = Long.valueOf("88");
         rolePtzSetService.resetDefault(roleid);
-
         PTZ ptz = rolePtzSetService.getPTZById(id);
-        System.out.println(ptz.getIsDefault());
-        System.out.print("aaaaaaaaaaaaaaaaaaaaaaaaaaa");
         if (ptz.getIsDefault() == 0) {
-            System.out.print("bbbbbbbbbbbbbbbbbbbb");
             ptz.setIsDefault(Long.valueOf("1"));
         } else {
-            System.out.print("cccccccccc");
             ptz.setIsDefault(Long.valueOf("0"));
         }
-
         PrintWriter pw;
-
         try {
             String jsonStr = rolePtzSetService.ptzLock(ptz);
             response.setContentType("text/json; charset=utf-8");
@@ -98,4 +91,29 @@ public class RolePtzSetController extends MultiActionController {
             logger.info(e);
         }
     }
+    
+    //得到某一角色的所有ptz
+    public void getRolePtzs(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("id");
+        logger.info("1212");
+        String jsonStr = rolePtzSetService.getRolePtzSetJSONById(Integer.parseInt(request.getParameter("id")));
+        //   String jsonStr = ignoreAreasService.getIgetIgnoreAreasJSONByIdgnoreAreasList();
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
 }
