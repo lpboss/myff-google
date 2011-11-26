@@ -65,7 +65,6 @@ public class IgnoreAreasServiceImpl implements IgnoreAreasService {
         JSONArray ignoreAreasJS = JSONArray.fromObject(ignoreAreas, jsonConfig);
         String jsonStr = ignoreAreasJS.toString();
         return jsonStr;
-
     }
 
     @Override

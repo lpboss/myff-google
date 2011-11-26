@@ -52,6 +52,7 @@ public class PTZDaoHImpl extends HibernateDaoSupport implements PTZDao {
     @Override
     public PTZ getPTZByName(String name) {
         List<PTZ> ptzs = this.getHibernateTemplate().findByNamedParam("from PTZ where name=:name", new String[]{"name"}, new String[]{name});
+       
         if (ptzs.size() > 0) {
             return ptzs.get(0);
         } else {

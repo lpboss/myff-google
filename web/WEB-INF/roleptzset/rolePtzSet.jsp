@@ -87,6 +87,35 @@
                     console.info(roleId);
                     roleName = roleDS.getAt(index).get('name');
                     ptzGrid.setTitle("云台列表 (<font color=red>"+roleName+"</font>)");
+                    
+                    
+                    Ext.Ajax.request({
+                    url : '<%=basePath%>roleptzset/getRolePtzs.htm?id='+roleId,
+                    success : function (result, request) {
+                        PTZDS.load();
+                    },
+                    failure : function (result, request){
+                        Ext.MessageBox.show({
+                            title: '消息',
+                            msg: "通讯失败，请从新操作",
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.WARNING
+                        });
+                    },
+                    method : 'GET',
+                    params : {
+                        id : id
+                    }
+                });
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                 });
         
                 //-----------------云台Grid----------------------------

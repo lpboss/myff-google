@@ -7,6 +7,7 @@ package ff.dao.impl;
 import ff.dao.RolePtzSetDao;
 import ff.model.PTZ;
 import ff.model.Role;
+import ff.model.RolePtz;
 import java.util.List;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.hibernate.Query;
@@ -48,5 +49,14 @@ public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzSe
 
         Query q = s.createSQLQuery(sql);
         q.executeUpdate();
+    }
+
+    @Override
+    public List<RolePtz> getById(Integer id) {
+
+        System.out.print("44444444");
+        System.out.print(id);
+        List<RolePtz> rolePtzs = this.getHibernateTemplate().findByNamedParam("from role_ptzs where role_id =:id", new String[]{"id"}, new Object[]{id});        
+        return rolePtzs;
     }
 }

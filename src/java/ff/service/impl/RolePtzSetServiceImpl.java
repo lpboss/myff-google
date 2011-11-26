@@ -8,6 +8,7 @@ import ff.dao.PTZDao;
 import ff.dao.RolePtzSetDao;
 import ff.model.PTZ;
 import ff.model.Role;
+import ff.model.RolePtz;
 import ff.service.RolePtzSetService;
 import java.sql.Timestamp;
 import java.util.List;
@@ -74,7 +75,7 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
     @Override
     public String ptzLock(PTZ ptz) {
         String info = null;
-        
+
         ptzDao.saveOrUpdate(ptz);
         info = "success";
         String jsonStr = "{success:true,info:'" + info + "'}";
@@ -87,6 +88,32 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
         rolePtzSetDao.setDefault(id);
         info = "success";
         String jsonStr = "{success:true,info:'" + info + "'}";
+        return jsonStr;
+    }
+
+    //得到某一条数据
+    @Override
+    public String getRolePtzSetJSONById(Integer id) {
+        System.out.print("12121");
+        System.out.print(id);
+        String ids ="";
+        List<RolePtz> ignoreAreas = rolePtzSetDao.getById(id);
+        for (int i = 0; i <= ignoreAreas.size() - 1; i++) {
+            ids = ids + String.valueOf(ignoreAreas.get(i).getPtz().getId())+",";
+
+        }
+        
+        System.out.println("345");
+        System.out.println(ignoreAreas.get(0).getId());
+        System.out.println(ignoreAreas.get(1).getId());
+        System.out.println(ignoreAreas.get(2).getId());
+        System.out.println("678");
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.setExcludes(new String[]{"users", "fireAlarmDetails"});
+        jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm:ss"));
+        //    JSONObject userJS = JSONObject.fromObject(ignoreAreas, jsonConfig);
+        JSONArray ignoreAreasJS = JSONArray.fromObject(ignoreAreas, jsonConfig);
+        String jsonStr = ignoreAreasJS.toString();
         return jsonStr;
     }
 }

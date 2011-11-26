@@ -21,4 +21,6 @@ public interface RolePtzSetService {
     String ptzLock(PTZ ptz); //是否锁定
 
     String resetDefault(Long id);  // 重置默认
+    
+    String getRolePtzSetJSONById(Integer id); //
 }
