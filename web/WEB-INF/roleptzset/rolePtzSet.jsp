@@ -87,8 +87,7 @@
                     console.info(roleId);
                     roleName = roleDS.getAt(index).get('name');
                     ptzGrid.setTitle("云台列表 (<font color=red>"+roleName+"</font>)");
-                    
-                    
+                                       
                     Ext.Ajax.request({
                     url : '<%=basePath%>roleptzset/getRolePtzs.htm?id='+roleId,
                     success : function (result, request) {
@@ -108,14 +107,7 @@
                     }
                 });
                     
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
+  
                 });
         
                 //-----------------云台Grid----------------------------
