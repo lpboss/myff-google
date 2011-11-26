@@ -59,7 +59,8 @@ public class TestController extends MultiActionController {
         cMap.put("privilege", "ff.controller.PrivilegeController");
         cMap.put("user", "ff.controller.UserController");
         cMap.put("ptz", "ff.controller.PTZController");
-        cMap.put("fireAlarm", "ff.controller.FireAlarmController");
+        cMap.put("firealarm", "ff.controller.FireAlarmController");
+        cMap.put("rolePtzSet", "ff.controller.FireAlarmController");
         //循环控制器中的所有方法
         Iterator keyIterator = cMap.keySet().iterator();
         while (keyIterator.hasNext()) {
@@ -115,7 +116,7 @@ public class TestController extends MultiActionController {
         Long time = dt.getTime();//这就是距离1970年1月1日0点0分0秒的毫秒数
         System.out.println("time:" + time + ", SECOND...............................");
     }
-    
+
     public ModelAndView sound(HttpServletRequest request, HttpServletResponse response) {
         logger.info("sound page ++++++++++++++++++++++++++++++++++++++++++++++++++++");
         ModelAndView mav = new ModelAndView();

@@ -329,6 +329,9 @@
                                 }
                             }
                         },
+                        {    name:'ptz_name',mapping:'role.ptz.name'
+                         
+                        },
                         {name: 'roleId'},
                         {name: 'isLocked'},
                         {name: 'createdAt'},

@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 
 /**
@@ -29,7 +30,7 @@ public class Role implements java.io.Serializable {
 
     private Long id;
     private String name;
- //   private Set<RolePtz> RolePtzDetails = new HashSet<RolePtz>(0);
+    private Set<RolePtz> RolePtzDetails = new HashSet<RolePtz>(0);
     private Set<RolesPrivilegeDetail> rolesPrivilegeDetails = new HashSet<RolesPrivilegeDetail>(0);
     private Timestamp createdAt;
     private Timestamp updatedAt;
@@ -37,7 +38,7 @@ public class Role implements java.io.Serializable {
     private Long isLocked = new Long(0);
     private Long version = new Long(0);
     
-  
+    private PTZ ptz;
 
     public Role() {
     }
@@ -119,16 +120,25 @@ public class Role implements java.io.Serializable {
         this.description = description;
     }
 
-//    @OneToMany(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "rolePtz_id")
-//    @OrderBy("id")
-//    public Set<RolePtz> getRolePtzDetails() {
-//        return RolePtzDetails;
-//    }
-//
-//    public void setRolePtzDetails(Set<RolePtz> RolePtzDetails) {
-//        this.RolePtzDetails = RolePtzDetails;
-//    }
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "role")
+    @OrderBy("id")
+    public Set<RolePtz> getRolePtzDetails() {
+        return RolePtzDetails;
+    }
+
+    public void setRolePtzDetails(Set<RolePtz> RolePtzDetails) {
+        this.RolePtzDetails = RolePtzDetails;
+    }
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ptz_id")
+    public PTZ getPtz() {
+        return ptz;
+    }
+
+    public void setPtz(PTZ ptz) {
+        this.ptz = ptz;
+    }
 
 
 

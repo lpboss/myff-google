@@ -14,4 +14,5 @@
     <bean id="ptzService" class="ff.service.impl.PTZServiceImpl" />
     <bean id="fireAlarmService" class="ff.service.impl.FireAlarmServiceImpl" />
     <bean id="ignoreAreasService" class="ff.service.impl.IgnoreAreasServiceImpl" />
+    <bean id="rolePtzSetService" class="ff.service.impl.RolePtzSetServiceImpl" />
 </beans>
