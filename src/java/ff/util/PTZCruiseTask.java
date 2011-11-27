@@ -101,7 +101,7 @@ public class PTZCruiseTask {
             SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss SSS");
             Date date = new Date(milliseconds);
 
-            //System.out.println("角度信息，Angle (" + ptzIP + ") X:" + serialPortCommServer.getAngleXString(ptzIP) + ",Y:" + serialPortCommServer.getAngleYString(ptzIP) + "------------------,Date:" + timeFormat.format(date) + ",方向：" + serialPortCommServer.getCruiseDirection().get(ptz.getId()));
+            System.out.println("角度信息，Angle (" + ptzIP + ") X:" + serialPortCommServer.getAngleXString(ptzIP) + ",Y:" + serialPortCommServer.getAngleYString(ptzIP) + "------------------,Date:" + timeFormat.format(date) + ",方向：" + serialPortCommServer.getCruiseDirection().get(ptz.getId()) + ",热值：" + serialPortCommServer.getAlertMax(ptz.getInfraredCircuitUrl()));
             //System.out.println("当前的云台" + ptzIP + "是否允许巡航" + serialPortCommServer.getAllowCruise().get(ptzIP));
 
             if (serialPortCommServer.getAllowCruise().get(ptzIP) == null) {
@@ -347,7 +347,7 @@ public class PTZCruiseTask {
                 if (serialPortCommServer.getAlertMax(infraredSetupIP) > ptz.getAlarmHeatValue()) {
                     //超过热值后，首先设置云台的报警状态。
                     ptzService.setIsAlarm(ptz.getId());
-                    
+
                     int heatPosX = serialPortCommServer.getAlertX(infraredSetupIP);
                     int heatPosY = serialPortCommServer.getAlertY(infraredSetupIP);
 
