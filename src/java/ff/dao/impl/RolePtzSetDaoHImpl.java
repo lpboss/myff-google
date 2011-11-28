@@ -12,6 +12,8 @@ import java.util.List;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import java.util.Calendar;
+import java.sql.Timestamp;
 
 /**
  *
@@ -75,5 +77,14 @@ public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzSe
         System.out.println("67723");
         return ptzs;
 
+    }
+
+    //保存并更新
+    @Override
+    public RolePtz saveOrUpdate(RolePtz rolePtz) {
+        this.getHibernateTemplate().saveOrUpdate(rolePtz);
+        this.getHibernateTemplate().flush();
+        this.getHibernateTemplate().clear();
+        return rolePtz;
     }
 }
