@@ -35,6 +35,12 @@ public class RolePtzSetController extends MultiActionController {
         return mav;
     }
 
+    //返回添加页面
+    public ModelAndView newRolePtz(HttpServletRequest request, HttpServletResponse response) {
+        ModelAndView mav = new ModelAndView();
+        return mav;
+    }
+
     //得到角色表
     public void getAllRoles(HttpServletRequest request, HttpServletResponse response) {
         String jsonStr = rolePtzSetService.getAllRoles();
@@ -55,7 +61,14 @@ public class RolePtzSetController extends MultiActionController {
      *描述：得到PTZ列表
      */
     public void getAllPTZs(HttpServletRequest request, HttpServletResponse response) {
-        String jsonStr = rolePtzSetService.getPTZList();
+        String jsonStr = "";
+        String id = request.getParameter("id");
+        if (request.getParameter("id") == null) {
+            jsonStr = rolePtzSetService.getPTZList();
+        } else {
+            jsonStr = rolePtzSetService.getRolePtzSetJSONById(Integer.parseInt(request.getParameter("id")));
+        }
+
         PrintWriter pw;
         try {
             response.setContentType("text/json; charset=utf-8");
@@ -91,7 +104,7 @@ public class RolePtzSetController extends MultiActionController {
             logger.info(e);
         }
     }
-    
+
     //得到某一角色的所有ptz
     public void getRolePtzs(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("id");
@@ -108,12 +121,4 @@ public class RolePtzSetController extends MultiActionController {
         } catch (IOException e) {
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
 }

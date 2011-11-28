@@ -23,4 +23,5 @@ public interface RolePtzSetService {
     String resetDefault(Long id);  // 重置默认
     
     String getRolePtzSetJSONById(Integer id); //
+    
 }

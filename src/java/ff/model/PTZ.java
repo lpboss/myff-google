@@ -31,7 +31,7 @@ public class PTZ {
 
     private Long id;
     private String name;
-     private Set<RolePtz> RolePtzDetails = new HashSet<RolePtz>(0);
+    private Set<RolePtz> RolePtzDetails = new HashSet<RolePtz>(0);
     private Set<FireAlarm> fireAlarmDetails = new HashSet<FireAlarm>(0);
     private String controllUrl; //编码器IP',
     private String pelcodCommandUrl; //'通过串口,发pelcod的ip',
@@ -318,7 +318,7 @@ public class PTZ {
         this.isAlarm = isAlarm;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "ptz")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "ptz")
     @Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN) //只是加这一步才可以实现。
     @OrderBy("id")
     public Set<FireAlarm> getFireAlarmDetails() {
@@ -358,7 +358,7 @@ public class PTZ {
         this.isDefault = isDefault;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "ptz")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "ptz")
     @OrderBy("id")
     public Set<RolePtz> getRolePtzDetails() {
         return RolePtzDetails;

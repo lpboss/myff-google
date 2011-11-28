@@ -13,7 +13,8 @@
     <head>
         <title>角色云台设置</title>
         <script type="text/javascript">
-            
+            var roleId = 0;
+            var a =0;
             Ext.define('rolePTZEdit', {
                 extend : 'Ext.data.Model',
                 fields : [
@@ -47,6 +48,7 @@
       
             Ext.onReady(function(){
           
+                //  var roleId = 1;
                 //-----------------角色Grid----------------------------
                 roleDS =  Ext.create('Ext.data.Store', {
                     model : 'Role',
@@ -75,37 +77,155 @@
                             dataIndex: 'description',
                             width: 180
                         }],
+                     
                     selModel : Ext.create('Ext.selection.CheckboxModel'),
                     width: 320,
                     height: screenHeight-400,
                     frame: true,
-                    loadMask: true        
+                    loadMask: true,
+                    tbar: [{
+                            text: '添加',
+                            iconCls: 'addItem',
+                            handler : function(){
+                                newRolePtzWin = Ext.create('Ext.window.Window', {
+                                    layout: 'fit',
+                                    width:300,
+                                    height:180,
+                                    closeAction: 'destroy',
+                                    plain: true,
+                                    modal: true,
+                                    constrain:true,
+                                    //modal: true,
+                                    title: '添加角色云台信息',
+                                    autoLoad: {
+                                        url: "<%=basePath%>roleptzset/newRolePtz.htm",
+                                        scripts: true
+                                    }
+                                });
+                                newRolePtzWin.on("destroy",function(){
+                                    roleDS.load();
+                                });
+                                newRolePtzWin.resizable = false;
+                                newRolePtzWin.show();
+                            }
+                        },'-',{
+                            text: '编辑',
+                            iconCls: 'editItem',
+                            handler : function(){
+                                var records = PTZGrid.getSelectionModel().getSelection();
+                                if(records.length==0){
+                                    Ext.MessageBox.show({
+                                        title: '提示信息',
+                                        msg: "请先选中一条记录后，再编辑。",
+                                        buttons: Ext.MessageBox.OK,
+                                        icon: Ext.MessageBox.WARNING
+                                    });
+                                }else{
+                                    //把表单添加到窗口中
+                                    ptzId = records[0].get('id');
+                                    editRolePtzWin = Ext.create('Ext.window.Window', {
+                                        title: '编辑云台',
+                                        layout:'fit',
+                                        width:1200,
+                                        height:320,
+                                        closeAction:'destroy',
+                                        constrain:true,
+                                        plain: true,
+                                        modal: true,
+                                        autoLoad: {
+                                            url: "<%=basePath%>ptz/editPTZ.htm?id=" + ptzId,
+                                            scripts: true
+                                        }
+                                    });
+                                }
+                                editRolePtzWin.on("destroy",function(){
+                                    roleDS.load();
+                                });
+                                editRolePtzWin.resizable = false;
+                                editRolePtzWin.show();
+                            }
+                        },{                    
+                            text: '删除',
+                            width: 50,
+                            iconCls: 'remove',
+                            handler:function(){
+                                var records = PTZGrid.getSelectionModel().getSelection();
+                                if(records.length==0){
+                                    Ext.MessageBox.show({
+                                        title: '提示信息',
+                                        msg: "请先选中一条记录后，再删除。",
+                                        buttons: Ext.MessageBox.OK,
+                                        icon: Ext.MessageBox.WARNING
+                                    });
+                                }else{
+                                    Ext.MessageBox.confirm('警告', '确定要删除该信息？',function(button){
+                                        var ids = [];
+                                        var name = '';
+                                        for(var i = 0 ; i < records.length ; i++){
+                                            var data = records[i].data
+                                            ids.push(data.id);
+                                            name += data.name + '<br />'
+                                        }                                      
+                                        console.info(ids)
+                                        //    var keys = Ext.util.JSON.encode(ids)                                    
+                                        if(button == 'yes'){
+                                            Ext.Ajax.request({
+                                                url:"<%=basePath%>ptz/deletePTZ.htm?key="+ids,
+                                                method:'post',
+                                                success:function(response,opts){
+                                                    var data = Ext.JSON.decode(response.responseText);
+                                                    if(data.success&&data.info=='success') {
+                                                        PTZDS.load();
+                                                        Ext.MessageBox.alert('提示信息', '已成功删除PTZ信息。');
+                                                    } else {
+                                                        Ext.MessageBox.alert('提示信息', data.info);
+                                                    }
+                                                },
+                                                params:{
+                                                    ids:ids
+                                                }
+                                            });
+                                        }
+                                    });
+          
+                                }
+                            }       
+                        }]
+                   
                 });
 
                 roleGrid.on('itemdblclick', function(gridPanel, record,item,index,e,options){
-                    roleId = roleDS.getAt(index).get('id');
-                    console.info(roleId);
-                    roleName = roleDS.getAt(index).get('name');
-                    ptzGrid.setTitle("云台列表 (<font color=red>"+roleName+"</font>)");
-                                       
-                    Ext.Ajax.request({
-                    url : '<%=basePath%>roleptzset/getRolePtzs.htm?id='+roleId,
-                    success : function (result, request) {
-                        PTZDS.load();
-                    },
-                    failure : function (result, request){
-                        Ext.MessageBox.show({
-                            title: '消息',
-                            msg: "通讯失败，请从新操作",
-                            buttons: Ext.MessageBox.OK,
-                            icon: Ext.MessageBox.WARNING
-                        });
-                    },
-                    method : 'GET',
-                    params : {
-                        id : id
+                    roleName = roleDS.getAt(index).get('name'); 
+                    if (a==0){
+                        ptzGrid.setTitle("云台列表 (<font color=red>"+roleName+"</font>)"); 
+                        ptzGrid.setVisible(true);
+                        roleId = record.get('id');
+                        PTZDS.proxy.extraParams = {'id':roleId};//把参数roleId传递到PTZDS中                     
+                        PTZDS.load()
+                        console.info(roleId);
+                    }else{
+                        PTZDS.removeAll();
+                        ptzGrid.setVisible(false);
                     }
-                });
+                                                                      
+                    Ext.Ajax.request({
+                        url : '<%=basePath%>roleptzset/getRolePtzs.htm?id='+roleId,
+                        success : function (result, request) {
+                            PTZDS.load();
+                        },
+                        failure : function (result, request){
+                            Ext.MessageBox.show({
+                                title: '消息',
+                                msg: "通讯失败，请从新操作",
+                                buttons: Ext.MessageBox.OK,
+                                icon: Ext.MessageBox.WARNING
+                            });
+                        },
+                        method : 'GET',
+                        params : {
+                            id : id
+                        }
+                    });
                     
   
                 });
@@ -115,6 +235,7 @@
                     model : 'rolePTZEdit',
                     proxy : {
                         type : 'ajax',
+                    
                         url : '<%=basePath%>roleptzset/getAllPTZs.htm',
                         reader : {
                             type : 'json',
