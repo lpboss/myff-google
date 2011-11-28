@@ -5,6 +5,8 @@
 package ff.controller;
 
 import ff.model.PTZ;
+import ff.model.Role;
+import ff.model.RolePtz;
 import ff.service.RolePtzSetService;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,13 +20,13 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Haoqingmeng
  */
 public class RolePtzSetController extends MultiActionController {
-
+    
     private RolePtzSetService rolePtzSetService;
-
+    
     public RolePtzSetService getRolePtzSetService() {
         return rolePtzSetService;
     }
-
+    
     public void setRolePtzSetService(RolePtzSetService rolePtzSetService) {
         this.rolePtzSetService = rolePtzSetService;
     }
@@ -68,7 +70,7 @@ public class RolePtzSetController extends MultiActionController {
         } else {
             jsonStr = rolePtzSetService.getRolePtzSetJSONById(Integer.parseInt(request.getParameter("id")));
         }
-
+        
         PrintWriter pw;
         try {
             response.setContentType("text/json; charset=utf-8");
@@ -119,6 +121,33 @@ public class RolePtzSetController extends MultiActionController {
             pw.write(jsonStr);
             pw.close();
         } catch (IOException e) {
+        }
+    }
+
+    //添加rolePtz信息
+    public void create(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("id");
+        RolePtz rolePtz = new RolePtz();
+        PTZ ptz = new PTZ();
+        ptz.setId(Long.valueOf(request.getParameter("ptz"))); //云台Id
+        rolePtz.setPtz(ptz);
+        
+        Role role = new Role();
+        role.setId(Long.valueOf(request.getParameter("userId"))); //角色id
+        rolePtz.setRole(role);
+        
+        
+        String jsonStr = rolePtzSetService.create(rolePtz);
+        
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
         }
     }
 }

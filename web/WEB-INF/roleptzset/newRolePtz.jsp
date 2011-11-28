@@ -19,7 +19,7 @@
                 
                  var ptz =  Ext.create('Ext.data.Store', {
                     //autoDestroy : true,
-                    model : 'PTZ',
+                    model : 'PTZEdit',
                     proxy : {
                         type : 'ajax',
                         url : '<%=basePath%>ptz/getAllPTZs.htm',
@@ -35,10 +35,10 @@
                 
                 var user =  Ext.create('Ext.data.Store', {
                     //autoDestroy : true,
-                    model : 'User',
+                    model : 'Role',
                     proxy : {
                         type : 'ajax',
-                        url : '<%=basePath%>user/getAllUsers.htm',
+                        url : '<%=basePath%>admin/getAllRoles.htm',
                         reader : {
                             type : 'json',
                             root : 'root',// JSON数组对象名
@@ -88,7 +88,7 @@
                         labelWidth: 55,
                         labelAlign: 'right'
                     },
-                    url:'<%=basePath%>firealarm/create.htm',
+                    url:'<%=basePath%>roleptzset/create.htm',
                     frame:true,
                     bodyStyle:'padding:5px 5px 0',
                     width: 300,

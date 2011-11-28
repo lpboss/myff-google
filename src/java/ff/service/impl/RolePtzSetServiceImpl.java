@@ -121,4 +121,14 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
         System.out.println("4r2324f");
         return jsonStr;
     }
+
+    //添加RolePtz
+    @Override
+    public String create(RolePtz rolePtz) {
+        String info = null;
+        rolePtzSetDao.saveOrUpdate(rolePtz);
+        info = "success";
+        String jsonStr = "{success:true,info:'" + info + "'}";
+        return jsonStr;
+    }
 }

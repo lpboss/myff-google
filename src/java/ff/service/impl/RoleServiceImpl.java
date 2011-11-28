@@ -94,7 +94,7 @@ public class RoleServiceImpl implements RoleService {
     public String getAllRoles() {
         List<Role> roles = roleDao.getAllRoles();
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[]{"users","rolesPrivilegeDetails"});
+        jsonConfig.setExcludes(new String[]{"rolesPrivilegeDetails","rolePtzDetails"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm"));
         JSONArray rolesJS = JSONArray.fromObject(roles, jsonConfig);
         String jsonStr = "{totalProperty:" + roles.size() + ",root:" + rolesJS.toString() + "}";

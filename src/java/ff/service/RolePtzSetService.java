@@ -5,6 +5,7 @@
 package ff.service;
 
 import ff.model.PTZ;
+import ff.model.RolePtz;
 
 /**
  *
@@ -23,5 +24,7 @@ public interface RolePtzSetService {
     String resetDefault(Long id);  // 重置默认
     
     String getRolePtzSetJSONById(Integer id); //
+    
+    String create(RolePtz rolePtz); // 添加
     
 }
