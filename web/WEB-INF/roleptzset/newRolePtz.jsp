@@ -116,7 +116,7 @@
                                         success: function(result, response){
                                             if (response.result.info == "success") {
                                                 //添加成功后，隐藏窗口，并刷新Grid
-                                                newFireAlarmWin.destroy();
+                                                newRolePtzWin.destroy();
                                             }
                                             else {
                                                 Ext.MessageBox.alert('消息', response.result.info);
@@ -124,7 +124,7 @@
                                         },
                                         failure: function(result, response){
                                             Ext.MessageBox.alert('提示', result.responseText);
-                                            newFireAlarmWin.destroy();
+                                            newRolePtzWin.destroy();
                                         }
                                     });
                                 }
@@ -136,7 +136,7 @@
                             text: '取消',
                             iconCls: 'exit',
                             handler: function(){
-                                newFireAlarmWin.destroy();
+                                newRolePtzWin.destroy();
                             }
                         }]
                 });

@@ -108,89 +108,7 @@
                                 newRolePtzWin.resizable = false;
                                 newRolePtzWin.show();
                             }
-                        },'-',{
-                            text: '编辑',
-                            iconCls: 'editItem',
-                            handler : function(){
-                                var records = PTZGrid.getSelectionModel().getSelection();
-                                if(records.length==0){
-                                    Ext.MessageBox.show({
-                                        title: '提示信息',
-                                        msg: "请先选中一条记录后，再编辑。",
-                                        buttons: Ext.MessageBox.OK,
-                                        icon: Ext.MessageBox.WARNING
-                                    });
-                                }else{
-                                    //把表单添加到窗口中
-                                    ptzId = records[0].get('id');
-                                    editRolePtzWin = Ext.create('Ext.window.Window', {
-                                        title: '编辑云台',
-                                        layout:'fit',
-                                        width:1200,
-                                        height:320,
-                                        closeAction:'destroy',
-                                        constrain:true,
-                                        plain: true,
-                                        modal: true,
-                                        autoLoad: {
-                                            url: "<%=basePath%>ptz/editPTZ.htm?id=" + ptzId,
-                                            scripts: true
-                                        }
-                                    });
-                                }
-                                editRolePtzWin.on("destroy",function(){
-                                    roleDS.load();
-                                });
-                                editRolePtzWin.resizable = false;
-                                editRolePtzWin.show();
-                            }
-                        },{                    
-                            text: '删除',
-                            width: 50,
-                            iconCls: 'remove',
-                            handler:function(){
-                                var records = PTZGrid.getSelectionModel().getSelection();
-                                if(records.length==0){
-                                    Ext.MessageBox.show({
-                                        title: '提示信息',
-                                        msg: "请先选中一条记录后，再删除。",
-                                        buttons: Ext.MessageBox.OK,
-                                        icon: Ext.MessageBox.WARNING
-                                    });
-                                }else{
-                                    Ext.MessageBox.confirm('警告', '确定要删除该信息？',function(button){
-                                        var ids = [];
-                                        var name = '';
-                                        for(var i = 0 ; i < records.length ; i++){
-                                            var data = records[i].data
-                                            ids.push(data.id);
-                                            name += data.name + '<br />'
-                                        }                                      
-                                        console.info(ids)
-                                        //    var keys = Ext.util.JSON.encode(ids)                                    
-                                        if(button == 'yes'){
-                                            Ext.Ajax.request({
-                                                url:"<%=basePath%>ptz/deletePTZ.htm?key="+ids,
-                                                method:'post',
-                                                success:function(response,opts){
-                                                    var data = Ext.JSON.decode(response.responseText);
-                                                    if(data.success&&data.info=='success') {
-                                                        PTZDS.load();
-                                                        Ext.MessageBox.alert('提示信息', '已成功删除PTZ信息。');
-                                                    } else {
-                                                        Ext.MessageBox.alert('提示信息', data.info);
-                                                    }
-                                                },
-                                                params:{
-                                                    ids:ids
-                                                }
-                                            });
-                                        }
-                                    });
-          
-                                }
-                            }       
-                        }]
+                        },'-']
                    
                 });
 
@@ -275,7 +193,57 @@
                     width: 400,
                     height: screenHeight-300,
                     frame: true,
-                    loadMask: true
+                    loadMask: true,
+                    tbar:[{                    
+                            text: '撤销云台控制',
+                            width: 100,
+                            iconCls: 'remove',
+                            handler:function(){
+                                
+                                var records = ptzGrid.getSelectionModel().getSelection();
+                                 
+                                if(records.length == 0 || PTZDS.proxy.extraParams.id =="" || PTZDS.proxy.extraParams.id == null){
+                                    
+                                    Ext.MessageBox.show({
+                                        title: '提示信息',
+                                        msg: "请先选中角色和记录后，再操作。",
+                                        buttons: Ext.MessageBox.OK,
+                                        icon: Ext.MessageBox.WARNING
+                                    });
+                                }else{
+                                    Ext.MessageBox.confirm('警告', '确定要撤销该控制？',function(button){
+                                        var ids = [];
+                                        var name = '';
+                                        var roleid = PTZDS.proxy.extraParams.id;
+                                        for(var i = 0 ; i < records.length ; i++){
+                                            var data = records[i].data
+                                            ids.push(data.id);
+                                            name += data.name + '<br />'
+                                        }                                      
+                                        console.info(ids)                                   
+                                        if(button == 'yes'){
+                                            Ext.Ajax.request({
+                                                url:"<%=basePath%>roleptzset/deleteRolePtz.htm?key="+ids+"&roleid="+roleid+"&length="+records.length,
+                                                method:'post',
+                                                success:function(response,opts){
+                                                    var data = Ext.JSON.decode(response.responseText);
+                                                    if(data.success&&data.info=='success') {
+                                                        PTZDS.load();
+                                                        Ext.MessageBox.alert('提示信息', '已成功撤销控制。');
+                                                    } else {
+                                                        Ext.MessageBox.alert('提示信息', '不能默认云台');
+                                                    }
+                                                },
+                                                params:{
+                                                    ids:ids
+                                                }
+                                            });
+                                        }
+                                    });
+          
+                                }
+                            }       
+                        }]
                 });
                 
 
