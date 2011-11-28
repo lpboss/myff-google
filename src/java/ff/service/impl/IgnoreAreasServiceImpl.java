@@ -50,14 +50,7 @@ public class IgnoreAreasServiceImpl implements IgnoreAreasService {
 
     @Override
     public String getIgnoreAreasJSONById(Integer id) {
-        System.out.print("12121");
-        System.out.print(id);
         List<IgnoreAreas> ignoreAreas = ignoreAreasDao.getById(id);
-        System.out.println("345");
-        System.out.println(ignoreAreas.get(0).getId());
-        System.out.println(ignoreAreas.get(1).getId());
-        System.out.println(ignoreAreas.get(2).getId());
-        System.out.println("678");
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.setExcludes(new String[]{"users", "fireAlarmDetails"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm:ss"));

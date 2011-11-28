@@ -57,14 +57,22 @@ public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzSe
         System.out.print("44444444");
         System.out.print(id);
         List<RolePtz> rolePtzs = this.getHibernateTemplate().findByNamedParam("from RolePtz where role_id =:id", new String[]{"id"}, new Object[]{id});
+        System.out.print("54343");
+        System.out.print(rolePtzs.size());
+      System.out.print("6758898");
         return rolePtzs;
     }
 
     @Override
     public List<PTZ> getPtzsByIds(String ids) {
-        List<PTZ> ptzs = this.getHibernateTemplate().find("from ptzs where id in ("+ids+")");
+        System.out.println("67567");
+        System.out.println(ids);
+        List<PTZ> ptzs = this.getHibernateTemplate().find("from PTZ where id in ("+ids+")");
+    //     List<PTZ> ptzs = this.getHibernateTemplate().find("from PTZ where id in (3,9)");
+        System.out.println("87978");
         System.out.println("from ptzs where id in ("+ids+")");
-        System.out.println("ppppppp");
+        System.out.println(ptzs);
+        System.out.println("67723");
         return ptzs;
 
     }

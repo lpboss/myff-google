@@ -59,7 +59,7 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
 
         JsonConfig jsonConfig = new JsonConfig();
         //这是需要过滤掉的变量名�        jsonConfig.setExcludes(new String[]{});
-        jsonConfig.setExcludes(new String[]{"users", "rolesPrivilegeDetails", "fireAlarmDetails","rolePtzDetails"});
+        jsonConfig.setExcludes(new String[]{"users", "rolesPrivilegeDetails", "fireAlarmDetails", "rolePtzDetails"});
         JSONArray ptzJS = JSONArray.fromObject(ptzs, jsonConfig);
         String jsonStr = "{totalProperty:" + ptzs.size() + ",root:" + ptzJS.toString() + "}";
         return jsonStr;
@@ -100,14 +100,25 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
         for (int i = 0; i <= ignoreAreas.size() - 1; i++) {
             ids = ids + String.valueOf(ignoreAreas.get(i).getPtz().getId()) + ",";
         }
-        String ptzids = ids.substring(1, ids.length() - 1);
+        System.out.println("6666666666666");
+        System.out.println(ignoreAreas.size());
+//        for(Object obj:ignoreAreas){
+//    // ids = ids + String.valueOf(ignoreAreas.get(i).getPtz().getId()) + ",";
+//           
+//             ids = ids + String.valueOf(ignoreAreas.get(obj).getPtz().getId()) + ",";
+//
+//       }
+        String ptzids = ids.substring(0, ids.length() - 1);
         List<PTZ> ptzs = rolePtzSetDao.getPtzsByIds(ptzids);
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[]{"users","rolesPrivilegeDetails", "role"});
+        jsonConfig.setExcludes(new String[]{"RolePtzDetails", "fireAlarmDetails", "rolePtzDetails", "role"});     
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm:ss"));
         //    JSONObject userJS = JSONObject.fromObject(ignoreAreas, jsonConfig);
-        JSONArray ignoreAreasJS = JSONArray.fromObject(ptzs, jsonConfig);
+        JSONArray ignoreAreasJS = JSONArray.fromObject(ptzs, jsonConfig);  
         String jsonStr = ignoreAreasJS.toString();
+        System.out.println("12123dd");
+        System.out.println(jsonStr);
+        System.out.println("4r2324f");
         return jsonStr;
     }
 }

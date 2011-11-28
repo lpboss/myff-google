@@ -30,6 +30,7 @@ public class Role implements java.io.Serializable {
 
     private Long id;
     private String name;
+  //  private PTZ ptz;
     private Set<RolePtz> RolePtzDetails = new HashSet<RolePtz>(0);
     private Set<RolesPrivilegeDetail> rolesPrivilegeDetails = new HashSet<RolesPrivilegeDetail>(0);
     private Timestamp createdAt;
@@ -37,7 +38,7 @@ public class Role implements java.io.Serializable {
     private String description;
     private Long isLocked = new Long(0);
     private Long version = new Long(0);    
-    private PTZ ptz;
+    
 
     public Role() {
     }
@@ -62,7 +63,7 @@ public class Role implements java.io.Serializable {
         return this.name;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "role")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "role")
     @OrderBy("id")
     public Set<RolesPrivilegeDetail> getRolesPrivilegeDetails() {
         return rolesPrivilegeDetails;
@@ -118,7 +119,7 @@ public class Role implements java.io.Serializable {
         this.description = description;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "role")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "role")
     @OrderBy("id")
     public Set<RolePtz> getRolePtzDetails() {
         return RolePtzDetails;
@@ -127,16 +128,16 @@ public class Role implements java.io.Serializable {
     public void setRolePtzDetails(Set<RolePtz> RolePtzDetails) {
         this.RolePtzDetails = RolePtzDetails;
     }
-
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "ptz_id")
-    public PTZ getPtz() {
-        return ptz;
-    }
-
-    public void setPtz(PTZ ptz) {
-        this.ptz = ptz;
-    }
+//
+//    @OneToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "ptz_id")
+//    public PTZ getPtz() {
+//        return ptz;
+//    }
+//
+//    public void setPtz(PTZ ptz) {
+//        this.ptz = ptz;
+//    }
 
 
 

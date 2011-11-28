@@ -39,7 +39,7 @@ public class RolePtz implements java.io.Serializable {
         this.id = id;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ptz_id")
     public PTZ getPtz() {
         return ptz;
@@ -49,7 +49,7 @@ public class RolePtz implements java.io.Serializable {
         this.ptz = ptz;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     public Role getRole() {
         return role;
