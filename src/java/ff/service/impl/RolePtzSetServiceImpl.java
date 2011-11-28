@@ -94,31 +94,23 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
     //得到某一条数据
     @Override
     public String getRolePtzSetJSONById(Integer id) {
-
+        List<PTZ> ptzs;
         String ids = "";
         List<RolePtz> ignoreAreas = rolePtzSetDao.getById(id);
+
         for (int i = 0; i <= ignoreAreas.size() - 1; i++) {
             ids = ids + String.valueOf(ignoreAreas.get(i).getPtz().getId()) + ",";
         }
-        System.out.println("6666666666666");
-        System.out.println(ignoreAreas.size());
-//        for(Object obj:ignoreAreas){
-//    // ids = ids + String.valueOf(ignoreAreas.get(i).getPtz().getId()) + ",";
-//           
-//             ids = ids + String.valueOf(ignoreAreas.get(obj).getPtz().getId()) + ",";
-//
-//       }
         String ptzids = ids.substring(0, ids.length() - 1);
-        List<PTZ> ptzs = rolePtzSetDao.getPtzsByIds(ptzids);
+        ptzs = rolePtzSetDao.getPtzsByIds(ptzids);
+
+
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[]{"RolePtzDetails", "fireAlarmDetails", "rolePtzDetails", "role"});     
+        jsonConfig.setExcludes(new String[]{"RolePtzDetails", "fireAlarmDetails", "rolePtzDetails", "role"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm:ss"));
         //    JSONObject userJS = JSONObject.fromObject(ignoreAreas, jsonConfig);
-        JSONArray ignoreAreasJS = JSONArray.fromObject(ptzs, jsonConfig);  
+        JSONArray ignoreAreasJS = JSONArray.fromObject(ptzs, jsonConfig);
         String jsonStr = ignoreAreasJS.toString();
-        System.out.println("12123dd");
-        System.out.println(jsonStr);
-        System.out.println("4r2324f");
         return jsonStr;
     }
 
@@ -129,6 +121,16 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
         rolePtzSetDao.saveOrUpdate(rolePtz);
         info = "success";
         String jsonStr = "{success:true,info:'" + info + "'}";
+        return jsonStr;
+    }
+
+    //删除
+    @Override
+    public String deleteRolePtz(String id, String roleid) {
+        String info = "";
+        rolePtzSetDao.deleteRolePtz(id, roleid);
+        info = "success";
+        String jsonStr = "{success:true,info:\"" + info + "\"}";
         return jsonStr;
     }
 }

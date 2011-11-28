@@ -61,7 +61,7 @@ public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzSe
         List<RolePtz> rolePtzs = this.getHibernateTemplate().findByNamedParam("from RolePtz where role_id =:id", new String[]{"id"}, new Object[]{id});
         System.out.print("54343");
         System.out.print(rolePtzs.size());
-      System.out.print("6758898");
+        System.out.print("6758898");
         return rolePtzs;
     }
 
@@ -69,10 +69,10 @@ public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzSe
     public List<PTZ> getPtzsByIds(String ids) {
         System.out.println("67567");
         System.out.println(ids);
-        List<PTZ> ptzs = this.getHibernateTemplate().find("from PTZ where id in ("+ids+")");
-    //     List<PTZ> ptzs = this.getHibernateTemplate().find("from PTZ where id in (3,9)");
+        List<PTZ> ptzs = this.getHibernateTemplate().find("from PTZ where id in (" + ids + ")");
+        //     List<PTZ> ptzs = this.getHibernateTemplate().find("from PTZ where id in (3,9)");
         System.out.println("87978");
-        System.out.println("from ptzs where id in ("+ids+")");
+        System.out.println("from ptzs where id in (" + ids + ")");
         System.out.println(ptzs);
         System.out.println("67723");
         return ptzs;
@@ -82,9 +82,30 @@ public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzSe
     //保存并更新
     @Override
     public RolePtz saveOrUpdate(RolePtz rolePtz) {
+        logger.info("45tvgthy");
+        logger.info(rolePtz);
+        logger.info(rolePtz);
+        logger.info(rolePtz.getRole().getName());
+        logger.info("trg465");
+
         this.getHibernateTemplate().saveOrUpdate(rolePtz);
         this.getHibernateTemplate().flush();
         this.getHibernateTemplate().clear();
+        logger.info("12wwsd");
+        logger.info(rolePtz);
+        logger.info("24tg5");
+
         return rolePtz;
+    }
+
+    //删除
+    @Override
+    public void deleteRolePtz(String id, String roleid) {
+        Session s = this.getHibernateTemplate().getSessionFactory().openSession();
+
+        String sql = "delete from role_ptzs where role_id =" + roleid + " and ptz_id in" + "(" + id + ")";
+        System.out.println(sql);
+        Query q = s.createSQLQuery(sql);
+        q.executeUpdate();
     }
 }

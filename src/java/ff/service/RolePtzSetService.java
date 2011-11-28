@@ -27,4 +27,6 @@ public interface RolePtzSetService {
     
     String create(RolePtz rolePtz); // 添加
     
+    String deleteRolePtz(String id,String roleid); //删除
+    
 }

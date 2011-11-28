@@ -27,5 +27,7 @@ public interface RolePtzSetDao {
 
     List<PTZ> getPtzsByIds(String ids);  //通过IDS 得到云台
     
-    RolePtz saveOrUpdate(RolePtz rolePtz);//保存并更新
+    RolePtz saveOrUpdate(RolePtz rolePtz); //保存并更新
+    
+    void deleteRolePtz(String id,String roleid); //删除
 }
