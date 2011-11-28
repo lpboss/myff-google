@@ -33,9 +33,8 @@ public class PTZDaoHImpl extends HibernateDaoSupport implements PTZDao {
         System.out.print("9090");
         System.out.print(ptz);
         return ptz;
-        
-    }
 
+    }
 
     @Override
     public List<PTZ> getAllPTZs() {
@@ -43,7 +42,7 @@ public class PTZDaoHImpl extends HibernateDaoSupport implements PTZDao {
         return ptzs;
     }
 
-     @Override
+    @Override
     public PTZ getPTZById(Long id) {
         PTZ ptz = (PTZ) this.getHibernateTemplate().get(PTZ.class, id);
         return ptz;
@@ -73,6 +72,6 @@ public class PTZDaoHImpl extends HibernateDaoSupport implements PTZDao {
 
         Query q = s.createSQLQuery(sql);
         q.executeUpdate();
-      
+
     }
 }
