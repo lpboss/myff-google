@@ -76,215 +76,217 @@ public class PTZCruiseTask {
      */
     @Scheduled(fixedDelay = 15)
     public synchronized void PTZCruise() {
-        for (PTZ ptz : ptzs) {
-            String ptzIP = ptz.getPelcodCommandUrl();
-            if (ptz.getCruiseLeftLimit() == 0 && ptz.getCruiseRightLimit() == 0) {
-                serialPortCommServer.getCruiseDirection().put(ptz.getId(), "loop");
-            } else if (serialPortCommServer.getCruiseDirection().get(ptz.getId()) == null) {
-                try {
-                    //如果从来没有预置方向，默认为向右转。
-                    //为空是刚刚开机，这时一定要发停止命令停止转动。连发二次停止命令。
-                    serialPortCommServer.sendCommand(ptzIP, "FF 01 00 00 00 00 01");
-                    serialPortCommServer.pushCommand(ptzIP, "FF 01 00 00 00 00 01");
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-                serialPortCommServer.getCruiseDirection().put(ptz.getId(), "right");
-            }
-            int cruiseStep = ptz.getCruiseStep();
-            //System.out.println("public void PTZCruise()+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-            //判断所有的云台，如果没有key添加值并巡航，如果有值，则依次判断巡航方向，比如是向上还是向下。如果角度在359度时，则上跳或下跳X度�
-            //如果ptzOrientation中无值，默认向下转动云台�
-            //暂时，只是为只有一个平台，即IP为：192.168.254.65
-            Calendar calendar = Calendar.getInstance();
-            long milliseconds = calendar.getTimeInMillis();
-            SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss SSS");
-            Date date = new Date(milliseconds);
-
-            System.out.println("角度信息，Angle (" + ptzIP + ") X:" + serialPortCommServer.getAngleXString(ptzIP) + ",Y:" + serialPortCommServer.getAngleYString(ptzIP) + "------------------,Date:" + timeFormat.format(date) + ",方向：" + serialPortCommServer.getCruiseDirection().get(ptz.getId()) + ",热值：" + serialPortCommServer.getAlertMax(ptz.getInfraredCircuitUrl()));
-            //System.out.println("当前的云台" + ptzIP + "是否允许巡航" + serialPortCommServer.getAllowCruise().get(ptzIP));
-
-            if (serialPortCommServer.getAllowCruise().get(ptzIP) == null) {
-                //System.out.println("serialPortCommServer.getAllowCruise() == null :----------------------------------------------------------------------");
-
-                //在此，说明云台从来没有进行巡航，同时，启动巡航。向右，顺时针。指定转�60度处停止�
-                //serialPortCommServer.pushCommand(ptzIP, "FF 01 00 02 10 00 42");
-                //�0为步长，右转
-                boolean commandResult;
-                try {
-                    //刚开机时，有可能命令运行失败，所以要判断命令执行的结果�
-                    commandResult = serialPortCommServer.sendCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, cruiseStep, 0, "right", ptz.getBrandType()));
-                    if (commandResult) {
-                        serialPortCommServer.getAllowCruise().put(ptzIP, Boolean.TRUE);
+        if (ptzs != null) {
+            for (PTZ ptz : ptzs) {
+                String ptzIP = ptz.getPelcodCommandUrl();
+                if (ptz.getCruiseLeftLimit() == 0 && ptz.getCruiseRightLimit() == 0) {
+                    serialPortCommServer.getCruiseDirection().put(ptz.getId(), "loop");
+                } else if (serialPortCommServer.getCruiseDirection().get(ptz.getId()) == null) {
+                    try {
+                        //如果从来没有预置方向，默认为向右转。
+                        //为空是刚刚开机，这时一定要发停止命令停止转动。连发二次停止命令。
+                        serialPortCommServer.sendCommand(ptzIP, "FF 01 00 00 00 00 01");
+                        serialPortCommServer.pushCommand(ptzIP, "FF 01 00 00 00 00 01");
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
                     }
-                } catch (IOException ex) {
-                    Logger.getLogger(PTZCruiseTask.class.getName()).log(Level.SEVERE, null, ex);
+                    serialPortCommServer.getCruiseDirection().put(ptz.getId(), "right");
                 }
+                int cruiseStep = ptz.getCruiseStep();
+                //System.out.println("public void PTZCruise()+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                //判断所有的云台，如果没有key添加值并巡航，如果有值，则依次判断巡航方向，比如是向上还是向下。如果角度在359度时，则上跳或下跳X度�
+                //如果ptzOrientation中无值，默认向下转动云台�
+                //暂时，只是为只有一个平台，即IP为：192.168.254.65
+                Calendar calendar = Calendar.getInstance();
+                long milliseconds = calendar.getTimeInMillis();
+                SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss SSS");
+                Date date = new Date(milliseconds);
 
-                //serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, cruiseStep, 0, "right"));
-            } else {
-                //如果云台巡航有相关标志参数。则判断参数的值。保证巡航期间，右转命令只发送一次�
-                //System.out.println("当前的云台：" + ptzIP + "，是否正在巡航：" + serialPortCommServer.getIsCruising().get(ptzIP));
-                if (serialPortCommServer.getAllowCruise().get(ptzIP) == Boolean.TRUE) {
-                    //�0为步长，右转.判断，如果有当前正在旋转巡航，则不发�
-                    if (serialPortCommServer.getIsCruising().get(ptzIP) == null) {
-                        serialPortCommServer.getIsCruising().put(ptzIP, Boolean.TRUE);
-                        serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, cruiseStep, 0, "right", ptz.getBrandType()));
-                    } else {
-                        if (serialPortCommServer.getIsCruising().get(ptzIP) == Boolean.FALSE && serialPortCommServer.getCruiseBreakpoint().get(ptzIP) == null) {
+                System.out.println("角度信息，Angle (" + ptzIP + ") X:" + serialPortCommServer.getAngleXString(ptzIP) + ",Y:" + serialPortCommServer.getAngleYString(ptzIP) + "------------------,Date:" + timeFormat.format(date) + ",方向：" + serialPortCommServer.getCruiseDirection().get(ptz.getId()) + ",热值：" + serialPortCommServer.getAlertMax(ptz.getInfraredCircuitUrl()));
+                //System.out.println("当前的云台" + ptzIP + "是否允许巡航" + serialPortCommServer.getAllowCruise().get(ptzIP));
+
+                if (serialPortCommServer.getAllowCruise().get(ptzIP) == null) {
+                    //System.out.println("serialPortCommServer.getAllowCruise() == null :----------------------------------------------------------------------");
+
+                    //在此，说明云台从来没有进行巡航，同时，启动巡航。向右，顺时针。指定转�60度处停止�
+                    //serialPortCommServer.pushCommand(ptzIP, "FF 01 00 02 10 00 42");
+                    //�0为步长，右转
+                    boolean commandResult;
+                    try {
+                        //刚开机时，有可能命令运行失败，所以要判断命令执行的结果�
+                        commandResult = serialPortCommServer.sendCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, cruiseStep, 0, "right", ptz.getBrandType()));
+                        if (commandResult) {
+                            serialPortCommServer.getAllowCruise().put(ptzIP, Boolean.TRUE);
+                        }
+                    } catch (IOException ex) {
+                        Logger.getLogger(PTZCruiseTask.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    //serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, cruiseStep, 0, "right"));
+                } else {
+                    //如果云台巡航有相关标志参数。则判断参数的值。保证巡航期间，右转命令只发送一次�
+                    //System.out.println("当前的云台：" + ptzIP + "，是否正在巡航：" + serialPortCommServer.getIsCruising().get(ptzIP));
+                    if (serialPortCommServer.getAllowCruise().get(ptzIP) == Boolean.TRUE) {
+                        //�0为步长，右转.判断，如果有当前正在旋转巡航，则不发�
+                        if (serialPortCommServer.getIsCruising().get(ptzIP) == null) {
                             serialPortCommServer.getIsCruising().put(ptzIP, Boolean.TRUE);
                             serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, cruiseStep, 0, "right", ptz.getBrandType()));
                         } else {
-                            //实其实是个补丁，如果在发送巡航指令时，有可能命令并没有被执行，所以要每次发送�
-                            //serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, cruiseStep, 0, "right"));
-                            //如果在巡航断点中有值，且getIsCruising().get(ip) = true,则说明要继续断点，继续巡航�
-                            //先把云台调整到断点时的位置。同时调整二个角度�
-                            if (serialPortCommServer.getCruiseBreakpoint().get(ptzIP) != null) {
-                                String breakPointAngleX = serialPortCommServer.getCruiseBreakpoint().get(ptzIP).split("\\|")[0];
-                                String breakPointAngleY = serialPortCommServer.getCruiseBreakpoint().get(ptzIP).split("\\|")[1];
-                                //判断当前的XY与断点中的XY是否相等，如果不相同发送调整命令。如果相同，清除断点信息�
-                                String currentAngleX = serialPortCommServer.getAngleXString(ptzIP);
-                                String currentAngleY = serialPortCommServer.getAngleYString(ptzIP);
-                                System.out.println("breakPointAngleX:" + breakPointAngleX + ",breakPointAngleY:" + breakPointAngleY + ",currentAngleX:" + currentAngleX + ",currentAngleY:" + currentAngleY);
-                                if (breakPointAngleX.equals(currentAngleX) && breakPointAngleY.equals(currentAngleY)) {
-                                    serialPortCommServer.getCruiseBreakpoint().remove(ptzIP);
-                                    serialPortCommServer.getIsAdjustingXYForBreakpoint().remove(ptzIP);
-                                    serialPortCommServer.getBreakPointReturnBeginTime().remove(ptzIP);
-                                    serialPortCommServer.getIsCruising().put(ptzIP, Boolean.FALSE);
-                                    System.out.println("巡航......断点完全复位......继续巡航。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。�");
-                                } else {
-                                    String adjustXCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4B, Integer.parseInt(breakPointAngleX.split("\\.")[0]), Integer.parseInt(breakPointAngleX.split("\\.")[1]), "ANGLE_X", ptz.getBrandType());
-                                    String adjustYCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, Integer.parseInt(breakPointAngleY.split("\\.")[0]), Integer.parseInt(breakPointAngleY.split("\\.")[1]), "ANGLE_Y", ptz.getBrandType());
-
-                                    if (serialPortCommServer.getIsAdjustingXYForBreakpoint().get(ptzIP) == null) {
-                                        if (serialPortCommServer.getBreakPointReturnBeginTime().get(ptzIP) == null) {
-                                            serialPortCommServer.getBreakPointReturnBeginTime().put(ptzIP, new Date().getTime());
-                                        }
-                                        serialPortCommServer.getIsAdjustingXYForBreakpoint().put(ptzIP, Boolean.TRUE);
+                            if (serialPortCommServer.getIsCruising().get(ptzIP) == Boolean.FALSE && serialPortCommServer.getCruiseBreakpoint().get(ptzIP) == null) {
+                                serialPortCommServer.getIsCruising().put(ptzIP, Boolean.TRUE);
+                                serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, cruiseStep, 0, "right", ptz.getBrandType()));
+                            } else {
+                                //实其实是个补丁，如果在发送巡航指令时，有可能命令并没有被执行，所以要每次发送�
+                                //serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, cruiseStep, 0, "right"));
+                                //如果在巡航断点中有值，且getIsCruising().get(ip) = true,则说明要继续断点，继续巡航�
+                                //先把云台调整到断点时的位置。同时调整二个角度�
+                                if (serialPortCommServer.getCruiseBreakpoint().get(ptzIP) != null) {
+                                    String breakPointAngleX = serialPortCommServer.getCruiseBreakpoint().get(ptzIP).split("\\|")[0];
+                                    String breakPointAngleY = serialPortCommServer.getCruiseBreakpoint().get(ptzIP).split("\\|")[1];
+                                    //判断当前的XY与断点中的XY是否相等，如果不相同发送调整命令。如果相同，清除断点信息�
+                                    String currentAngleX = serialPortCommServer.getAngleXString(ptzIP);
+                                    String currentAngleY = serialPortCommServer.getAngleYString(ptzIP);
+                                    System.out.println("breakPointAngleX:" + breakPointAngleX + ",breakPointAngleY:" + breakPointAngleY + ",currentAngleX:" + currentAngleX + ",currentAngleY:" + currentAngleY);
+                                    if (breakPointAngleX.equals(currentAngleX) && breakPointAngleY.equals(currentAngleY)) {
+                                        serialPortCommServer.getCruiseBreakpoint().remove(ptzIP);
+                                        serialPortCommServer.getIsAdjustingXYForBreakpoint().remove(ptzIP);
+                                        serialPortCommServer.getBreakPointReturnBeginTime().remove(ptzIP);
                                         serialPortCommServer.getIsCruising().put(ptzIP, Boolean.FALSE);
-                                        serialPortCommServer.pushCommand(ptzIP, adjustXCommand);
-                                        serialPortCommServer.pushCommand(ptzIP, adjustYCommand);
+                                        System.out.println("巡航......断点完全复位......继续巡航。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。�");
                                     } else {
-                                        //这是一个补丁功能，有时，云台调整不到位。如果超�秒，再调整一次�
-                                        if (new Date().getTime() - serialPortCommServer.getBreakPointReturnBeginTime().get(ptzIP) > 4000) {
-                                            serialPortCommServer.getBreakPointReturnBeginTime().put(ptzIP, new Date().getTime());
+                                        String adjustXCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4B, Integer.parseInt(breakPointAngleX.split("\\.")[0]), Integer.parseInt(breakPointAngleX.split("\\.")[1]), "ANGLE_X", ptz.getBrandType());
+                                        String adjustYCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, Integer.parseInt(breakPointAngleY.split("\\.")[0]), Integer.parseInt(breakPointAngleY.split("\\.")[1]), "ANGLE_Y", ptz.getBrandType());
+
+                                        if (serialPortCommServer.getIsAdjustingXYForBreakpoint().get(ptzIP) == null) {
+                                            if (serialPortCommServer.getBreakPointReturnBeginTime().get(ptzIP) == null) {
+                                                serialPortCommServer.getBreakPointReturnBeginTime().put(ptzIP, new Date().getTime());
+                                            }
+                                            serialPortCommServer.getIsAdjustingXYForBreakpoint().put(ptzIP, Boolean.TRUE);
+                                            serialPortCommServer.getIsCruising().put(ptzIP, Boolean.FALSE);
                                             serialPortCommServer.pushCommand(ptzIP, adjustXCommand);
                                             serialPortCommServer.pushCommand(ptzIP, adjustYCommand);
+                                        } else {
+                                            //这是一个补丁功能，有时，云台调整不到位。如果超�秒，再调整一次�
+                                            if (new Date().getTime() - serialPortCommServer.getBreakPointReturnBeginTime().get(ptzIP) > 4000) {
+                                                serialPortCommServer.getBreakPointReturnBeginTime().put(ptzIP, new Date().getTime());
+                                                serialPortCommServer.pushCommand(ptzIP, adjustXCommand);
+                                                serialPortCommServer.pushCommand(ptzIP, adjustYCommand);
+                                            }
                                         }
+                                        System.out.println("巡航......断点复位......正在调整角度。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。�");
+                                        return;
                                     }
-                                    System.out.println("巡航......断点复位......正在调整角度。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。�");
-                                    return;
                                 }
                             }
                         }
-                    }
 
-                    //判断，如果角度为359.99度，则垂直变化角度�
-                    //这儿，也要判断巡航方向或模式
-                    if (serialPortCommServer.getCruiseDirection().get(ptz.getId()).equals("loop")) {
-                        if (serialPortCommServer.getAngleX(ptzIP) > 359.50 && serialPortCommServer.getAngleX(ptzIP) < 359.99) {
-                            System.out.println("Loop,Y角度切换中。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。�");
+                        //判断，如果角度为359.99度，则垂直变化角度�
+                        //这儿，也要判断巡航方向或模式
+                        if (serialPortCommServer.getCruiseDirection().get(ptz.getId()).equals("loop")) {
+                            if (serialPortCommServer.getAngleX(ptzIP) > 359.50 && serialPortCommServer.getAngleX(ptzIP) < 359.99) {
+                                System.out.println("Loop,Y角度切换中。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。�");
 
-                            //这里要判断一下，读取系统预置设置的Y角度，如果达到角度要求则执行水平转动命令。并清空数据库。否则继续等待Y角度的调整�
-                            System.out.println("serialPortCommServer.getIsCruisingPresetAngleY().get(192.168.254.65):" + serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP));
-                            if (serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP) == null) {
-                                setYAngleForCruise(ptz);
-                            } else {
-                                //判断角度是否达到预置的高度了�
-                                String currentAngleY = String.valueOf(serialPortCommServer.getAngleYString(ptzIP));
-                                //飞越云台的质量问题，所以当前垂直角度有误差，所以在0.01度以内，认为合理�
-                                System.out.println("预定Y角度与实际Y角度误差" + Math.abs(serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP) - Double.parseDouble(currentAngleY)));
-                                if (serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP) == Integer.parseInt(currentAngleY.split("\\.")[0]) || Math.abs(serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP) - Double.parseDouble(currentAngleY)) < 0.02) {
-                                    //继续巡航。下面屏蔽了一行，因为来不及转动，所以总是角度�60以内�
-                                    serialPortCommServer.getCruiseDirection().put(ptz.getId(), "loop");
-                                    serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, cruiseStep, 0, "right", ptz.getBrandType()));
-                                } else {
-                                    System.out.println("继续等待云台Y角度调整。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。�");
-                                }
-                            }
-                        } else if (serialPortCommServer.getAngleX(ptzIP) > 0 && serialPortCommServer.getAngleX(ptzIP) < 1) {
-                            //小于2度时，再清除Y角度上仰状态位。
-                            serialPortCommServer.getIsCruisingPresetAngleY().remove(ptzIP);
-                            serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, cruiseStep, 0, "right", ptz.getBrandType()));
-                        }
-                    } else if (serialPortCommServer.getCruiseDirection().get(ptz.getId()).equals("right")) {
-                        /*
-                         * 只要不是loop都有一个位置要修改，即左，右边界的处理问题。这里要结合CruiseFromTo,并以CrusiseFromTo为首要判断条件
-                         * 以LR为例，只要过了R限定角度，就完全是L命令，只要过了L限定角度，就完全是R命令。当前默认以0为左边界。也就是左边固定，暂时
-                         * 同时规定二角的最少差，不能小于10度。
-                         */
-                        if (ptz.getCruiseFromTo().equals("LR")) {
-                            //再判断，当前的角度
-                            if (serialPortCommServer.getAngleX(ptzIP) >= ptz.getCruiseRightLimit()) {
+                                //这里要判断一下，读取系统预置设置的Y角度，如果达到角度要求则执行水平转动命令。并清空数据库。否则继续等待Y角度的调整�
+                                System.out.println("serialPortCommServer.getIsCruisingPresetAngleY().get(192.168.254.65):" + serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP));
                                 if (serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP) == null) {
-                                    //System.out.println("马上要开始设置Y角度。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
-                                    //只有大于1度时才调整角度，其它情况可能是复位引起的角度过大。
-                                    if (serialPortCommServer.getAngleX(ptzIP) - ptz.getCruiseRightLimit() > 0 && serialPortCommServer.getAngleX(ptzIP) - ptz.getCruiseRightLimit() < 1) {
-                                        setYAngleForCruise(ptz);
-                                    }
+                                    setYAngleForCruise(ptz);
                                 } else {
                                     //判断角度是否达到预置的高度了�
                                     String currentAngleY = String.valueOf(serialPortCommServer.getAngleYString(ptzIP));
                                     //飞越云台的质量问题，所以当前垂直角度有误差，所以在0.01度以内，认为合理�
                                     System.out.println("预定Y角度与实际Y角度误差" + Math.abs(serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP) - Double.parseDouble(currentAngleY)));
-
                                     if (serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP) == Integer.parseInt(currentAngleY.split("\\.")[0]) || Math.abs(serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP) - Double.parseDouble(currentAngleY)) < 0.02) {
-                                        //继续巡航。下面屏蔽了一行，因为来不及转动，所以总是角度�60以内
-                                        serialPortCommServer.getCruiseDirection().put(ptz.getId(), "left");
-                                        serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x04, cruiseStep, 0, "left", ptz.getBrandType()));
-                                    } else {
-                                        System.out.println("继续等待云台Y角度调整。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。�");
-                                    }
-                                }
-                            } else if (serialPortCommServer.getAngleX(ptzIP) - ptz.getCruiseLeftLimit() > 0 && serialPortCommServer.getAngleX(ptzIP) - ptz.getCruiseLeftLimit() < 1) {
-                                //在返回转动过程中，只有返回的度数超过0，小于1度时才清除状态
-                                System.out.println("正在清掉左转到头是的上仰角度信息。。。。。。。。。。。");
-                                serialPortCommServer.getIsCruisingPresetAngleY().remove(ptzIP);
-                            }
-                        } else {
-                        }
-                    } else if (serialPortCommServer.getCruiseDirection().get(ptz.getId()).equals("left")) {
-                        if (ptz.getCruiseFromTo().equals("LR")) {
-                            //再判断，当前的角度
-                            if (serialPortCommServer.getAngleX(ptzIP) <= ptz.getCruiseLeftLimit()) {
-                                if (serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP) == null) {
-                                    //System.out.println("马上要开始设置Y角度。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
-                                    if (ptz.getCruiseLeftLimit() - serialPortCommServer.getAngleX(ptzIP) > 0 && ptz.getCruiseLeftLimit() - serialPortCommServer.getAngleX(ptzIP) < 1) {
-                                        setYAngleForCruise(ptz);
-                                    }
-                                } else {
-                                    //判断角度是否达到预置的高度了�
-                                    String currentAngleY = String.valueOf(serialPortCommServer.getAngleYString(ptzIP));
-                                    //飞越云台的质量问题，所以当前垂直角度有误差，所以在0.01度以内，认为合理�
-                                    System.out.println("预定Y角度与实际Y角度误差" + Math.abs(serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP) - Double.parseDouble(currentAngleY)));
-                                    //发转动时，也有限制，就是要在接近左边界时才能发，不能只判断Y的角度情况。如果从右向左转，而且则转过右界时，Y状态还没有清掉，这时只判断Y不行。\
-                                    if (serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP) == Integer.parseInt(currentAngleY.split("\\.")[0]) || Math.abs(serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP) - Double.parseDouble(currentAngleY)) < 0.02) {
-                                        //继续巡航。下面屏蔽了一行，因为来不及转动，所以总是角度�60以内
-                                        serialPortCommServer.getCruiseDirection().put(ptz.getId(), "right");
+                                        //继续巡航。下面屏蔽了一行，因为来不及转动，所以总是角度�60以内�
+                                        serialPortCommServer.getCruiseDirection().put(ptz.getId(), "loop");
                                         serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, cruiseStep, 0, "right", ptz.getBrandType()));
                                     } else {
                                         System.out.println("继续等待云台Y角度调整。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。�");
                                     }
                                 }
-                            } else if (ptz.getCruiseRightLimit() - serialPortCommServer.getAngleX(ptzIP) > 0 && ptz.getCruiseRightLimit() - serialPortCommServer.getAngleX(ptzIP) < 1) {
-                                //这其实是一种互相清，这时，它其实是在清上次右转到头时设置的Y角度状态
-                                System.out.println("正在清掉右转到头是的上仰角度信息。。。。。。。。。。。");
+                            } else if (serialPortCommServer.getAngleX(ptzIP) > 0 && serialPortCommServer.getAngleX(ptzIP) < 1) {
+                                //小于2度时，再清除Y角度上仰状态位。
                                 serialPortCommServer.getIsCruisingPresetAngleY().remove(ptzIP);
+                                serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, cruiseStep, 0, "right", ptz.getBrandType()));
                             }
-                        } else {
-                        }
-                    }
+                        } else if (serialPortCommServer.getCruiseDirection().get(ptz.getId()).equals("right")) {
+                            /*
+                             * 只要不是loop都有一个位置要修改，即左，右边界的处理问题。这里要结合CruiseFromTo,并以CrusiseFromTo为首要判断条件
+                             * 以LR为例，只要过了R限定角度，就完全是L命令，只要过了L限定角度，就完全是R命令。当前默认以0为左边界。也就是左边固定，暂时
+                             * 同时规定二角的最少差，不能小于10度。
+                             */
+                            if (ptz.getCruiseFromTo().equals("LR")) {
+                                //再判断，当前的角度
+                                if (serialPortCommServer.getAngleX(ptzIP) >= ptz.getCruiseRightLimit()) {
+                                    if (serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP) == null) {
+                                        //System.out.println("马上要开始设置Y角度。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
+                                        //只有大于1度时才调整角度，其它情况可能是复位引起的角度过大。
+                                        if (serialPortCommServer.getAngleX(ptzIP) - ptz.getCruiseRightLimit() > 0 && serialPortCommServer.getAngleX(ptzIP) - ptz.getCruiseRightLimit() < 1) {
+                                            setYAngleForCruise(ptz);
+                                        }
+                                    } else {
+                                        //判断角度是否达到预置的高度了�
+                                        String currentAngleY = String.valueOf(serialPortCommServer.getAngleYString(ptzIP));
+                                        //飞越云台的质量问题，所以当前垂直角度有误差，所以在0.01度以内，认为合理�
+                                        System.out.println("预定Y角度与实际Y角度误差" + Math.abs(serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP) - Double.parseDouble(currentAngleY)));
 
-                } else {
-                    //如果不允许巡航了，判断一下，适当停止。如果正在火警调节中，就暂时不发停止命令如果不是，发送停止命令�
+                                        if (serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP) == Integer.parseInt(currentAngleY.split("\\.")[0]) || Math.abs(serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP) - Double.parseDouble(currentAngleY)) < 0.02) {
+                                            //继续巡航。下面屏蔽了一行，因为来不及转动，所以总是角度�60以内
+                                            serialPortCommServer.getCruiseDirection().put(ptz.getId(), "left");
+                                            serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x04, cruiseStep, 0, "left", ptz.getBrandType()));
+                                        } else {
+                                            System.out.println("继续等待云台Y角度调整。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。�");
+                                        }
+                                    }
+                                } else if (serialPortCommServer.getAngleX(ptzIP) - ptz.getCruiseLeftLimit() > 0 && serialPortCommServer.getAngleX(ptzIP) - ptz.getCruiseLeftLimit() < 1) {
+                                    //在返回转动过程中，只有返回的度数超过0，小于1度时才清除状态
+                                    System.out.println("正在清掉左转到头是的上仰角度信息。。。。。。。。。。。");
+                                    serialPortCommServer.getIsCruisingPresetAngleY().remove(ptzIP);
+                                }
+                            } else {
+                            }
+                        } else if (serialPortCommServer.getCruiseDirection().get(ptz.getId()).equals("left")) {
+                            if (ptz.getCruiseFromTo().equals("LR")) {
+                                //再判断，当前的角度
+                                if (serialPortCommServer.getAngleX(ptzIP) <= ptz.getCruiseLeftLimit()) {
+                                    if (serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP) == null) {
+                                        //System.out.println("马上要开始设置Y角度。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
+                                        if (ptz.getCruiseLeftLimit() - serialPortCommServer.getAngleX(ptzIP) > 0 && ptz.getCruiseLeftLimit() - serialPortCommServer.getAngleX(ptzIP) < 1) {
+                                            setYAngleForCruise(ptz);
+                                        }
+                                    } else {
+                                        //判断角度是否达到预置的高度了�
+                                        String currentAngleY = String.valueOf(serialPortCommServer.getAngleYString(ptzIP));
+                                        //飞越云台的质量问题，所以当前垂直角度有误差，所以在0.01度以内，认为合理�
+                                        System.out.println("预定Y角度与实际Y角度误差" + Math.abs(serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP) - Double.parseDouble(currentAngleY)));
+                                        //发转动时，也有限制，就是要在接近左边界时才能发，不能只判断Y的角度情况。如果从右向左转，而且则转过右界时，Y状态还没有清掉，这时只判断Y不行。\
+                                        if (serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP) == Integer.parseInt(currentAngleY.split("\\.")[0]) || Math.abs(serialPortCommServer.getIsCruisingPresetAngleY().get(ptzIP) - Double.parseDouble(currentAngleY)) < 0.02) {
+                                            //继续巡航。下面屏蔽了一行，因为来不及转动，所以总是角度�60以内
+                                            serialPortCommServer.getCruiseDirection().put(ptz.getId(), "right");
+                                            serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, cruiseStep, 0, "right", ptz.getBrandType()));
+                                        } else {
+                                            System.out.println("继续等待云台Y角度调整。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。�");
+                                        }
+                                    }
+                                } else if (ptz.getCruiseRightLimit() - serialPortCommServer.getAngleX(ptzIP) > 0 && ptz.getCruiseRightLimit() - serialPortCommServer.getAngleX(ptzIP) < 1) {
+                                    //这其实是一种互相清，这时，它其实是在清上次右转到头时设置的Y角度状态
+                                    System.out.println("正在清掉右转到头是的上仰角度信息。。。。。。。。。。。");
+                                    serialPortCommServer.getIsCruisingPresetAngleY().remove(ptzIP);
+                                }
+                            } else {
+                            }
+                        }
+
+                    } else {
+                        //如果不允许巡航了，判断一下，适当停止。如果正在火警调节中，就暂时不发停止命令如果不是，发送停止命令�
                 /*if (serialPortCommServer.getIsMovingCenterForFireAlarm().get(ptzIP) == null || serialPortCommServer.getIsMovingCenterForFireAlarm().get(ptzIP) == Boolean.FALSE) {
-                    serialPortCommServer.pushCommand(ptzIP, "FF 01 00 00 00 00 01");
-                    }*/
+                        serialPortCommServer.pushCommand(ptzIP, "FF 01 00 00 00 00 01");
+                        }*/
+                    }
                 }
-            }
-            //判断当前云台是否有旋转方向的标记，如果没有则默认设置向下�
-            if (serialPortCommServer.getPtzOrientation().get(ptzIP) == null) {
-                serialPortCommServer.getPtzOrientation().put(ptzIP, "down");
+                //判断当前云台是否有旋转方向的标记，如果没有则默认设置向下�
+                if (serialPortCommServer.getPtzOrientation().get(ptzIP) == null) {
+                    serialPortCommServer.getPtzOrientation().put(ptzIP, "down");
+                }
             }
         }
     }
