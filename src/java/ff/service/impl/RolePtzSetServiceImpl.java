@@ -67,16 +67,16 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
 
     //得到某一条ptz数据
     @Override
-    public PTZ getPTZById(Long id) {
-        return rolePtzSetDao.getPTZById(id);
+    public RolePtz getRolePtzById(Long id) {
+        return rolePtzSetDao.getRolePtzById(id);
     }
 
     //是否锁定
     @Override
-    public String ptzLock(PTZ ptz) {
+    public String RolePtzDefault(RolePtz rolePtz) {
         String info = null;
 
-        ptzDao.saveOrUpdate(ptz);
+        rolePtzSetDao.saveOrUpdate(rolePtz);
         info = "success";
         String jsonStr = "{success:true,info:'" + info + "'}";
         return jsonStr;

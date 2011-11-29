@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
         List users = userDao.getAllUsers();
         JsonConfig jsonConfig = new JsonConfig();
         //这是需要过滤掉的变量名。
-        jsonConfig.setExcludes(new String[]{"role"});
+        jsonConfig.setExcludes(new String[]{"fireAlarmDetails","user","rolePtzDetails","rolesPrivilegeDetails"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm"));
         JSONArray userJS = JSONArray.fromObject(users, jsonConfig);
         String jsonStr = "{totalProperty:" + users.size() + ",root:" + userJS.toString() + "}";

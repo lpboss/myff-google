@@ -17,9 +17,9 @@ public interface RolePtzSetService {
 
     String getPTZList(); //得到ptz数据列表
 
-    PTZ getPTZById(Long id); //得到某一条数据
+    RolePtz getRolePtzById(Long id); //得到某一条数据
 
-    String ptzLock(PTZ ptz); //是否锁定
+    String RolePtzDefault(RolePtz rolePtz); //是否默认
 
     String resetDefault(Long id);  // 重置默认
     

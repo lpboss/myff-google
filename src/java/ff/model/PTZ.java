@@ -31,8 +31,8 @@ public class PTZ {
 
     private Long id;
     private String name;
-    private Set<RolePtz> RolePtzDetails = new HashSet<RolePtz>(0);
-    private Set<FireAlarm> fireAlarmDetails = new HashSet<FireAlarm>(0);
+    private Set<RolePtz> RolePtzDetails = new HashSet<RolePtz>(0); //RolePtz表外键
+    private Set<FireAlarm> fireAlarmDetails = new HashSet<FireAlarm>(0); //FireAlarm表外键
     private String controllUrl; //编码器IP',
     private String pelcodCommandUrl; //'通过串口,发pelcod的ip',
     private String visibleCameraUrl; //'可见光摄像机地址,模拟请参考controll_url',

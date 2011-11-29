@@ -106,17 +106,22 @@ public class RolePtzSetController extends MultiActionController {
     //处理是否设置默认云台
     public void rolePtzSetLock(HttpServletRequest request, HttpServletResponse response) {
         Long id = Long.valueOf(request.getParameter("id"));
-        Long roleid = Long.valueOf("88");
+       
+        Long roleid = Long.valueOf(request.getParameter("roleId"));
+        logger.info("321c2r");
+        logger.info(id);
+        logger.info(roleid);
+        logger.info("321c2r");
         rolePtzSetService.resetDefault(roleid);
-        PTZ ptz = rolePtzSetService.getPTZById(id);
-        if (ptz.getIsDefault() == 0) {
-            ptz.setIsDefault(Long.valueOf("1"));
+        RolePtz rolePtz = rolePtzSetService.getRolePtzById(id);
+        if (rolePtz.getIsDefault() == 0) {
+            rolePtz.setIsDefault(Long.valueOf("1"));
         } else {
-            ptz.setIsDefault(Long.valueOf("0"));
+            rolePtz.setIsDefault(Long.valueOf("0"));
         }
         PrintWriter pw;
         try {
-            String jsonStr = rolePtzSetService.ptzLock(ptz);
+            String jsonStr = rolePtzSetService.RolePtzDefault(rolePtz);
             response.setContentType("text/json; charset=utf-8");
             response.setHeader("Cache-Control", "no-cache");
             pw = response.getWriter();
