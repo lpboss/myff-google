@@ -133,4 +133,20 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
         String jsonStr = "{success:true,info:\"" + info + "\"}";
         return jsonStr;
     }
+
+    //得到rolePtz列表
+    @Override
+    public String getRolePtzList() {
+        System.out.println("frgfv");
+        List rolePtzs = rolePtzSetDao.getAllRolePtzs();
+         System.out.println("45gby");
+          System.out.println(rolePtzs);
+           System.out.println("nhn7");
+        JsonConfig jsonConfig = new JsonConfig();
+        //这是需要过滤掉的变量名�        jsonConfig.setExcludes(new String[]{});
+        jsonConfig.setExcludes(new String[]{"fireAlarmDetails","rolePtzDetails","role"});
+        JSONArray ptzJS = JSONArray.fromObject(rolePtzs, jsonConfig);
+        String jsonStr = "{totalProperty:" + rolePtzs.size() + ",root:" + ptzJS.toString() + "}";
+        return jsonStr;
+    }
 }

@@ -11,15 +11,15 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>角色云台云台设置</title>
+        <title>角色云台设置</title>
         <script type="text/javascript">
             var roleId = 0;
             var a =0;
-            Ext.define('rolePTZEdit', {
+            Ext.define('rolePtz', {
                 extend : 'Ext.data.Model',
                 fields : [
                     { name: 'id'},
-                    { name: 'name'},
+                    { name: 'ptzName',mapping:"ptz.name"},
                     { name: 'isDefault'},
                 ]
             });
@@ -150,11 +150,11 @@
         
                 //-----------------云台Grid----------------------------
                 PTZDS =  Ext.create('Ext.data.Store', {
-                    model : 'rolePTZEdit',
+                    model : 'rolePtz',
                     proxy : {
                         type : 'ajax',
                     
-                        url : '<%=basePath%>roleptzset/getAllPTZs.htm',
+                        url : '<%=basePath%>roleptzset/getAllRolePtzs.htm',
                         reader : {
                             type : 'json',
                             root : 'root',// JSON数组对象名
@@ -180,7 +180,7 @@
                     columns : [Ext.create('Ext.grid.RowNumberer'),
                         {
                             header: '名称',
-                            dataIndex: 'name',
+                            dataIndex: 'ptzName',
                             width: 170
                         },{
                             header: '是否是默认云台',
