@@ -31,19 +31,15 @@ public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzSe
     //得到所有ptz信息
     @Override
     public List<PTZ> getAllPTZs() {
-        logger.info("12s2");
         List<PTZ> ptzs = this.getHibernateTemplate().find("from PTZ");
-         logger.info("54hbiik68");
-         logger.info("12s2");
-         logger.info("78kjgb3");
         return ptzs;
     }
 
-    //得到ptz的某一条数据
+    //得到rolePtz的某一条数据
     @Override
-    public PTZ getPTZById(Long id) {
-        PTZ ptz = (PTZ) this.getHibernateTemplate().get(PTZ.class, id);
-        return ptz;
+    public RolePtz getRolePtzById(Long id) {
+        RolePtz rolePtz = (RolePtz) this.getHibernateTemplate().get(RolePtz.class, id);
+        return rolePtz;
     }
 
     //处理是否默认云台
@@ -59,13 +55,7 @@ public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzSe
 
     @Override
     public List<RolePtz> getById(Integer id) {
-
-        System.out.print("44444444");
-        System.out.print(id);
         List<RolePtz> rolePtzs = this.getHibernateTemplate().findByNamedParam("from RolePtz where role_id =:id", new String[]{"id"}, new Object[]{id});
-        System.out.print("54343");
-        System.out.print(rolePtzs.size());
-        System.out.print("6758898");
         return rolePtzs;
     }
 
@@ -75,10 +65,6 @@ public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzSe
         System.out.println(ids);
         List<PTZ> ptzs = this.getHibernateTemplate().find("from PTZ where id in (" + ids + ")");
         //     List<PTZ> ptzs = this.getHibernateTemplate().find("from PTZ where id in (3,9)");
-        System.out.println("87978");
-        System.out.println("from ptzs where id in (" + ids + ")");
-        System.out.println(ptzs);
-        System.out.println("67723");
         return ptzs;
 
     }
@@ -86,19 +72,9 @@ public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzSe
     //保存并更新
     @Override
     public RolePtz saveOrUpdate(RolePtz rolePtz) {
-        logger.info("45tvgthy");
-        logger.info(rolePtz);
-        logger.info(rolePtz);
-        logger.info(rolePtz.getRole().getName());
-        logger.info("trg465");
-
         this.getHibernateTemplate().saveOrUpdate(rolePtz);
         this.getHibernateTemplate().flush();
         this.getHibernateTemplate().clear();
-        logger.info("12wwsd");
-        logger.info(rolePtz);
-        logger.info("24tg5");
-
         return rolePtz;
     }
 
@@ -131,13 +107,7 @@ public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzSe
     //通过id得到rolePtz数据
     @Override
     public List<RolePtz> getRolePtzByIds(String ids) {
-        System.out.println("67567");
-        System.out.println(ids);
         List<RolePtz> rolePtzs = this.getHibernateTemplate().find("from RolePtz where ptz_id in (" + ids + ")"+" order by role_id");       
-        System.out.println("87978");
-        System.out.println("from ptzs where id in (" + ids + ")");
-        System.out.println(rolePtzs);
-        System.out.println("67723");
         return rolePtzs;
     }
 

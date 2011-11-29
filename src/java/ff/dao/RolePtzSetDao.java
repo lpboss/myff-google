@@ -19,7 +19,7 @@ public interface RolePtzSetDao {
 
     List<PTZ> getAllPTZs();    //得到所有的云台信息
 
-    PTZ getPTZById(Long id);   //得到某一条数据
+    RolePtz getRolePtzById(Long id);   //得到某一条数据
 
     void setDefault(Long id);   //重置默认
 

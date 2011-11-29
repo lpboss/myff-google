@@ -28,7 +28,7 @@
             //处理是否是默认云台
             function lockPtzDetailFn(id){
                 Ext.Ajax.request({
-                    url : '<%=basePath%>roleptzset/rolePtzSetLock.htm?id='+id,
+                    url : '<%=basePath%>roleptzset/rolePtzSetLock.htm?id='+id +'&roleId='+roleId,
                     success : function (result, request) {
                         rolePtzDS.load();
                     },
