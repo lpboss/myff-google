@@ -65,10 +65,11 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
         return jsonStr;
     }
 
-    //得到某一条ptz数据
+    //得到某一条rolePtz数据
     @Override
-    public RolePtz getRolePtzById(Long id) {
-        return rolePtzSetDao.getRolePtzById(id);
+    public RolePtz getRolePtzById(Long id,Long roleid) {
+     RolePtz rolePtz = rolePtzSetDao.getRolePtzById(id,roleid);
+      return  rolePtz;
     }
 
     //是否锁定
