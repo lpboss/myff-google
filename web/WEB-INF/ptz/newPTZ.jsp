@@ -202,6 +202,20 @@
                     hidden:true,
                     anchor: '95%'
                 });
+                
+                var cruiseFromTo = Ext.create('Ext.form.field.Text', {
+                    fieldLabel: '巡航有左右边界时的巡航方向',
+                    name: 'cruise_from_to',
+                    hidden:true,
+                    anchor: '95%'
+                });
+                
+                var fromTo = Ext.create('Ext.form.field.Text', {
+                    fieldLabel: '巡航设置左右边界时，转动方向',
+                    name: 'from_to',
+                    hidden:true,
+                    anchor: '95%'
+                });
                
                 var newPTZForm = Ext.create('Ext.form.Panel', {
                     fieldDefaults: {
@@ -225,12 +239,12 @@
                                     columnWidth: .38,
                                     layout: 'anchor',
                                     xtype: 'container',                                  
-                                    items: [infraredRTSPUrl,infraredCameraUrl,infraredCircuitUrl,northMigration,visibleCameraUrl,visibleRTSPUrl,cruiseUpLimit,isAlarm]
+                                    items: [infraredRTSPUrl,infraredCameraUrl,infraredCircuitUrl,northMigration,visibleCameraUrl,visibleRTSPUrl,cruiseUpLimit,isAlarm,cruiseFromTo]
                                 }, {
                                     columnWidth: .23,
                                     layout: 'anchor',
                                     xtype: 'container',
-                                    items: [visualAngleX,visualAngleY,infraredPixelX,infraredPixelY,version,isLocked,cruiseDownLimit,alarmHeatValue]
+                                    items: [visualAngleX,visualAngleY,infraredPixelX,infraredPixelY,version,isLocked,cruiseDownLimit,alarmHeatValue,fromTo]
                                 }]
                         }],
                     buttons: [{
