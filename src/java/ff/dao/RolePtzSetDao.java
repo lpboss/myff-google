@@ -30,4 +30,6 @@ public interface RolePtzSetDao {
     RolePtz saveOrUpdate(RolePtz rolePtz); //保存并更新
     
     void deleteRolePtz(String id,String roleid); //删除
+    
+    List<RolePtz> getAllRolePtzs();    //得到所有的rolePtz信息
 }

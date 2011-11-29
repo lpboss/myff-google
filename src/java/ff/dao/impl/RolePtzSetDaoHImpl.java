@@ -17,7 +17,7 @@ import java.sql.Timestamp;
 
 /**
  *
- * @author Administrator
+ * @author Haoqingmeng
  */
 public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzSetDao {
 
@@ -31,8 +31,11 @@ public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzSe
     //得到所有ptz信息
     @Override
     public List<PTZ> getAllPTZs() {
+        logger.info("12s2");
         List<PTZ> ptzs = this.getHibernateTemplate().find("from PTZ");
-
+         logger.info("54hbiik68");
+         logger.info("12s2");
+         logger.info("78kjgb3");
         return ptzs;
     }
 
@@ -107,5 +110,17 @@ public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzSe
         System.out.println(sql);
         Query q = s.createSQLQuery(sql);
         q.executeUpdate();
+    }
+
+    //得到所有的rolePtz列表
+    @Override
+    public List<RolePtz> getAllRolePtzs() {
+         logger.info("12wwsd");
+
+         List<RolePtz> rolePtzs = this.getHibernateTemplate().find("from RolePtz");
+          logger.info("454g36576");
+        logger.info(rolePtzs);
+        logger.info("12fv57jb");
+        return rolePtzs;
     }
 }

@@ -191,7 +191,21 @@ public class RolePtzSetController extends MultiActionController {
         }
     }
     
-    
+    //得到rolePtz列表
+     public void getAllRolePtzs(HttpServletRequest request, HttpServletResponse response) {
+         logger.info("12s2");
+        String jsonStr = rolePtzSetService.getRolePtzList();
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
     
     
 }

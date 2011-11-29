@@ -36,6 +36,7 @@ public class PTZDaoHImpl extends HibernateDaoSupport implements PTZDao {
 
     }
 
+    //得到所有的ptz列表信息
     @Override
     public List<PTZ> getAllPTZs() {
         List<PTZ> ptzs = this.getHibernateTemplate().find("from PTZ");

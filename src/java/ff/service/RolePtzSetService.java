@@ -29,4 +29,6 @@ public interface RolePtzSetService {
     
     String deleteRolePtz(String id,String roleid); //删除
     
+    String getRolePtzList(); //得到rolePtz数据列表
+    
 }
