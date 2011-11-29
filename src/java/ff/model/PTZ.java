@@ -52,15 +52,16 @@ public class PTZ {
     private Timestamp updatedAt;
     private Integer version;//版本
     private Integer isAlarm;// 是否正在报警
-    private Integer alarmHeatValue;// 报警最高热值�
+    private Integer alarmHeatValue;// 报警最高热值(报警警戒热值)�
     private Integer cruiseRightLimit; //巡航右边�
     private Integer cruiseLeftLimit; //巡航左边�
-    private Integer cruiseUpLimit; //最大上仰角�
-    private Integer cruiseDownLimit; //巡航时最大俯�
+    private Integer cruiseUpLimit; //最大上仰角度�
+    private Integer cruiseDownLimit; //巡航时最大俯角�
     private String cruiseFromTo; //巡航有左右边界时的巡航方向。�
-    private Integer cruiseAngleYStep;//巡航时抬头步长
+    private Integer cruiseAngleYStep;//巡航时抬头步长(巡航上扬角度步长)
     private Long isLocked = new Long(0);// 状�'启用，停�,
     private Integer shiftStep; //云台非巡航状态下默认移动步长
+    private String fromTo; //巡航设置左右边界时，转动方向
     private Long isDefault; // 是不是默认，'不是','是'
     
 
@@ -366,6 +367,15 @@ public class PTZ {
 
     public void setRolePtzDetails(Set<RolePtz> RolePtzDetails) {
         this.RolePtzDetails = RolePtzDetails;
+    }
+
+    @Column(name = "from_to")
+    public String getFromTo() {
+        return fromTo;
+    }
+
+    public void setFromTo(String fromTo) {
+        this.fromTo = fromTo;
     }
     
     

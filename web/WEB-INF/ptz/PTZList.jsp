@@ -70,7 +70,9 @@
                         { name: 'version'},
                         { name: 'isLocked'},
                         { name: 'isAlarm'},
-                        { name:"alarmHeatValue"}
+                        { name: 'alarmHeatValue'},
+                        { name: 'cruiseFromTo'},
+                        { name: 'fromTo'}
                     ]
                 });
                 
@@ -207,6 +209,14 @@
                             header: '状态',
                             dataIndex: 'isLocked',  
                             renderer: renderPTZIsLucked,
+                            width:80
+                        },{
+                            header: '巡航有左右边界时的巡航方向',
+                            dataIndex: 'cruiseFromTo',  
+                            width:80
+                        },{
+                            header: '巡航设置左右边界时，转动方向',
+                            dataIndex: 'fromTo',  
                             width:80
                         }],
        
