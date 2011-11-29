@@ -121,7 +121,7 @@ public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzSe
     public List<RolePtz> getAllRolePtzs() {
          logger.info("12wwsd");
 
-         List<RolePtz> rolePtzs = this.getHibernateTemplate().find("from RolePtz");
+         List<RolePtz> rolePtzs = this.getHibernateTemplate().find("from RolePtz"+" order by role_id");
           logger.info("454g36576");
         logger.info(rolePtzs);
         logger.info("12fv57jb");
@@ -133,11 +133,26 @@ public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzSe
     public List<RolePtz> getRolePtzByIds(String ids) {
         System.out.println("67567");
         System.out.println(ids);
-        List<RolePtz> rolePtzs = this.getHibernateTemplate().find("from RolePtz where ptz_id in (" + ids + ")");       
+        List<RolePtz> rolePtzs = this.getHibernateTemplate().find("from RolePtz where ptz_id in (" + ids + ")"+" order by role_id");       
         System.out.println("87978");
         System.out.println("from ptzs where id in (" + ids + ")");
         System.out.println(rolePtzs);
         System.out.println("67723");
         return rolePtzs;
     }
+
+    //判断有没有重名的  where role_id ="+ id
+    @Override
+    public RolePtz getRolePtzByName(Long ptzId,Long roleId) {
+        List<RolePtz> rolePtzs = this.getHibernateTemplate().find("from RolePtz where role_id="+ roleId + "and" + " ptz_id="+ ptzId);  
+        if (rolePtzs.size() > 0) {
+            return rolePtzs.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    
+    
+    
 }

@@ -25,7 +25,7 @@ public interface RolePtzSetService {
     
     String getRolePtzSetJSONById(Integer id); //
     
-    String create(RolePtz rolePtz); // 添加
+    String create(RolePtz rolePtz,Long ptzId,Long roleId); // 添加
     
     String deleteRolePtz(String id,String roleid); //删除
     
