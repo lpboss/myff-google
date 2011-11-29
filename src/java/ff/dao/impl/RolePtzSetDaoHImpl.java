@@ -46,11 +46,12 @@ public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzSe
         return ptz;
     }
 
+    //处理是否默认云台
     @Override
     public void setDefault(Long id) {
         Session s = this.getHibernateTemplate().getSessionFactory().openSession();
 
-        String sql = "update ptzs set is_default = 0";
+        String sql = "update role_ptzs set is_default = 0 where role_id ="+ id;
 
         Query q = s.createSQLQuery(sql);
         q.executeUpdate();
@@ -105,8 +106,11 @@ public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzSe
     @Override
     public void deleteRolePtz(String id, String roleid) {
         Session s = this.getHibernateTemplate().getSessionFactory().openSession();
-
-        String sql = "delete from role_ptzs where role_id =" + roleid + " and ptz_id in" + "(" + id + ")";
+        logger.info("54b756");
+         logger.info(id);
+          logger.info(roleid);
+           logger.info("324fvy6uk7");
+        String sql = "delete from role_ptzs where role_id =" + roleid + " and id in" + "(" + id + ")";
         System.out.println(sql);
         Query q = s.createSQLQuery(sql);
         q.executeUpdate();
@@ -121,6 +125,19 @@ public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzSe
           logger.info("454g36576");
         logger.info(rolePtzs);
         logger.info("12fv57jb");
+        return rolePtzs;
+    }
+
+    //通过id得到rolePtz数据
+    @Override
+    public List<RolePtz> getRolePtzByIds(String ids) {
+        System.out.println("67567");
+        System.out.println(ids);
+        List<RolePtz> rolePtzs = this.getHibernateTemplate().find("from RolePtz where ptz_id in (" + ids + ")");       
+        System.out.println("87978");
+        System.out.println("from ptzs where id in (" + ids + ")");
+        System.out.println(rolePtzs);
+        System.out.println("67723");
         return rolePtzs;
     }
 }

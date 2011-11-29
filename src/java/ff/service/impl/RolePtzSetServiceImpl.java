@@ -82,6 +82,7 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
         return jsonStr;
     }
 
+    //处理是否是默认云台
     @Override
     public String resetDefault(Long id) {
         String info = null;
@@ -95,21 +96,27 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
     @Override
     public String getRolePtzSetJSONById(Integer id) {
         List<PTZ> ptzs;
+        List<RolePtz> rolePtzs;
         String ids = "";
         List<RolePtz> ignoreAreas = rolePtzSetDao.getById(id);
 
-        for (int i = 0; i <= ignoreAreas.size() - 1; i++) {
-            ids = ids + String.valueOf(ignoreAreas.get(i).getPtz().getId()) + ",";
-        }
-        String ptzids = ids.substring(0, ids.length() - 1);
-        ptzs = rolePtzSetDao.getPtzsByIds(ptzids);
+//        for (int i = 0; i <= ignoreAreas.size() - 1; i++) {
+//            ids = ids + String.valueOf(ignoreAreas.get(i).getPtz().getId()) + ",";
+//        }
+//        String ptzids = ids.substring(0, ids.length() - 1);
+//        // ptzs = rolePtzSetDao.getPtzsByIds(ptzids);
+//        rolePtzs = rolePtzSetDao.getRolePtzByIds(ptzids);
+
+        System.out.println("324tgvgg4h");
+        System.out.println(ignoreAreas);
+        System.out.println("324tgvgg4h");
 
 
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[]{"RolePtzDetails", "fireAlarmDetails", "rolePtzDetails", "role"});
+        jsonConfig.setExcludes(new String[]{"fireAlarmDetails", "rolePtzDetails", "rolesPrivilegeDetails"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm:ss"));
         //    JSONObject userJS = JSONObject.fromObject(ignoreAreas, jsonConfig);
-        JSONArray ignoreAreasJS = JSONArray.fromObject(ptzs, jsonConfig);
+        JSONArray ignoreAreasJS = JSONArray.fromObject(ignoreAreas, jsonConfig);
         String jsonStr = ignoreAreasJS.toString();
         return jsonStr;
     }
@@ -139,12 +146,12 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
     public String getRolePtzList() {
         System.out.println("frgfv");
         List rolePtzs = rolePtzSetDao.getAllRolePtzs();
-         System.out.println("45gby");
-          System.out.println(rolePtzs);
-           System.out.println("nhn7");
+        System.out.println("45gby");
+        System.out.println(rolePtzs);
+        System.out.println("nhn7");
         JsonConfig jsonConfig = new JsonConfig();
         //这是需要过滤掉的变量名�        jsonConfig.setExcludes(new String[]{});
-        jsonConfig.setExcludes(new String[]{"fireAlarmDetails","rolePtzDetails","role"});
+        jsonConfig.setExcludes(new String[]{"fireAlarmDetails", "rolePtzDetails", "rolesPrivilegeDetails"});
         JSONArray ptzJS = JSONArray.fromObject(rolePtzs, jsonConfig);
         String jsonStr = "{totalProperty:" + rolePtzs.size() + ",root:" + ptzJS.toString() + "}";
         return jsonStr;
