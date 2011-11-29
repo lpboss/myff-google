@@ -26,11 +26,11 @@ public class PTZUtil {
     static NativeLong lUserID;//用户句柄
     static HCNetSDK.NET_DVR_DEVICEINFO_V30 m_strDeviceInfo;//设备信息
 
-	public PTZUtil() {
-		// 初始化海康SDK
-    	boolean initSuc = hCNetSDK.NET_DVR_Init();		
-	}
-	
+    public PTZUtil() {
+        // 初始化海康SDK
+        boolean initSuc = hCNetSDK.NET_DVR_Init();
+    }
+
     public void setPtzService(PTZService ptzService) {
         this.ptzService = ptzService;
     }
@@ -54,13 +54,13 @@ public class PTZUtil {
         serialPortCommServer.getCommandMap().remove(ptzIP);
         //先停止再发送新命令。
         serialPortCommServer.pushCommand(ptzIP, "FF 01 00 00 00 00 01");
-        
+
         String pelcodCommand = "";
         if (ptzAction.equals("stop")) {
             setCruiseBreakpoint(ptzIP);
             serialPortCommServer.pushCommand(ptzIP, "FF 01 00 00 00 00 01");
             //logger.info("FF 01 00 00 00 00 01 STOP........................." + connResult);
-        }else if (ptzAction.equals("up")) {
+        } else if (ptzAction.equals("up")) {
             setCruiseBreakpoint(ptzIP);
             pelcodCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x08, 0, shiftStep, "right", ptz.getBrandType());
             serialPortCommServer.pushCommand(ptzIP, pelcodCommand);
@@ -112,42 +112,42 @@ public class PTZUtil {
             serialPortCommServer.getIsMovingCenterForFireAlarm().remove(ptzIP);
             //不允许再次报火警
             serialPortCommServer.getAllowAlarm().put(ptzIP, Boolean.FALSE);
-        }else if(ptzAction.equals("visible_in")){//可见光镜头焦距变小，开始
-        	lUserID = hCNetSDK.NET_DVR_Login_V30(ptz.getVisibleCameraUrl(), (short)8000, "admin", "12345", m_strDeviceInfo);
-            if (lUserID.intValue() < 0){
-        		logger.info(hCNetSDK.NET_DVR_GetLastError()+"");
-            }else{        	
-            	boolean controlSuc=hCNetSDK.NET_DVR_PTZControlWithSpeed_Other(lUserID, new NativeLong(1),HCNetSDK.ZOOM_IN,0,1);
+        } else if (ptzAction.equals("visible_in")) {//可见光镜头焦距变小，开始
+            lUserID = hCNetSDK.NET_DVR_Login_V30(ptz.getVisibleCameraUrl(), (short) 8000, "admin", "12345", m_strDeviceInfo);
+            if (lUserID.intValue() < 0) {
+                logger.info(hCNetSDK.NET_DVR_GetLastError() + "");
+            } else {
+                boolean controlSuc = hCNetSDK.NET_DVR_PTZControlWithSpeed_Other(lUserID, new NativeLong(1), HCNetSDK.ZOOM_IN, 0, 1);
             }
-        }else if(ptzAction.equals("visible_in_stop")){//可见光镜头焦距变小，结束
-        	lUserID = hCNetSDK.NET_DVR_Login_V30(ptz.getVisibleCameraUrl(), (short)8000, "admin", "12345", m_strDeviceInfo);
-            if (lUserID.intValue() < 0){
-        		logger.info(hCNetSDK.NET_DVR_GetLastError()+"");
-            }else{        	
-            	boolean controlSuc=hCNetSDK.NET_DVR_PTZControlWithSpeed_Other(lUserID, new NativeLong(1),HCNetSDK.ZOOM_IN,1,1);
+        } else if (ptzAction.equals("visible_in_stop")) {//可见光镜头焦距变小，结束
+            lUserID = hCNetSDK.NET_DVR_Login_V30(ptz.getVisibleCameraUrl(), (short) 8000, "admin", "12345", m_strDeviceInfo);
+            if (lUserID.intValue() < 0) {
+                logger.info(hCNetSDK.NET_DVR_GetLastError() + "");
+            } else {
+                boolean controlSuc = hCNetSDK.NET_DVR_PTZControlWithSpeed_Other(lUserID, new NativeLong(1), HCNetSDK.ZOOM_IN, 1, 1);
             }
-        }else if(ptzAction.equals("visible_out")){//可见光镜头焦距变大，开始
-        	lUserID = hCNetSDK.NET_DVR_Login_V30(ptz.getVisibleCameraUrl(), (short)8000, "admin", "12345", m_strDeviceInfo);
-            if (lUserID.intValue() < 0){
-        		logger.info(hCNetSDK.NET_DVR_GetLastError()+"");
-            }else{
-            	boolean controlSuc=hCNetSDK.NET_DVR_PTZControlWithSpeed_Other(lUserID, new NativeLong(1),HCNetSDK.ZOOM_OUT,0,1);
+        } else if (ptzAction.equals("visible_out")) {//可见光镜头焦距变大，开始
+            lUserID = hCNetSDK.NET_DVR_Login_V30(ptz.getVisibleCameraUrl(), (short) 8000, "admin", "12345", m_strDeviceInfo);
+            if (lUserID.intValue() < 0) {
+                logger.info(hCNetSDK.NET_DVR_GetLastError() + "");
+            } else {
+                boolean controlSuc = hCNetSDK.NET_DVR_PTZControlWithSpeed_Other(lUserID, new NativeLong(1), HCNetSDK.ZOOM_OUT, 0, 1);
             }
-        }else if(ptzAction.equals("visible_out_stop")){//可见光镜头焦距变大，结束
-        	lUserID = hCNetSDK.NET_DVR_Login_V30(ptz.getVisibleCameraUrl(), (short)8000, "admin", "12345", m_strDeviceInfo);
-            if (lUserID.intValue() < 0){
-        		logger.info(hCNetSDK.NET_DVR_GetLastError()+"");
-            }else{
-            	boolean controlSuc=hCNetSDK.NET_DVR_PTZControlWithSpeed_Other(lUserID, new NativeLong(1),HCNetSDK.ZOOM_OUT,1,1);
+        } else if (ptzAction.equals("visible_out_stop")) {//可见光镜头焦距变大，结束
+            lUserID = hCNetSDK.NET_DVR_Login_V30(ptz.getVisibleCameraUrl(), (short) 8000, "admin", "12345", m_strDeviceInfo);
+            if (lUserID.intValue() < 0) {
+                logger.info(hCNetSDK.NET_DVR_GetLastError() + "");
+            } else {
+                boolean controlSuc = hCNetSDK.NET_DVR_PTZControlWithSpeed_Other(lUserID, new NativeLong(1), HCNetSDK.ZOOM_OUT, 1, 1);
             }
-        }else if(ptzAction.equals("infrared_in")){//热成像镜头焦距变小
-        	serialPortCommServer.pushCommand(ptzIP, "FF 01 04 00 00 00 05");
-        }else if(ptzAction.equals("infrared_out")){//热成像镜头焦距变大
-        	serialPortCommServer.pushCommand(ptzIP, "FF 01 02 00 00 00 03");
-        }else if(ptzAction.equals("wiper_on")){//打开雨刷
-        	serialPortCommServer.pushCommand(ptzIP, "FF 01 00 09 00 03 0D");
-        }else if(ptzAction.equals("wiper_off")){//关闭雨刷
-        	serialPortCommServer.pushCommand(ptzIP, "FF 01 00 0B 00 03 0F");
+        } else if (ptzAction.equals("infrared_in")) {//热成像镜头焦距变小
+            serialPortCommServer.pushCommand(ptzIP, "FF 01 04 00 00 00 05");
+        } else if (ptzAction.equals("infrared_out")) {//热成像镜头焦距变大
+            serialPortCommServer.pushCommand(ptzIP, "FF 01 02 00 00 00 03");
+        } else if (ptzAction.equals("wiper_on")) {//打开雨刷
+            serialPortCommServer.pushCommand(ptzIP, "FF 01 00 09 00 03 0D");
+        } else if (ptzAction.equals("wiper_off")) {//关闭雨刷
+            serialPortCommServer.pushCommand(ptzIP, "FF 01 00 0B 00 03 0F");
         }
     }
 
@@ -271,5 +271,4 @@ public class PTZUtil {
         //System.out.println("type:" + type + ",command:" + command.toString().toUpperCase() + " ,222222222222222222222222222222222222222222222222222222," + param1 + ":" + param2);
         return command.toString().toUpperCase();
     }
-    
 }
