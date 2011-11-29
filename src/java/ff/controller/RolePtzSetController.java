@@ -129,9 +129,21 @@ public class RolePtzSetController extends MultiActionController {
 
     //得到某一角色的所有ptz
     public void getRolePtzs(HttpServletRequest request, HttpServletResponse response) {
+        String jsonStr = "";
         String id = request.getParameter("id");
         logger.info("1212");
-        String jsonStr = rolePtzSetService.getRolePtzSetJSONById(Integer.parseInt(request.getParameter("id")));
+        logger.info(request.getParameter("id"));
+        logger.info("34v35g");
+        if(request.getParameter("id")!= null){
+            logger.info("565555");
+           jsonStr = rolePtzSetService.getRolePtzSetJSONById(Integer.parseInt(request.getParameter("id")));
+        }else{
+            logger.info("33567486");
+           jsonStr = rolePtzSetService.getRolePtzList();
+        }
+        logger.info("468748");
+        logger.info(jsonStr);
+        logger.info("265g6h");
         //   String jsonStr = ignoreAreasService.getIgetIgnoreAreasJSONByIdgnoreAreasList();
         PrintWriter pw;
         try {
@@ -156,6 +168,9 @@ public class RolePtzSetController extends MultiActionController {
         Long idds = Long.valueOf(request.getParameter("userId")); //角色id
         Role role = roleService.getRoleById(idds);
         rolePtz.setRole(role);
+        if (!request.getParameter("is_default").equals("")) {
+            rolePtz.setIsDefault(Long.getLong("1"));
+        }//状态 
         
         String jsonStr = rolePtzSetService.create(rolePtz);
         PrintWriter pw;
@@ -176,7 +191,10 @@ public class RolePtzSetController extends MultiActionController {
 
         String id = request.getParameter("key");
         String roleid = request.getParameter("roleid");
-        
+        logger.info("4v6h31");
+         logger.info(id);
+          logger.info(roleid);
+           logger.info("4v6h31");
         String jsonStr = rolePtzSetService.deleteRolePtz(id,roleid);
         
         PrintWriter pw;

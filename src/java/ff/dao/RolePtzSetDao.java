@@ -32,4 +32,6 @@ public interface RolePtzSetDao {
     void deleteRolePtz(String id,String roleid); //删除
     
     List<RolePtz> getAllRolePtzs();    //得到所有的rolePtz信息
+    
+    List<RolePtz> getRolePtzByIds(String ids);  //通过id得到rolePtz
 }

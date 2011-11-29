@@ -20,6 +20,7 @@
                 fields : [
                     { name: 'id'},
                     { name: 'ptzName',mapping:"ptz.name"},
+                    { name: 'roleName',mapping:"role.name"},
                     { name: 'isDefault'},
                 ]
             });
@@ -29,7 +30,7 @@
                 Ext.Ajax.request({
                     url : '<%=basePath%>roleptzset/rolePtzSetLock.htm?id='+id,
                     success : function (result, request) {
-                        PTZDS.load();
+                        rolePtzDS.load();
                     },
                     failure : function (result, request){
                         Ext.MessageBox.show({
@@ -118,18 +119,19 @@
                         ptzGrid.setTitle("云台列表 (<font color=red>"+roleName+"</font>)"); 
                         ptzGrid.setVisible(true);
                         roleId = record.get('id');
-                        PTZDS.proxy.extraParams = {'id':roleId};//把参数roleId传递到PTZDS中                     
-                        PTZDS.load()
+                        rolePtzDS.proxy.extraParams = {'id':roleId};//把参数roleId传递到PTZDS中                     
+                        rolePtzDS.load()
                         console.info(roleId);
                     }else{
-                        PTZDS.removeAll();
+                        rolePtzDS.removeAll();
                         ptzGrid.setVisible(false);
                     }
                                                                       
                     Ext.Ajax.request({
                         url : '<%=basePath%>roleptzset/getRolePtzs.htm?id='+roleId,
                         success : function (result, request) {
-                            PTZDS.load();
+                            rolePtzDS.proxy.extraParams = {'id':roleId};//把参数roleId传递到PTZDS中
+                            rolePtzDS.load();
                         },
                         failure : function (result, request){
                             Ext.MessageBox.show({
@@ -143,18 +145,15 @@
                         params : {
                             id : id
                         }
-                    });
-                    
-  
+                    });                    
                 });
         
                 //-----------------云台Grid----------------------------
-                PTZDS =  Ext.create('Ext.data.Store', {
+                rolePtzDS =  Ext.create('Ext.data.Store', {
                     model : 'rolePtz',
                     proxy : {
-                        type : 'ajax',
-                    
-                        url : '<%=basePath%>roleptzset/getAllRolePtzs.htm',
+                        type : 'ajax',                   
+                        url : '<%=basePath%>roleptzset/getRolePtzs.htm',
                         reader : {
                             type : 'json',
                             root : 'root',// JSON数组对象名
@@ -176,17 +175,21 @@
                 
                 var ptzGrid = Ext.create('Ext.grid.Panel', {
                     title:'云台列表',
-                    store: PTZDS,
+                    store: rolePtzDS,
                     columns : [Ext.create('Ext.grid.RowNumberer'),
                         {
-                            header: '名称',
+                            header: '角色名称',
+                            dataIndex: 'roleName',                           
+                            width: 120
+                        },{
+                            header: '云台名称',
                             dataIndex: 'ptzName',
-                            width: 170
+                            width: 110
                         },{
                             header: '是否是默认云台',
                             dataIndex: 'isDefault',
                             renderer: renderPtzDetailIsLucked,
-                            width: 170
+                            width: 110
                         }],
                     
                     selModel : Ext.create('Ext.selection.CheckboxModel'),
@@ -202,7 +205,7 @@
                                 
                                 var records = ptzGrid.getSelectionModel().getSelection();
                                  
-                                if(records.length == 0 || PTZDS.proxy.extraParams.id =="" || PTZDS.proxy.extraParams.id == null){
+                                if(records.length == 0 || rolePtzDS.proxy.extraParams.id =="" || rolePtzDS.proxy.extraParams.id == null){
                                     
                                     Ext.MessageBox.show({
                                         title: '提示信息',
@@ -214,7 +217,7 @@
                                     Ext.MessageBox.confirm('警告', '确定要撤销该控制？',function(button){
                                         var ids = [];
                                         var name = '';
-                                        var roleid = PTZDS.proxy.extraParams.id;
+                                        var roleid = rolePtzDS.proxy.extraParams.id;
                                         for(var i = 0 ; i < records.length ; i++){
                                             var data = records[i].data
                                             ids.push(data.id);
@@ -228,7 +231,7 @@
                                                 success:function(response,opts){
                                                     var data = Ext.JSON.decode(response.responseText);
                                                     if(data.success&&data.info=='success') {
-                                                        PTZDS.load();
+                                                        rolePtzDS.load();
                                                         Ext.MessageBox.alert('提示信息', '已成功撤销控制。');
                                                     } else {
                                                         Ext.MessageBox.alert('提示信息', '不能默认云台');
