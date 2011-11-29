@@ -104,7 +104,7 @@
                                     }
                                 });
                                 newRolePtzWin.on("destroy",function(){
-                                    roleDS.load();
+                                    rolePtzDS.load();
                                 });
                                 newRolePtzWin.resizable = false;
                                 newRolePtzWin.show();

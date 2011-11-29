@@ -106,12 +106,6 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
 //        String ptzids = ids.substring(0, ids.length() - 1);
 //        // ptzs = rolePtzSetDao.getPtzsByIds(ptzids);
 //        rolePtzs = rolePtzSetDao.getRolePtzByIds(ptzids);
-
-        System.out.println("324tgvgg4h");
-        System.out.println(ignoreAreas);
-        System.out.println("324tgvgg4h");
-
-
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.setExcludes(new String[]{"fireAlarmDetails", "rolePtzDetails", "rolesPrivilegeDetails"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm:ss"));
@@ -123,10 +117,15 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
 
     //添加RolePtz
     @Override
-    public String create(RolePtz rolePtz) {
+    public String create(RolePtz rolePtz,Long ptzId,Long roleId) {
         String info = null;
-        rolePtzSetDao.saveOrUpdate(rolePtz);
-        info = "success";
+
+        if (rolePtzSetDao.getRolePtzByName(ptzId, roleId) == null) {
+            rolePtzSetDao.saveOrUpdate(rolePtz);                               //存储对象
+            info = "success";
+        } else {
+            info = "该角色名所控制的云台已经存在，请更换！";
+        }
         String jsonStr = "{success:true,info:'" + info + "'}";
         return jsonStr;
     }

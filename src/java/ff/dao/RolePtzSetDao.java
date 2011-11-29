@@ -34,4 +34,6 @@ public interface RolePtzSetDao {
     List<RolePtz> getAllRolePtzs();    //得到所有的rolePtz信息
     
     List<RolePtz> getRolePtzByIds(String ids);  //通过id得到rolePtz
+    
+    RolePtz getRolePtzByName(Long id,Long idd); //判断有没有重名的
 }
