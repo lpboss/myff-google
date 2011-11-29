@@ -6,6 +6,7 @@ package ff.service;
 
 import ff.model.PTZ;
 import ff.model.RolePtz;
+import java.util.List;
 
 /**
  *
@@ -17,7 +18,7 @@ public interface RolePtzSetService {
 
     String getPTZList(); //得到ptz数据列表
 
-    RolePtz getRolePtzById(Long id); //得到某一条数据
+    RolePtz getRolePtzById(Long id,Long roleid); //得到某一条数据
 
     String RolePtzDefault(RolePtz rolePtz); //是否默认
 

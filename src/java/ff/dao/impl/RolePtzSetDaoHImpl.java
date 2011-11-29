@@ -37,8 +37,15 @@ public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzSe
 
     //得到rolePtz的某一条数据
     @Override
-    public RolePtz getRolePtzById(Long id) {
-        RolePtz rolePtz = (RolePtz) this.getHibernateTemplate().get(RolePtz.class, id);
+    public RolePtz getRolePtzById(Long id, Long roleid) {
+//        List<RolePtz> rolePtz =  this.getHibernateTemplate().find("from RolePtz where role_id =" + roleid + " and id =" +  id );
+   //     RolePtz rolePtz = (RolePtz) this.getHibernateTemplate().find("from RolePtz where role_id =" + roleid + " and id =" + id);
+          RolePtz rolePtz = (RolePtz) this.getHibernateTemplate().get(RolePtz.class, id );
+        
+        logger.info("133f2v2");
+        logger.info(rolePtz);
+        logger.info(rolePtz.getPtz().getName());
+        logger.info("133f2v2");
         return rolePtz;
     }
 
@@ -46,9 +53,7 @@ public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzSe
     @Override
     public void setDefault(Long id) {
         Session s = this.getHibernateTemplate().getSessionFactory().openSession();
-
-        String sql = "update role_ptzs set is_default = 0 where role_id ="+ id;
-
+        String sql = "update role_ptzs set is_default = 0 where role_id =" + id;
         Query q = s.createSQLQuery(sql);
         q.executeUpdate();
     }
@@ -61,10 +66,7 @@ public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzSe
 
     @Override
     public List<PTZ> getPtzsByIds(String ids) {
-        System.out.println("67567");
-        System.out.println(ids);
         List<PTZ> ptzs = this.getHibernateTemplate().find("from PTZ where id in (" + ids + ")");
-        //     List<PTZ> ptzs = this.getHibernateTemplate().find("from PTZ where id in (3,9)");
         return ptzs;
 
     }
@@ -82,10 +84,6 @@ public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzSe
     @Override
     public void deleteRolePtz(String id, String roleid) {
         Session s = this.getHibernateTemplate().getSessionFactory().openSession();
-        logger.info("54b756");
-         logger.info(id);
-          logger.info(roleid);
-           logger.info("324fvy6uk7");
         String sql = "delete from role_ptzs where role_id =" + roleid + " and id in" + "(" + id + ")";
         System.out.println(sql);
         Query q = s.createSQLQuery(sql);
@@ -95,34 +93,25 @@ public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzSe
     //得到所有的rolePtz列表
     @Override
     public List<RolePtz> getAllRolePtzs() {
-         logger.info("12wwsd");
-
-         List<RolePtz> rolePtzs = this.getHibernateTemplate().find("from RolePtz"+" order by role_id");
-          logger.info("454g36576");
-        logger.info(rolePtzs);
-        logger.info("12fv57jb");
+        List<RolePtz> rolePtzs = this.getHibernateTemplate().find("from RolePtz" + " order by role_id");
         return rolePtzs;
     }
 
     //通过id得到rolePtz数据
     @Override
     public List<RolePtz> getRolePtzByIds(String ids) {
-        List<RolePtz> rolePtzs = this.getHibernateTemplate().find("from RolePtz where ptz_id in (" + ids + ")"+" order by role_id");       
+        List<RolePtz> rolePtzs = this.getHibernateTemplate().find("from RolePtz where ptz_id in (" + ids + ")" + " order by role_id");
         return rolePtzs;
     }
 
     //判断有没有重名的  where role_id ="+ id
     @Override
-    public RolePtz getRolePtzByName(Long ptzId,Long roleId) {
-        List<RolePtz> rolePtzs = this.getHibernateTemplate().find("from RolePtz where role_id="+ roleId + "and" + " ptz_id="+ ptzId);  
+    public RolePtz getRolePtzByName(Long ptzId, Long roleId) {
+        List<RolePtz> rolePtzs = this.getHibernateTemplate().find("from RolePtz where role_id=" + roleId + "and" + " ptz_id=" + ptzId);
         if (rolePtzs.size() > 0) {
             return rolePtzs.get(0);
         } else {
             return null;
         }
     }
-
-    
-    
-    
 }
