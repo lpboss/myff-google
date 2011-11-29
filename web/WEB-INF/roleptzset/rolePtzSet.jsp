@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>角色云台设置</title>
+        <title>角色云台云台设置</title>
         <script type="text/javascript">
             var roleId = 0;
             var a =0;
