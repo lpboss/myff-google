@@ -192,6 +192,7 @@ public class PTZServiceImpl implements PTZService {
         fireAlarm.setHeatMax(heatMax);
         fireAlarm.setPtzAngleX(ptzAngleX);
         fireAlarm.setPtzAngleY(ptzAngelY);
+        fireAlarm.setIsAlarming(Short.valueOf("1"));
         //ptz.getFireAlarms().add(fireAlarm);
         //this.saveOrUpdate(ptz);
         fireAlarmService.create(fireAlarm);
