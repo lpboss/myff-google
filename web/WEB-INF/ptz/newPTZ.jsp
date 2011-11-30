@@ -206,17 +206,15 @@
                 var cruiseFromTo = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '巡航有左右边界时的巡航方向',
                     name: 'cruise_from_to',
-                    hidden:true,
                     anchor: '95%'
                 });
                 
                 var fromTo = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '巡航设置左右边界时，转动方向',
                     name: 'from_to',
-                    hidden:true,
                     anchor: '95%'
                 });
-               
+
                 var newPTZForm = Ext.create('Ext.form.Panel', {
                     fieldDefaults: {
                         labelWidth: 180,
