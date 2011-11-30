@@ -33,6 +33,8 @@ public class SerialPortCommServer {
     private static Map<String, String> angleY = new ConcurrentHashMap<String, String>();
     // key为ip,value为true或false，当value为false时，自动巡航方法不再控制巡航。主要是标记哪些云台当前允许其实自动巡航。
     private static Map<String, Boolean> allowCruise = new ConcurrentHashMap<String, Boolean>();
+    //巡航方向,由于设定了巡航限制，所有有left,right,loop几种巡航方向,key为ptzid
+    private static Map<Long, String> cruiseDirection = new ConcurrentHashMap<Long, String>();
     // key为ip,value为true或false，当value为false时。主要是标记哪些云台当前为允许对火警作出反应为null或true都可以反应为false时不允许再次对火警反应。
     private static Map<String, Boolean> allowAlarm = new ConcurrentHashMap<String, Boolean>();
     // key为ip,value为true或false，当value为false时，当前正在巡航的云台。当前正在巡航的云台，不会重复发送巡航右转命令。以减少命令发送量。
@@ -206,75 +208,31 @@ public class SerialPortCommServer {
     }
 
     /**
-     * 根据热成像仪传感器ip，删除其报警信息
-     * 
-     * @param ip
-     * @throws
-     */
-    public void removeAlert(String ip) {
-        alertMap.remove(ip);
-    }
-
-    /**
-     * 删除所有热成像仪传感器的报警信息
-     * 
-     * @throws
-     */
-    public void removeAlert() {
-        alertMap.clear();
-    }
-
-    /**
-     * 打开某个云台节点的警报
-     * @param alertIP 热成像传感器ip
-     * @param ptzIP 云台ip
-     * @throws
-     */
-    public void openAlarm(String alertIP, String ptzIP) {
-    	alarmMap.put(alertIP,ptzIP);
-    }
-    
-    /**
-     * 关闭某个云台节点的警报
-     * @param alertIP 热成像传感器ip
-     * @param ptzIP 云台ip
-     * @throws
-     */
-    public void closeAlarm(String alertIP, String ptzIP){
-    	alarmMap.remove(alertIP);
-    }
-    
-    /**
-     * 关闭所有云台节点的警报
-     * 
-     * @throws
-     */
-    public void closeAlarm(){
-    	alarmMap.clear();
-    }
-    
-    /**
      * 检查某个云台节点是否警报
      * @param alertIP
      * @param ptzIP
      * @return ture 警报；false 正常
      * @throws
      */
-    public boolean isAlarm(String alertIP, String ptzIP){
-    	if(alarmMap.get(alertIP)!=null) return true;
-    	return false;
+    public boolean isAlarm(String alertIP, String ptzIP) {
+        if (alarmMap.get(alertIP) != null) {
+            return true;
+        }
+        return false;
     }
-    
+
     /**
      * 检查所有云台是否有警报的
      * @return ture 警报；false 正常
      * @throws
      */
-    public boolean isAlarm(){
-    	if(!alarmMap.isEmpty()) return true;
-    	return false;
+    public boolean isAlarm() {
+        if (!alarmMap.isEmpty()) {
+            return true;
+        }
+        return false;
     }
-    
+
     /**
      * 以云台ip为key，将云台水平角度信息存放在HashMap中
      * 
@@ -482,7 +440,7 @@ public class SerialPortCommServer {
                     + "</alertMin><alertAvg>" + getAlertAvg(alertIp)
                     + "</alertAvg><alertX>" + getAlertX(alertIp)
                     + "</alertX><alertY>" + getAlertY(alertIp)
-                    + "</alertY><myAlarm>" + isAlarm(alertIp,ptzIp)
+                    + "</alertY><myAlarm>" + isAlarm(alertIp, ptzIp)
                     + "</myAlarm><globalAlarm>" + isAlarm()
                     + "</globalAlarm></xml>";
 
@@ -634,6 +592,10 @@ public class SerialPortCommServer {
 
     public Map<String, String> getSceneFireAlarmInfo() {
         return sceneFireAlarmInfo;
+    }
+
+    public Map<Long, String> getCruiseDirection() {
+        return cruiseDirection;
     }
 
     public static void main(String[] args) {

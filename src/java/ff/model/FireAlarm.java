@@ -37,7 +37,7 @@ public class FireAlarm {
     private Timestamp updatedAt;
     private Integer version;
     private Long isLocked = new Long(0);// '启用，停用',
-    private Short is_alarming;
+    private Short isAlarming;
 
     @Id
     @GeneratedValue
@@ -123,12 +123,12 @@ public class FireAlarm {
     }
 
     @Column(name = "is_alarming", length = 100)
-    public Short getIs_alarming() {
-        return is_alarming;
+    public Short getIsAlarming() {
+        return isAlarming;
     }
 
-    public void setIs_alarming(Short is_alarming) {
-        this.is_alarming = is_alarming;
+    public void setIsAlarming(Short isAlarming) {
+        this.isAlarming = isAlarming;
     }
 
     @Column(name = "ptz_angle_x", length = 100)

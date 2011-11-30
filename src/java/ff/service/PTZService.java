@@ -38,5 +38,6 @@ public interface PTZService {
     String updatePTZ(Long id, String name); //更新
     
     String ptzLock(PTZ ptz);
-    
+
+    Boolean setIsAlarm(Long ptzId, int heatMax, float ptzAngleX, float ptzAngelY);
 }

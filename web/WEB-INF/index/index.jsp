@@ -17,57 +17,71 @@
 <script type="text/javascript" src="<%=basePath%>javascripts/greybox/gb_scripts.js"></script>
 <script type="text/javascript" src="<%=basePath%>javascripts/ext4/ext-all.js"></script>
 <script type="text/javascript" src="<%=basePath%>javascripts/ext4/locale/ext-lang-zh_CN.js"></script>
-<style type="text/css">
-<!--
-#apDiv3 {
-	position:absolute;
-	width:132px;
-	min-height:132px;
-	z-index:100;
-	right: 15px;
-	top: 120px;
-	overflow:visible;
-}
-#apDiv4 {
-	position:absolute;
-	width:89px;
-	min-height:87px;
-	right: 20px;
-	top: 25px;
-	z-index:200;
-	overflow:visible;
-}
+<script type="text/javascript" src="<%=basePath%>javascripts/sound/soundmanager2.js"></script>
+<script type="text/javascript">
 
+var ptz_id = 0;	//当前所监控的云台节点ID
+var assignedStep=20;	//云台转动速度，默认步长
+var alarmSound ;
 
--->
-</style>
-<script type="text/javascript"> 
+soundManager.useFlashBlock = false;
+soundManager.url = '<%=basePath%>javascripts/sound/'; // path to SoundManager2 SWF files (note trailing slash)
+soundManager.debugMode = false;
+soundManager.consoleOnly = false;
+soundManager.onready(function(oStatus) {
+	if (!oStatus.success) {
+		return false;
+	}
+	
+	alarmSound = soundManager.createSound({
+		id:'alarm_sound',
+		url:'<%=basePath%>javascripts/sound/alarmsound.mp3'
+	});
+	
+});
+Ext.onReady(function() {
+	getPTZAlarmsInfo = function(){
+		Ext.Ajax.request({
+			url : '<%=basePath%>ptz/getIsAlarmPTZs.htm',
+			success : function (result, request) {
+				var alarmJSON = result.responseText;
+				alarmJSON =  Ext.JSON.decode(alarmJSON);
+				if (alarmJSON.totalProperty > 0){
+					//alert(alarmJSON.totalProperty);
+					document.getElementById("map").setAlertMessage("当前状态："+alarmJSON.totalProperty+"处火警！");
+					alarmSound.play({
+						onfinish: function() {
+							loopSound(alarmSound);
+						}
+					});
+				}else{
+					document.getElementById("map").setAlertMessage("当前状态：0处报警，0处火灾");
+					alarmSound.stop(alarmSound);
+				}
+			},
+			failure : function (result, request){
+			},
+			method : 'GET'
+		});
+	}
+	
+	//定时查询云台报警状态
+	var task = {
+		run: function(){
+			getPTZAlarmsInfo();
+		},
+		interval: 10000
+	}
+	Ext.TaskManager.start(task);
 
-//当前云台是否转动。
-var isTurning = false;
-//当前正在转动的方向
-var turningDirection = "stop";
+});
 
 //控制云台动作
-function ptzAction(ptzActionStr){
-	//如果方向相同，就要停止转动。
-	//console.warn("Before:   ptzActionStr:",ptzActionStr,",turningDirection:",turningDirection,",isTurning:"+isTurning);
-	if (ptzActionStr == turningDirection){
-		isTurning = false;
-		turningDirection = "stop";
-		ptzActionStr = "stop";
-	}
-				
+function ptzAction(ptzActionStr){		
 	Ext.Ajax.request({
 		url : '<%=basePath%>ptz/ptzAction.htm',
 		success : function (result, request) {
-			turningDirection = ptzActionStr;
-			if(ptzActionStr == "stop"){
-				isTurning = false;
-			}else{
-				isTurning = true;
-			}
-			//console.warn("After :   ptzActionStr:",ptzActionStr,",turningDirection:",turningDirection,",isTurning:"+isTurning);
+			//turningDirection = ptzActionStr;
 		},
 		failure : function (result, request){
 			Ext.MessageBox.show({
@@ -79,10 +93,25 @@ function ptzAction(ptzActionStr){
 		},
 		method : 'GET',
 		params : {
+			ptz_id: ptz_id,
 			action_type : ptzActionStr,
-			ptz_id: 1
+			assignedStep: assignedStep
 		}
 	});
+}
+
+//调整云台转动速度，根据pelco-d协议，速度值范围为0-63，255为turbo速度，这里设最低值为10
+function ptzSpeed(speed){
+	if(assignedStep==255 && speed<0){
+		assignedStep=63;
+	}else{
+		assignedStep=assignedStep+speed;
+		if(assignedStep>63){
+			assignedStep=255;
+		}else if(assignedStep<10){
+			assignedStep=10;
+		}
+	}
 }
 
 //显示当前系统时间
@@ -135,14 +164,20 @@ function resizeWindow(){
 }
 
 //切换监控通道
-function setChannel(ptzControlIP,ptzAlertIP,visibleRTSPUrl,infraredRTSPUrl,gisMapUrl){
+function setChannel(id,ptzControlIP,ptzAlertIP,visibleRTSPUrl,infraredRTSPUrl,gisMapUrl){
+	ptz_id=id;
 	document.getElementById("map").setChannel(ptzControlIP,ptzAlertIP,"../images/"+gisMapUrl);
 	
+	document.getElementById('infraredPlayer').URL=infraredRTSPUrl;
+	document.getElementById('visiblePlayer').URL=visibleRTSPUrl;
+	
+	/*
 	document.getElementById("infraredPlayer").playlist.add(infraredRTSPUrl,infraredRTSPUrl, " :rtsp-caching=500");
 	document.getElementById("infraredPlayer").playlist.play();
 	
 	document.getElementById("visiblePlayer").playlist.add(visibleRTSPUrl,visibleRTSPUrl, " :rtsp-caching=500");
 	document.getElementById("visiblePlayer").playlist.play();
+	*/
 }
 
 //启动客户端报警，本方法由flex调用
@@ -165,10 +200,20 @@ function switchAlarm(obj){
 	}
 }
 
+//打开关闭雨刷
+function switchWiper(obj){
+	if(obj.innerText=="开启雨刷"){
+		ptzAction("wiper_on");
+		obj.innerText="关闭雨刷";
+    }else{
+		ptzAction("wiper_off");
+		obj.innerText="开启雨刷";
+	}
+}
 /*begin云台节点左右翻屏*/
 var Speed_1 = 25; //速度(毫秒)
 var Space_1 = 20; //每次移动(px)
-var PageWidth_1 = 625; //翻页宽度
+var PageWidth_1 = 582; //翻页宽度
 var fill_1 = 0; //整体移位
 var MoveLock_1 = false;
 var MoveTimeObj_1;
@@ -296,13 +341,12 @@ function picrun_init(){
     <div class="center">
       <div class="content_left">
          <div class="cleft1">
-            <OBJECT classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="100%" height="100%" id="infraredPlayer" events="True">
-                <param name="Src" value="" />
-                <param name="ShowDisplay" value="True" />
-                <param name="AutoLoop" value="False" />
-                <param name="AutoPlay" value="true" />
-                <embed id="infraredPlayer2" type="application/x-google-vlc-plugin" version="VideoLAN.VLCPlugin.2" autoplay="no" loop="no" width="100%" height="100%"></embed>
-            </OBJECT>
+            <object classid="clsid:6BF52A52-394A-11d3-B153-00C04F79FAA6" id="infraredPlayer">
+                <param name="URL" value=""><!--海康编码器或IPC的视频流地址-->
+            	<param name="autoStart" value="true"><!--自动播放-->
+            	<param name="uiMode" value="none"><!--精简模式-->
+            	<param name="enableContextMenu" value="false"><!--不显示右键菜单-->
+           </object>
             </div>
         <div class="cleft2">
             <object id="map" type="application/x-shockwave-flash" data="<%=basePath%>images/map.swf" width="300" height="270">
@@ -315,59 +359,24 @@ function picrun_init(){
        </div>
       </div>
       <div class="content_right">
-            <OBJECT classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="100%" height="100%" id="visiblePlayer" events="True">
-                <param name="Src" value="" />
-                <param name="ShowDisplay" value="True" />
-                <param name="AutoLoop" value="False" />
-                <param name="AutoPlay" value="true" />
-                <embed id="visiblePlayer2" type="application/x-google-vlc-plugin" version="VideoLAN.VLCPlugin.2" autoplay="yes" loop="no" width="100%" height="100%" target="" ></embed>
-          </OBJECT>    
-         <div id="apDiv3" style="background-color:black">
-           <iframe id='iframebar' src="about:blank" frameBorder="0" marginHeight="0" marginWidth="0" style=" z-index:-1;position:absolute;top:0px;left:0px;height:100%;width:100%;filter:alpha(opacity=0);"></iframe>
-          <table width="100%" height="132" border="0" cellpadding="0" cellspacing="0">
-            <tr>
-              <td  class="up1png">&nbsp;</td>
-              <td class="up2png">&nbsp;</td>
-            </tr>
-            <tr>
-              <td class="down1png">&nbsp;</td>
-              <td class="down2png">&nbsp;</td>
-            </tr>
-          </table>      
-          <div id="apDiv4">
-          <div class="cfangxiang">
-            <table width="89" height="87" border="0" cellpadding="0" cellspacing="0">
-              <tr>
-                <td width="24" height="23"></td>
-                <td width="41" height="23" class="zximg"><a href="javascript:ptzAction('up');"><img src="<%=basePath%>images/up.png" width="27" height="23" border="0" /></a></td>
-                <td width="24" height="23"></td>
-              </tr>
-              <tr>
-                <td width="24" height="40"><a href="javascript:ptzAction('left');"><img src="<%=basePath%>images/left.png" width="24" height="26" border="0" /></a></td>
-                <td width="41" height="41"><a href="javascript:ptzAction('cruise');"><img src="<%=basePath%>images/zhongxin.png" width="41" height="41" border="0" /></a></td>
-                <td width="24"><a href="javascript:ptzAction('right');"><img src="<%=basePath%>images/right.png" width="24" height="26" border="0" /></a></td>
-              </tr>
-              <tr>
-                <td width="24"></td>
-                <td width="41" height="23" class="zximg"><a href="javascript:ptzAction('down');"><img src="<%=basePath%>images/down.png" width="27" height="23" border="0" /></a></td>
-                <td width="24"></td>
-              </tr>
-            </table>
-            </div>
-          </div> 
-        </div>
+            <object classid="clsid:6BF52A52-394A-11d3-B153-00C04F79FAA6" id="visiblePlayer">
+                <param name="URL" value=""><!--海康编码器或IPC的视频流地址-->
+            	<param name="autoStart" value="true"><!--自动播放-->
+            	<param name="uiMode" value="none"><!--精简模式-->
+            	<param name="enableContextMenu" value="false"><!--不显示右键菜单-->
+           </object>         
     </div>
 </div>
 
 <div class="foot">
   <div class="f_left">
-    <div class=blk_29>
-      <div class=LeftBotton id=LeftArr><a href="javascript:void(0);" onmousedown="ISL_GoUp_1()" onmouseup="ISL_StopUp_1()" onmouseout="ISL_StopUp_1()"></a></div>
-      <div class=Cont id=ISL_Cont_1>      
+    <div class="blk_29">
+      <div class="LeftBotton" id="LeftArr" title="向前翻页"><a href="javascript:void(0);" onmousedown="ISL_GoUp_1()" onmouseup="ISL_StopUp_1()" onmouseout="ISL_StopUp_1()"></a></div>
+      <div class="Cont" id="ISL_Cont_1">      
       <div class="ScrCont">      
       <div id="List1_1">
       	<c:forEach items="${ptzs}" var="ptz"> 
-        <div class=box><a href="javascript:setChannel('${ptz.pelcodCommandUrl}','${ptz.infraredCircuitUrl}','${ptz.visibleRTSPUrl}','${ptz.infraredRTSPUrl}','${ptz.gisMapUrl}');">${ptz.name}</a></div>
+        <div class=box><a href="javascript:setChannel(${ptz.id},'${ptz.pelcodCommandUrl}','${ptz.infraredCircuitUrl}','${ptz.visibleRTSPUrl}','${ptz.infraredRTSPUrl}','${ptz.gisMapUrl}');">${ptz.name}</a></div>
         </c:forEach>
         <div class=box><a href="#" target=_blank>洪山坡小区1</a> </div>
         <div class=box><a href="#" target=_blank>洪山坡小区2</a> </div>
@@ -383,20 +392,57 @@ function picrun_init(){
       <div id="List2_1"></div>
       </div>        
       </div>
-      <div class=RightBotton id=RightArr><a href="javascript:void(0);" onmousedown="ISL_GoDown_1()" onmouseup="ISL_StopDown_1()" onmouseout="ISL_StopDown_1()"></a></div>
+      <div class="RightBotton" id="RightArr" title="向后翻页"><a href="javascript:void(0);" onmousedown="ISL_GoDown_1()" onmouseup="ISL_StopDown_1()" onmouseout="ISL_StopDown_1()"></a></div>
     </div>
   </div>
+<div class="f_sifangxiang">
+	<table width="69" height="68" border="0" cellpadding="0" cellspacing="0">
+      <tr>
+        <td height="18" ></td>
+        <td  class="zximg" ><a href="javascript:void(0);" title="云台向上" onmousedown="javascript:ptzAction('up');" onmouseup="javascript:ptzAction('stop');"><img src="<%=basePath%>images/up.png" width="19" height="18" border="0" /></a></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td height="28" align="right" ><a href="javascript:void(0);" title="云台左转" onmousedown="javascript:ptzAction('left');" onmouseup="javascript:ptzAction('stop');"><img src="<%=basePath%>images/left.png" width="19" height="18" border="0" /></a></td>
+        <td width="27" height="28"><a href="javascript:ptzAction('cruise');" title="断点巡航"><img src="<%=basePath%>images/zhongxin.png" width="28" height="28" border="0" /></a></td>
+        <td><a href="javascript:void(0);" title="云台右转" onmousedown="javascript:ptzAction('right');" onmouseup="javascript:ptzAction('stop');"><img src="<%=basePath%>images/right.png" width="19" height="18" border="0" /></a></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td height="23" class="zximg"><a href="javascript:void(0);" title="云台向下" onmousedown="javascript:ptzAction('down');" onmouseup="javascript:ptzAction('stop');"><img src="<%=basePath%>images/down.png" width="19" height="18" border="0" /></a></td>
+        <td></td>
+      </tr>
+    </table>
+</div>
+<div class="f_sianniu">
+  <table width="100%" height="62" border="0" cellpadding="0" cellspacing="2">
+    <tr>
+      <td width="12%" ><a href="javascript:void(0);" title="镜头拉近"><img src="<%=basePath%>images/jujiao1.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/jujiao_1.gif'" onmouseout="this.src='<%=basePath%>images/jujiao1.gif'" onmousedown="javascript:ptzAction('visible_in');" onmouseup="javascript:ptzAction('visible_in_stop');" /></a></td>
+      <td width="26%" align="center" nowrap="nowrap">可见光变焦</td>
+      <td width="12%"><a href="javascript:void(0);" title="镜头拉远"><img src="<%=basePath%>images/jujiao2.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/jujiao_2.gif'" onmouseout="this.src='<%=basePath%>images/jujiao2.gif'" onmousedown="javascript:ptzAction('visible_out');" onmouseup="javascript:ptzAction('visible_out_stop');" /></a></td>
+      <td width="13%"><a href="javascript:void(0);" title="光圈变小"><img src="<%=basePath%>images/guangquan1.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/guangquan_1.gif'" onmouseout="this.src='<%=basePath%>images/guangquan1.gif'" onmousedown="javascript:ptzAction('aperture_in');" onmouseup="javascript:ptzAction('stop');" /></a></td>
+      <td width="24%" align="center" nowrap="nowrap">光圈调节</td>
+      <td width="13%"><a href="javascript:void(0);" title="光圈变大"><img src="<%=basePath%>images/guangquan2.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/guangquan_2.gif'" onmouseout="this.src='<%=basePath%>images/guangquan2.gif'" onmousedown="javascript:ptzAction('aperture_out');" onmouseup="javascript:ptzAction('stop');" /></a></td>
+    </tr>
+    <tr>
+      <td><a href="javascript:void(0);" title="向后聚焦"><img src="<%=basePath%>images/bianjiao1.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/bianjiao_1.gif'" onmouseout="this.src='<%=basePath%>images/bianjiao1.gif'" onmousedown="javascript:ptzAction('infrared_in');" onmouseup="javascript:ptzAction('stop');" /></a></td>
+      <td align="center" nowrap="nowrap">热成像聚焦</td>
+      <td><a href="javascript:void(0);" title="向前聚焦"><img src="<%=basePath%>images/bianjiao2.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/bianjiao_2.gif'" onmouseout="this.src='<%=basePath%>images/bianjiao2.gif'" onmousedown="javascript:ptzAction('infrared_out');" onmouseup="javascript:ptzAction('stop');" /></a></td>
+      <td><a href="javascript:ptzSpeed(-10);" title="速度减小"><img src="<%=basePath%>images/sudu1.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/sudu_1.gif'" onmouseout="this.src='<%=basePath%>images/sudu1.gif'" /></a></td>
+      <td align="center" nowrap="nowrap">云台速度</td>
+      <td><a href="javascript:ptzSpeed(10);" title="速度增大"><img src="<%=basePath%>images/sudu2.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/sudu_2.gif'" onmouseout="this.src='<%=basePath%>images/sudu2.gif'" /></a></td>
+    </tr>
+  </table>
+</div>
 <div class="f_c"> 
-<table width="300" height="69" border="0" cellpadding="0" cellspacing="1">
+<table width="100%" height="69" border="0" cellpadding="0" cellspacing="1">
   <tr>
-    <td width="96" height="24"><span class="apple"><a href="javascript:switchAlarm(document.getElementById('alarmSwitch'));">苹果皮扫描</a></span></td>
-    <td width="96"><span class="piczhuapai"><a href="javascript:switchAlarm(document.getElementById('alarmSwitch'));">图像抓拍</a></span></td>
+    <td width="96" height="24"><span class="apple"><a href="javascript:ptzAction('cruise');">削苹果皮</a></span></td>
     <td width="96" ><span class="yushua"><a id="wiperSwitch" href="javascript:switchWiper(document.getElementById('wiperSwitch'));">开启雨刷</a></span></td>
   </tr>
   <tr>
-    <td><span class="luoxuansaomiao"><a href="javascript:switchAlarm(document.getElementById('alarmSwitch'));">螺旋扫描</a></span></td>
-    <td><span class="xunhang"><a href="javascript:switchAlarm(document.getElementById('alarmSwitch'));">自动巡航</a></span></td>
-    <td><span class="duijiang"><a id="alarmSwitch" href="javascript:switchAlarm(document.getElementById('alarmSwitch'));">关闭报警</a></span></td>
+    <td><span class="luoxuansaomiao"><a href="javascript:ptzAction('cruise');">螺旋扫描</a></span></td>
+    <td><span class="duijiang"><a id="alarmSwitch" href="javascript:ptzAction('stop_fire_alarm');">关闭报警</a></span></td>
   </tr>
 </table></div>
 </div>
