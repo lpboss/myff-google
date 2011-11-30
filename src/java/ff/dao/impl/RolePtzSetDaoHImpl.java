@@ -58,6 +58,7 @@ public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzSe
         q.executeUpdate();
     }
 
+    //通过id得到rolePtz列表
     @Override
     public List<RolePtz> getById(Integer id) {
         List<RolePtz> rolePtzs = this.getHibernateTemplate().findByNamedParam("from RolePtz where role_id =:id", new String[]{"id"}, new Object[]{id});
@@ -114,4 +115,26 @@ public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzSe
             return null;
         }
     }
+
+//    //通过id得到rolePtz列表
+//    @Override
+//    public RolePtz getRolePtzsById(Integer id) {
+//       //  List<RolePtz> rolePtzs = this.getHibernateTemplate().findByNamedParam("from RolePtz where role_id =:id", new String[]{"id"}, new Object[]{id});
+//        RolePtz rolePtzs = (RolePtz)  this.getHibernateTemplate().get(Role.class, id);
+//         return rolePtzs;
+//    }
+
+    //通过id得到rolePtz列表
+    @Override
+    public RolePtz getRolePtzsById(Long id) {
+        System.out.println("432c12431c");
+        System.out.println(id);
+        System.out.println("1ccvtb5");
+        RolePtz rolePtzs = (RolePtz)  this.getHibernateTemplate().get(RolePtz.class, id);
+        System.out.println("1fc1d1");
+        System.out.println(rolePtzs);
+        System.out.println("12x45g");
+        return rolePtzs;
+    }
+    
 }

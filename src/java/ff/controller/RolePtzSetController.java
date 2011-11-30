@@ -4,6 +4,7 @@
  */
 package ff.controller;
 
+import ff.dao.RolePtzSetDao;
 import ff.model.PTZ;
 import ff.model.Role;
 import ff.model.RolePtz;
@@ -27,6 +28,7 @@ public class RolePtzSetController extends MultiActionController {
     private RolePtzSetService rolePtzSetService;
     private PTZService ptzService;
     private RoleService roleService;
+   
 
     public RoleService getRoleService() {
         return roleService;
@@ -60,6 +62,12 @@ public class RolePtzSetController extends MultiActionController {
 
     //返回添加页面
     public ModelAndView newRolePtz(HttpServletRequest request, HttpServletResponse response) {
+        ModelAndView mav = new ModelAndView();
+        return mav;
+    }
+    
+     //返回editRolePtz页面
+    public ModelAndView editRolePtz(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView mav = new ModelAndView();
         return mav;
     }
@@ -123,10 +131,7 @@ public class RolePtzSetController extends MultiActionController {
         }
         PrintWriter pw;
         try {
-
-
             String jsonStr = rolePtzSetService.RolePtzDefault(rolePtz);
-
             response.setContentType("text/json; charset=utf-8");
             response.setHeader("Cache-Control", "no-cache");
             pw = response.getWriter();
@@ -223,4 +228,62 @@ public class RolePtzSetController extends MultiActionController {
             logger.info(e);
         }
     }
+    
+    //更新角色
+    public void updateRole(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("id");
+        Role role = roleService.getRoleById(Long.parseLong(id));
+        role.setName(request.getParameter("name"));
+        role.setDescription(request.getParameter("description"));
+        roleService.saveOrUpdate(role);
+        String info = "success";
+        String jsonStr = "{success:true,info:'" + info + "'}";
+
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
+    
+     //得到要编辑的role
+    public void getRoleById(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("id");
+        String jsonStr = roleService.getRoleJSONById(Long.parseLong(id));
+        PrintWriter pw;
+        try {
+            response.setContentType("text/json; charset=utf-8");
+            response.setHeader("Cache-Control", "no-cache");
+            pw = response.getWriter();
+            pw.write(jsonStr);
+            pw.close();
+        } catch (IOException e) {
+            logger.info(e);
+        }
+    }
+    
+//    //通过id得到rolePtz列表
+//    public void getAllRolePtzsById(HttpServletRequest request, HttpServletResponse response) {
+//        String id = request.getParameter("id");
+//        logger.info("12s2");
+//        String jsonStr = rolePtzSetService.getRolePtzSetById(Integer.parseInt(request.getParameter("id")));
+//        PrintWriter pw;
+//        try {
+//            response.setContentType("text/json; charset=utf-8");
+//            response.setHeader("Cache-Control", "no-cache");
+//            pw = response.getWriter();
+//            pw.write(jsonStr);
+//            pw.close();
+//        } catch (IOException e) {
+//            logger.info(e);
+//        }
+//    }
+    
+    
+    
 }

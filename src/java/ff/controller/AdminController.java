@@ -4,9 +4,14 @@
  */
 package ff.controller;
 
+import ff.dao.RolePtzSetDao;
+import ff.model.PTZ;
 import ff.model.Role;
+import ff.model.RolePtz;
 import ff.service.AdminService;
+import ff.service.PTZService;
 import ff.service.PrivilegeService;
+import ff.service.RolePtzSetService;
 import ff.service.RoleService;
 import ff.service.SysActionService;
 import ff.service.SysControllerService;
@@ -14,6 +19,8 @@ import ff.service.UserService;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import java.util.List;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
@@ -32,6 +39,19 @@ public class AdminController extends MultiActionController {
     private SysActionService sysActionService;
     private PrivilegeService privilegeService;
     private AdminService adminService;
+    private PTZService ptzService;
+    private RolePtzSetService rolePtzSetService;
+    private RolePtzSetDao rolePtzSetDao;
+
+    public RolePtzSetService getRolePtzSetService() {
+        return rolePtzSetService;
+    }
+
+    public void setRolePtzSetService(RolePtzSetService rolePtzSetService) {
+        this.rolePtzSetService = rolePtzSetService;
+    }
+    
+    
 
     public void setUserService(UserService userService) {
         this.userService = userService;
@@ -238,6 +258,24 @@ public class AdminController extends MultiActionController {
         Role role = roleService.getRoleById(Long.parseLong(id));
         role.setName(request.getParameter("name"));
         role.setDescription(request.getParameter("description"));
+
+
+        Long ptzid = Long.valueOf(request.getParameter("ptz"));
+        logger.info("43v2rv");
+        logger.info(id);
+        logger.info(request.getParameter("ptz"));
+        logger.info(ptzid);
+        
+        logger.info("43v2rv");
+        String rolePtz = rolePtzSetService.getRolePtzSetById(ptzid);
+      //  role.setRolePtzDetails(rolePtz);
+        logger.info("24v254");
+        logger.info(id);
+        logger.info(ptzid);
+        logger.info(rolePtz.length());
+        logger.info("24v21");
+
+
         roleService.saveOrUpdate(role);
         String info = "success";
         String jsonStr = "{success:true,info:'" + info + "'}";
