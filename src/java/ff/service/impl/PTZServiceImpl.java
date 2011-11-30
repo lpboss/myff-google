@@ -184,11 +184,14 @@ public class PTZServiceImpl implements PTZService {
     }
 
     @Override
-    public Boolean setIsAlarm(Long ptzId) {
+    public Boolean setIsAlarm(Long ptzId, int heatMax, float ptzAngleX, float ptzAngelY) {
         PTZ ptz = this.getPTZById(ptzId);
         ptz.setIsAlarm(1);
         FireAlarm fireAlarm = new FireAlarm();
         fireAlarm.setPtz(ptz);
+        fireAlarm.setHeatMax(heatMax);
+        fireAlarm.setPtzAngleX(ptzAngleX);
+        fireAlarm.setPtzAngleY(ptzAngelY);
         //ptz.getFireAlarms().add(fireAlarm);
         //this.saveOrUpdate(ptz);
         fireAlarmService.create(fireAlarm);

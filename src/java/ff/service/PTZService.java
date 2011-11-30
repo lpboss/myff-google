@@ -39,5 +39,5 @@ public interface PTZService {
 
     String ptzLock(PTZ ptz);
 
-    Boolean setIsAlarm(Long ptzId);
+    Boolean setIsAlarm(Long ptzId, int heatMax, float ptzAngleX, float ptzAngelY);
 }
