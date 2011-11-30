@@ -45,7 +45,6 @@ public class PTZDaoHImpl extends HibernateDaoSupport implements PTZDao {
 
     @Override
     public PTZ getPTZById(Long id) {
-        System.out.println("cccccccccccccccccccccccccccccccccc");
         PTZ ptz = (PTZ) this.getHibernateTemplate().get(PTZ.class, id);
         return ptz;
     }

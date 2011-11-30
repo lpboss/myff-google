@@ -137,7 +137,7 @@ public class FireAlarmController extends MultiActionController {
         User userId = userService.getUserById(userid);
         fireAlarm.setUserId(userId);
         fireAlarm.setVersion(0);
-        fireAlarm.setIs_alarming(Short.valueOf("1"));
+        fireAlarm.setIsAlarming(Short.valueOf("1"));
         logger.info(description);
         String jsonStr = fireAlarmService.create(fireAlarm);
         PrintWriter pw;
