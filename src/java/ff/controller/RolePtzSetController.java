@@ -124,11 +124,6 @@ public class RolePtzSetController extends MultiActionController {
         rolePtzSetService.resetDefault(roleid);
         RolePtz rolePtz = rolePtzSetService.getRolePtzById(id, roleid);
 
-        if (rolePtz.getIsDefault() == 0) {
-            rolePtz.setIsDefault(Long.valueOf("1"));
-        } else {
-            rolePtz.setIsDefault(Long.valueOf("0"));
-        }
         PrintWriter pw;
         try {
             String jsonStr = rolePtzSetService.RolePtzDefault(rolePtz);
@@ -175,7 +170,7 @@ public class RolePtzSetController extends MultiActionController {
         Long roleId = Long.valueOf(request.getParameter("userId")); //角色id
         Role role = roleService.getRoleById(roleId);
         rolePtz.setRole(role);
-        rolePtz.setIsDefault(Long.getLong("1"));
+
         logger.info("43fv345");
         logger.info(ptzId);
         logger.info(roleId);
