@@ -367,17 +367,6 @@ public class PTZ {
 
     public void setRolePtzDetails(Set<RolePtz> RolePtzDetails) {
         this.RolePtzDetails = RolePtzDetails;
-    }
-
-    @Column(name = "from_to")
-    public String getFromTo() {
-        return fromTo;
-    }
-
-    public void setFromTo(String fromTo) {
-        this.fromTo = fromTo;
-    }
-    
-    
+    }    
     
 }
