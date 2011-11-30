@@ -322,8 +322,8 @@ function picrun_init(){
           <li><a href="<%=basePath%>index/index.htm" class="daohang_h">监控预览</a> </li>
           <li><a href="<%=basePath%>fireAlarm/fireAlarmList.htm" title="防火事件" rel="gb_page[800, 600]">防火事件</a></li>
           <li><a href="<%=basePath%>record/recordSearch.htm" title="录像查询" rel="gb_page[800, 600]">录像查询</a></li>
-          <li><a href="<%=basePath%>index/index2.htm" title="用户管理" rel="gb_page[1000, 600]">用户管理</a></li>
-          <li><a href="<%=basePath%>index/index2.htm" title="系统设置" rel="gb_page[1000, 600]">系统设置</a></li>
+          <li><a href="<%=basePath%>index/index2.htm" title="用户管理" rel="gb_page[1200, 700]">用户管理</a></li>
+          <li><a href="<%=basePath%>index/index2.htm" title="系统设置" rel="gb_page[1200, 700]">系统设置</a></li>
           <li><a href="<%=basePath%>ptz/PTZList.htm" title="什么事" rel="gb_page[1000, 600]">什么事</a></li>
         </ul>
       </div>
