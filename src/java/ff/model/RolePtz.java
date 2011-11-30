@@ -58,16 +58,6 @@ public class RolePtz implements java.io.Serializable {
 
     public void setRole(Role role) {
         this.role = role;
-    }
-    
-    @Column(name = "is_default")
-    public Long getIsDefault() {
-        return isDefault;
-    }
-
-    public void setIsDefault(Long isDefault) {
-        this.isDefault = isDefault;
-    }
-    
+    }   
     
 }
