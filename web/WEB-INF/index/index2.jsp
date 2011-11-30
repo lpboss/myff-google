@@ -16,7 +16,6 @@
         <script type="text/javascript">
             // flash version URL switch (for this demo page)
             var winLoc = window.location.toString();
-            console.info(winLoc);
             soundManager.preferFlash = (winLoc.match(/usehtml5audio=1/i) ? false : true);
             if (winLoc.match(/flash9/i)) {
                 soundManager.flashVersion = 9;

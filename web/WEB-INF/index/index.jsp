@@ -55,7 +55,7 @@ Ext.onReady(function() {
 						}
 					});
 				}else{
-					document.getElementById("map").setAlertMessage("当前状态：正常");
+					document.getElementById("map").setAlertMessage("当前状态：0处报警，0处火灾");
 					alarmSound.stop(alarmSound);
 				}
 			},
