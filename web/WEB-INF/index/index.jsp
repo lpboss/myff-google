@@ -21,7 +21,7 @@
 <script type="text/javascript">
 
 var ptz_id = 0;	//当前所监控的云台节点ID
-var assignedStep=20;	//云台转动速度，默认步�
+var assignedStep=20;	//云台转动速度，默认步长
 var alarmSound ;
 
 soundManager.useFlashBlock = false;
@@ -55,7 +55,7 @@ Ext.onReady(function() {
 						}
 					});
 				}else{
-					document.getElementById("map").setAlertMessage("当前状态：0处报警，0处火�);
+					document.getElementById("map").setAlertMessage("当前状态：0处报警，0处火灾");
 					alarmSound.stop(alarmSound);
 				}
 			},
@@ -65,7 +65,7 @@ Ext.onReady(function() {
 		});
 	}
 	
-	//定时查询云台报警状�
+	//定时查询云台报警状态
 	var task = {
 		run: function(){
 			getPTZAlarmsInfo();
@@ -100,7 +100,7 @@ function ptzAction(ptzActionStr){
 	});
 }
 
-//调整云台转动速度，根据pelco-d协议，速度值范围为0-63�55为turbo速度，这里设最低值为10
+//调整云台转动速度，根据pelco-d协议，速度值范围为0-63，255为turbo速度，这里设最低值为10
 function ptzSpeed(speed){
 	if(assignedStep==255 && speed<0){
 		assignedStep=63;
@@ -117,14 +117,14 @@ function ptzSpeed(speed){
 //显示当前系统时间
 function showTime(){
 	var myDate = new Date();
-	var Today = ["星期�,"星期一","星期�,"星期�,"星期�,"星期�,"星期�];
-	//获取当前�
+	var Today = ["星期日","星期一","星期二","星期三","星期四","星期五","星期六"];
+	//获取当前年
 	var Years = myDate.getFullYear();
-	//获取当前�
+	//获取当前月
 	var Months = myDate.getMonth() + 1;
-	//获取当前�
+	//获取当前日
 	var Dates = myDate.getDate();
-	//获取当前天是当前周的第几�
+	//获取当前天是当前周的第几天
 	var Days = Today[myDate.getDay()];
 	//获取当前的时
 	var Hours = myDate.getHours();
@@ -147,10 +147,10 @@ function showTime(){
 
 }
 
-//根据窗口大小自动等比例缩放控件大�
+//根据窗口大小自动等比例缩放控件大小
 function resizeWindow(){
 	var clientWidth=document.body.clientWidth;
-	if(clientWidth == window.screen.width){//有些时候在某些分辨率下，clientWidth会与屏幕分辨率相同，很奇�
+	if(clientWidth == window.screen.width){//有些时候在某些分辨率下，clientWidth会与屏幕分辨率相同，很奇怪
 		clientWidth=clientWidth-18;//减掉滚动条的宽度
 	}
 	
@@ -188,12 +188,12 @@ function startAlarm(){
     }
 }
 
-//关闭客户端报�
+//关闭客户端报警
 function switchAlarm(obj){
 	if(alarming){
 		alarming=false;
 		document.getElementById("alarmPlayer").stop();
-		obj.innerText="开启报�;
+		obj.innerText="开启报警";
     }else{
 		alarming=true;
 		obj.innerText="关闭报警";
@@ -202,12 +202,12 @@ function switchAlarm(obj){
 
 //打开关闭雨刷
 function switchWiper(obj){
-	if(obj.innerText=="开启雨�){
+	if(obj.innerText=="开启雨刷"){
 		ptzAction("wiper_on");
 		obj.innerText="关闭雨刷";
     }else{
 		ptzAction("wiper_off");
-		obj.innerText="开启雨�;
+		obj.innerText="开启雨刷";
 	}
 }
 /*begin云台节点左右翻屏*/
@@ -322,8 +322,8 @@ function picrun_init(){
           <li><a href="<%=basePath%>index/index.htm" class="daohang_h">监控预览</a> </li>
           <li><a href="<%=basePath%>fireAlarm/fireAlarmList.htm" title="防火事件" rel="gb_page[800, 600]">防火事件</a></li>
           <li><a href="<%=basePath%>record/recordSearch.htm" title="录像查询" rel="gb_page[800, 600]">录像查询</a></li>
-          <li><a href="<%=basePath%>index/index2.htm" title="用户管理" rel="gb_page[1200, 700]">用户管理</a></li>
-          <li><a href="<%=basePath%>index/index2.htm" title="系统设置" rel="gb_page[1200, 700]">系统设置</a></li>
+          <li><a href="<%=basePath%>index/index2.htm" title="用户管理" rel="gb_page[1000, 600]">用户管理</a></li>
+          <li><a href="<%=basePath%>index/index2.htm" title="系统设置" rel="gb_page[1000, 600]">系统设置</a></li>
           <li><a href="<%=basePath%>ptz/PTZList.htm" title="什么事" rel="gb_page[1000, 600]">什么事</a></li>
         </ul>
       </div>
@@ -333,7 +333,7 @@ function picrun_init(){
               <td width="11%" align="right"><img src="<%=basePath%>images/star.png" width="18" height="19"  /></td>
               <td width="62%" height="37">当前用户：Admin</td>
               <td width="8%" align="right"><img src="<%=basePath%>images/x.png" width="18" height="19" /></td>
-              <td width="19%">退�/td>
+              <td width="19%">退出</td>
             </tr>
           </table>
         </div>
@@ -345,7 +345,7 @@ function picrun_init(){
                 <param name="URL" value=""><!--海康编码器或IPC的视频流地址-->
             	<param name="autoStart" value="true"><!--自动播放-->
             	<param name="uiMode" value="none"><!--精简模式-->
-            	<param name="enableContextMenu" value="false"><!--不显示右键菜�->
+            	<param name="enableContextMenu" value="false"><!--不显示右键菜单-->
            </object>
             </div>
         <div class="cleft2">
@@ -363,7 +363,7 @@ function picrun_init(){
                 <param name="URL" value=""><!--海康编码器或IPC的视频流地址-->
             	<param name="autoStart" value="true"><!--自动播放-->
             	<param name="uiMode" value="none"><!--精简模式-->
-            	<param name="enableContextMenu" value="false"><!--不显示右键菜�->
+            	<param name="enableContextMenu" value="false"><!--不显示右键菜单-->
            </object>         
     </div>
 </div>
@@ -378,16 +378,16 @@ function picrun_init(){
       	<c:forEach items="${ptzs}" var="ptz"> 
         <div class=box><a href="javascript:setChannel(${ptz.id},'${ptz.pelcodCommandUrl}','${ptz.infraredCircuitUrl}','${ptz.visibleRTSPUrl}','${ptz.infraredRTSPUrl}','${ptz.gisMapUrl}');">${ptz.name}</a></div>
         </c:forEach>
-        <div class=box><a href="#" target=_blank>洪山坡小�</a> </div>
-        <div class=box><a href="#" target=_blank>洪山坡小�</a> </div>
-        <div class=box><a href="#" target=_blank>洪山坡小�</a> </div>
-        <div class=box><a href="#" target=_blank>洪山坡小�</a> </div>
-        <div class=box><a href="#" target=_blank>洪山坡小�</a> </div>
-        <div class=box><a href="#" target=_blank>洪山坡小�</a> </div>
-        <div class=box><a href="#" target=_blank>洪山坡小�</a> </div>
-        <div class=box><a href="#" target=_blank>洪山坡小�</a> </div>
-        <div class=box><a href="#" target=_blank>洪山坡小�</a> </div>
-        <div class=box><a href="#" target=_blank>洪山坡小�0</a> </div>
+        <div class=box><a href="#" target=_blank>洪山坡小区1</a> </div>
+        <div class=box><a href="#" target=_blank>洪山坡小区2</a> </div>
+        <div class=box><a href="#" target=_blank>洪山坡小区3</a> </div>
+        <div class=box><a href="#" target=_blank>洪山坡小区4</a> </div>
+        <div class=box><a href="#" target=_blank>洪山坡小区5</a> </div>
+        <div class=box><a href="#" target=_blank>洪山坡小区6</a> </div>
+        <div class=box><a href="#" target=_blank>洪山坡小区7</a> </div>
+        <div class=box><a href="#" target=_blank>洪山坡小区8</a> </div>
+        <div class=box><a href="#" target=_blank>洪山坡小区9</a> </div>
+        <div class=box><a href="#" target=_blank>洪山坡小区10</a> </div>
       </div>   
       <div id="List2_1"></div>
       </div>        
@@ -418,7 +418,7 @@ function picrun_init(){
   <table width="100%" height="62" border="0" cellpadding="0" cellspacing="2">
     <tr>
       <td width="12%" ><a href="javascript:void(0);" title="镜头拉近"><img src="<%=basePath%>images/jujiao1.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/jujiao_1.gif'" onmouseout="this.src='<%=basePath%>images/jujiao1.gif'" onmousedown="javascript:ptzAction('visible_in');" onmouseup="javascript:ptzAction('visible_in_stop');" /></a></td>
-      <td width="26%" align="center" nowrap="nowrap">可见光变�/td>
+      <td width="26%" align="center" nowrap="nowrap">可见光变焦</td>
       <td width="12%"><a href="javascript:void(0);" title="镜头拉远"><img src="<%=basePath%>images/jujiao2.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/jujiao_2.gif'" onmouseout="this.src='<%=basePath%>images/jujiao2.gif'" onmousedown="javascript:ptzAction('visible_out');" onmouseup="javascript:ptzAction('visible_out_stop');" /></a></td>
       <td width="13%"><a href="javascript:void(0);" title="光圈变小"><img src="<%=basePath%>images/guangquan1.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/guangquan_1.gif'" onmouseout="this.src='<%=basePath%>images/guangquan1.gif'" onmousedown="javascript:ptzAction('aperture_in');" onmouseup="javascript:ptzAction('stop');" /></a></td>
       <td width="24%" align="center" nowrap="nowrap">光圈调节</td>
@@ -426,7 +426,7 @@ function picrun_init(){
     </tr>
     <tr>
       <td><a href="javascript:void(0);" title="向后聚焦"><img src="<%=basePath%>images/bianjiao1.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/bianjiao_1.gif'" onmouseout="this.src='<%=basePath%>images/bianjiao1.gif'" onmousedown="javascript:ptzAction('infrared_in');" onmouseup="javascript:ptzAction('stop');" /></a></td>
-      <td align="center" nowrap="nowrap">热成像聚�/td>
+      <td align="center" nowrap="nowrap">热成像聚焦</td>
       <td><a href="javascript:void(0);" title="向前聚焦"><img src="<%=basePath%>images/bianjiao2.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/bianjiao_2.gif'" onmouseout="this.src='<%=basePath%>images/bianjiao2.gif'" onmousedown="javascript:ptzAction('infrared_out');" onmouseup="javascript:ptzAction('stop');" /></a></td>
       <td><a href="javascript:ptzSpeed(-10);" title="速度减小"><img src="<%=basePath%>images/sudu1.gif" width="24" height="23" border="0" onmouseover="this.src='<%=basePath%>images/sudu_1.gif'" onmouseout="this.src='<%=basePath%>images/sudu1.gif'" /></a></td>
       <td align="center" nowrap="nowrap">云台速度</td>
@@ -438,7 +438,7 @@ function picrun_init(){
 <table width="100%" height="69" border="0" cellpadding="0" cellspacing="1">
   <tr>
     <td width="96" height="24"><span class="apple"><a href="javascript:ptzAction('cruise');">削苹果皮</a></span></td>
-    <td width="96" ><span class="yushua"><a id="wiperSwitch" href="javascript:switchWiper(document.getElementById('wiperSwitch'));">开启雨�/a></span></td>
+    <td width="96" ><span class="yushua"><a id="wiperSwitch" href="javascript:switchWiper(document.getElementById('wiperSwitch'));">开启雨刷</a></span></td>
   </tr>
   <tr>
     <td><span class="luoxuansaomiao"><a href="javascript:ptzAction('cruise');">螺旋扫描</a></span></td>
