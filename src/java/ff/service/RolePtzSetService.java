@@ -24,12 +24,14 @@ public interface RolePtzSetService {
 
     String resetDefault(Long id);  // 重置默认
     
-    String getRolePtzSetJSONById(Integer id); //
+    String getRolePtzSetJSONById(Integer id); //通过id得到rolePtz列表
     
     String create(RolePtz rolePtz,Long ptzId,Long roleId); // 添加
     
     String deleteRolePtz(String id,String roleid); //删除
     
     String getRolePtzList(); //得到rolePtz数据列表
+    
+    String getRolePtzSetById(Long id); //通过id得到rolePtz列表
     
 }

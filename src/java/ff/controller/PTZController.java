@@ -218,7 +218,7 @@ public class PTZController extends MultiActionController {
         }
     }
 
-    //编辑PTZ
+    //得到要编辑的PTZ
     public void getPTZById(HttpServletRequest request, HttpServletResponse response) {
         Long id = Long.valueOf(request.getParameter("id"));
         String jsonStr = ptzService.getPTZJSONById(id);

@@ -359,12 +359,18 @@
                     fields : [{name: 'id'},
                         { name: 'number'},
                         { name: 'name'},
+                        { name: 'ptz',
+                            mapping:'ptz.id' 
+                        },
                         { name: 'description'},
                         { name: 'isLocked'},
                         {name: 'createdAt'},
-                        {name: 'updatedAt'}
+                        {name: 'updatedAt'},
+                        {name: 'ptzName',mapping:'ptz.name'}
                     ]
-                });   
+                });  
+                
+                
                 
                 
                                

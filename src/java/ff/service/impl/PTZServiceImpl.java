@@ -99,7 +99,7 @@ public class PTZServiceImpl implements PTZService {
         List ptzs = ptzDao.getAllPTZs();
         JsonConfig jsonConfig = new JsonConfig();
         //这是需要过滤掉的变量名�        jsonConfig.setExcludes(new String[]{});
-        jsonConfig.setExcludes(new String[]{"fireAlarmDetails","rolePtzDetails"});
+        jsonConfig.setExcludes(new String[]{"fireAlarmDetails", "rolePtzDetails"});
         JSONArray ptzJS = JSONArray.fromObject(ptzs, jsonConfig);
         String jsonStr = "{totalProperty:" + ptzs.size() + ",root:" + ptzJS.toString() + "}";
         return jsonStr;
@@ -107,10 +107,7 @@ public class PTZServiceImpl implements PTZService {
 
     @Override
     public PTZ saveOrUpdate(PTZ ptz) {
-        System.out.print("555555");
         return ptzDao.saveOrUpdate(ptz);
-
-
     }
 
     @Override
@@ -132,6 +129,8 @@ public class PTZServiceImpl implements PTZService {
 
     @Override
     public PTZ getPTZById(Long id) {
+        System.out.println("bbbbbbbbbbbbbbbbbbb");
+        
         return ptzDao.getPTZById(id);
     }
 

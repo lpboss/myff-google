@@ -45,7 +45,7 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
     public String getAllRoles() {
         List<Role> roles = rolePtzSetDao.getAllRoles();
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[]{"users", "rolesPrivilegeDetails", "rolePtzDetails"});
+        jsonConfig.setExcludes(new String[]{"users", "rolesPrivilegeDetails", "rolePtzDetails","fireAlarmDetails"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm"));
         JSONArray rolesJS = JSONArray.fromObject(roles, jsonConfig);
         String jsonStr = "{totalProperty:" + roles.size() + ",root:" + rolesJS.toString() + "}";
@@ -156,4 +156,26 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
         String jsonStr = "{totalProperty:" + rolePtzs.size() + ",root:" + ptzJS.toString() + "}";
         return jsonStr;
     }
+
+    //通过id得到rolePtz列表
+    @Override
+    public String getRolePtzSetById(Long id) {
+        List<PTZ> ptzs;
+        List<RolePtz> rolePtzs;
+        String ids = "";
+        System.out.println("111111111111111111111111111111111");
+        RolePtz ignoreAreas = rolePtzSetDao.getRolePtzsById(id);
+        System.out.println("14fc432v2");
+        System.out.println(id);
+        System.out.println(ignoreAreas);
+        System.out.println("14fc432v2");
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.setExcludes(new String[]{"fireAlarmDetails", "rolePtzDetails", "rolesPrivilegeDetails"});
+        jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm:ss"));
+        JSONArray ignoreAreasJS = JSONArray.fromObject(ignoreAreas, jsonConfig);
+        String jsonStr = ignoreAreasJS.toString();
+        return jsonStr;
+    }
+    
+    
 }

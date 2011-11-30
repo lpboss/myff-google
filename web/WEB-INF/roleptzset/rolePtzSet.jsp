@@ -15,6 +15,7 @@
         <script type="text/javascript">
             var roleId = 0;
             var a =0;
+            var editRolePtzWin;
             Ext.define('rolePtz', {
                 extend : 'Ext.data.Model',
                 fields : [
@@ -76,7 +77,11 @@
                         },{
                             header: '描述',
                             dataIndex: 'description',
-                            width: 180
+                            width: 100
+                        },{
+                            header: '默认云台',
+                            dataIndex: 'ptzName',
+                            width: 100
                         }],
                      
                     selModel : Ext.create('Ext.selection.CheckboxModel'),
@@ -84,30 +89,42 @@
                     height: screenHeight-400,
                     frame: true,
                     loadMask: true,
-                    tbar: [{
-                            text: '添加',
-                            iconCls: 'addItem',
+                    tbar: ['-',{
+                            text: '设置角色默认云台',
+                            width: 120,
+                            iconCls: 'editItem',
                             handler : function(){
-                                newRolePtzWin = Ext.create('Ext.window.Window', {
-                                    layout: 'fit',
-                                    width:300,
-                                    height:180,
-                                    closeAction: 'destroy',
-                                    plain: true,
-                                    modal: true,
-                                    constrain:true,
-                                    //modal: true,
-                                    title: '添加角色云台信息',
-                                    autoLoad: {
-                                        url: "<%=basePath%>roleptzset/newRolePtz.htm",
-                                        scripts: true
-                                    }
+                                var records = roleGrid.getSelectionModel().getSelection();
+                                if(records.length==0){
+                                    Ext.MessageBox.show({
+                                        title: '提示信息',
+                                        msg: "请先选中一条记录后，再设置默认云台。",
+                                        buttons: Ext.MessageBox.OK,
+                                        icon: Ext.MessageBox.WARNING
+                                    });
+                                }else{
+                                    //把表单添加到窗口中
+                                    roleKeyId = records[0].get('id');
+                                    editRolePtzWin = Ext.create('Ext.window.Window', {
+                                        title: '设置角色默认云台',
+                                        layout:'fit',
+                                        width:260,
+                                        height:160,
+                                        closeAction:'destroy',
+                                        constrain:true,
+                                        plain: true,
+                                        modal: true,
+                                        autoLoad: {
+                                            url: "<%=basePath%>roleptzset/editRolePtz.htm?id=" + roleKeyId,
+                                            scripts: true
+                                        }
+                                    });
+                                }
+                                editRolePtzWin.on("destroy",function(){
+                                    roleDS.load();
                                 });
-                                newRolePtzWin.on("destroy",function(){
-                                    rolePtzDS.load();
-                                });
-                                newRolePtzWin.resizable = false;
-                                newRolePtzWin.show();
+                                editRolePtzWin.resizable = false;
+                                editRolePtzWin.show();
                             }
                         },'-']
                    
@@ -185,19 +202,46 @@
                             header: '云台名称',
                             dataIndex: 'ptzName',
                             width: 110
-                        },{
+                        }
+                        /*,{
                             header: '是否是默认云台',
                             dataIndex: 'isDefault',
                             renderer: renderPtzDetailIsLucked,
                             width: 110
-                        }],
+                        }*/],
                     
                     selModel : Ext.create('Ext.selection.CheckboxModel'),
                     width: 400,
                     height: screenHeight-300,
                     frame: true,
                     loadMask: true,
-                    tbar:[{                    
+                    tbar:['-',{
+                            text: '添加',
+                            width: 50,
+                            iconCls: 'addItem',
+                            handler : function(){
+                                newRolePtzWin = Ext.create('Ext.window.Window', {
+                                    layout: 'fit',
+                                    width:300,
+                                    height:180,
+                                    closeAction: 'destroy',
+                                    plain: true,
+                                    modal: true,
+                                    constrain:true,
+                                    //modal: true,
+                                    title: '添加角色云台信息',
+                                    autoLoad: {
+                                        url: "<%=basePath%>roleptzset/newRolePtz.htm",
+                                        scripts: true
+                                    }
+                                });
+                                newRolePtzWin.on("destroy",function(){
+                                    rolePtzDS.load();
+                                });
+                                newRolePtzWin.resizable = false;
+                                newRolePtzWin.show();
+                            }
+                        },'-',{                    
                             text: '撤销云台控制',
                             width: 100,
                             iconCls: 'remove',
