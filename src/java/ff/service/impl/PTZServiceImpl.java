@@ -7,6 +7,7 @@ package ff.service.impl;
 import ff.dao.PTZDao;
 import ff.model.PTZ;
 import ff.model.FireAlarm;
+import ff.service.FireAlarmService;
 import ff.service.PTZService;
 import ff.util.DateJsonValueProcessor;
 import java.util.List;
@@ -22,7 +23,16 @@ import java.util.Calendar;
  */
 public class PTZServiceImpl implements PTZService {
 
+    private FireAlarmService fireAlarmService;
     private PTZDao ptzDao;
+
+    public void setFireAlarmService(FireAlarmService fireAlarmService) {
+        this.fireAlarmService = fireAlarmService;
+    }
+
+    public void setPtzDao(PTZDao ptzDao) {
+        this.ptzDao = ptzDao;
+    }
 
     //删除
     @Override
@@ -158,7 +168,7 @@ public class PTZServiceImpl implements PTZService {
     public String getIsAlarmPTZsJSON() {
         List<PTZ> ptzs = ptzDao.getIsAlarmPTZs();
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[]{"users", "rolesPrivilegeDetails","ptz"});
+        jsonConfig.setExcludes(new String[]{"users", "rolesPrivilegeDetails", "ptz"});
         JSONArray rolesJS = JSONArray.fromObject(ptzs, jsonConfig);
         String jsonStr = "{totalProperty:" + ptzs.size() + ",root:" + rolesJS.toString() + "}";
         return jsonStr;
@@ -179,8 +189,9 @@ public class PTZServiceImpl implements PTZService {
         ptz.setIsAlarm(1);
         FireAlarm fireAlarm = new FireAlarm();
         fireAlarm.setPtz(ptz);
-        ptz.getFireAlarms().add(fireAlarm);
-        this.saveOrUpdate(ptz);
+        //ptz.getFireAlarms().add(fireAlarm);
+        //this.saveOrUpdate(ptz);
+        fireAlarmService.create(fireAlarm);
         return true;
     }
 }
