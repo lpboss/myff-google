@@ -62,7 +62,6 @@ public class PTZ {
     private Long isLocked = new Long(0);// 状�'启用，停�,
     private Integer shiftStep; //云台非巡航状态下默认移动步长
     private String fromTo; //巡航设置左右边界时，转动方向
-    private Long isDefault; // 是不是默认，'不是','是'
     
 
     @Id
@@ -349,15 +348,6 @@ public class PTZ {
     public void setCruiseFromTo(String cruiseFromTo) {
         this.cruiseFromTo = cruiseFromTo;
     }  
-
-    @Column(name = "is_default")
-    public Long getIsDefault() {
-        return isDefault;
-    }
-
-    public void setIsDefault(Long isDefault) {
-        this.isDefault = isDefault;
-    }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "ptz")
     @OrderBy("id")
