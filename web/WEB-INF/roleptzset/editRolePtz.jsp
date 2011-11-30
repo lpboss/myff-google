@@ -26,12 +26,12 @@
                     ]
                 });
                 var userId = <%=request.getParameter("id")%>;
-                var ptzDS =  Ext.create('Ext.data.Store', {
-                    model : 'rolePtz',
+                var ptz =  Ext.create('Ext.data.Store', {
+                    //autoDestroy : true,
+                    model : 'PTZ',
                     proxy : {
                         type : 'ajax',
-                         
-                        url : '<%=basePath%>roleptzset/getRolePtzs.htm?id=' + userId,
+                        url : '<%=basePath%>ptz/getAllPTZs.htm',
                         reader : {
                             type : 'json',
                             root : 'root',// JSON数组对象名
@@ -42,13 +42,13 @@
                     autoLoad : true
                 });
                 
-                var ptzName = Ext.create('Ext.form.ComboBox', {
-                    store: ptzDS,
-                    fieldLabel: '默认云台',
+                var ptzId = Ext.create('Ext.form.ComboBox', {
+                    store: ptz,
+                    fieldLabel: '云台ID',
                     allowBlank: false,
                     blankText: "云台ID必须选择",
                     valueField: 'id',
-                    displayField: 'ptz.name',
+                    displayField: 'name',
                     name: 'ptz',//如果不想提交displayField，则在这儿指定要提交的Key，value就是valueField．
                     emptyText: '请选择...',          
                     loadingText: '搜索中...',
@@ -113,7 +113,7 @@
                                     columnWidth: .9,
                                     layout: 'anchor',                                  
                                     xtype: 'container',
-                                    items: [name,ptzName,desc]
+                                    items: [name,ptzId,desc]
                                 }]
                         }],
                     buttons: [{

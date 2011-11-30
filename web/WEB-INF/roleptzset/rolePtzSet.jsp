@@ -15,7 +15,6 @@
         <script type="text/javascript">
             var roleId = 0;
             var a =0;
-            var editRolePtzWin;
             Ext.define('rolePtz', {
                 extend : 'Ext.data.Model',
                 fields : [

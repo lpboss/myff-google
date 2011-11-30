@@ -319,22 +319,22 @@
                     //window.status = currentNode.get('id');
                     //alert(typeof(currentNode.get('id'))==="string");
                     AlarmIgnoreAreasItem.setDisabled(false);
-                    editPrivilegeModuleItem.setDisabled(false);
-                    addPrivilegeMenuItem.setDisabled(false);
-                    editPrivilegeMenuItem.setDisabled(false);          
-                    delPrivilegeMenuItem.setDisabled(false);
+                 
+                 
+                        
+                
                     if (record.getId() == 0){
-                        editPrivilegeModuleItem.setDisabled(true);
-                        addPrivilegeMenuItem.setDisabled(true);
-                        editPrivilegeMenuItem.setDisabled(true);
-                        delPrivilegeMenuItem.setDisabled(true);
+                     
+                        
+                    
+                    
                     } if (record.getId() == 1){
                         AlarmIgnoreAreasItem.setDisabled(true);
-                        editPrivilegeMenuItem.setDisabled(true);
+                    
                     } if (record.getId() == 2){
                         AlarmIgnoreAreasItem.setDisabled(true);
-                        editPrivilegeModuleItem.setDisabled(true);
-                        addPrivilegeMenuItem.setDisabled(true);           
+                    
+                        
                     }
                 },this);
                 //右键菜单
@@ -343,57 +343,12 @@
                     text: '报警忽视地区',
                     handler: rightMenuPTZFn
                 });
-                var editPrivilegeModuleItem = Ext.create('Ext.menu.Item', {
-                    iconCls: 'editItem',
-                    text: '编辑模块(权限)',
-                    handler: rightMenuPTZFn
-                });
-                var addPrivilegeMenuItem = Ext.create('Ext.menu.Item', {
-                    iconCls: 'addItem',
-                    text: '添加菜单(权限)',
-                    handler: rightMenuPTZFn
-                });
-                var editPrivilegeMenuItem = Ext.create('Ext.menu.Item', {
-                    iconCls: 'editItem',
-                    text: '编辑菜单(权限)',
-                    handler: rightMenuPTZFn
-                });
-                var delPrivilegeMenuItem = Ext.create('Ext.menu.Item', {
-                    iconCls: 'remove',
-                    text: '删除权限',
-                    handler: rightMenuPTZFn
-                });
-                var refreshMenuItem = Ext.create('Ext.menu.Item', {
-                    iconCls: 'refresh',
-                    text: '刷新',
-                    handler: rightMenuPTZFn
-                });
-                //菜单排序
-                var sortUpMenuItem = Ext.create('Ext.menu.Item', {
-                    iconCls: 'arrow_up',
-                    text: '上移',
-                    handler: rightMenuPTZFn
-                });
-                var sortDownMenuItem = Ext.create('Ext.menu.Item', {
-                    iconCls: 'arrow_down',
-                    text: '下移',
-                    handler: rightMenuPTZFn
-                });
+             
                 var PTZMenu = Ext.create('Ext.menu.Menu', {
                     //id: 'privilege_right_menu',
                     items: [
-                        AlarmIgnoreAreasItem,
-                        editPrivilegeModuleItem,
-                        '-',
-                        addPrivilegeMenuItem,
-                        editPrivilegeMenuItem,
-                        '-',
-                        delPrivilegeMenuItem,
-                        '-',
-                        sortUpMenuItem,
-                        sortDownMenuItem,
-                        '-',
-                        refreshMenuItem            
+                        AlarmIgnoreAreasItem,      
+                        '-'                
                     ]});
                 //添加模块（权限）
                 //添加菜单（权限）
