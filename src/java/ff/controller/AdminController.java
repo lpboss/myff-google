@@ -43,6 +43,22 @@ public class AdminController extends MultiActionController {
     private RolePtzSetService rolePtzSetService;
     private RolePtzSetDao rolePtzSetDao;
 
+    public PTZService getPtzService() {
+        return ptzService;
+    }
+
+    public void setPtzService(PTZService ptzService) {
+        this.ptzService = ptzService;
+    }
+
+    public RolePtzSetDao getRolePtzSetDao() {
+        return rolePtzSetDao;
+    }
+
+    public void setRolePtzSetDao(RolePtzSetDao rolePtzSetDao) {
+        this.rolePtzSetDao = rolePtzSetDao;
+    }  
+    
     public RolePtzSetService getRolePtzSetService() {
         return rolePtzSetService;
     }
@@ -50,8 +66,6 @@ public class AdminController extends MultiActionController {
     public void setRolePtzSetService(RolePtzSetService rolePtzSetService) {
         this.rolePtzSetService = rolePtzSetService;
     }
-    
-    
 
     public void setUserService(UserService userService) {
         this.userService = userService;
@@ -258,22 +272,21 @@ public class AdminController extends MultiActionController {
         Role role = roleService.getRoleById(Long.parseLong(id));
         role.setName(request.getParameter("name"));
         role.setDescription(request.getParameter("description"));
-
-
         Long ptzid = Long.valueOf(request.getParameter("ptz"));
-        logger.info("43v2rv");
-        logger.info(id);
-        logger.info(request.getParameter("ptz"));
-        logger.info(ptzid);
-        
-        logger.info("43v2rv");
-        String rolePtz = rolePtzSetService.getRolePtzSetById(ptzid);
-      //  role.setRolePtzDetails(rolePtz);
-        logger.info("24v254");
-        logger.info(id);
-        logger.info(ptzid);
-        logger.info(rolePtz.length());
-        logger.info("24v21");
+        PTZ ptz = ptzService.getPTZById(ptzid);
+        role.setPtz(ptz);
+//
+//        Long ptzid = Long.valueOf(request.getParameter("ptz"));
+//        logger.info("43v2rv");
+//        logger.info(id);
+//        logger.info(request.getParameter("ptz"));
+//        logger.info(ptzid);
+//        
+//        logger.info("43v2rv");
+//        String rolePtz = rolePtzSetService.getRolePtzSetById(ptzid);
+//      //  role.setRolePtzDetails(rolePtz);
+//      //  role.setPtz(rolePtz);
+
 
 
         roleService.saveOrUpdate(role);
