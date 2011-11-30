@@ -40,9 +40,7 @@
             }
             
             Ext.onReady(function(){       
-            
-            
-                
+              
                 PTZDS =  Ext.create('Ext.data.Store', {
                     //autoDestroy : true,
                     model : 'PTZ',
@@ -180,11 +178,11 @@
                         },{
                             header: '巡航有左右边界时的巡航方向',
                             dataIndex: 'cruiseFromTo',  
-                            width:80
+                            width:150
                         },{
                             header: '巡航设置左右边界时，转动方向',
                             dataIndex: 'fromTo',  
-                            width:80
+                            width:170
                         }],
        
                     selModel :Ext.create('Ext.selection.CheckboxModel'),                                 
@@ -318,23 +316,13 @@
                     nodeId = record.get('id');
                     //window.status = currentNode.get('id');
                     //alert(typeof(currentNode.get('id'))==="string");
-                    AlarmIgnoreAreasItem.setDisabled(false);
-                 
-                 
-                        
-                
+                    AlarmIgnoreAreasItem.setDisabled(false);               
                     if (record.getId() == 0){
-                     
-                        
-                    
-                    
                     } if (record.getId() == 1){
                         AlarmIgnoreAreasItem.setDisabled(true);
                     
                     } if (record.getId() == 2){
-                        AlarmIgnoreAreasItem.setDisabled(true);
-                    
-                        
+                        AlarmIgnoreAreasItem.setDisabled(true);                                           
                     }
                 },this);
                 //右键菜单
