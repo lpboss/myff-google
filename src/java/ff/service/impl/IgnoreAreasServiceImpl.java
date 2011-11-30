@@ -52,7 +52,7 @@ public class IgnoreAreasServiceImpl implements IgnoreAreasService {
     public String getIgnoreAreasJSONById(Integer id) {
         List<IgnoreAreas> ignoreAreas = ignoreAreasDao.getById(id);
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[]{"users", "fireAlarmDetails"});
+        jsonConfig.setExcludes(new String[]{"users", "fireAlarmDetails","rolePtzDetails"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm:ss"));
         //    JSONObject userJS = JSONObject.fromObject(ignoreAreas, jsonConfig);
         JSONArray ignoreAreasJS = JSONArray.fromObject(ignoreAreas, jsonConfig);
@@ -92,7 +92,7 @@ public class IgnoreAreasServiceImpl implements IgnoreAreasService {
     public String getEditIgnoreAreasJSONById(Integer id) {
         IgnoreAreas ignoreAreas = ignoreAreasDao.getIgnoreAreasById(id);
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[]{"videos", "users"});
+        jsonConfig.setExcludes(new String[]{"videos", "users","fireAlarmDetails","rolePtzDetails"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm:ss"));
         JSONObject userJS = JSONObject.fromObject(ignoreAreas, jsonConfig);
         String jsonStr = userJS.toString();

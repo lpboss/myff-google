@@ -41,40 +41,7 @@
             
             Ext.onReady(function(){       
             
-            //PTZList
-                Ext.define('PTZ', {
-                    extend : 'Ext.data.Model',
-                    fields : [
-                        {name: 'id'},
-                        { name: 'name'},
-                        { name: 'controllUrl'},
-                        { name: 'pelcodCommandUrl'},
-                        { name: 'visibleCameraUrl'},
-                        { name: 'visibleRTSPUrl'},
-                        { name: 'infraredRTSPUrl'},
-                        { name: 'infraredCameraUrl'},
-                        { name: 'infraredCircuitUrl'},
-                        { name: 'northMigration'},
-                        { name: 'gisMapUrl'},
-                        { name: 'visualAngleX'},
-                        { name: 'visualAngleY'},
-                        { name: 'infraredPixelX'},
-                        { name: 'infraredPixelY'},
-                        { name: 'brandType'},
-                        { name: 'cruiseStep'},
-                        { name: 'cruiseRightLimit'},
-                        { name: 'cruiseLeftLimit'},
-                        { name: 'cruiseUpLimit'},
-                        { name: 'cruiseDownLimit'},
-                        { name: 'shiftStep'},
-                        { name: 'version'},
-                        { name: 'isLocked'},
-                        { name: 'isAlarm'},
-                        { name: 'alarmHeatValue'},
-                        { name: 'cruiseFromTo'},
-                        { name: 'fromTo'}
-                    ]
-                });
+            
                 
                 PTZDS =  Ext.create('Ext.data.Store', {
                     //autoDestroy : true,
