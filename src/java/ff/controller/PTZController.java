@@ -170,9 +170,6 @@ public class PTZController extends MultiActionController {
         if (!request.getParameter("cruise_step").equals("")) {
             ptz.setCruiseStep(Integer.valueOf(request.getParameter("cruise_step")));
         }//巡航步长
-        if (!request.getParameter("version").equals("")) {
-            ptz.setVersion(Integer.valueOf(request.getParameter("version")));
-        }//版本
         if (!request.getParameter("is_locked").equals("")) {
             ptz.setIsLocked(Long.getLong("1"));
         }//状态    
@@ -264,9 +261,6 @@ public class PTZController extends MultiActionController {
         if (!request.getParameter("cruiseStep").equals("")) {
             ptz.setCruiseStep(Integer.valueOf(request.getParameter("cruiseStep")));
         }//巡航步长
-        if (!request.getParameter("version").equals("")) {
-            ptz.setVersion(Integer.valueOf(request.getParameter("version")));
-        }//版本
         if (!request.getParameter("isLocked").equals("")) {
             ptz.setIsLocked(Long.getLong("1"));
         }//状态isLocked     
