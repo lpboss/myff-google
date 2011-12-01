@@ -251,7 +251,6 @@
                         { name: 'cruise_up_limit'},
                         { name: 'cruise_down_limit'},
                         { name: 'shift_step'},
-                        { name: 'version'},
                         { name: 'is_locked'},
                         { name: 'isAlarm'},
                         { name: 'alarm_heat_value'}
@@ -284,12 +283,10 @@
                         { name: 'cruiseUpLimit'},
                         { name: 'cruiseDownLimit'},
                         { name: 'shiftStep'},
-                        { name: 'version'},
                         { name: 'isLocked'},
                         { name: 'isAlarm'},
                         { name: 'alarmHeatValue'},
-                        { name: 'cruiseFromTo'},
-                        { name: 'fromTo'}
+                        { name: 'cruiseFromTo'}
                     ]
                 });
                 
@@ -340,8 +337,7 @@
                         { name: 'heatMax'},
                         { name: 'beginDate'},
                         { name: 'endDate'},
-                        { name: 'isLocked'},
-                        { name: 'version'}             
+                        { name: 'isLocked'}          
                     ]
                 });
       
