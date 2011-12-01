@@ -127,7 +127,7 @@
                 var infraredPixelX = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '红外摄像机X方向像素',
                     name: 'infraredPixelX',
-                    anchor: '95%',
+                    anchor: '100%',
                     maxValue: 900,   
                     minValue: 0
                 });
@@ -135,7 +135,7 @@
                 var infraredPixelY = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '红外摄像机Y方向像素',
                     name: 'infraredPixelY',
-                    anchor: '95%',
+                    anchor: '100%',
                     maxValue: 600,   
                     minValue: 0
                 });
