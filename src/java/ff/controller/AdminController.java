@@ -4,14 +4,14 @@
  */
 package ff.controller;
 
-import ff.dao.RolePtzSetDao;
+import ff.dao.RolePtzDao;
 import ff.model.PTZ;
 import ff.model.Role;
 import ff.model.RolePtz;
 import ff.service.AdminService;
 import ff.service.PTZService;
 import ff.service.PrivilegeService;
-import ff.service.RolePtzSetService;
+import ff.service.RolePtzService;
 import ff.service.RoleService;
 import ff.service.SysActionService;
 import ff.service.SysControllerService;
@@ -40,8 +40,8 @@ public class AdminController extends MultiActionController {
     private PrivilegeService privilegeService;
     private AdminService adminService;
     private PTZService ptzService;
-    private RolePtzSetService rolePtzSetService;
-    private RolePtzSetDao rolePtzSetDao;
+    private RolePtzService rolePtzService;
+    private RolePtzDao rolePtzDao;
 
     public PTZService getPtzService() {
         return ptzService;
@@ -51,20 +51,20 @@ public class AdminController extends MultiActionController {
         this.ptzService = ptzService;
     }
 
-    public RolePtzSetDao getRolePtzSetDao() {
-        return rolePtzSetDao;
+    public RolePtzDao getRolePtzDao() {
+        return rolePtzDao;
     }
 
-    public void setRolePtzSetDao(RolePtzSetDao rolePtzSetDao) {
-        this.rolePtzSetDao = rolePtzSetDao;
+    public void setRolePtzDao(RolePtzDao rolePtzDao) {
+        this.rolePtzDao = rolePtzDao;
     }  
     
-    public RolePtzSetService getRolePtzSetService() {
-        return rolePtzSetService;
+    public RolePtzService getRolePtzService() {
+        return rolePtzService;
     }
 
-    public void setRolePtzSetService(RolePtzSetService rolePtzSetService) {
-        this.rolePtzSetService = rolePtzSetService;
+    public void setRolePtzService(RolePtzService rolePtzService) {
+        this.rolePtzService = rolePtzService;
     }
 
     public void setUserService(UserService userService) {
@@ -283,7 +283,7 @@ public class AdminController extends MultiActionController {
 //        logger.info(ptzid);
 //        
 //        logger.info("43v2rv");
-//        String rolePtz = rolePtzSetService.getRolePtzSetById(ptzid);
+//        String rolePtz = rolePtzService.getRolePtzById(ptzid);
 //      //  role.setRolePtzDetails(rolePtz);
 //      //  role.setPtz(rolePtz);
 

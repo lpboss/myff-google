@@ -5,11 +5,11 @@
 package ff.service.impl;
 
 import ff.dao.PTZDao;
-import ff.dao.RolePtzSetDao;
+import ff.dao.RolePtzDao;
 import ff.model.PTZ;
 import ff.model.Role;
 import ff.model.RolePtz;
-import ff.service.RolePtzSetService;
+import ff.service.RolePtzService;
 import java.sql.Timestamp;
 import java.util.List;
 import net.sf.json.JsonConfig;
@@ -23,27 +23,27 @@ import org.apache.log4j.Logger;
  *
  * @author Administrator
  */
-public class RolePtzSetServiceImpl implements RolePtzSetService {
+public class RolePtzServiceImpl implements RolePtzService {
 
-    private RolePtzSetDao rolePtzSetDao;
+    private RolePtzDao rolePtzDao;
     private PTZDao ptzDao;
 
     public void setPtzDao(PTZDao ptzDao) {
         this.ptzDao = ptzDao;
     }
 
-    public RolePtzSetDao getRolePtzSetDao() {
-        return rolePtzSetDao;
+    public RolePtzDao getRolePtzDao() {
+        return rolePtzDao;
     }
 
-    public void setRolePtzSetDao(RolePtzSetDao rolePtzSetDao) {
-        this.rolePtzSetDao = rolePtzSetDao;
+    public void setRolePtzDao(RolePtzDao rolePtzDao) {
+        this.rolePtzDao = rolePtzDao;
     }
 
     //得到所有角色
     @Override
     public String getAllRoles() {
-        List<Role> roles = rolePtzSetDao.getAllRoles();
+        List<Role> roles = rolePtzDao.getAllRoles();
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.setExcludes(new String[]{"users", "rolesPrivilegeDetails", "rolePtzDetails","fireAlarmDetails"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm"));
@@ -55,7 +55,7 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
     //得到所有ptz
     @Override
     public String getPTZList() {
-        List ptzs = rolePtzSetDao.getAllPTZs();
+        List ptzs = rolePtzDao.getAllPTZs();
 
         JsonConfig jsonConfig = new JsonConfig();
         //这是需要过滤掉的变量名�        jsonConfig.setExcludes(new String[]{});
@@ -68,7 +68,7 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
     //得到某一条rolePtz数据
     @Override
     public RolePtz getRolePtzById(Long id,Long roleid) {
-     RolePtz rolePtz = rolePtzSetDao.getRolePtzById(id,roleid);
+     RolePtz rolePtz = rolePtzDao.getRolePtzById(id,roleid);
       return  rolePtz;
     }
 
@@ -77,7 +77,7 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
     public String RolePtzDefault(RolePtz rolePtz) {
         String info = null;
 
-        rolePtzSetDao.saveOrUpdate(rolePtz);
+        rolePtzDao.saveOrUpdate(rolePtz);
         info = "success";
         String jsonStr = "{success:true,info:'" + info + "'}";
         return jsonStr;
@@ -87,7 +87,7 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
     @Override
     public String resetDefault(Long id) {
         String info = null;
-        rolePtzSetDao.setDefault(id);
+        rolePtzDao.setDefault(id);
         info = "success";
         String jsonStr = "{success:true,info:'" + info + "'}";
         return jsonStr;
@@ -95,18 +95,18 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
 
     //得到某一条数据
     @Override
-    public String getRolePtzSetJSONById(Integer id) {
+    public String getRolePtzJSONById(Integer id) {
         List<PTZ> ptzs;
         List<RolePtz> rolePtzs;
         String ids = "";
-        List<RolePtz> ignoreAreas = rolePtzSetDao.getById(id);
+        List<RolePtz> ignoreAreas = rolePtzDao.getById(id);
 
 //        for (int i = 0; i <= ignoreAreas.size() - 1; i++) {
 //            ids = ids + String.valueOf(ignoreAreas.get(i).getPtz().getId()) + ",";
 //        }
 //        String ptzids = ids.substring(0, ids.length() - 1);
-//        // ptzs = rolePtzSetDao.getPtzsByIds(ptzids);
-//        rolePtzs = rolePtzSetDao.getRolePtzByIds(ptzids);
+//        // ptzs = rolePtzDao.getPtzsByIds(ptzids);
+//        rolePtzs = rolePtzDao.getRolePtzByIds(ptzids);
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.setExcludes(new String[]{"fireAlarmDetails", "rolePtzDetails", "rolesPrivilegeDetails"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm:ss"));
@@ -121,8 +121,8 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
     public String create(RolePtz rolePtz,Long ptzId,Long roleId) {
         String info = null;
 
-        if (rolePtzSetDao.getRolePtzByName(ptzId, roleId) == null) {
-            rolePtzSetDao.saveOrUpdate(rolePtz);                               //存储对象
+        if (rolePtzDao.getRolePtzByName(ptzId, roleId) == null) {
+            rolePtzDao.saveOrUpdate(rolePtz);                               //存储对象
             info = "success";
         } else {
             info = "该角色名所控制的云台已经存在，请更换！";
@@ -135,7 +135,7 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
     @Override
     public String deleteRolePtz(String id, String roleid) {
         String info = "";
-        rolePtzSetDao.deleteRolePtz(id, roleid);
+        rolePtzDao.deleteRolePtz(id, roleid);
         info = "success";
         String jsonStr = "{success:true,info:\"" + info + "\"}";
         return jsonStr;
@@ -145,7 +145,7 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
     @Override
     public String getRolePtzList() {
         System.out.println("frgfv");
-        List rolePtzs = rolePtzSetDao.getAllRolePtzs();
+        List rolePtzs = rolePtzDao.getAllRolePtzs();
         System.out.println("45gby");
         System.out.println(rolePtzs);
         System.out.println("nhn7");
@@ -159,12 +159,12 @@ public class RolePtzSetServiceImpl implements RolePtzSetService {
 
     //通过id得到rolePtz列表
     @Override
-    public String getRolePtzSetById(Long id) {
+    public String getRolePtzById(Long id) {
         List<PTZ> ptzs;
         List<RolePtz> rolePtzs;
         String ids = "";
         System.out.println("111111111111111111111111111111111");
-        RolePtz ignoreAreas = rolePtzSetDao.getRolePtzsById(id);
+        RolePtz ignoreAreas = rolePtzDao.getRolePtzsById(id);
         System.out.println("14fc432v2");
         System.out.println(id);
         System.out.println(ignoreAreas);

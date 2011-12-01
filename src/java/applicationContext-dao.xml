@@ -15,5 +15,5 @@
     <bean id="ptzDao" class="ff.dao.impl.PTZDaoHImpl" />
     <bean id="fireAlarmDao" class="ff.dao.impl.FireAlarmDaoHImpl" />
     <bean id="ignoreAreasDao" class="ff.dao.impl.IgnoreAreasDaoHImpl" />
-    <bean id="rolePtzSetDao" class="ff.dao.impl.RolePtzSetDaoHImpl" />
+    <bean id="rolePtzDao" class="ff.dao.impl.RolePtzDaoHImpl" />
 </beans>

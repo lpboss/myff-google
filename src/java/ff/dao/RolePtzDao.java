@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author Haoqingmeng
  */
-public interface RolePtzSetDao {
+public interface RolePtzDao {
 
     List<Role> getAllRoles(); //得到所有的角色
 
