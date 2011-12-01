@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
     public String getUserJSONById(Long id) {
         User user = userDao.getUserById(id);
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[]{"users","roles","rolePtzDetails","fireAlarmDetails","rolesPrivilegeDetails"});
+        jsonConfig.setExcludes(new String[]{"videos", "users","rolesPrivilegeDetails", "rolePtzDetails","fireAlarmDetails"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm"));
         JSONObject userJS = JSONObject.fromObject(user, jsonConfig);
         String jsonStr = userJS.toString();

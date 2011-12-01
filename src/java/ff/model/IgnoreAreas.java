@@ -31,7 +31,6 @@ public class IgnoreAreas {
     private Timestamp beginDate;//火警时间范围(开始)
     private Timestamp endDate; //火警时间范围(结束)
     private Long isLocked = new Long(0);// 状态 '启用，停用',
-    private Integer version;//版本
     private Timestamp createdAt;
     private Timestamp updatedAt;
     
@@ -92,11 +91,6 @@ public class IgnoreAreas {
         return updatedAt;
     }
 
-    @Column(name = "version")
-    public Integer getVersion() {
-        return version;
-    }
-
     public void setBeginDate(Timestamp beginDate) {
         this.beginDate = beginDate;
     }
@@ -131,10 +125,6 @@ public class IgnoreAreas {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
     }
 
     //设置多对一关系：

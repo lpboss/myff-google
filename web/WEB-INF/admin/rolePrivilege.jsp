@@ -113,7 +113,11 @@
               header: '描述',
               dataIndex: 'description',
               width: 180
-            }],
+            },{
+                            header: '默认云台',
+                            dataIndex: 'ptzName',
+                            width: 100
+                        }],
           selModel : Ext.create('Ext.selection.CheckboxModel'),
           width: 430,
           height: screenHeight-250,

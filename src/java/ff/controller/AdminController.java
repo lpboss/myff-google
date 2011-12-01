@@ -314,6 +314,7 @@ public class AdminController extends MultiActionController {
         Role role = new Role();
         role.setName(request.getParameter("name"));
         role.setDescription(request.getParameter("description"));
+       
         roleService.saveOrUpdate(role);
         String info = "success";
         String jsonStr = "{success:true,info:'" + info + "'}";
