@@ -114,7 +114,7 @@
                     fieldLabel: '红外摄像机X方向像素',
                     name: 'infraredPixelX',
                     anchor: '95%',
-                    maxValue: 90,   
+                    maxValue: 900,   
                     minValue: 0
                 });
                 
@@ -122,7 +122,7 @@
                     fieldLabel: '红外摄像机Y方向像素',
                     name: 'infraredPixelY',
                     anchor: '95%',
-                    maxValue: 90,   
+                    maxValue: 600,   
                     minValue: 0
                 });
                 

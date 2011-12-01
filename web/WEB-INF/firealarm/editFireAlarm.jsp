@@ -29,7 +29,7 @@
                         {name: 'heatAvg'}, 
                         {name: 'description'},
                         {name: 'userId',
-                            mapping:'userId.id'                
+                            mapping:'user.id'                
                         },
                         {name: 'dealDate'},
                         {name: 'updatedAt'},
@@ -39,6 +39,7 @@
                            
                     ]
                 });
+                
                 var fireAlarmId = <%=request.getParameter("id")%>;
                 var number = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '编号',
@@ -48,9 +49,6 @@
                     anchor: '95%'
                 });
                 
-
-              
-
                 var heatMax =Ext.create('Ext.form.field.Number', {
                     fieldLabel: '最高热值',
                     allowBlank: false,
@@ -149,18 +147,6 @@
                     //pageSize : pageSize,
                     autoLoad : true
                 });
-                var fireAlarm =  Ext.create('Ext.data.Store', {
-                    model : 'FireAlarmEdit',
-                    proxy : {
-                        type : 'ajax',
-                        url : '<%=basePath%>firealarm/getAllFireAlarm.htm',
-                        reader : {
-                            type : 'json',
-                            root : 'root',// JSON数组对象名
-                            totalProperty : 'totalProperty'// 数据集记录总数
-                        }
-                    }
-                });
           
                 //供应商
                 var userId = Ext.create('Ext.form.ComboBox', {
@@ -179,7 +165,7 @@
                     minChars: 0,          
                     editable:false
                 });
-            var ptzId = Ext.create('Ext.form.ComboBox', {
+                var ptzId = Ext.create('Ext.form.ComboBox', {
                     store: ptz,
                     fieldLabel: '云台ID',
                     allowBlank: false,
@@ -196,7 +182,7 @@
                 });
                 
         
-                var newFireAlarmForm = Ext.create('Ext.form.Panel', {
+                var editFireAlarmForm = Ext.create('Ext.form.Panel', {
                     fieldDefaults: {
                         labelWidth: 55,
                         labelAlign: 'right'
@@ -293,9 +279,9 @@
                             iconCls: 'icon-save',
                             handler: function(){
                                 // check form value
-                                if (newFireAlarmForm.form.isValid()) {
+                                if (editFireAlarmForm.form.isValid()) {
                                     this.disable();
-                                    newFireAlarmForm.form.submit({
+                                    editFireAlarmForm.form.submit({
                                         method : 'POST',
                                         success: function(result, response){
                                             if (response.result.info == "success") {
@@ -324,26 +310,19 @@
                             }
                         }]
                 });
-                fireAlarm.load({callback: function(record, options, success){
-                        if(success){
-                            newFireAlarmForm.form.load({
-                                url: '<%=basePath%>firealarm/getFireAlarmById.htm?id='+fireAlarmId,
-                                method : 'POST',
-                                waitMsg: '正在载入数据...',
-                                success: function(form, action){
-                                },
-                                failure: function(form, action){
-                                    Ext.MessageBox.alert('提示信息', '信息加载失败');
-                                }
-                            });
-                        }else{
-                            Ext.MessageBox.alert('操作','roleStore失败！');
-                        }
-                    }});
 
-              
+                editFireAlarmForm.form.load({
+                    url: '<%=basePath%>firealarm/getFireAlarmById.htm?id='+fireAlarmId,
+                    method : 'POST',
+                    waitMsg: '正在载入数据...',
+                    success: function(form, action){
+                    },
+                    failure: function(form, action){
+                        Ext.MessageBox.alert('提示信息', '信息加载失败');
+                    }
+                });
                             
-                newFireAlarmForm.render('edit_fireAlarm_form');
+                editFireAlarmForm.render('edit_fireAlarm_form');
             })
         </script>
     </head>
