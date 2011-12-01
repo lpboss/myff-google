@@ -32,6 +32,8 @@ public class FireAlarmDaoHImpl extends HibernateDaoSupport implements FireAlarmD
     public FireAlarm saveOrUpdate(FireAlarm fireAlarm) {
         if (fireAlarm.getId() == null) {
             fireAlarm.setCreatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
+            fireAlarm.setActionDate(new Timestamp(Calendar.getInstance().getTime().getTime()));
+            fireAlarm.setDealDate(new Timestamp(Calendar.getInstance().getTime().getTime()));
         }
         fireAlarm.setUpdatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
 

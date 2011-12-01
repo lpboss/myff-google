@@ -25,7 +25,7 @@ public interface RoleService {
     String getAllRoles();
     
     //得到生成的角色菜单
-    String getRoleAllMenus(Long roleId);
+    String getRoleAllMenus(Long roleId,String basePath);
     
     Role getRoleById(Long id);
     

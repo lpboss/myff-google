@@ -94,7 +94,7 @@ public class RoleServiceImpl implements RoleService {
     public String getAllRoles() {
         List<Role> roles = roleDao.getAllRoles();
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[]{"rolesPrivilegeDetails","rolePtzDetails","role","fireAlarmDetails"});
+        jsonConfig.setExcludes(new String[]{"rolesPrivilegeDetails", "rolePtzDetails", "role", "fireAlarmDetails"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm"));
         JSONArray rolesJS = JSONArray.fromObject(roles, jsonConfig);
         String jsonStr = "{totalProperty:" + roles.size() + ",root:" + rolesJS.toString() + "}";
@@ -102,11 +102,10 @@ public class RoleServiceImpl implements RoleService {
     }
 
     /**
-     *作者：Jerry
-     *描述：得到和此角色菜单相关的所有菜单 JSON
+     * 作者：Jerry 描述：得到和此角色菜单相关的所有菜单 JSON
      */
     @Override
-    public String getRoleAllMenus(Long roleId) {
+    public String getRoleAllMenus(Long roleId, String basePath) {
         List<Object[]> modulesList = roleDao.getRoleModules((long) roleId);
         List allMenusList = new ArrayList();
         logger.info("Menu Module Ready....................................");
@@ -117,7 +116,7 @@ public class RoleServiceImpl implements RoleService {
             logger.info(module[1]);
             LinkedHashMap moduleMap = new LinkedHashMap();
             moduleMap.put("name", module[1]);
-            moduleMap.put("image", "/images/system/plugin.gif");
+            moduleMap.put("image", basePath + "images/system/plugin.gif");
             moduleMap.put("leaf", "false");
             //得到某模块下的所有菜单
             List<Integer> menuIdList = roleDao.getRoleModuleMenus(roleId, Long.parseLong(module[0].toString()));
@@ -130,7 +129,7 @@ public class RoleServiceImpl implements RoleService {
                 menuMap.put("text", privilege.getName());
                 menuMap.put("url", privilege.getSysController().getName() + "/" + privilege.getSysAction().getName() + ".htm");
                 menuMap.put("id", privilege.getSysController().getName() + "/" + privilege.getSysAction().getName() + ".htm");
-                menuMap.put("icon", "/images/system/plugin.gif");
+                menuMap.put("icon", basePath + "images/system/plugin.gif");
                 menuMap.put("leaf", true);
                 menusList.add(menuMap);
             }
@@ -165,7 +164,7 @@ public class RoleServiceImpl implements RoleService {
     public String getRoleJSONById(Long id) {
         Role role = roleDao.getRoleById(id);
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[]{"rolesPrivilegeDetails", "users","rolePtzDetails","role","fireAlarmDetails"});
+        jsonConfig.setExcludes(new String[]{"rolesPrivilegeDetails", "users", "rolePtzDetails", "role", "fireAlarmDetails"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm"));
         JSONObject roleJS = JSONObject.fromObject(role, jsonConfig);
         String jsonStr = roleJS.toString();
