@@ -24,12 +24,12 @@ import java.util.List;
 
 /**
  *
- * @author jerry
- * 此类中的方法，负责执行定时巡航任务�
+ * @author jerry 此类中的方法，负责执行定时巡航任务�
  */
 @Service
 public class PTZCruiseTask {
 
+    static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(PTZCruiseTask.class.getName());
     private PTZService ptzService;
     private SerialPortCommServer serialPortCommServer;
     private List<PTZ> ptzs;
@@ -43,8 +43,8 @@ public class PTZCruiseTask {
     }
 
     /**
-     *作者：jerry
-     *描述：发送云台角度查询命令，命令的结果会在HeadServerHandler的回调方法onData中进行分析，然后放入serialPortCommServer的angleX，angleY二个类变量中�
+     * 作者：jerry
+     * 描述：发送云台角度查询命令，命令的结果会在HeadServerHandler的回调方法onData中进行分析，然后放入serialPortCommServer的angleX，angleY二个类变量中�
      */
     @Scheduled(fixedDelay = 15)
     public synchronized void sendPTZCommand() {
@@ -71,8 +71,7 @@ public class PTZCruiseTask {
     }
 
     /**
-     *作者：jerry
-     *描述：让所有的云台，按既有模式旋转，比如削苹果皮模式�
+     * 作者：jerry 描述：让所有的云台，按既有模式旋转，比如削苹果皮模式�
      */
     @Scheduled(fixedDelay = 15)
     public synchronized void PTZCruise() {
@@ -102,7 +101,7 @@ public class PTZCruiseTask {
                 SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss SSS");
                 Date date = new Date(milliseconds);
 
-                System.out.println("角度信息，Angle (" + ptzIP + ") X:" + serialPortCommServer.getAngleXString(ptzIP) + ",Y:" + serialPortCommServer.getAngleYString(ptzIP) + "------------------,Date:" + timeFormat.format(date) + ",方向：" + serialPortCommServer.getCruiseDirection().get(ptz.getId()) + ",热值：" + serialPortCommServer.getAlertMax(ptz.getInfraredCircuitUrl()));
+                //System.out.println("角度信息，Angle (" + ptzIP + ") X:" + serialPortCommServer.getAngleXString(ptzIP) + ",Y:" + serialPortCommServer.getAngleYString(ptzIP) + "------------------,Date:" + timeFormat.format(date) + ",方向：" + serialPortCommServer.getCruiseDirection().get(ptz.getId()) + ",热值：" + serialPortCommServer.getAlertMax(ptz.getInfraredCircuitUrl()));
                 //System.out.println("当前的云台" + ptzIP + "是否允许巡航" + serialPortCommServer.getAllowCruise().get(ptzIP));
 
                 if (serialPortCommServer.getAllowCruise().get(ptzIP) == null) {
@@ -278,9 +277,15 @@ public class PTZCruiseTask {
 
                     } else {
                         //如果不允许巡航了，判断一下，适当停止。如果正在火警调节中，就暂时不发停止命令如果不是，发送停止命令�
-                /*if (serialPortCommServer.getIsMovingCenterForFireAlarm().get(ptzIP) == null || serialPortCommServer.getIsMovingCenterForFireAlarm().get(ptzIP) == Boolean.FALSE) {
-                        serialPortCommServer.pushCommand(ptzIP, "FF 01 00 00 00 00 01");
-                        }*/
+                /*
+                         * if
+                         * (serialPortCommServer.getIsMovingCenterForFireAlarm().get(ptzIP)
+                         * == null ||
+                         * serialPortCommServer.getIsMovingCenterForFireAlarm().get(ptzIP)
+                         * == Boolean.FALSE) {
+                         * serialPortCommServer.pushCommand(ptzIP, "FF 01 00 00
+                         * 00 00 01"); }
+                         */
                     }
                 }
                 //判断当前云台是否有旋转方向的标记，如果没有则默认设置向下�
@@ -316,13 +321,13 @@ public class PTZCruiseTask {
             Logger.getLogger(PTZCruiseTask.class.getName()).log(Level.SEVERE, null, ex);
         }
         serialPortCommServer.pushCommand(ptzIP, "FF 01 00 00 00 00 01");
-
-        serialPortCommServer.pushCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, angleY1, angleY2, "ANGLE_Y", ptz.getBrandType()));
+        String angleYCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, angleY1, angleY2, "ANGLE_Y", ptz.getBrandType());
+        logger.info("Y角度调整命令：" + angleYCommand);
+        serialPortCommServer.pushCommand(ptzIP, angleYCommand);
     }
 
     /**
-     *作者：jerry
-     *描述：根据热值，判断是否为火警�
+     * 作者：jerry 描述：根据热值，判断是否为火警�
      */
     @Scheduled(fixedDelay = 15)
     public synchronized void judgeFireAlarm() {
@@ -367,9 +372,10 @@ public class PTZCruiseTask {
                             //同时设置当前云台不处于巡航状态�
                             serialPortCommServer.getIsCruising().put(ptzIP, Boolean.FALSE);
                         }
-                        /*逐渐让热成像对准中心�
-                        4点区域法，左上（151.171），右上�28�71），左下�52�14），右下�28�14），�92�44）为中心点�
-                        得到当前的角�
+                        /*
+                         * 逐渐让热成像对准中心�
+                         * 4点区域法，左上（151.171），右上�28�71），左下�52�14），右下�28�14），�92�44）为中心点�
+                         * 得到当前的角�
                          */
                         String currentAngleX = serialPortCommServer.getAngleXString(ptzIP);
                         String currentAngleY = serialPortCommServer.getAngleYString(ptzIP);

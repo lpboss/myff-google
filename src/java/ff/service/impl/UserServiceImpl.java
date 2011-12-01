@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
     public String getUserJSONById(Long id) {
         User user = userDao.getUserById(id);
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[]{"videos", "users"});
+        jsonConfig.setExcludes(new String[]{"users","roles","rolePtzDetails","fireAlarmDetails","rolesPrivilegeDetails"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm"));
         JSONObject userJS = JSONObject.fromObject(user, jsonConfig);
         String jsonStr = userJS.toString();
@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
         List users = userDao.getAllUsers();
         JsonConfig jsonConfig = new JsonConfig();
         //这是需要过滤掉的变量名。
-        jsonConfig.setExcludes(new String[]{"fireAlarmDetails","user","rolesPrivilegeDetails","rolePtzDetails"});
+        jsonConfig.setExcludes(new String[]{"fireAlarmDetails","rolesPrivilegeDetails","rolePtzDetails","ptz"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm"));
         JSONArray userJS = JSONArray.fromObject(users, jsonConfig);
         String jsonStr = "{totalProperty:" + users.size() + ",root:" + userJS.toString() + "}";

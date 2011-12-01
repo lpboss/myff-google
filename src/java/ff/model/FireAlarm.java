@@ -31,7 +31,7 @@ public class FireAlarm {
     private Integer heatMin;
     private Integer heatAvg;//'平均热值',
     private String description;//` text,
-    private User userId;
+    private User user;
     private Timestamp dealDate;
     private Timestamp createdAt;
     private Timestamp updatedAt;
@@ -160,12 +160,12 @@ public class FireAlarm {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    public User getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Column(name = "version", length = 100)

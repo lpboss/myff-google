@@ -61,8 +61,6 @@ public class PTZ {
     private Integer cruiseAngleYStep;//巡航时抬头步长(巡航上扬角度步长)
     private Long isLocked = new Long(0);// 状�'启用，停�,
     private Integer shiftStep; //云台非巡航状态下默认移动步长
-    private String fromTo; //巡航设置左右边界时，转动方向
-    
 
     @Id
     @GeneratedValue

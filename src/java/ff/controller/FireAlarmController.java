@@ -134,8 +134,8 @@ public class FireAlarmController extends MultiActionController {
         fireAlarm.setHeatAvg(heatAvg);
         fireAlarm.setDealDate(java.sql.Timestamp.valueOf(request.getParameter("dealDate")));
         fireAlarm.setActionDate(java.sql.Timestamp.valueOf(request.getParameter("actionDate")));
-        User userId = userService.getUserById(userid);
-        fireAlarm.setUserId(userId);
+        User user = userService.getUserById(userid);
+        fireAlarm.setUser(user);
         fireAlarm.setVersion(0);
         fireAlarm.setIsAlarming(Short.valueOf("1"));
         logger.info(description);
@@ -235,8 +235,8 @@ public class FireAlarmController extends MultiActionController {
         fireAlarm.setHeatAvg(heatAvg);
         fireAlarm.setDealDate(java.sql.Timestamp.valueOf(request.getParameter("dealDate")));
         fireAlarm.setActionDate(java.sql.Timestamp.valueOf(request.getParameter("actionDate")));
-        User userId = userService.getUserById(userid);
-        fireAlarm.setUserId(userId);
+        User user = userService.getUserById(userid);
+        fireAlarm.setUser(user);
         fireAlarm.setVersion(fireAlarm.getVersion() + 1);
 
 

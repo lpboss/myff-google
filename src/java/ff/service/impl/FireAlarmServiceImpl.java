@@ -105,7 +105,7 @@ public class FireAlarmServiceImpl implements FireAlarmService {
     public String getFireAlarmJSONById(Long id) {
         FireAlarm user = fireAlarmDao.getFireAlarmById(id);
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[]{"rolesPrivilegeDetails", "fireAlarmDetails","role","rolePtzDetails","ignoreAreas"});
+        jsonConfig.setExcludes(new String[]{"fireAlarm","rolesPrivilegeDetails", "fireAlarmDetails","role","rolePtzDetails","ignoreAreas"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm:ss"));
         JSONObject userJS = JSONObject.fromObject(user, jsonConfig);
         String jsonStr = userJS.toString();
