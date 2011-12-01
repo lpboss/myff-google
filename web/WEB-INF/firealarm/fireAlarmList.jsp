@@ -336,7 +336,7 @@
                 });
                 var newFireAlarmForm = Ext.create('Ext.form.Panel', {
                     fieldDefaults: {
-                        labelWidth: 55,
+                        labelWidth: 85,
                         labelAlign: 'right'
                     },
                     url:'<%=basePath%>firealarm/create.htm',

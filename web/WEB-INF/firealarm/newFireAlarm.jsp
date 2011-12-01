@@ -84,7 +84,7 @@
                     anchor: '95%'
                 });
                 var dealDate = Ext.create('Ext.form.field.DateTime', {
-                    fieldLabel: '发配时间',
+                    fieldLabel: '处理时间',
                     format : 'Y-m-d H:i:s',
                     name: 'dealDate',
                     anchor: '95%'
