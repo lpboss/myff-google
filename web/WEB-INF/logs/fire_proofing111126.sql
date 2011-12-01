@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50517
 File Encoding         : 65001
 
-Date: 2011-11-23 16:07:40
+Date: 2011-12-01 13:54:28
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -61,11 +61,18 @@ CREATE TABLE `fire_alarms` (
   `version` int(11) DEFAULT NULL,
   `is_locked` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of fire_alarms
 -- ----------------------------
+INSERT INTO `fire_alarms` VALUES ('25', '1', '2011-11-30 18:38:38', '38', '0', '5831', null, null, null, null, '2011-11-30 18:38:38', '1', '2011-11-30 15:55:48', '2011-11-30 15:55:48', null, '0');
+INSERT INTO `fire_alarms` VALUES ('26', '1', '2011-11-30 18:38:41', '38', '0', '5590', null, null, null, null, '2011-11-30 18:38:38', '1', '2011-11-30 15:56:13', '2011-11-30 15:56:13', null, '0');
+INSERT INTO `fire_alarms` VALUES ('27', '1', '2011-11-30 18:38:44', '50', '38', '7402', null, null, null, null, '2011-11-30 18:38:38', '1', '2011-11-30 16:50:21', '2011-11-30 16:50:21', null, '0');
+INSERT INTO `fire_alarms` VALUES ('28', '1', '2011-12-01 11:20:17', '50', '38', '2530', null, null, null, null, '2011-12-01 11:20:17', '1', '2011-12-01 11:20:17', '2011-12-01 11:20:17', null, '0');
+INSERT INTO `fire_alarms` VALUES ('29', '1', '2011-12-01 11:29:06', '50', '38', '1354', null, null, null, null, '2011-12-01 11:29:06', '1', '2011-12-01 11:29:06', '2011-12-01 11:29:06', null, '0');
+INSERT INTO `fire_alarms` VALUES ('30', '1', '2011-12-01 11:44:01', '50', '38', '3588', null, null, null, null, '2011-12-01 11:44:01', '1', '2011-12-01 11:44:01', '2011-12-01 11:44:01', null, '0');
+INSERT INTO `fire_alarms` VALUES ('31', '1', '2011-12-01 11:45:00', '50', '38', '2495', null, null, null, null, '2011-12-01 11:45:00', '1', '2011-12-01 11:45:00', '2011-12-01 11:45:00', null, '0');
 
 -- ----------------------------
 -- Table structure for `privileges`
@@ -162,6 +169,7 @@ CREATE TABLE `ptzs` (
   `cruise_step` smallint(6) DEFAULT '5' COMMENT '云台巡航步长',
   `cruise_angle_y_step` tinyint(4) DEFAULT '10' COMMENT '巡航上扬角度步长',
   `shift_step` smallint(6) DEFAULT '10' COMMENT '云台非巡航状态下默认移动步长',
+  `cruise_from_to` varchar(10) DEFAULT 'LR' COMMENT '巡航设置左右边界时，转动方向',
   `cruise_right_limit` smallint(6) DEFAULT '0' COMMENT '巡航右边界',
   `cruise_left_limit` smallint(6) DEFAULT '0' COMMENT '巡航左边界',
   `cruise_up_limit` smallint(6) DEFAULT '90' COMMENT '最大上仰角度',
@@ -178,7 +186,7 @@ CREATE TABLE `ptzs` (
 -- ----------------------------
 -- Records of ptzs
 -- ----------------------------
-INSERT INTO `ptzs` VALUES ('1', '测试机，主云台1', 'rtsp://admin:12345@192.168.254.64/h264/ch1/main/av_stream', '192.168.254.65', null, null, null, '192.168.1.50', '192.168.1.50', '0', null, '50', '38', '382', '288', 'FY', '5', '10', '10', '0', '0', '90', '0', '1300', '0', '2011-11-22 15:34:39', '2011-11-22 15:52:46', null, '0');
+INSERT INTO `ptzs` VALUES ('1', '测试机，主云台1', 'rtsp://admin:12345@192.168.254.64/h264/ch1/main/av_stream', '192.168.254.65', null, 'ntrt://192.168.254.63/1/8000/admin/12345', 'ntrt://192.168.254.64/1/8000/admin/12345', '192.168.1.50', '192.168.1.50', '0', 'map.png', '50', '38', '382', '288', 'FY', '5', '10', '10', 'LR', '80', '60', '80', '20', '1300', '0', '2011-11-22 15:34:39', '2011-12-01 11:46:35', null, '0');
 
 -- ----------------------------
 -- Table structure for `roles`
@@ -188,6 +196,7 @@ CREATE TABLE `roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
+  `ptz_id` int(11) DEFAULT NULL COMMENT '角色默认云台ID',
   `is_locked` tinyint(4) DEFAULT '1',
   `version` int(11) DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
@@ -198,9 +207,9 @@ CREATE TABLE `roles` (
 -- ----------------------------
 -- Records of roles
 -- ----------------------------
-INSERT INTO `roles` VALUES ('1', '管理员', '管理员', '0', '12', '2011-09-09 15:25:30', '2011-09-20 17:41:56');
-INSERT INTO `roles` VALUES ('2', 'æµè¯', 'æµè¯', '0', '0', '2011-09-20 17:46:37', '2011-09-20 17:46:37');
-INSERT INTO `roles` VALUES ('3', '测试', '测试', '0', '0', '2011-09-20 17:57:03', '2011-09-20 17:57:03');
+INSERT INTO `roles` VALUES ('1', '管理员', '管理员', null, '0', '12', '2011-09-09 15:25:30', '2011-09-20 17:41:56');
+INSERT INTO `roles` VALUES ('2', 'æµè¯', 'æµè¯', null, '0', '0', '2011-09-20 17:46:37', '2011-09-20 17:46:37');
+INSERT INTO `roles` VALUES ('3', '测试', '测试', null, '0', '0', '2011-09-20 17:57:03', '2011-09-20 17:57:03');
 
 -- ----------------------------
 -- Table structure for `roles_privilege_details`
@@ -233,6 +242,21 @@ INSERT INTO `roles_privilege_details` VALUES ('7', '3', '1', '2', '3', null, '0'
 INSERT INTO `roles_privilege_details` VALUES ('8', '1', '8', '9', '5', null, '0', '0', '2011-09-30 11:26:05', '2011-09-30 11:26:05');
 INSERT INTO `roles_privilege_details` VALUES ('9', '1', '8', '10', '6', null, '0', '0', '2011-11-16 18:30:54', '2011-11-16 18:30:54');
 INSERT INTO `roles_privilege_details` VALUES ('10', '1', '8', '11', '7', null, '0', '0', '2011-11-16 18:30:55', '2011-11-16 18:30:55');
+
+-- ----------------------------
+-- Table structure for `role_ptzs`
+-- ----------------------------
+DROP TABLE IF EXISTS `role_ptzs`;
+CREATE TABLE `role_ptzs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `role_id` int(11) DEFAULT NULL,
+  `ptz_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of role_ptzs
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `sys_actions`
