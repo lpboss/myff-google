@@ -100,13 +100,9 @@ public class IgnoreAreasController extends MultiActionController {
 
             ignoreAreas.setEndDate(new Timestamp(Calendar.getInstance().getTime().getTime()));
         }
-        if (!request.getParameter("version").equals("")) {
-            ignoreAreas.setVersion(Integer.valueOf(request.getParameter("version"))); //版本
-        }
         if (!request.getParameter("is_locked").equals("")) {
             ignoreAreas.setIsLocked(Long.getLong("1")); //状态isLocked
         }
-
 
         ignoreAreasService.saveOrUpdate(ignoreAreas);
         String info = "success";
@@ -170,9 +166,6 @@ public class IgnoreAreasController extends MultiActionController {
         }
         if (!request.getParameter("endDate").equals("")) {
             ignoreAreas.setEndDate(Timestamp.valueOf(request.getParameter("endDate"))); //火警时间范围(结束)
-        }
-        if (!request.getParameter("version").equals("")) {
-            ignoreAreas.setVersion(Integer.valueOf(request.getParameter("version"))); //版本
         }
         if (!request.getParameter("isLocked").equals("")) {
             ignoreAreas.setIsLocked(Long.getLong("1")); //状态isLocked

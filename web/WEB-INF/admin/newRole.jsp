@@ -30,7 +30,8 @@
           height:100,
           name: 'description',
           anchor: '100%'
-        });        
+        }); 
+        
         
         //提交按钮
         var addRoleButton = Ext.create('Ext.Button', {

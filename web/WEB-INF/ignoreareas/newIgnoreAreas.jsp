@@ -68,12 +68,6 @@
                     anchor: '95%'
                 });
 
-                var version = Ext.create('Ext.form.field.Number', {
-                    fieldLabel: '版本',
-                    name: 'version',
-                    anchor: '95%'
-                });
-                
                 var isLocked = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '状态',
                     name: 'is_locked',
@@ -103,7 +97,7 @@
                                     columnWidth: .53,
                                     layout: 'anchor',
                                     xtype: 'container',                                  
-                                    items: [beginDate,endDate,version,isLocked,heatMax]
+                                    items: [beginDate,endDate,isLocked,heatMax]
                                 }]
                         }],
                     buttons: [{

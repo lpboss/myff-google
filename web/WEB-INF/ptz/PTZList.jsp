@@ -1,7 +1,7 @@
- <%-- 
-    Document   : PTZList
-    Created on : 2011-11-9, 20:16:13
-    Author     : Haoqingmeng
+<%-- 
+   Document   : PTZList
+   Created on : 2011-11-9, 20:16:13
+   Author     : Haoqingmeng
 --%>
 <%
     String path = request.getContextPath();
@@ -14,10 +14,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>云台信息设置</title>
-        
+
         <script type="text/javascript">
             
-             //处理PTZ是否锁定
+            //处理PTZ是否锁定
             function lockPTZFn(id){              
                 Ext.Ajax.request({                     
                     url : '<%=basePath%>ptz/ptzLock.htm',
@@ -167,10 +167,6 @@
                             dataIndex: 'shiftStep',
                             width:170
                         },{
-                            header: '版本',
-                            dataIndex: 'version',
-                            width:80
-                        },{
                             header: '状态',
                             dataIndex: 'isLocked',  
                             renderer: renderPTZIsLucked,
@@ -179,10 +175,6 @@
                             header: '巡航有左右边界时的巡航方向',
                             dataIndex: 'cruiseFromTo',  
                             width:150
-                        },{
-                            header: '巡航设置左右边界时，转动方向',
-                            dataIndex: 'fromTo',  
-                            width:170
                         }],
        
                     selModel :Ext.create('Ext.selection.CheckboxModel'),                                 
@@ -201,7 +193,7 @@
                             handler : function(){
                                 newPTZWin = Ext.create('Ext.window.Window', {
                                     layout: 'fit',
-                                    width:1200,
+                                    width:1300,
                                     height:320,
                                     closeAction: 'destroy',
                                     plain: true,
@@ -238,7 +230,7 @@
                                     editPTZWin = Ext.create('Ext.window.Window', {
                                         title: '编辑云台',
                                         layout:'fit',
-                                        width:1200,
+                                        width:1300,
                                         height:320,
                                         closeAction:'destroy',
                                         constrain:true,
@@ -526,6 +518,6 @@
     </head>
     <body>
         <div id="PTZ_list"></div>
-        
+
     </body>
 </html>
