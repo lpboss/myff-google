@@ -1,7 +1,7 @@
- <%-- 
-    Document   : PTZList
-    Created on : 2011-11-9, 20:16:13
-    Author     : Haoqingmeng
+<%-- 
+   Document   : PTZList
+   Created on : 2011-11-9, 20:16:13
+   Author     : Haoqingmeng
 --%>
 <%
     String path = request.getContextPath();
@@ -14,10 +14,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>云台信息设置</title>
-        
+
         <script type="text/javascript">
             
-             //处理PTZ是否锁定
+            //处理PTZ是否锁定
             function lockPTZFn(id){              
                 Ext.Ajax.request({                     
                     url : '<%=basePath%>ptz/ptzLock.htm',
@@ -230,7 +230,7 @@
                                     editPTZWin = Ext.create('Ext.window.Window', {
                                         title: '编辑云台',
                                         layout:'fit',
-                                        width:1200,
+                                        width:1300,
                                         height:320,
                                         closeAction:'destroy',
                                         constrain:true,
@@ -518,6 +518,6 @@
     </head>
     <body>
         <div id="PTZ_list"></div>
-        
+
     </body>
 </html>

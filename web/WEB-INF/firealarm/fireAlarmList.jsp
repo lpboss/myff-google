@@ -357,7 +357,7 @@
                                     xtype: 'container',
                                     items: [EndTime]
                                 }, {
-                                    columnWidth: .2,
+                                    columnWidth: .3,
                                     layout: 'column',
                                     xtype: 'container',
                                     items: [ptzId]

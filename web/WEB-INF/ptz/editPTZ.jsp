@@ -46,18 +46,20 @@
                     allowBlank: false,
                     blankText: "用云台名字不能为空",
                     name: 'name',
-                    anchor:'100%'
+                    labelWidth: 130,
+                    anchor: '100%'
                 });
                 
                 var controllUrl = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '编码器IP',
-                    name: 'controllUrl',      //controll_url            
+                    name: 'controllUrl', 
+                    labelWidth: 60,
                     anchor: '100%'
                 });
                 
                 var pelcodCommandUrl = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '通过串口,发pelcod的ip',
-                    lableWidth:100,
+                    lableWidth: 50,
                     name: 'pelcodCommandUrl',
                     anchor: '100%'
                 });
@@ -95,7 +97,7 @@
                 var northMigration = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '摄像机0角度与正北的偏移',
                     name: 'northMigration',
-                    maxValue: 100,   
+                    //  maxValue: 100,   
                     minValue: 0,
                     anchor: '100%'
                 });
@@ -103,13 +105,13 @@
                 var gisMapUrl = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '地图文件存放位置',
                     name: 'gisMapUrl',
-                    anchor: '100%'
+                    anchor: '100%'                   
                 });
                 
                 var visualAngleX = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '红外视角X',
                     name: 'visualAngleX',
-                    anchor: '95%',
+                     anchor:'100%',
                     maxValue: 90,   
                     minValue: 0
                 });
@@ -126,7 +128,7 @@
                     fieldLabel: '红外摄像机X方向像素',
                     name: 'infraredPixelX',
                     anchor: '100%',
-                    maxValue: 90,   
+                //    maxValue: 90,   
                     minValue: 0
                 });
                 
@@ -134,7 +136,7 @@
                     fieldLabel: '红外摄像机Y方向像素',
                     name: 'infraredPixelY',
                     anchor: '100%',
-                    maxValue: 90,   
+                 //   maxValue: 90,   
                     minValue: 0
                 });
                 
@@ -154,45 +156,51 @@
                 var cruiseStep = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '巡航步长',
                     name: 'cruiseStep',
-                    maxValue: 100,   
+                    //   maxValue: 100,   
                     minValue: 0,
+                    lableWidth: 10,
                     anchor: '100%'
                 });
                 
                 var cruiseRightLimit = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '巡航右边界',
                     name: 'cruiseRightLimit',
+                    labelWidth: 120,
                     anchor: '100%'
                 });
                 
                 var cruiseLeftLimit = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '巡航左边界',
                     name: 'cruiseLeftLimit',
+                    labelWidth: 90,
                     anchor: '100%'
                 });
                 
                 var cruiseUpLimit = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '最大上仰角度',
                     name: 'cruiseUpLimit',
+                    labelWidth: 140,
                     anchor: '100%'
                 });
                 
                 var cruiseDownLimit = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '巡航时最大俯角',
                     name: 'cruiseDownLimit',
+                   labelWidth: 100,
                     anchor: '100%'
                 });
                 
                 var isAlarm = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '是否正在报警',
                     name: 'isAlarm',
+                    labelWidth: 150,
                     anchor: '100%'
                 });
                 
                 var alarmHeatValue = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '报警最高热值',
                     name: 'alarmHeatValue',
-                    anchor: '100%'
+                   anchor: '100%'
                 });
                 
                 var shiftStep = Ext.create('Ext.form.field.Number', {
@@ -217,6 +225,7 @@
                     typeAhead: true,
                     mode: 'local',
                     name:'cruiseFromTo',
+                    labelWidth: 100,
                     anchor: '100%'
                 });
                 
@@ -235,7 +244,7 @@
                 
                 var editPTZForm = Ext.create('Ext.form.Panel', {
                     fieldDefaults: {
-                        labelWidth: 180,
+                        labelWidth: 150,
                         labelAlign: 'right'
                     },
                     trackResetOnLoad: true,
@@ -246,28 +255,182 @@
                         root: ''
                     }),
                     bodyStyle:'padding:5px 5px 0',
-                    width: 1190,
+                    width: 1290,
                     height: 290,
                     items: [{
                             layout: 'column',
                             xtype: 'container',
                             items: [{
-                                    columnWidth: .38,
-                                    layout: 'anchor',                                  
-                                    xtype: 'container',
-                                    items: [name,controllUrl,pelcodCommandUrl,gisMapUrl,cruiseStep,brandType,cruiseRightLimit,cruiseLeftLimit,shiftStep]
-                                }, {
-                                    columnWidth: .38,
-                                    layout: 'anchor',
-                                    xtype: 'container',                                  
-                                    items: [infraredRTSPUrl,infraredCameraUrl,infraredCircuitUrl,northMigration,visibleCameraUrl,visibleRTSPUrl,cruiseUpLimit,isAlarm,cruiseFromTo]
-                                }, {
-                                    columnWidth: .23,
+                                    columnWidth: .4,
                                     layout: 'anchor',
                                     xtype: 'container',
-                                    items: [visualAngleX,visualAngleY,infraredPixelX,infraredPixelY,isLocked,cruiseDownLimit,alarmHeatValue]
+                                    items: [name]
+                                }, {
+                                    columnWidth: .4,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [infraredRTSPUrl]
+                                }, {
+                                    columnWidth: .2,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [visualAngleX]
                                 }]
-                        }],
+                        },{
+                            layout: 'column',
+                            xtype: 'container',
+                            items: [{
+                                    columnWidth: .4,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [controllUrl]
+                                },{
+                                    columnWidth: .4,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [infraredCameraUrl]
+                                },{
+                                    columnWidth: .2,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [visualAngleY]
+                                }]
+                        },{
+                            layout: 'column',
+                            xtype: 'container',
+                            items: [{
+                                    columnWidth: .4,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [pelcodCommandUrl]
+                                }, {
+                                    columnWidth: .4,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [infraredCircuitUrl]
+                                }, {
+                                    columnWidth: .2,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [infraredPixelX]
+                                }]},
+                        {
+                            layout: 'column',
+                            xtype: 'container',
+                            items: [{
+                                    columnWidth: .4,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [gisMapUrl]
+                                }, {
+                                    columnWidth: .4,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [northMigration]
+                                }, {
+                                    columnWidth: .2,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [infraredPixelY]
+                                }]
+                        },
+                        {
+                            layout: 'column',
+                            xtype: 'container',
+                            items: [{
+                                    columnWidth: .4,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [cruiseStep]
+                                }, {
+                                    columnWidth: .4,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [visibleCameraUrl]
+                                }, {
+                                    columnWidth: .2,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [alarmHeatValue]
+                                }]
+                        },
+                        {
+                            layout: 'column',
+                            xtype: 'container',
+                            items: [{
+                                    columnWidth: .4,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [brandType]
+                                }, {
+                                    columnWidth: .4,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [visibleRTSPUrl]
+                                }, {
+                                    columnWidth: .2,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [isAlarm]
+                                }]
+                        },
+                        {
+                            layout: 'column',
+                            xtype: 'container',
+                            items: [{
+                            layout: 'column',
+                            xtype: 'container',                          
+                            items: [{
+                                    columnWidth: .9,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [cruiseRightLimit]
+                                },{
+                            layout: 'column',
+                            xtype: 'container',
+                            items: [{
+                                    columnWidth: .91,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [cruiseLeftLimit]
+                                }]
+                        }]
+                        }, {
+                            layout: 'column',
+                            xtype: 'container',                          
+                            items: [{
+                                    columnWidth: .9,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [cruiseUpLimit]
+                                },{
+                            layout: 'column',
+                            xtype: 'container',
+                            items: [{
+                                    columnWidth: .9,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [cruiseDownLimit]
+                                }]
+                        }]
+                        }, {
+                                    columnWidth: .99,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [cruiseFromTo]
+                                }]
+                        },
+                        {
+                            layout: 'column',
+                            xtype: 'container',
+                            items: [{
+                                    columnWidth: .2,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [shiftStep]
+                                }]
+                        }
+                                ],
                     buttons: [{
                             text: '提交',
                             iconCls: 'icon-save',
