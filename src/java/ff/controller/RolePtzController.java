@@ -4,12 +4,12 @@
  */
 package ff.controller;
 
-import ff.dao.RolePtzSetDao;
+import ff.dao.RolePtzDao;
 import ff.model.PTZ;
 import ff.model.Role;
 import ff.model.RolePtz;
 import ff.service.PTZService;
-import ff.service.RolePtzSetService;
+import ff.service.RolePtzService;
 import ff.service.RoleService;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,9 +23,9 @@ import org.springframework.web.servlet.ModelAndView;
  *
  * @author Haoqingmeng
  */
-public class RolePtzSetController extends MultiActionController {
+public class RolePtzController extends MultiActionController {
 
-    private RolePtzSetService rolePtzSetService;
+    private RolePtzService rolePtzService;
     private PTZService ptzService;
     private RoleService roleService;
    
@@ -46,16 +46,16 @@ public class RolePtzSetController extends MultiActionController {
         this.ptzService = ptzService;
     }
 
-    public RolePtzSetService getRolePtzSetService() {
-        return rolePtzSetService;
+    public RolePtzService getRolePtzService() {
+        return rolePtzService;
     }
 
-    public void setRolePtzSetService(RolePtzSetService rolePtzSetService) {
-        this.rolePtzSetService = rolePtzSetService;
+    public void setRolePtzService(RolePtzService rolePtzService) {
+        this.rolePtzService = rolePtzService;
     }
 
-    //返回rolePtzSet页面
-    public ModelAndView rolePtzSet(HttpServletRequest request, HttpServletResponse response) {
+    //返回rolePtz页面
+    public ModelAndView rolePtz(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView mav = new ModelAndView();
         return mav;
     }
@@ -74,7 +74,7 @@ public class RolePtzSetController extends MultiActionController {
 
     //得到角色表
     public void getAllRoles(HttpServletRequest request, HttpServletResponse response) {
-        String jsonStr = rolePtzSetService.getAllRoles();
+        String jsonStr = rolePtzService.getAllRoles();
         PrintWriter pw;
         try {
             response.setContentType("text/json; charset=utf-8");
@@ -95,9 +95,9 @@ public class RolePtzSetController extends MultiActionController {
         String jsonStr = "";
         String id = request.getParameter("id");
         if (request.getParameter("id") == null) {
-            jsonStr = rolePtzSetService.getPTZList();
+            jsonStr = rolePtzService.getPTZList();
         } else {
-            jsonStr = rolePtzSetService.getRolePtzSetJSONById(Integer.parseInt(request.getParameter("id")));
+            jsonStr = rolePtzService.getRolePtzJSONById(Integer.parseInt(request.getParameter("id")));
         }
 
         PrintWriter pw;
@@ -113,7 +113,7 @@ public class RolePtzSetController extends MultiActionController {
     }
 
     //处理是否设置默认云台
-    public void rolePtzSetLock(HttpServletRequest request, HttpServletResponse response) {
+    public void rolePtzLock(HttpServletRequest request, HttpServletResponse response) {
         Long id = Long.valueOf(request.getParameter("id"));
 
         Long roleid = Long.valueOf(request.getParameter("roleId"));
@@ -121,12 +121,12 @@ public class RolePtzSetController extends MultiActionController {
         logger.info(id);
         logger.info(roleid);
         logger.info("321c2r");
-        rolePtzSetService.resetDefault(roleid);
-        RolePtz rolePtz = rolePtzSetService.getRolePtzById(id, roleid);
+        rolePtzService.resetDefault(roleid);
+        RolePtz rolePtz = rolePtzService.getRolePtzById(id, roleid);
 
         PrintWriter pw;
         try {
-            String jsonStr = rolePtzSetService.RolePtzDefault(rolePtz);
+            String jsonStr = rolePtzService.RolePtzDefault(rolePtz);
             response.setContentType("text/json; charset=utf-8");
             response.setHeader("Cache-Control", "no-cache");
             pw = response.getWriter();
@@ -142,9 +142,9 @@ public class RolePtzSetController extends MultiActionController {
         String jsonStr = "";
         String id = request.getParameter("id");
         if (request.getParameter("id") != null) {
-            jsonStr = rolePtzSetService.getRolePtzSetJSONById(Integer.parseInt(request.getParameter("id")));
+            jsonStr = rolePtzService.getRolePtzJSONById(Integer.parseInt(request.getParameter("id")));
         } else {
-            jsonStr = rolePtzSetService.getRolePtzList();
+            jsonStr = rolePtzService.getRolePtzList();
         }
         //   String jsonStr = ignoreAreasService.getIgetIgnoreAreasJSONByIdgnoreAreasList();
         PrintWriter pw;
@@ -176,7 +176,7 @@ public class RolePtzSetController extends MultiActionController {
         logger.info(roleId);
         logger.info(rolePtz);
         logger.info("2t5gbk6");
-        String jsonStr = rolePtzSetService.create(rolePtz, ptzId, roleId);
+        String jsonStr = rolePtzService.create(rolePtz, ptzId, roleId);
         PrintWriter pw;
         try {
             response.setContentType("text/json; charset=utf-8");
@@ -194,7 +194,7 @@ public class RolePtzSetController extends MultiActionController {
 
         String id = request.getParameter("key");
         String roleid = request.getParameter("roleid");
-        String jsonStr = rolePtzSetService.deleteRolePtz(id, roleid);
+        String jsonStr = rolePtzService.deleteRolePtz(id, roleid);
 
         PrintWriter pw;
         try {
@@ -211,7 +211,7 @@ public class RolePtzSetController extends MultiActionController {
     //得到rolePtz列表
     public void getAllRolePtzs(HttpServletRequest request, HttpServletResponse response) {
         logger.info("12s2");
-        String jsonStr = rolePtzSetService.getRolePtzList();
+        String jsonStr = rolePtzService.getRolePtzList();
         PrintWriter pw;
         try {
             response.setContentType("text/json; charset=utf-8");
@@ -266,7 +266,7 @@ public class RolePtzSetController extends MultiActionController {
 //    public void getAllRolePtzsById(HttpServletRequest request, HttpServletResponse response) {
 //        String id = request.getParameter("id");
 //        logger.info("12s2");
-//        String jsonStr = rolePtzSetService.getRolePtzSetById(Integer.parseInt(request.getParameter("id")));
+//        String jsonStr = rolePtzService.getRolePtzById(Integer.parseInt(request.getParameter("id")));
 //        PrintWriter pw;
 //        try {
 //            response.setContentType("text/json; charset=utf-8");

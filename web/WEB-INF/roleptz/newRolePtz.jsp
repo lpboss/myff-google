@@ -88,7 +88,7 @@
                         labelWidth: 55,
                         labelAlign: 'right'
                     },
-                    url:'<%=basePath%>roleptzset/create.htm',
+                    url:'<%=basePath%>roleptz/create.htm',
                     frame:true,
                     bodyStyle:'padding:5px 5px 0',
                     width: 300,

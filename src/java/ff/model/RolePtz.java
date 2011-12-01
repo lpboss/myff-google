@@ -27,7 +27,6 @@ public class RolePtz implements java.io.Serializable {
     private Long id;
     private Role role;
     private PTZ ptz;
-    private Long isDefault; // 是不是默认，'不是','是'
 
     @Id
     @GeneratedValue

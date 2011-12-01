@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Haoqingmeng
  */
-public interface RolePtzSetService {
+public interface RolePtzService {
 
     String getAllRoles(); //得到角色列表
 
@@ -24,7 +24,7 @@ public interface RolePtzSetService {
 
     String resetDefault(Long id);  // 重置默认
     
-    String getRolePtzSetJSONById(Integer id); //通过id得到rolePtz列表
+    String getRolePtzJSONById(Integer id); //通过id得到rolePtz列表
     
     String create(RolePtz rolePtz,Long ptzId,Long roleId); // 添加
     
@@ -32,6 +32,6 @@ public interface RolePtzSetService {
     
     String getRolePtzList(); //得到rolePtz数据列表
     
-    String getRolePtzSetById(Long id); //通过id得到rolePtz列表
+    String getRolePtzById(Long id); //通过id得到rolePtz列表
     
 }

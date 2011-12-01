@@ -4,7 +4,7 @@
  */
 package ff.dao.impl;
 
-import ff.dao.RolePtzSetDao;
+import ff.dao.RolePtzDao;
 import ff.model.PTZ;
 import ff.model.Role;
 import ff.model.RolePtz;
@@ -19,7 +19,7 @@ import java.sql.Timestamp;
  *
  * @author Haoqingmeng
  */
-public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzSetDao {
+public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzDao {
 
     //得到所有的角色
     @Override

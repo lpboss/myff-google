@@ -1,5 +1,5 @@
 <%-- 
-    Document   : rolePtzSet
+    Document   : rolePtz
     Created on : 2011-11-25, 15:17:42
     Author     : Haoqingmeng
 --%>
@@ -28,7 +28,7 @@
             //处理是否是默认云台
             function lockPtzDetailFn(id){
                 Ext.Ajax.request({
-                    url : '<%=basePath%>roleptzset/rolePtzSetLock.htm?id='+id +'&roleId='+roleId,
+                    url : '<%=basePath%>roleptz/rolePtzLock.htm?id='+id +'&roleId='+roleId,
                     success : function (result, request) {
                         rolePtzDS.load();
                     },
@@ -55,7 +55,7 @@
                     model : 'Role',
                     proxy : {
                         type : 'ajax',
-                        url : '<%=basePath%>roleptzset/getAllRoles.htm',
+                        url : '<%=basePath%>roleptz/getAllRoles.htm',
                         reader : {
                             type : 'json',
                             root : 'root',// JSON数组对象名
@@ -114,7 +114,7 @@
                                         plain: true,
                                         modal: true,
                                         autoLoad: {
-                                            url: "<%=basePath%>roleptzset/editRolePtz.htm?id=" + roleKeyId,
+                                            url: "<%=basePath%>roleptz/editRolePtz.htm?id=" + roleKeyId,
                                             scripts: true
                                         }
                                     });
@@ -144,7 +144,7 @@
                     }
                                                                       
                     Ext.Ajax.request({
-                        url : '<%=basePath%>roleptzset/getRolePtzs.htm?id='+roleId,
+                        url : '<%=basePath%>roleptz/getRolePtzs.htm?id='+roleId,
                         success : function (result, request) {
                             rolePtzDS.proxy.extraParams = {'id':roleId};//把参数roleId传递到PTZDS中
                             rolePtzDS.load();
@@ -169,7 +169,7 @@
                     model : 'rolePtz',
                     proxy : {
                         type : 'ajax',                   
-                        url : '<%=basePath%>roleptzset/getRolePtzs.htm',
+                        url : '<%=basePath%>roleptz/getRolePtzs.htm',
                         reader : {
                             type : 'json',
                             root : 'root',// JSON数组对象名
@@ -230,7 +230,7 @@
                                     //modal: true,
                                     title: '添加角色云台信息',
                                     autoLoad: {
-                                        url: "<%=basePath%>roleptzset/newRolePtz.htm",
+                                        url: "<%=basePath%>roleptz/newRolePtz.htm",
                                         scripts: true
                                     }
                                 });
@@ -269,7 +269,7 @@
                                         console.info(ids)                                   
                                         if(button == 'yes'){
                                             Ext.Ajax.request({
-                                                url:"<%=basePath%>roleptzset/deleteRolePtz.htm?key="+ids+"&roleid="+roleid+"&length="+records.length,
+                                                url:"<%=basePath%>roleptz/deleteRolePtz.htm?key="+ids+"&roleid="+roleid+"&length="+records.length,
                                                 method:'post',
                                                 success:function(response,opts){
                                                     var data = Ext.JSON.decode(response.responseText);
@@ -293,7 +293,7 @@
                 });
                 
 
-                var rolePtzSetPanel  = Ext.create('Ext.form.Panel', {
+                var rolePtzPanel  = Ext.create('Ext.form.Panel', {
                     layout: 'column',
                     autoScroll:true,
                     width: screenWidth-160,
@@ -310,11 +310,11 @@
                             items:[ptzGrid]
                         }]
                 });
-                rolePtzSetPanel.render("role_Ptz_Set_Panel");  
+                rolePtzPanel.render("role_Ptz_Panel");  
             })
         </script>
     </head>
     <body>
-        <div id="role_Ptz_Set_Panel"></div>
+        <div id="role_Ptz_Panel"></div>
     </body>
 </html>
