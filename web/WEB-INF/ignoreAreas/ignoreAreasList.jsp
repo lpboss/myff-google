@@ -102,10 +102,6 @@
                             dataIndex: 'endDate',
                             width:120
                         }, {
-                            header: '版本',
-                            dataIndex: 'version',
-                            width:60
-                        }, {
                             header: '状态',
                             dataIndex: 'isLocked',  
                             renderer: renderFireAlarmIsLucked,

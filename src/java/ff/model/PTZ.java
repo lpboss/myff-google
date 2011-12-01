@@ -50,7 +50,6 @@ public class PTZ {
     private Integer cruiseStep;//云台巡航步长
     private Timestamp createdAt;
     private Timestamp updatedAt;
-    private Integer version;//版本
     private Integer isAlarm;// 是否正在报警
     private Integer alarmHeatValue;// 报警最高热值(报警警戒热值)�
     private Integer cruiseRightLimit; //巡航右边�
@@ -61,7 +60,6 @@ public class PTZ {
     private Integer cruiseAngleYStep;//巡航时抬头步长(巡航上扬角度步长)
     private Long isLocked = new Long(0);// 状�'启用，停�,
     private Integer shiftStep; //云台非巡航状态下默认移动步长
-    private String fromTo; //巡航设置左右边界时，转动方向
     
 
     @Id
@@ -172,15 +170,6 @@ public class PTZ {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    @Column(name = "version")
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
     }
 
     @Column(name = "visible_camera_url")
