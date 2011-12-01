@@ -175,11 +175,11 @@ public class PTZController extends MultiActionController {
         }//状态    
         if (!request.getParameter("cruise_right_limit").equals("") && !request.getParameter("cruise_left_limit").equals("")) {
             if (Integer.valueOf(request.getParameter("cruise_right_limit")) == Integer.valueOf(request.getParameter("cruise_left_limit"))) {
-                ptz.setCruiseRightLimit(Integer.valueOf("0")); //巡航右边界
-                ptz.setCruiseLeftLimit(Integer.valueOf("0")); //巡航左边界
-            } else {
                 ptz.setCruiseRightLimit(Integer.valueOf(request.getParameter("cruise_right_limit"))); //巡航右边界
                 ptz.setCruiseLeftLimit(Integer.valueOf(request.getParameter("cruise_left_limit"))); //巡航左边界
+            } else {
+                ptz.setCruiseRightLimit(Integer.valueOf("0")); //巡航右边界
+                ptz.setCruiseLeftLimit(Integer.valueOf("0")); //巡航左边界
             }
         }
         if (!request.getParameter("cruise_up_limit").equals("")) {
@@ -266,11 +266,11 @@ public class PTZController extends MultiActionController {
         }//状态isLocked     
         if (!request.getParameter("cruiseRightLimit").equals("") && !request.getParameter("cruiseRightLimit").equals("")) {
             if (Integer.valueOf(request.getParameter("cruiseRightLimit")) == Integer.valueOf(request.getParameter("cruiseLeftLimit"))) {
-                ptz.setCruiseRightLimit(Integer.valueOf("0")); //巡航右边界
-                ptz.setCruiseLeftLimit(Integer.valueOf("0")); //巡航左边界
-            } else {
                 ptz.setCruiseRightLimit(Integer.valueOf(request.getParameter("cruiseRightLimit"))); //巡航右边界
                 ptz.setCruiseLeftLimit(Integer.valueOf(request.getParameter("cruiseLeftLimit"))); //巡航左边界
+            } else {
+                ptz.setCruiseRightLimit(Integer.valueOf("0")); //巡航右边界
+                ptz.setCruiseLeftLimit(Integer.valueOf("0")); //巡航左边界
             }
         }
         if (!request.getParameter("cruiseUpLimit").equals("")) {

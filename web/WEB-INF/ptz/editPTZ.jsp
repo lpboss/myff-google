@@ -41,25 +41,22 @@
                     data : cruiseFromToArray
                 });
  
-               var name = Ext.create('Ext.form.field.Text', {
+                var name = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '名字',
                     allowBlank: false,
                     blankText: "用云台名字不能为空",
                     name: 'name',
-                    labelWidth: 130,
                     anchor: '100%'
                 });
                 
                 var controllUrl = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '编码器IP',
                     name: 'controllUrl', 
-                    labelWidth: 60,
                     anchor: '100%'
                 });
                 
                 var pelcodCommandUrl = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '通过串口,发pelcod的ip',
-                    lableWidth: 50,
                     name: 'pelcodCommandUrl',
                     anchor: '100%'
                 });
@@ -95,7 +92,7 @@
                 });
                 
                 var northMigration = Ext.create('Ext.form.field.Number', {
-                    fieldLabel: '摄像机0角度与正北的偏移',
+                    fieldLabel: '云台0角度与正北的偏移',
                     name: 'northMigration',
                     //  maxValue: 100,   
                     minValue: 0,
@@ -111,7 +108,7 @@
                 var visualAngleX = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '红外视角X',
                     name: 'visualAngleX',
-                     anchor:'100%',
+                    anchor:'100%',
                     maxValue: 90,   
                     minValue: 0
                 });
@@ -158,53 +155,47 @@
                     name: 'cruiseStep',
                     //   maxValue: 100,   
                     minValue: 0,
-                    lableWidth: 10,
                     anchor: '100%'
                 });
                 
                 var cruiseRightLimit = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '巡航右边界',
                     name: 'cruiseRightLimit',
-                    labelWidth: 120,
                     anchor: '100%'
                 });
                 
                 var cruiseLeftLimit = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '巡航左边界',
                     name: 'cruiseLeftLimit',
-                    labelWidth: 90,
                     anchor: '100%'
                 });
                 
                 var cruiseUpLimit = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '最大上仰角度',
                     name: 'cruiseUpLimit',
-                    labelWidth: 140,
                     anchor: '100%'
                 });
                 
                 var cruiseDownLimit = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '巡航时最大俯角',
                     name: 'cruiseDownLimit',
-                   labelWidth: 100,
                     anchor: '100%'
                 });
                 
                 var isAlarm = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '是否正在报警',
                     name: 'isAlarm',
-                    labelWidth: 150,
                     anchor: '100%'
                 });
                 
                 var alarmHeatValue = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '报警最高热值',
                     name: 'alarmHeatValue',
-                   anchor: '100%'
+                    anchor: '100%'
                 });
                 
                 var shiftStep = Ext.create('Ext.form.field.Number', {
-                    fieldLabel: '云台非巡航状态下默认移动步长',
+                    fieldLabel: '非巡航状态下移动步长',
                     name: 'shiftStep',
                     anchor: '100%'
                 });
@@ -216,8 +207,8 @@
                     anchor: '100%'
                 });
                 
-                 var cruiseFromTo = Ext.create('Ext.form.ComboBox', {
-                    fieldLabel: '巡航有左右边界时的巡航方向',
+                var cruiseFromTo = Ext.create('Ext.form.ComboBox', {
+                    fieldLabel: '巡航方向',
                     store: cruiseFromToStore,
                     // allowBlank: false,
                     valueField:'text',
@@ -225,7 +216,6 @@
                     typeAhead: true,
                     mode: 'local',
                     name:'cruiseFromTo',
-                    labelWidth: 100,
                     anchor: '100%'
                 });
                 
@@ -244,7 +234,7 @@
                 
                 var editPTZForm = Ext.create('Ext.form.Panel', {
                     fieldDefaults: {
-                        labelWidth: 150,
+                        labelWidth: 140,
                         labelAlign: 'right'
                     },
                     trackResetOnLoad: true,
@@ -378,43 +368,27 @@
                             layout: 'column',
                             xtype: 'container',
                             items: [{
-                            layout: 'column',
-                            xtype: 'container',                          
-                            items: [{
-                                    columnWidth: .9,
-                                    layout: 'anchor',
-                                    xtype: 'container',
-                                    items: [cruiseRightLimit]
-                                },{
-                            layout: 'column',
-                            xtype: 'container',
-                            items: [{
-                                    columnWidth: .91,
+                                    columnWidth: .2,
                                     layout: 'anchor',
                                     xtype: 'container',
                                     items: [cruiseLeftLimit]
-                                }]
-                        }]
-                        }, {
-                            layout: 'column',
-                            xtype: 'container',                          
-                            items: [{
-                                    columnWidth: .9,
+                                }, {
+                                    columnWidth: .2,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [cruiseRightLimit]
+                                }, {
+                                    columnWidth: .2,
                                     layout: 'anchor',
                                     xtype: 'container',
                                     items: [cruiseUpLimit]
-                                },{
-                            layout: 'column',
-                            xtype: 'container',
-                            items: [{
-                                    columnWidth: .9,
+                                }, {
+                                    columnWidth: .2,
                                     layout: 'anchor',
                                     xtype: 'container',
                                     items: [cruiseDownLimit]
-                                }]
-                        }]
-                        }, {
-                                    columnWidth: .99,
+                                }, {
+                                    columnWidth: .2,
                                     layout: 'anchor',
                                     xtype: 'container',
                                     items: [cruiseFromTo]
@@ -428,9 +402,14 @@
                                     layout: 'anchor',
                                     xtype: 'container',
                                     items: [shiftStep]
+                                },{
+                                    columnWidth: .2,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [isLocked]
                                 }]
                         }
-                                ],
+                    ],
                     buttons: [{
                             text: '提交',
                             iconCls: 'icon-save',

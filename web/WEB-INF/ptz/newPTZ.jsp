@@ -46,21 +46,21 @@
                     allowBlank: false,
                     blankText: "用云台名字不能为空",
                     name: 'name',
-                    labelWidth: 130,
+                    //  labelWidth: 130,
                     anchor: '100%'
                 });
                 
                 var controllUrl = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '编码器IP',
                     name: 'controll_url',
-                    labelWidth: 60,
+                    //   labelWidth: 60,
                     anchor: '100%'
                 });
                 
                 var pelcodCommandUrl = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '通过串口,发pelcod的ip',                   
                     name: 'pelcod_command_url',
-                    lableWidth: 50,
+                    // lableWidth: 50,
                     anchor: '100%'
                 });
                 
@@ -95,16 +95,16 @@
                 });
                 
                 var northMigration = Ext.create('Ext.form.field.Number', {
-                    fieldLabel: '摄像机0角度与正北的偏移',
+                    fieldLabel: '云台0角度与正北的偏移',
                     name: 'north_migration',
-                  //  maxValue: 100,   
+                    //  maxValue: 100,   
                     minValue: 0,
                     anchor: '100%'
                 });
                 
                 var gisMapUrl = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '地图文件存放位置',
-                    labelWidth: 100,
+                    // labelWidth: 100,
                     name: 'gis_map_url',
                     anchor: '100%'
                 });
@@ -129,7 +129,7 @@
                     fieldLabel: '红外摄像机X方向像素',
                     name: 'infrared_pixel_x',
                     anchor: '100%',
-                //    maxValue: 90,   
+                    //    maxValue: 90,   
                     minValue: 0
                 });
                 
@@ -137,7 +137,7 @@
                     fieldLabel: '红外摄像机Y方向像素',
                     name: 'infrared_pixel_y',
                     anchor: '100%',
-                 //   maxValue: 90,   
+                    //   maxValue: 90,   
                     minValue: 0
                 });
                 
@@ -158,30 +158,27 @@
                 var cruiseStep = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '巡航步长',
                     name: 'cruise_step',
-                 //   maxValue: 100,   
+                    //   maxValue: 100,   
                     minValue: 0,
-                    lableWidth: 10,
+                    //   lableWidth: 10,
                     anchor: '100%'
                 });
                 
                 var cruiseRightLimit = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '巡航右边界',
                     name: 'cruise_right_limit',
-                    labelWidth: 120,
                     anchor: '100%'
                 });
                 
                 var cruiseLeftLimit = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '巡航左边界',
                     name: 'cruise_left_limit',
-                    labelWidth: 90,
                     anchor: '100%'
                 });
                 
                 var cruiseUpLimit = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '巡航时最大仰角',
                     name: 'cruise_up_limit',
-                    labelWidth: 140,
                     anchor: '100%'
                 });
                 
@@ -195,7 +192,7 @@
                 var isAlarm = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '是否正在报警',
                     name: 'is_alarm',
-                    labelWidth: 150,
+                    //   labelWidth: 150,
                     anchor: '100%'
                 });
                 
@@ -206,7 +203,7 @@
                 });
                 
                 var shiftStep = Ext.create('Ext.form.field.Number', {
-                    fieldLabel: '非巡航状态下默认移动步长',
+                    fieldLabel: '非巡航状态下移动步长',
                     name: 'shift_step',
                     anchor: '100%'
                 });
@@ -227,13 +224,13 @@
                     typeAhead: true,
                     mode: 'local',
                     name:'cruise_from_to',
-                    labelWidth: 100,
+                    //   labelWidth: 100,
                     anchor: '100%'
                 });
 
                 var newPTZForm = Ext.create('Ext.form.Panel', {
                     fieldDefaults: {
-                        labelWidth: 150,
+                        labelWidth: 140,
                         labelAlign: 'right'
                     },
                     url:'<%=basePath%>ptz/create.htm',
@@ -241,7 +238,7 @@
                     bodyStyle:'padding:5px 5px 0',
                     width: 1290,
                     height: 290,
-                   items: [{
+                    items: [{
                             layout: 'column',
                             xtype: 'container',
                             items: [{
@@ -362,43 +359,27 @@
                             layout: 'column',
                             xtype: 'container',
                             items: [{
-                            layout: 'column',
-                            xtype: 'container',                          
-                            items: [{
-                                    columnWidth: .9,
-                                    layout: 'anchor',
-                                    xtype: 'container',
-                                    items: [cruiseRightLimit]
-                                },{
-                            layout: 'column',
-                            xtype: 'container',
-                            items: [{
-                                    columnWidth: .91,
+                                    columnWidth: .2,
                                     layout: 'anchor',
                                     xtype: 'container',
                                     items: [cruiseLeftLimit]
-                                }]
-                        }]
-                        }, {
-                            layout: 'column',
-                            xtype: 'container',                          
-                            items: [{
-                                    columnWidth: .9,
+                                }, {
+                                    columnWidth: .2,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [cruiseRightLimit]
+                                }, {
+                                    columnWidth: .2,
                                     layout: 'anchor',
                                     xtype: 'container',
                                     items: [cruiseUpLimit]
-                                },{
-                            layout: 'column',
-                            xtype: 'container',
-                            items: [{
-                                    columnWidth: .9,
+                                }, {
+                                    columnWidth: .2,
                                     layout: 'anchor',
                                     xtype: 'container',
                                     items: [cruiseDownLimit]
-                                }]
-                        }]
-                        }, {
-                                    columnWidth: .99,
+                                }, {
+                                    columnWidth: .2,
                                     layout: 'anchor',
                                     xtype: 'container',
                                     items: [cruiseFromTo]
@@ -412,9 +393,14 @@
                                     layout: 'anchor',
                                     xtype: 'container',
                                     items: [shiftStep]
+                                },{
+                                    columnWidth: .2,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [isLocked]
                                 }]
                         }
-                                ],
+                    ],
                     buttons: [{
                             text: '提交',
                             iconCls: 'icon-save',
