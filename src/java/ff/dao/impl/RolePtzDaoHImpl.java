@@ -19,7 +19,7 @@ import java.sql.Timestamp;
  *
  * @author Haoqingmeng
  */
-public class RolePtzSetDaoHImpl extends HibernateDaoSupport implements RolePtzDao {
+public class RolePtzDaoHImpl extends HibernateDaoSupport implements RolePtzDao {
 
     //得到所有的角色
     @Override
