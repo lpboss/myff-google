@@ -167,10 +167,6 @@
                             dataIndex: 'shiftStep',
                             width:170
                         },{
-                            header: '版本',
-                            dataIndex: 'version',
-                            width:80
-                        },{
                             header: '状态',
                             dataIndex: 'isLocked',  
                             renderer: renderPTZIsLucked,
@@ -179,10 +175,6 @@
                             header: '巡航有左右边界时的巡航方向',
                             dataIndex: 'cruiseFromTo',  
                             width:150
-                        },{
-                            header: '巡航设置左右边界时，转动方向',
-                            dataIndex: 'fromTo',  
-                            width:170
                         }],
        
                     selModel :Ext.create('Ext.selection.CheckboxModel'),                                 
@@ -201,7 +193,7 @@
                             handler : function(){
                                 newPTZWin = Ext.create('Ext.window.Window', {
                                     layout: 'fit',
-                                    width:1200,
+                                    width:1300,
                                     height:320,
                                     closeAction: 'destroy',
                                     plain: true,
