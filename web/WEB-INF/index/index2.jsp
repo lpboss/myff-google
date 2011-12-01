@@ -311,7 +311,11 @@
                         {name: 'description'},
                         {name: 'userId',
                             convert:function(value){
-                                return value.name;                 
+                                if(value==null||value==""){
+                                    return "";
+                                }else{
+                                    return value.name;   
+                                }                                              
                             }},
                         {name: 'dealDate'},
                         {name: 'updatedAt'},
@@ -324,7 +328,7 @@
                 
                 
                 
-                 //报警忽视地区alarmIgnoreAreasList
+                //报警忽视地区alarmIgnoreAreasList
                 Ext.define('alarmIgnoreAreasList', {
                     extend : 'Ext.data.Model',
                     fields : [
