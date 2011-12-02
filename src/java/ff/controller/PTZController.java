@@ -175,11 +175,11 @@ public class PTZController extends MultiActionController {
         }//状态    
         if (!request.getParameter("cruise_right_limit").equals("") && !request.getParameter("cruise_left_limit").equals("")) {
             if (Integer.valueOf(request.getParameter("cruise_right_limit")) == Integer.valueOf(request.getParameter("cruise_left_limit"))) {
-                ptz.setCruiseRightLimit(Integer.valueOf(request.getParameter("cruise_right_limit"))); //巡航右边界
-                ptz.setCruiseLeftLimit(Integer.valueOf(request.getParameter("cruise_left_limit"))); //巡航左边界
-            } else {
                 ptz.setCruiseRightLimit(Integer.valueOf("0")); //巡航右边界
                 ptz.setCruiseLeftLimit(Integer.valueOf("0")); //巡航左边界
+            } else {
+                ptz.setCruiseRightLimit(Integer.valueOf(request.getParameter("cruise_right_limit"))); //巡航右边界
+                ptz.setCruiseLeftLimit(Integer.valueOf(request.getParameter("cruise_left_limit"))); //巡航左边界               
             }
         }
         if (!request.getParameter("cruise_up_limit").equals("")) {
@@ -197,10 +197,10 @@ public class PTZController extends MultiActionController {
         if (!request.getParameter("shift_step").equals("")) {
             ptz.setShiftStep(Integer.valueOf(request.getParameter("shift_step")));
         }//云台非巡航状态下默认移动步长
-         if (!request.getParameter("cruise_angle_y_step").equals("")) {
+        if (!request.getParameter("cruise_angle_y_step").equals("")) {
             ptz.setShiftStep(Integer.valueOf(request.getParameter("cruise_angle_y_step")));
         }//巡航上扬角度步长
-         
+
         String jsonStr = ptzService.create(ptz);
         PrintWriter pw;
         try {
@@ -265,15 +265,17 @@ public class PTZController extends MultiActionController {
             ptz.setCruiseStep(Integer.valueOf(request.getParameter("cruiseStep")));
         }//巡航步长
         if (!request.getParameter("isLocked").equals("")) {
-            ptz.setIsLocked(Long.getLong("1"));
+            ptz.setIsLocked(Long.valueOf(request.getParameter("isLocked")));
+        }else{
+            ptz.setIsLocked(Long.valueOf("0"));
         }//状态isLocked     
         if (!request.getParameter("cruiseRightLimit").equals("") && !request.getParameter("cruiseRightLimit").equals("")) {
             if (Integer.valueOf(request.getParameter("cruiseRightLimit")) == Integer.valueOf(request.getParameter("cruiseLeftLimit"))) {
-                ptz.setCruiseRightLimit(Integer.valueOf(request.getParameter("cruiseRightLimit"))); //巡航右边界
-                ptz.setCruiseLeftLimit(Integer.valueOf(request.getParameter("cruiseLeftLimit"))); //巡航左边界
-            } else {
                 ptz.setCruiseRightLimit(Integer.valueOf("0")); //巡航右边界
                 ptz.setCruiseLeftLimit(Integer.valueOf("0")); //巡航左边界
+            } else {
+                ptz.setCruiseRightLimit(Integer.valueOf(request.getParameter("cruiseRightLimit"))); //巡航右边界
+                ptz.setCruiseLeftLimit(Integer.valueOf(request.getParameter("cruiseLeftLimit"))); //巡航左边界
             }
         }
         if (!request.getParameter("cruiseUpLimit").equals("")) {

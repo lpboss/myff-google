@@ -31,8 +31,8 @@ public class PTZ {
 
     private Long id;
     private String name;
-    private Set<RolePtz> RolePtzDetails = new HashSet<RolePtz>(0); //RolePtz表外键
-    private Set<FireAlarm> fireAlarmDetails = new HashSet<FireAlarm>(0); //FireAlarm表外键
+    private Set<RolePtz> RolePtz = new HashSet<RolePtz>(0); //RolePtz表外键
+    private Set<FireAlarm> fireAlarm = new HashSet<FireAlarm>(0); //FireAlarm表外键
     private String controllUrl; //编码器IP',
     private String pelcodCommandUrl; //'通过串口,发pelcod的ip',
     private String visibleCameraUrl; //'可见光摄像机地址.模拟请参考controll_url',
@@ -309,8 +309,8 @@ public class PTZ {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "ptz")
     @Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN) //只是加这一步才可以实现。
     @OrderBy("id")
-    public Set<FireAlarm> getFireAlarmDetails() {
-        return fireAlarmDetails;
+    public Set<FireAlarm> getfireAlarm() {
+        return fireAlarm;
     }
 
     @Column(name = "cruise_angle_y_step")
@@ -319,8 +319,8 @@ public class PTZ {
 
     }
 
-    public void setFireAlarmDetails(Set<FireAlarm> fireAlarmDetails) {
-        this.fireAlarmDetails = fireAlarmDetails;
+    public void setfireAlarm(Set<FireAlarm> fireAlarm) {
+        this.fireAlarm = fireAlarm;
     }
 
     public void setCruiseAngleYStep(Integer cruiseAngleYStep) {
@@ -339,12 +339,12 @@ public class PTZ {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "ptz")
     @OrderBy("id")
-    public Set<RolePtz> getRolePtzDetails() {
-        return RolePtzDetails;
+    public Set<RolePtz> getRolePtz() {
+        return RolePtz;
     }
 
-    public void setRolePtzDetails(Set<RolePtz> RolePtzDetails) {
-        this.RolePtzDetails = RolePtzDetails;
+    public void setRolePtz(Set<RolePtz> RolePtz) {
+        this.RolePtz = RolePtz;
     }    
     
 }
