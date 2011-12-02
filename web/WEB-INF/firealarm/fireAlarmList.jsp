@@ -112,7 +112,7 @@
                         }, {
                             header: '用户名称',
                             sortable : true,
-                            dataIndex: 'userId',
+                            dataIndex: 'user',
                             width:100
                         }, {
                            

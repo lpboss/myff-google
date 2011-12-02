@@ -28,7 +28,7 @@
                         {name: 'heatMin'},
                         {name: 'heatAvg'}, 
                         {name: 'description'},
-                        {name: 'userId',
+                        {name: 'user',
                             mapping:'user.id'                
                         },
                         {name: 'dealDate'},
@@ -68,7 +68,7 @@
                 });
                 var ptzVAngle = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '垂直角度',
-                    allowBlank: false,
+//                    allowBlank: false,
                     maxValue: 360,   
                     minValue: 0,
                     blankText: "垂直角度不能为空",
@@ -79,7 +79,7 @@
                 var heatMin = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '最低热值',
                     minValue: 0,
-                    allowBlank: false,
+//                    allowBlank: false,
                     blankText: "最低热值不能为空",
                     name: 'heatMin',
                     anchor: '95%'
@@ -117,46 +117,18 @@
                 });
               
 
-                var ptz =  Ext.create('Ext.data.Store', {
-                    //autoDestroy : true,
-                    model : 'PTZ',
-                    proxy : {
-                        type : 'ajax',
-                        url : '<%=basePath%>ptz/getAllPTZs.htm',
-                        reader : {
-                            type : 'json',
-                            root : 'root',// JSON数组对象名
-                            totalProperty : 'totalProperty'// 数据集记录总数
-                        }
-                    },
-                    //pageSize : pageSize,
-                    autoLoad : true
-                });
-                var user =  Ext.create('Ext.data.Store', {
-                    //autoDestroy : true,
-                    model : 'User',
-                    proxy : {
-                        type : 'ajax',
-                        url : '<%=basePath%>user/getAllUsers.htm',
-                        reader : {
-                            type : 'json',
-                            root : 'root',// JSON数组对象名
-                            totalProperty : 'totalProperty'// 数据集记录总数
-                        }
-                    },
-                    //pageSize : pageSize,
-                    autoLoad : true
-                });
+               
+              
           
                 //供应商
                 var userId = Ext.create('Ext.form.ComboBox', {
-                    store: user,
+                    store: userDS,
                     fieldLabel: '用户ID',
-                    allowBlank: false,
+//                    allowBlank: false,
                     blankText: "用户ID必须选择",
                     valueField: 'id',
                     displayField: 'name',
-                    name: 'userId',//如果不想提交displayField，则在这儿指定要提交的Key，value就是valueField．
+                    name: 'user',//如果不想提交displayField，则在这儿指定要提交的Key，value就是valueField．
                     emptyText: '请选择...',          
                     loadingText: '搜索中...',
                     anchor: '95%',
@@ -166,9 +138,9 @@
                     editable:false
                 });
                 var ptzId = Ext.create('Ext.form.ComboBox', {
-                    store: ptz,
+                    store: ptzDS,
                     fieldLabel: '云台ID',
-                    allowBlank: false,
+//                    allowBlank: false,
                     blankText: "云台ID必须选择",
                     valueField: 'id',
                     displayField: 'name',
