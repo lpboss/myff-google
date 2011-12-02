@@ -285,6 +285,7 @@
                         { name: 'shiftStep'},
                         { name: 'isLocked'},
                         { name: 'isAlarm'},
+                        { name: 'cruiseAngleYStep'},
                         { name: 'alarmHeatValue'},
                         { name: 'cruiseFromTo'}
                     ]

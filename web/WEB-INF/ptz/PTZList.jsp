@@ -77,6 +77,10 @@
                             header: '名字',
                             dataIndex: 'name',
                             width:90
+                        },{
+                            header: '云台品牌',
+                            dataIndex: 'brandType',
+                            width:80
                         }, {
                             header: '编码器IP',
                             dataIndex: 'controllUrl',                         
@@ -85,15 +89,42 @@
                             header: '通过串口,发pelcod的ip',
                             dataIndex: 'pelcodCommandUrl',
                             width:250
-                        }, {
-                            header: '可见光摄像机地址',
-                            dataIndex: 'visibleCameraUrl',                          
+                        },{
+                            header: '地图文件存放位置',
+                            dataIndex: 'gisMapUrl',
                             width:250
-                        }, {
-                            header: '可见光RTSP流',
-                            dataIndex: 'visibleRTSPUrl',
-                            width:90
-                             
+                        },{
+                            header: '巡航步长',
+                            dataIndex: 'cruiseStep',
+                            width:80
+                        },{
+                            header: '非巡航状态下移动步长',
+                            dataIndex: 'shiftStep',
+                            width:170
+                        },{
+                            header: '巡航右边界',
+                            dataIndex: 'cruiseRightLimit',
+                            width:80
+                        },{
+                            header: '巡航左边界',
+                            dataIndex: 'cruiseLeftLimit',
+                            width:80
+                        },{
+                            header: '巡航时最大仰角',
+                            dataIndex: 'cruiseUpLimit',
+                            width:80
+                        },{
+                            header: '巡航时最大俯角',
+                            dataIndex: 'cruiseDownLimit',
+                            width:100
+                        },{
+                            header: '巡航方向',
+                            dataIndex: 'cruiseFromTo',  
+                            width:150
+                        },{
+                            header: '巡航上扬角度步长',
+                            dataIndex: 'cruiseAngleYStep',  
+                            width:100
                         }, {
                             header: '红外RTSP流',
                             dataIndex: 'infraredRTSPUrl',
@@ -105,14 +136,6 @@
                         }, {
                             header: '红外电路板设备地址',
                             dataIndex: 'infraredCircuitUrl',
-                            width:250
-                        },{
-                            header: '摄像机0角度与正北的偏移',//。顺时针为正。
-                            dataIndex: 'northMigration',
-                            width:140
-                        },{
-                            header: '地图文件存放位置',
-                            dataIndex: 'gisMapUrl',
                             width:250
                         },{
                             header: '红外视角X',
@@ -130,51 +153,32 @@
                             header: '红外摄像机Y方向像素',
                             dataIndex: 'infraredPixelY',
                             width:150
+                        }, {
+                            header: '可见光摄像机地址',
+                            dataIndex: 'visibleCameraUrl',                          
+                            width:250
+                        }, {
+                            header: '可见光RTSP流',
+                            dataIndex: 'visibleRTSPUrl',
+                            width:90
+                             
                         },{
-                            header: '品牌类型',
-                            dataIndex: 'brandType',
-                            width:80
-                        },{
-                            header: '巡航步长',
-                            dataIndex: 'cruiseStep',
-                            width:80
-                        },{
-                            header: '巡航右边界',
-                            dataIndex: 'cruiseRightLimit',
-                            width:80
-                        },{
-                            header: '巡航左边界',
-                            dataIndex: 'cruiseLeftLimit',
-                            width:80
-                        },{
-                            header: '最大上仰角度',
-                            dataIndex: 'cruiseUpLimit',
-                            width:80
-                        },{
-                            header: '巡航时最大俯角',
-                            dataIndex: 'cruiseDownLimit',
-                            width:100
-                        },{
-                            header: '是否正在报警',
-                            dataIndex: 'isAlarm',
-                            width:80
+                            header: '云台0角度与正北的偏移',//。顺时针为正。
+                            dataIndex: 'northMigration',
+                            width:140
                         },{
                             header: '报警最高热值',
                             dataIndex: 'alarmHeatValue',
                             width:80
                         },{
-                            header: '云台非巡航状态下默认移动步长',
-                            dataIndex: 'shiftStep',
-                            width:170
+                            header: '是否正在报警',
+                            dataIndex: 'isAlarm',
+                            width:80
                         },{
                             header: '状态',
                             dataIndex: 'isLocked',  
                             renderer: renderPTZIsLucked,
                             width:80
-                        },{
-                            header: '巡航有左右边界时的巡航方向',
-                            dataIndex: 'cruiseFromTo',  
-                            width:150
                         }],
        
                     selModel :Ext.create('Ext.selection.CheckboxModel'),                                 
