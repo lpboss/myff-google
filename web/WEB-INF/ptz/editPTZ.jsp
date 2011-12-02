@@ -146,7 +146,7 @@
                     typeAhead: true,
                     mode: 'local',
                     name:'brandType',
-                    //allowBlank: false,
+                    editable:false,
                     anchor: '100%'
                 });
                 
@@ -216,6 +216,13 @@
                     typeAhead: true,
                     mode: 'local',
                     name:'cruiseFromTo',
+                    editable:false,
+                    anchor: '100%'
+                });
+                
+                 var cruiseAngleYStep = Ext.create('Ext.form.field.Number', {
+                    fieldLabel: '巡航上扬角度步长',
+                    name: 'cruiseAngleYStep',
                     anchor: '100%'
                 });
                 
@@ -264,7 +271,7 @@
                                     columnWidth: .2,
                                     layout: 'anchor',
                                     xtype: 'container',
-                                    items: [visualAngleX]
+                                    items: [alarmHeatValue]
                                 }]
                         },{
                             layout: 'column',
@@ -273,17 +280,17 @@
                                     columnWidth: .4,
                                     layout: 'anchor',
                                     xtype: 'container',
-                                    items: [controllUrl]
+                                    items: [brandType]
                                 },{
                                     columnWidth: .4,
                                     layout: 'anchor',
                                     xtype: 'container',
                                     items: [infraredCameraUrl]
-                                },{
+                                }, {
                                     columnWidth: .2,
                                     layout: 'anchor',
                                     xtype: 'container',
-                                    items: [visualAngleY]
+                                    items: [isAlarm]
                                 }]
                         },{
                             layout: 'column',
@@ -298,11 +305,6 @@
                                     layout: 'anchor',
                                     xtype: 'container',
                                     items: [infraredCircuitUrl]
-                                }, {
-                                    columnWidth: .2,
-                                    layout: 'anchor',
-                                    xtype: 'container',
-                                    items: [infraredPixelX]
                                 }]},
                         {
                             layout: 'column',
@@ -313,10 +315,30 @@
                                     xtype: 'container',
                                     items: [gisMapUrl]
                                 }, {
+                                    columnWidth: .2,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [visualAngleX]
+                                },{
+                                    columnWidth: .2,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [visualAngleY]
+                                }]
+                        },
+                        {
+                            layout: 'column',
+                            xtype: 'container',
+                            items: [{
                                     columnWidth: .4,
                                     layout: 'anchor',
                                     xtype: 'container',
-                                    items: [northMigration]
+                                    items: [controllUrl]
+                                }, {
+                                    columnWidth: .2,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [infraredPixelX]
                                 }, {
                                     columnWidth: .2,
                                     layout: 'anchor',
@@ -328,40 +350,20 @@
                             layout: 'column',
                             xtype: 'container',
                             items: [{
-                                    columnWidth: .4,
-                                    layout: 'anchor',
-                                    xtype: 'container',
-                                    items: [cruiseStep]
-                                }, {
-                                    columnWidth: .4,
-                                    layout: 'anchor',
-                                    xtype: 'container',
-                                    items: [visibleCameraUrl]
-                                }, {
                                     columnWidth: .2,
                                     layout: 'anchor',
                                     xtype: 'container',
-                                    items: [alarmHeatValue]
-                                }]
-                        },
-                        {
-                            layout: 'column',
-                            xtype: 'container',
-                            items: [{
-                                    columnWidth: .4,
+                                    items: [cruiseStep]
+                                },{
+                                    columnWidth: .2,
                                     layout: 'anchor',
                                     xtype: 'container',
-                                    items: [brandType]
+                                    items: [shiftStep]
                                 }, {
                                     columnWidth: .4,
                                     layout: 'anchor',
                                     xtype: 'container',
                                     items: [visibleRTSPUrl]
-                                }, {
-                                    columnWidth: .2,
-                                    layout: 'anchor',
-                                    xtype: 'container',
-                                    items: [isAlarm]
                                 }]
                         },
                         {
@@ -378,6 +380,26 @@
                                     xtype: 'container',
                                     items: [cruiseRightLimit]
                                 }, {
+                                    columnWidth: .4,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [visibleCameraUrl]
+                                }]
+                        },
+                        {
+                            layout: 'column',
+                            xtype: 'container',
+                            items: [{
+                                    columnWidth: .2,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [isLocked]
+                                }]
+                        },
+                        {
+                            layout: 'column',
+                            xtype: 'container',
+                            items: [ {
                                     columnWidth: .2,
                                     layout: 'anchor',
                                     xtype: 'container',
@@ -388,10 +410,10 @@
                                     xtype: 'container',
                                     items: [cruiseDownLimit]
                                 }, {
-                                    columnWidth: .2,
+                                    columnWidth: .4,
                                     layout: 'anchor',
                                     xtype: 'container',
-                                    items: [cruiseFromTo]
+                                    items: [northMigration]
                                 }]
                         },
                         {
@@ -401,12 +423,17 @@
                                     columnWidth: .2,
                                     layout: 'anchor',
                                     xtype: 'container',
-                                    items: [shiftStep]
-                                },{
+                                    items: [cruiseFromTo]
+                                }, {
                                     columnWidth: .2,
                                     layout: 'anchor',
                                     xtype: 'container',
-                                    items: [isLocked]
+                                    items: [cruiseAngleYStep]
+                                }, {
+                                    columnWidth: .4,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: []
                                 }]
                         }
                     ],

@@ -35,28 +35,28 @@ public class PTZ {
     private Set<FireAlarm> fireAlarmDetails = new HashSet<FireAlarm>(0); //FireAlarm表外键
     private String controllUrl; //编码器IP',
     private String pelcodCommandUrl; //'通过串口,发pelcod的ip',
-    private String visibleCameraUrl; //'可见光摄像机地址,模拟请参考controll_url',
+    private String visibleCameraUrl; //'可见光摄像机地址.模拟请参考controll_url',
     private String visibleRTSPUrl; //'可见光RTSP流�,
     private String infraredRTSPUrl; //'红外RTSP流�,
     private String infraredCameraUrl; //'红外摄像机地址',
     private String infraredCircuitUrl; //'红外电路板设备地址',
-    private float northMigration; //'摄像0角度与正北的便宜。顺时针为正�,
+    private float northMigration; //'云台0角度与正北的偏移。顺时针为正�,
     private String gisMapUrl; //'地图文件存放位置',
     private float visualAngleX;//'红外视角X'
     private float visualAngleY;//'红外视角Y'
     private Integer infraredPixelX;//'红外摄像机X方向像素'
     private Integer infraredPixelY;//'红外摄像机Y方向像素'
-    private String brandType; //品牌类型,不同品牌，特性不同，plcod命令拼接方式不同�
-    private Integer cruiseStep;//云台巡航步长
+    private String brandType; //品牌类型.不同品牌，特性不同，plcod命令拼接方式不同�
+    private Integer cruiseStep;//巡航步长
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private Integer isAlarm;// 是否正在报警
     private Integer alarmHeatValue;// 报警最高热值(报警警戒热值)�
     private Integer cruiseRightLimit; //巡航右边�
     private Integer cruiseLeftLimit; //巡航左边�
-    private Integer cruiseUpLimit; //最大上仰角度�
+    private Integer cruiseUpLimit; //巡航时最大仰角�
     private Integer cruiseDownLimit; //巡航时最大俯角�
-    private String cruiseFromTo; //巡航有左右边界时的巡航方向。�
+    private String cruiseFromTo; //巡航方向。�
     private Integer cruiseAngleYStep;//巡航时抬头步长(巡航上扬角度步长)
     private Long isLocked = new Long(0);// 状�'启用，停�,
     private Integer shiftStep; //云台非巡航状态下默认移动步长
