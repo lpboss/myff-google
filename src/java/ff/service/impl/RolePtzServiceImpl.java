@@ -45,7 +45,7 @@ public class RolePtzServiceImpl implements RolePtzService {
     public String getAllRoles() {
         List<Role> roles = rolePtzDao.getAllRoles();
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[]{"users", "rolesPrivilegeDetails", "rolePtzDetails","fireAlarmDetails"});
+        jsonConfig.setExcludes(new String[]{"users", "rolesPrivilegeDetails", "rolePtz","fireAlarm"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm"));
         JSONArray rolesJS = JSONArray.fromObject(roles, jsonConfig);
         String jsonStr = "{totalProperty:" + roles.size() + ",root:" + rolesJS.toString() + "}";
@@ -59,7 +59,7 @@ public class RolePtzServiceImpl implements RolePtzService {
 
         JsonConfig jsonConfig = new JsonConfig();
         //这是需要过滤掉的变量名�        jsonConfig.setExcludes(new String[]{});
-        jsonConfig.setExcludes(new String[]{"users", "rolesPrivilegeDetails", "fireAlarmDetails", "rolePtzDetails"});
+        jsonConfig.setExcludes(new String[]{"users", "rolesPrivilegeDetails", "fireAlarm", "rolePtz"});
         JSONArray ptzJS = JSONArray.fromObject(ptzs, jsonConfig);
         String jsonStr = "{totalProperty:" + ptzs.size() + ",root:" + ptzJS.toString() + "}";
         return jsonStr;
@@ -108,7 +108,7 @@ public class RolePtzServiceImpl implements RolePtzService {
 //        // ptzs = rolePtzDao.getPtzsByIds(ptzids);
 //        rolePtzs = rolePtzDao.getRolePtzByIds(ptzids);
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[]{"fireAlarmDetails", "rolePtzDetails", "rolesPrivilegeDetails"});
+        jsonConfig.setExcludes(new String[]{"fireAlarm", "rolePtz", "rolesPrivilegeDetails"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm:ss"));
         //    JSONObject userJS = JSONObject.fromObject(ignoreAreas, jsonConfig);
         JSONArray ignoreAreasJS = JSONArray.fromObject(ignoreAreas, jsonConfig);
@@ -151,7 +151,7 @@ public class RolePtzServiceImpl implements RolePtzService {
         System.out.println("nhn7");
         JsonConfig jsonConfig = new JsonConfig();
         //这是需要过滤掉的变量名�        jsonConfig.setExcludes(new String[]{});
-        jsonConfig.setExcludes(new String[]{"fireAlarmDetails", "rolePtzDetails", "rolesPrivilegeDetails"});
+        jsonConfig.setExcludes(new String[]{"fireAlarm", "rolePtz", "rolesPrivilegeDetails"});
         JSONArray ptzJS = JSONArray.fromObject(rolePtzs, jsonConfig);
         String jsonStr = "{totalProperty:" + rolePtzs.size() + ",root:" + ptzJS.toString() + "}";
         return jsonStr;
@@ -170,7 +170,7 @@ public class RolePtzServiceImpl implements RolePtzService {
         System.out.println(ignoreAreas);
         System.out.println("14fc432v2");
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[]{"fireAlarmDetails", "rolePtzDetails", "rolesPrivilegeDetails"});
+        jsonConfig.setExcludes(new String[]{"fireAlarm", "rolePtz", "rolesPrivilegeDetails"});
         jsonConfig.registerJsonValueProcessor(Timestamp.class, new DateJsonValueProcessor("yyyy-MM-dd HH:mm:ss"));
         JSONArray ignoreAreasJS = JSONArray.fromObject(ignoreAreas, jsonConfig);
         String jsonStr = ignoreAreasJS.toString();
