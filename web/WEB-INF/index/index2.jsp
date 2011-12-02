@@ -306,7 +306,7 @@
                         {name: 'heatMin'},
                         {name: 'heatAvg'}, 
                         {name: 'description'},
-                        {name: 'userId',
+                        {name: 'user',
                             convert:function(value){
                                 if(value==null||value==""){
                                     return "";
@@ -551,6 +551,38 @@
                     ]
                 });
         
+        
+                userDS =  Ext.create('Ext.data.Store', {
+                    //autoDestroy : true,
+                    model : 'User',
+                    proxy : {
+                        type : 'ajax',
+                        url : '<%=basePath%>user/getAllUsers.htm',
+                        reader : {
+                            type : 'json',
+                            root : 'root',// JSON数组对象名
+                            totalProperty : 'totalProperty'// 数据集记录总数
+                        }
+                    },
+                    //pageSize : pageSize,
+                    autoLoad : true
+                });
+                
+                ptzDS =  Ext.create('Ext.data.Store', {
+                    //autoDestroy : true,
+                    model : 'PTZ',
+                    proxy : {
+                        type : 'ajax',
+                        url : '<%=basePath%>ptz/getAllPTZs.htm',
+                        reader : {
+                            type : 'json',
+                            root : 'root',// JSON数组对象名
+                            totalProperty : 'totalProperty'// 数据集记录总数
+                        }
+                    },
+                    //pageSize : pageSize,
+                    autoLoad : true
+                });
             });      
         </script>
     </head>
