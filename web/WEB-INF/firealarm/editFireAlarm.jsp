@@ -15,30 +15,7 @@
         <meta http-equiv="content-type" content="text/html; charset=utf-8">
         <script type="text/javascript">
             Ext.onReady(function(){
-                Ext.define('FireAlarmEdit', {
-                    extend : 'Ext.data.Model',
-                    fields : [{name: 'id'},
-                        { name: 'ptz',
-                            mapping:'ptz.id' 
-                        },
-                        { name: 'actionDate'},
-                        {name: 'ptzAngleX'},
-                        {name: 'ptzAngleY'},
-                        {name: 'heatMax'},
-                        {name: 'heatMin'},
-                        {name: 'heatAvg'}, 
-                        {name: 'description'},
-                        {name: 'user',
-                            mapping:'user.id'                
-                        },
-                        {name: 'dealDate'},
-                        {name: 'updatedAt'},
-                        {name: 'createdAt'},
-                        {name: 'version'},
-                        {name: 'isLocked'}
-                           
-                    ]
-                });
+              
                 
                 var fireAlarmId = <%=request.getParameter("id")%>;
                 var number = Ext.create('Ext.form.field.Number', {
@@ -121,7 +98,7 @@
               
           
                 //供应商
-                var userId = Ext.create('Ext.form.ComboBox', {
+                var user = Ext.create('Ext.form.ComboBox', {
                     store: userDS,
                     fieldLabel: '用户ID',
 //                    allowBlank: false,
@@ -137,7 +114,7 @@
                     minChars: 0,          
                     editable:false
                 });
-                var ptzId = Ext.create('Ext.form.ComboBox', {
+                var ptz = Ext.create('Ext.form.ComboBox', {
                     store: ptzDS,
                     fieldLabel: '云台ID',
 //                    allowBlank: false,
@@ -186,7 +163,7 @@
                                     columnWidth: .3,
                                     layout: 'anchor',
                                     xtype: 'container',
-                                    items: [ptzId]
+                                    items: [ptz]
                                 }, {
                                     columnWidth: .35,
                                     layout: 'anchor',
@@ -210,7 +187,7 @@
                                     columnWidth: .35,
                                     layout: 'anchor',
                                     xtype: 'container',
-                                    items: [userId]
+                                    items: [user]
                                 },{
                                     columnWidth: .35,
                                     layout: 'anchor',

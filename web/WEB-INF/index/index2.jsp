@@ -498,7 +498,30 @@
                         {name: 'isLocked'}
                     ]
                 });
-
+                Ext.define('FireAlarmEdit', {
+                    extend : 'Ext.data.Model',
+                    fields : [{name: 'id'},
+                        { name: 'ptz',
+                            mapping:'ptz.id' 
+                        },
+                        { name: 'actionDate'},
+                        {name: 'ptzAngleX'},
+                        {name: 'ptzAngleY'},
+                        {name: 'heatMax'},
+                        {name: 'heatMin'},
+                        {name: 'heatAvg'}, 
+                        {name: 'description'},
+                        {name: 'user',
+                            mapping:'user.id'                
+                        },
+                        {name: 'dealDate'},
+                        {name: 'updatedAt'},
+                        {name: 'createdAt'},
+                        {name: 'version'},
+                        {name: 'isLocked'}
+                           
+                    ]
+                });
 
                 Ext.define('Privilege', {
                     extend : 'Ext.data.Model',
@@ -581,6 +604,22 @@
                         }
                     },
                     //pageSize : pageSize,
+                    autoLoad : true
+                });
+                
+                fireAlarmDS =  Ext.create('Ext.data.Store', {
+                    //autoDestroy : true,
+                    model : 'FireAlarm',
+                    proxy : {
+                        type : 'ajax',
+                        url : '<%=basePath%>firealarm/getAllFireAlarm.htm',
+                        reader : {
+                            type : 'json',
+                            root : 'root',// JSON数组对象名
+                            totalProperty : 'totalProperty'// 数据集记录总数
+                        }
+                    },
+                    pageSize : pageSize,
                     autoLoad : true
                 });
             });      

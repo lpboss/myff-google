@@ -44,21 +44,7 @@
             
                 //用户设置---------------------------------------------------------
                 //生成有关用户的Grid
-                fireAlarmDS =  Ext.create('Ext.data.Store', {
-                    //autoDestroy : true,
-                    model : 'FireAlarm',
-                    proxy : {
-                        type : 'ajax',
-                        url : '<%=basePath%>firealarm/getAllFireAlarm.htm',
-                        reader : {
-                            type : 'json',
-                            root : 'root',// JSON数组对象名
-                            totalProperty : 'totalProperty'// 数据集记录总数
-                        }
-                    },
-                    pageSize : pageSize,
-                    autoLoad : true
-                });
+             
             
                 function renderFireAlarmIsLucked(value, cellmeta, record, index, columnIndex, store){
                     if (record.get("isLocked")=="1"){
@@ -259,24 +245,10 @@
                             }
                         }]
                 });
-                var ptz =  Ext.create('Ext.data.Store', {
-                    //autoDestroy : true,
-                    model : 'PTZ',
-                    proxy : {
-                        type : 'ajax',
-                        url : '<%=basePath%>ptz/getAllPTZs.htm',
-                        reader : {
-                            type : 'json',
-                            root : 'root',// JSON数组对象名
-                            totalProperty : 'totalProperty'// 数据集记录总数
-                        }
-                    },
-                    //pageSize : pageSize,
-                    autoLoad : true
-                });
+          
            
-                var ptzId = Ext.create('Ext.form.ComboBox', {
-                    store: ptz,
+                var ptz = Ext.create('Ext.form.ComboBox', {
+                    store: ptzDS,
                     fieldLabel: '云台ID',
                     allowBlank: false,
                     blankText: "云台ID必须选择",
@@ -317,7 +289,7 @@
                              
                                 start : 0,
                                 limit : pageSize,
-                                ptz_id: Ext.getCmp('ptzId').getValue(),
+                                ptz_id: Ext.getCmp('ptzid').getValue(),
                                 begin_time: Ext.getCmp('beginTime').getRawValue(),
                                 end_time: Ext.getCmp('endTime').getRawValue()
                             }
@@ -360,7 +332,7 @@
                                     columnWidth: .3,
                                     layout: 'column',
                                     xtype: 'container',
-                                    items: [ptzId]
+                                    items: [ptz]
                                 },{
                                     columnWidth: .1,
                                     layout: 'anchor',
