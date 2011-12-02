@@ -221,7 +221,7 @@ public class FireAlarmController extends MultiActionController {
 
         Integer heatAvg = Integer.valueOf(request.getParameter("heatAvg"));
         Integer heatMin = Integer.valueOf(request.getParameter("heatMin"));
-        Long userid = Long.valueOf(request.getParameter("userId"));
+        Long userid = Long.valueOf(request.getParameter("user"));
         Long ptzid = Long.valueOf(request.getParameter("ptz"));
         PTZ ptz = ptzService.getPTZById(ptzid);
         FireAlarm fireAlarm = fireAlarmService.getFireAlarmById(id);

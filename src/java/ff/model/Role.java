@@ -31,7 +31,7 @@ public class Role implements java.io.Serializable {
     private Long id;
     private String name;
     private PTZ ptz;
-    private Set<RolePtz> RolePtzDetails = new HashSet<RolePtz>(0);
+    private Set<RolePtz> RolePtz = new HashSet<RolePtz>(0);
     private Set<RolesPrivilegeDetail> rolesPrivilegeDetails = new HashSet<RolesPrivilegeDetail>(0);
     private Timestamp createdAt;
     private Timestamp updatedAt;
@@ -122,12 +122,12 @@ public class Role implements java.io.Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "role")
     @OrderBy("id")
-    public Set<RolePtz> getRolePtzDetails() {
-        return RolePtzDetails;
+    public Set<RolePtz> getRolePtz() {
+        return RolePtz;
     }
 
-    public void setRolePtzDetails(Set<RolePtz> RolePtzDetails) {
-        this.RolePtzDetails = RolePtzDetails;
+    public void setRolePtz(Set<RolePtz> RolePtz) {
+        this.RolePtz = RolePtz;
     }
 
     @OneToOne(fetch = FetchType.EAGER)

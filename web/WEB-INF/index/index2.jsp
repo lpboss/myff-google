@@ -306,7 +306,7 @@
                         {name: 'heatMin'},
                         {name: 'heatAvg'}, 
                         {name: 'description'},
-                        {name: 'userId',
+                        {name: 'user',
                             convert:function(value){
                                 if(value==null||value==""){
                                     return "";
@@ -498,7 +498,30 @@
                         {name: 'isLocked'}
                     ]
                 });
-
+                Ext.define('FireAlarmEdit', {
+                    extend : 'Ext.data.Model',
+                    fields : [{name: 'id'},
+                        { name: 'ptz',
+                            mapping:'ptz.id' 
+                        },
+                        { name: 'actionDate'},
+                        {name: 'ptzAngleX'},
+                        {name: 'ptzAngleY'},
+                        {name: 'heatMax'},
+                        {name: 'heatMin'},
+                        {name: 'heatAvg'}, 
+                        {name: 'description'},
+                        {name: 'user',
+                            mapping:'user.id'                
+                        },
+                        {name: 'dealDate'},
+                        {name: 'updatedAt'},
+                        {name: 'createdAt'},
+                        {name: 'version'},
+                        {name: 'isLocked'}
+                           
+                    ]
+                });
 
                 Ext.define('Privilege', {
                     extend : 'Ext.data.Model',
@@ -551,6 +574,54 @@
                     ]
                 });
         
+        
+                userDS =  Ext.create('Ext.data.Store', {
+                    //autoDestroy : true,
+                    model : 'User',
+                    proxy : {
+                        type : 'ajax',
+                        url : '<%=basePath%>user/getAllUsers.htm',
+                        reader : {
+                            type : 'json',
+                            root : 'root',// JSON数组对象名
+                            totalProperty : 'totalProperty'// 数据集记录总数
+                        }
+                    },
+                    //pageSize : pageSize,
+                    autoLoad : true
+                });
+                
+                ptzDS =  Ext.create('Ext.data.Store', {
+                    //autoDestroy : true,
+                    model : 'PTZ',
+                    proxy : {
+                        type : 'ajax',
+                        url : '<%=basePath%>ptz/getAllPTZs.htm',
+                        reader : {
+                            type : 'json',
+                            root : 'root',// JSON数组对象名
+                            totalProperty : 'totalProperty'// 数据集记录总数
+                        }
+                    },
+                    //pageSize : pageSize,
+                    autoLoad : true
+                });
+                
+                fireAlarmDS =  Ext.create('Ext.data.Store', {
+                    //autoDestroy : true,
+                    model : 'FireAlarm',
+                    proxy : {
+                        type : 'ajax',
+                        url : '<%=basePath%>firealarm/getAllFireAlarm.htm',
+                        reader : {
+                            type : 'json',
+                            root : 'root',// JSON数组对象名
+                            totalProperty : 'totalProperty'// 数据集记录总数
+                        }
+                    },
+                    pageSize : pageSize,
+                    autoLoad : true
+                });
             });      
         </script>
     </head>
