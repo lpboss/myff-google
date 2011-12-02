@@ -84,15 +84,15 @@
                         }, {
                             header: '编码器IP',
                             dataIndex: 'controllUrl',                         
-                            width:250
+                            width:260
                         }, {
                             header: '通过串口,发pelcod的ip',
                             dataIndex: 'pelcodCommandUrl',
-                            width:250
+                            width:260
                         },{
                             header: '地图文件存放位置',
                             dataIndex: 'gisMapUrl',
-                            width:250
+                            width:260
                         },{
                             header: '巡航步长',
                             dataIndex: 'cruiseStep',
@@ -100,7 +100,7 @@
                         },{
                             header: '非巡航状态下移动步长',
                             dataIndex: 'shiftStep',
-                            width:170
+                            width:120
                         },{
                             header: '巡航右边界',
                             dataIndex: 'cruiseRightLimit',
@@ -112,15 +112,15 @@
                         },{
                             header: '巡航时最大仰角',
                             dataIndex: 'cruiseUpLimit',
-                            width:80
+                            width:90
                         },{
                             header: '巡航时最大俯角',
                             dataIndex: 'cruiseDownLimit',
-                            width:100
+                            width:90
                         },{
                             header: '巡航方向',
                             dataIndex: 'cruiseFromTo',  
-                            width:150
+                            width:70
                         },{
                             header: '巡航上扬角度步长',
                             dataIndex: 'cruiseAngleYStep',  
@@ -128,44 +128,43 @@
                         }, {
                             header: '红外RTSP流',
                             dataIndex: 'infraredRTSPUrl',
-                            width:90
+                            width:260
                         }, {
                             header: '红外摄像机地址',
                             dataIndex: 'infraredCameraUrl',
-                            width:90
+                            width:260
                         }, {
                             header: '红外电路板设备地址',
                             dataIndex: 'infraredCircuitUrl',
-                            width:250
+                            width:260
                         },{
                             header: '红外视角X',
                             dataIndex: 'visualAngleX',
-                            width:90
+                            width:70
                         },{
                             header: '红外视角Y',
                             dataIndex: 'visualAngleY',
-                            width:90
+                            width:70
                         },{
                             header: '红外摄像机X方向像素',
                             dataIndex: 'infraredPixelX',
-                            width:150
+                            width:120
                         },{
                             header: '红外摄像机Y方向像素',
                             dataIndex: 'infraredPixelY',
-                            width:150
+                            width:120
                         }, {
                             header: '可见光摄像机地址',
                             dataIndex: 'visibleCameraUrl',                          
-                            width:250
+                            width:260
                         }, {
                             header: '可见光RTSP流',
                             dataIndex: 'visibleRTSPUrl',
-                            width:90
-                             
+                            width:260
                         },{
                             header: '云台0角度与正北的偏移',//。顺时针为正。
                             dataIndex: 'northMigration',
-                            width:140
+                            width:130
                         },{
                             header: '报警最高热值',
                             dataIndex: 'alarmHeatValue',
