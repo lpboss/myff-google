@@ -414,11 +414,6 @@
                                     layout: 'anchor',
                                     xtype: 'container',
                                     items: [cruiseAngleYStep]
-                                }, {
-                                    columnWidth: .4,
-                                    layout: 'anchor',
-                                    xtype: 'container',
-                                    items: []
                                 }]
                         }
                     ],
