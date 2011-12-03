@@ -25,13 +25,10 @@ public class PTZDaoHImpl extends HibernateDaoSupport implements PTZDao {
             ptz.setCreatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
         }
         ptz.setUpdatedAt(new Timestamp(Calendar.getInstance().getTime().getTime()));
-        System.out.println("lllllllllllllllllllllllllllll");
         //正式开始存储数this.getHibernateTemplate().saveOrUpdate(ptz);
         this.getHibernateTemplate().saveOrUpdate(ptz);
         this.getHibernateTemplate().flush();
         this.getHibernateTemplate().clear();
-        System.out.print("9090");
-        System.out.print(ptz);
         return ptz;
 
     }
@@ -69,9 +66,7 @@ public class PTZDaoHImpl extends HibernateDaoSupport implements PTZDao {
     @Override
     public void deletePTZ(String id) {
         Session s = this.getHibernateTemplate().getSessionFactory().openSession();
-
         String sql = "delete from ptzs where id in " + "(" + id + ")";
-
         Query q = s.createSQLQuery(sql);
         q.executeUpdate();
 
