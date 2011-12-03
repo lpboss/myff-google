@@ -502,8 +502,14 @@
                 Ext.define('FireAlarmEdit', {
                     extend : 'Ext.data.Model',
                     fields : [{name: 'id'},
-                        { name: 'ptz',
-                            mapping:'ptz.id' 
+                        { name: 'ptz', mapping:'ptz' 
+                            ,convert:function(value,record){
+                                if(value == null){
+                                    return "";
+                                }else{
+                                    return value.id;
+                                }}
+                           
                         },
                         { name: 'actionDate'},
                         {name: 'ptzAngleX'},
@@ -513,7 +519,13 @@
                         {name: 'heatAvg'}, 
                         {name: 'description'},
                         {name: 'user',
-                            mapping:'user.id'                
+                            mapping:'user'   
+                            ,convert:function(value,record){
+                                if(value == null){
+                                    return "";
+                                }else{
+                                    return value.id;
+                                }}
                         },
                         {name: 'dealDate'},
                         {name: 'updatedAt'},
