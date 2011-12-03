@@ -255,7 +255,7 @@
                     valueField: 'id',
                     displayField: 'name',
                     name: 'ptzId',//如果不想提交displayField，则在这儿指定要提交的Key，value就是valueField．
-                    id:"ptzId",
+                    id:"ptz",
                     emptyText: '请选择...',          
                     loadingText: '搜索中...',
                     anchor: '95%',
@@ -289,7 +289,7 @@
                              
                                 start : 0,
                                 limit : pageSize,
-                                ptz_id: Ext.getCmp('ptzid').getValue(),
+                                ptz_id: Ext.getCmp('ptz').getValue(),
                                 begin_time: Ext.getCmp('beginTime').getRawValue(),
                                 end_time: Ext.getCmp('endTime').getRawValue()
                             }

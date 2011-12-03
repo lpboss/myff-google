@@ -29,7 +29,7 @@
 
                 var heatMax =Ext.create('Ext.form.field.Number', {
                     fieldLabel: '最高热值',
-                    allowBlank: false,
+//                    allowBlank: false,
                     blankText: "最高热值不能为空",
                     id: 'heatMax',
                     minValue: 0,
@@ -42,7 +42,7 @@
                 
                 var ptzHAngle = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '水平角度',
-                    allowBlank: false,
+//                    allowBlank: false,
                     blankText: "水平角度不能为空",
                     maxValue: 360,   
                     minValue: 0,
@@ -53,7 +53,7 @@
                     fieldLabel: '垂直角度',
                     maxValue: 360,   
                     minValue: 0,
-                    allowBlank: false,
+//                    allowBlank: false,
                     blankText: "垂直角度不能为空",
                     name: 'ptzVAngle',
                     anchor: '95%'
@@ -62,7 +62,7 @@
                 var heatMin = Ext.create('Ext.form.field.Number', {
                     fieldLabel: '最低热值',
                     minValue: 0,
-                    allowBlank: false,
+//                    allowBlank: false,
                     blankText: "最低热值不能为空",
                     name: 'heatMin',
                     anchor: '95%'
@@ -135,7 +135,7 @@
                 var userId = Ext.create('Ext.form.ComboBox', {
                     store: user,
                     fieldLabel: '用户ID',
-                    allowBlank: false,
+//                    allowBlank: false,
                     blankText: "用户ID必须选择",
                     valueField: 'id',
                     displayField: 'name',

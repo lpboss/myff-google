@@ -28,7 +28,7 @@
                 
                 var heatMax =Ext.create('Ext.form.field.Number', {
                     fieldLabel: '最高热值',
-                    allowBlank: false,
+//                    allowBlank: false,
                     blankText: "最高热值不能为空",
                     minValue: 0,
                     name: 'heatMax',
@@ -38,7 +38,7 @@
                     fieldLabel: '水平角度',
                     maxValue: 360,   
                     minValue: 0,
-                    allowBlank: false,
+//                    allowBlank: false,
                     blankText: "水平角度不能为空",
                     name: 'ptzAngleX',
                     anchor: '95%'
