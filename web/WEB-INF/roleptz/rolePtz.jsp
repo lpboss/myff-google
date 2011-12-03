@@ -118,12 +118,13 @@
                                             scripts: true
                                         }
                                     });
+                                    editRolePtzWin.on("destroy",function(){
+                                        roleDS.load();
+                                    });
+                                    editRolePtzWin.resizable = false;
+                                    editRolePtzWin.show();
                                 }
-                                editRolePtzWin.on("destroy",function(){
-                                    roleDS.load();
-                                });
-                                editRolePtzWin.resizable = false;
-                                editRolePtzWin.show();
+                               
                             }
                         },'-']
                    
