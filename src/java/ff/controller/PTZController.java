@@ -36,7 +36,6 @@ public class PTZController extends MultiActionController {
      *描述：PTZ首页，分5大块，可见光，红外，GIS，云台列表，云台控制
      */
     public ModelAndView index(HttpServletRequest request, HttpServletResponse response) {
-        logger.info("PTZ index page");
         ModelAndView mav = new ModelAndView();
         return mav;
     }
@@ -46,13 +45,11 @@ public class PTZController extends MultiActionController {
      *描述：PTZ命令，上，下，左，右，停    
      */
     public void ptzAction(HttpServletRequest request, HttpServletResponse response) {
-        logger.info("PTZ index page");
         long ptzId = Long.parseLong(request.getParameter("ptz_id"));
         int assignedStep = 0;
         if (request.getParameter("assigned_step") != null && !request.getParameter("assigned_step").equalsIgnoreCase("")) {
             assignedStep = Integer.parseInt(request.getParameter("assigned_step"));
         }
-        System.out.println("assignedStep:" + assignedStep);
         if (request.getParameter("action_type").equalsIgnoreCase("stop_fire_alarm")) {
             PTZ ptz = ptzService.getPTZById(ptzId);
             ptz.setIsAlarm(0);
@@ -72,7 +69,6 @@ public class PTZController extends MultiActionController {
             pw.write(jsonStr);
             pw.close();
         } catch (IOException e) {
-            logger.info(e);
         }
     }
 
@@ -92,7 +88,6 @@ public class PTZController extends MultiActionController {
             pw.write(jsonStr);
             pw.close();
         } catch (IOException e) {
-            logger.info(e);
         }
     }
 
@@ -123,7 +118,6 @@ public class PTZController extends MultiActionController {
      */
     public void getAllPTZs(HttpServletRequest request, HttpServletResponse response) {
         String jsonStr = ptzService.getPTZList();
-        logger.info(jsonStr);
         PrintWriter pw;
         try {
             response.setContentType("text/json; charset=utf-8");
@@ -132,7 +126,6 @@ public class PTZController extends MultiActionController {
             pw.write(jsonStr);
             pw.close();
         } catch (IOException e) {
-            logger.info(e);
         }
     }
 
@@ -210,7 +203,6 @@ public class PTZController extends MultiActionController {
             pw.write(jsonStr);
             pw.close();
         } catch (IOException e) {
-            logger.info(e);
         }
     }
 
@@ -226,7 +218,6 @@ public class PTZController extends MultiActionController {
             pw.write(jsonStr);
             pw.close();
         } catch (IOException e) {
-            logger.info(e);
         }
     }
 
@@ -307,7 +298,6 @@ public class PTZController extends MultiActionController {
             pw.write(jsonStr);
             pw.close();
         } catch (IOException e) {
-            logger.info(e);
         }
     }
 
@@ -324,7 +314,6 @@ public class PTZController extends MultiActionController {
             pw.write(jsonStr);
             pw.close();
         } catch (IOException e) {
-            logger.info(e);
         }
     }
 
@@ -346,7 +335,6 @@ public class PTZController extends MultiActionController {
             pw.write(jsonStr);
             pw.close();
         } catch (IOException e) {
-            logger.info(e);
         }
     }
 }

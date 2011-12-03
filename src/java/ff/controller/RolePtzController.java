@@ -83,7 +83,6 @@ public class RolePtzController extends MultiActionController {
             pw.write(jsonStr);
             pw.close();
         } catch (IOException e) {
-            logger.info(e);
         }
     }
 
@@ -108,7 +107,6 @@ public class RolePtzController extends MultiActionController {
             pw.write(jsonStr);
             pw.close();
         } catch (IOException e) {
-            logger.info(e);
         }
     }
 
@@ -117,10 +115,6 @@ public class RolePtzController extends MultiActionController {
         Long id = Long.valueOf(request.getParameter("id"));
 
         Long roleid = Long.valueOf(request.getParameter("roleId"));
-        logger.info("321c2r");
-        logger.info(id);
-        logger.info(roleid);
-        logger.info("321c2r");
         rolePtzService.resetDefault(roleid);
         RolePtz rolePtz = rolePtzService.getRolePtzById(id, roleid);
 
@@ -133,7 +127,6 @@ public class RolePtzController extends MultiActionController {
             pw.write(jsonStr);
             pw.close();
         } catch (IOException e) {
-            logger.info(e);
         }
     }
 
@@ -171,11 +164,6 @@ public class RolePtzController extends MultiActionController {
         Role role = roleService.getRoleById(roleId);
         rolePtz.setRole(role);
 
-        logger.info("43fv345");
-        logger.info(ptzId);
-        logger.info(roleId);
-        logger.info(rolePtz);
-        logger.info("2t5gbk6");
         String jsonStr = rolePtzService.create(rolePtz, ptzId, roleId);
         PrintWriter pw;
         try {
@@ -185,7 +173,6 @@ public class RolePtzController extends MultiActionController {
             pw.write(jsonStr);
             pw.close();
         } catch (IOException e) {
-            logger.info(e);
         }
     }
 
@@ -204,13 +191,11 @@ public class RolePtzController extends MultiActionController {
             pw.write(jsonStr);
             pw.close();
         } catch (IOException e) {
-            logger.info(e);
         }
     }
 
     //得到rolePtz列表
     public void getAllRolePtzs(HttpServletRequest request, HttpServletResponse response) {
-        logger.info("12s2");
         String jsonStr = rolePtzService.getRolePtzList();
         PrintWriter pw;
         try {
@@ -220,7 +205,6 @@ public class RolePtzController extends MultiActionController {
             pw.write(jsonStr);
             pw.close();
         } catch (IOException e) {
-            logger.info(e);
         }
     }
     
@@ -242,7 +226,6 @@ public class RolePtzController extends MultiActionController {
             pw.write(jsonStr);
             pw.close();
         } catch (IOException e) {
-            logger.info(e);
         }
     }
     
@@ -258,7 +241,6 @@ public class RolePtzController extends MultiActionController {
             pw.write(jsonStr);
             pw.close();
         } catch (IOException e) {
-            logger.info(e);
         }
     }
     
