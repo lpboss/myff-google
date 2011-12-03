@@ -16,7 +16,7 @@
         <title>云台信息设置</title>
 
         <script type="text/javascript">
-            
+            var editPTZWin;
             //处理PTZ是否锁定
             function lockPTZFn(id){              
                 Ext.Ajax.request({                     
@@ -244,12 +244,13 @@
                                             scripts: true
                                         }
                                     });
+                                    editPTZWin.on("destroy",function(){
+                                        PTZDS.load();
+                                    });
+                                    editPTZWin.resizable = false;
+                                    editPTZWin.show();
                                 }
-                                editPTZWin.on("destroy",function(){
-                                    PTZDS.load();
-                                });
-                                editPTZWin.resizable = false;
-                                editPTZWin.show();
+                               
                             }
                         },{                    
                             text: '删除',
