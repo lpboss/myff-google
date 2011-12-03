@@ -38,14 +38,7 @@ public class RolePtzDaoHImpl extends HibernateDaoSupport implements RolePtzDao {
     //得到rolePtz的某一条数据
     @Override
     public RolePtz getRolePtzById(Long id, Long roleid) {
-//        List<RolePtz> rolePtz =  this.getHibernateTemplate().find("from RolePtz where role_id =" + roleid + " and id =" +  id );
-   //     RolePtz rolePtz = (RolePtz) this.getHibernateTemplate().find("from RolePtz where role_id =" + roleid + " and id =" + id);
-          RolePtz rolePtz = (RolePtz) this.getHibernateTemplate().get(RolePtz.class, id );
-        
-        logger.info("133f2v2");
-        logger.info(rolePtz);
-        logger.info(rolePtz.getPtz().getName());
-        logger.info("133f2v2");
+        RolePtz rolePtz = (RolePtz) this.getHibernateTemplate().get(RolePtz.class, id);
         return rolePtz;
     }
 
@@ -86,7 +79,6 @@ public class RolePtzDaoHImpl extends HibernateDaoSupport implements RolePtzDao {
     public void deleteRolePtz(String id, String roleid) {
         Session s = this.getHibernateTemplate().getSessionFactory().openSession();
         String sql = "delete from role_ptzs where role_id =" + roleid + " and id in" + "(" + id + ")";
-        System.out.println(sql);
         Query q = s.createSQLQuery(sql);
         q.executeUpdate();
     }
@@ -123,18 +115,10 @@ public class RolePtzDaoHImpl extends HibernateDaoSupport implements RolePtzDao {
 //        RolePtz rolePtzs = (RolePtz)  this.getHibernateTemplate().get(Role.class, id);
 //         return rolePtzs;
 //    }
-
     //通过id得到rolePtz列表
     @Override
     public RolePtz getRolePtzsById(Long id) {
-        System.out.println("432c12431c");
-        System.out.println(id);
-        System.out.println("1ccvtb5");
-        RolePtz rolePtzs = (RolePtz)  this.getHibernateTemplate().get(RolePtz.class, id);
-        System.out.println("1fc1d1");
-        System.out.println(rolePtzs);
-        System.out.println("12x45g");
+        RolePtz rolePtzs = (RolePtz) this.getHibernateTemplate().get(RolePtz.class, id);
         return rolePtzs;
     }
-    
 }
