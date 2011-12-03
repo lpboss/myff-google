@@ -114,19 +114,41 @@ public class FireAlarmController extends MultiActionController {
 // 创建
 
     public void create(HttpServletRequest request, HttpServletResponse response) {
-
+        Integer heatMax = 0;
+        Float ptzAngleX = Float.valueOf("0");
+        Float ptzAngleY = Float.valueOf("0");
+        Integer heatAvg = 0;
+        Integer heatMin = 0;
         String description = request.getParameter("description");
-        Integer heatMax = Integer.valueOf(request.getParameter("heatMax"));
-        Float ptzAngleX = Float.valueOf(request.getParameter("ptzHAngle"));
-        Float ptzAngleY = Float.valueOf(request.getParameter("ptzVAngle"));
-        Integer heatAvg = Integer.valueOf(request.getParameter("heatAvg"));
-        Integer heatMin = Integer.valueOf(request.getParameter("heatMin"));
-        Long userid = Long.valueOf(request.getParameter("userId"));
-        Long ptzid = Long.valueOf(request.getParameter("ptz"));
-        PTZ ptz = ptzService.getPTZById(ptzid);
+        if (!(request.getParameter("heatMax") == null || "".equals(request.getParameter("heatMax")))) {
+            heatMax = Integer.valueOf(request.getParameter("heatMax"));
+
+        }
+        if (!(request.getParameter("ptzHAngle") == null || "".equals(request.getParameter("ptzHAngle")))) {
+            ptzAngleX = Float.valueOf(request.getParameter("ptzHAngle"));
+
+        }
+        if (!(request.getParameter("ptzVAngle") == null || "".equals(request.getParameter("ptzVAngle")))) {
+            ptzAngleY = Float.valueOf(request.getParameter("ptzVAngle"));
+
+        }
+        if (!(request.getParameter("heatAvg") == null || "".equals(request.getParameter("heatAvg")))) {
+            heatAvg = Integer.valueOf(request.getParameter("heatAvg"));
+        }
+        if (!(request.getParameter("heatMin") == null || "".equals(request.getParameter("heatMin")))) {
+            heatMin = Integer.valueOf(request.getParameter("heatMin"));
+        }
+
         FireAlarm fireAlarm = new FireAlarm();
         fireAlarm.setDescription(description);
-        fireAlarm.setPtz(ptz);
+
+        if (!(request.getParameter("ptz") == null || "".equals(request.getParameter("ptz")))) {
+            Long ptzid = Long.valueOf(request.getParameter("ptz"));
+            PTZ ptz = ptzService.getPTZById(ptzid);
+            fireAlarm.setPtz(ptz);
+        }
+
+
         fireAlarm.setHeatMax(heatMax);
         fireAlarm.setHeatMin(heatMin);
         fireAlarm.setPtzAngleX(ptzAngleX);
@@ -134,8 +156,12 @@ public class FireAlarmController extends MultiActionController {
         fireAlarm.setHeatAvg(heatAvg);
         fireAlarm.setDealDate(java.sql.Timestamp.valueOf(request.getParameter("dealDate")));
         fireAlarm.setActionDate(java.sql.Timestamp.valueOf(request.getParameter("actionDate")));
-        User user = userService.getUserById(userid);
-        fireAlarm.setUser(user);
+        if (!(request.getParameter("userId") == null || "".equals(request.getParameter("userId")))) {
+            Long userid = Long.valueOf(request.getParameter("userId"));
+            User user = userService.getUserById(userid);
+            fireAlarm.setUser(user);
+        }
+
         fireAlarm.setVersion(0);
         fireAlarm.setIsAlarming(Short.valueOf("1"));
         logger.info(description);
@@ -214,20 +240,41 @@ public class FireAlarmController extends MultiActionController {
 
 
 
+        Integer heatMax = 0;
+        Float ptzAngleX = Float.valueOf("0");
+        Float ptzAngleY = Float.valueOf("0");
+        Integer heatAvg = 0;
+        Integer heatMin = 0;
         String description = request.getParameter("description");
-        Integer heatMax = Integer.valueOf(request.getParameter("heatMax"));
-        Float ptzAngleX = Float.valueOf(request.getParameter("ptzAngleX"));
-        Float ptzAngleY = Float.valueOf(request.getParameter("ptzAngleY"));
+        if (!(request.getParameter("heatMax") == null || "".equals(request.getParameter("heatMax")))) {
+            heatMax = Integer.valueOf(request.getParameter("heatMax"));
 
-        Integer heatAvg = Integer.valueOf(request.getParameter("heatAvg"));
-        Integer heatMin = Integer.valueOf(request.getParameter("heatMin"));
-        Long userid = Long.valueOf(request.getParameter("user"));
-        Long ptzid = Long.valueOf(request.getParameter("ptz"));
-        PTZ ptz = ptzService.getPTZById(ptzid);
+        }
+        if (!(request.getParameter("ptzHAngle") == null || "".equals(request.getParameter("ptzHAngle")))) {
+            ptzAngleX = Float.valueOf(request.getParameter("ptzHAngle"));
+
+        }
+        if (!(request.getParameter("ptzVAngle") == null || "".equals(request.getParameter("ptzVAngle")))) {
+            ptzAngleY = Float.valueOf(request.getParameter("ptzVAngle"));
+
+        }
+        if (!(request.getParameter("heatAvg") == null || "".equals(request.getParameter("heatAvg")))) {
+            heatAvg = Integer.valueOf(request.getParameter("heatAvg"));
+        }
+        if (!(request.getParameter("heatMin") == null || "".equals(request.getParameter("heatMin")))) {
+            heatMin = Integer.valueOf(request.getParameter("heatMin"));
+        }
+
         FireAlarm fireAlarm = fireAlarmService.getFireAlarmById(id);
-
         fireAlarm.setDescription(description);
-        fireAlarm.setPtz(ptz);
+
+        if (!(request.getParameter("ptz") == null || "".equals(request.getParameter("ptz")))) {
+            Long ptzid = Long.valueOf(request.getParameter("ptz"));
+            PTZ ptz = ptzService.getPTZById(ptzid);
+            fireAlarm.setPtz(ptz);
+        }
+
+
         fireAlarm.setHeatMax(heatMax);
         fireAlarm.setHeatMin(heatMin);
         fireAlarm.setPtzAngleX(ptzAngleX);
@@ -235,8 +282,14 @@ public class FireAlarmController extends MultiActionController {
         fireAlarm.setHeatAvg(heatAvg);
         fireAlarm.setDealDate(java.sql.Timestamp.valueOf(request.getParameter("dealDate")));
         fireAlarm.setActionDate(java.sql.Timestamp.valueOf(request.getParameter("actionDate")));
-        User user = userService.getUserById(userid);
-        fireAlarm.setUser(user);
+        if (!(request.getParameter("userId") == null || "".equals(request.getParameter("userId")))) {
+            Long userid = Long.valueOf(request.getParameter("userId"));
+            User user = userService.getUserById(userid);
+            fireAlarm.setUser(user);
+        }
+
+
+
         fireAlarm.setVersion(fireAlarm.getVersion() + 1);
 
 

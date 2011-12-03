@@ -55,7 +55,6 @@ public class IgnoreAreasController extends MultiActionController {
     //得到报警忽视地区信息
     public void getAllIgnoreAreases(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("id");
-        logger.info("1212");
         String jsonStr = ignoreAreasService.getIgnoreAreasJSONById(Integer.parseInt(request.getParameter("id")));
         //   String jsonStr = ignoreAreasService.getIgetIgnoreAreasJSONByIdgnoreAreasList();
         PrintWriter pw;
@@ -137,18 +136,7 @@ public class IgnoreAreasController extends MultiActionController {
     //更新报警忽视地区
     public void update(HttpServletRequest request, HttpServletResponse response) {
         Integer id = Integer.valueOf(request.getParameter("id"));
-//        Integer ptzAngelX = Integer.valueOf(request.getParameter("ptzAngelX")); //火警时云台的水平角度    
-//        Integer ptzAngelY = Integer.valueOf(request.getParameter("ptzAngelY")); //火警时云台的Y角度
-//        Integer ccdArea = Integer.valueOf(request.getParameter("ccdArea")); //热成像起火面积值
-//        Integer heatMax = Integer.valueOf(request.getParameter("heatMax"));  //最大热值
-//        Timestamp beginDate = Timestamp.valueOf(request.getParameter("beginDate"));  //火警时间范围(开始)
-//        Timestamp endDate = Timestamp.valueOf(request.getParameter("endDate")); //火警时间范围(结束)
-//        Integer version = Integer.valueOf(request.getParameter("version")); //版本
-//        Long isLocked = Long.valueOf(request.getParameter("isLocked"));//状态
-//        //   Long ptzId = Long.valueOf(request.getParameter("roleId"));
         IgnoreAreas ignoreAreas = ignoreAreasService.getIgnoreAreasById(id);
-        //    ignoreAreas.setId(id);
-
         if (!request.getParameter("ptzAngelX").equals("")) {
             ignoreAreas.setPtzAngelX(Integer.valueOf(request.getParameter("ptzAngelX"))); //火警时云台的水平角度
         }
@@ -167,9 +155,11 @@ public class IgnoreAreasController extends MultiActionController {
         if (!request.getParameter("endDate").equals("")) {
             ignoreAreas.setEndDate(Timestamp.valueOf(request.getParameter("endDate"))); //火警时间范围(结束)
         }
-        if (!request.getParameter("isLocked").equals("")) {
-            ignoreAreas.setIsLocked(Long.getLong("1")); //状态isLocked
-        }
+       if (!request.getParameter("isLocked").equals("")) {
+            ignoreAreas.setIsLocked(Long.valueOf(request.getParameter("isLocked")));
+        }else{
+            ignoreAreas.setIsLocked(Long.valueOf("0"));
+        }//状态isLocked    
         PrintWriter pw;
         try {
 
@@ -196,7 +186,6 @@ public class IgnoreAreasController extends MultiActionController {
             pw.write(jsonStr);
             pw.close();
         } catch (IOException e) {
-            logger.info(e);
         }
     }
 
@@ -204,7 +193,6 @@ public class IgnoreAreasController extends MultiActionController {
     public void ignoreareasLock(HttpServletRequest request, HttpServletResponse response) {
         Integer id = Integer.valueOf(request.getParameter("id"));
         IgnoreAreas ignoreAreas = ignoreAreasService.getIgnoreAreasById(id);
-        System.out.println(ignoreAreas.getIsLocked());
 
         if (ignoreAreas.getIsLocked() == 1) {
             ignoreAreas.setIsLocked(Long.valueOf("0"));
@@ -220,7 +208,6 @@ public class IgnoreAreasController extends MultiActionController {
             pw.write(jsonStr);
             pw.close();
         } catch (IOException e) {
-            logger.info(e);
         }
     }
 }
