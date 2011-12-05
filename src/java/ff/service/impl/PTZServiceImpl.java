@@ -53,7 +53,7 @@ public class PTZServiceImpl implements PTZService {
     public String editPTZ(Long id) {
         PTZ ptz = ptzDao.getPTZById(id);
         JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.setExcludes(new String[]{});                         //这是需要过滤掉的变量名。不过滤会引起循�       JSONObject monitorJS = JSONObject.fromObject(ptz, jsonConfig);
+        jsonConfig.setExcludes(new String[]{});                         //这是需要过滤掉的变量名。不过滤会引起循JSONObject monitorJS = JSONObject.fromObject(ptz, jsonConfig);
         JSONObject monitorJS = JSONObject.fromObject(ptz, jsonConfig);
         String jsonStr = monitorJS.toString();
         return jsonStr;
@@ -109,7 +109,7 @@ public class PTZServiceImpl implements PTZService {
     public String getPTZList() {
         List ptzs = ptzDao.getAllPTZs();
         JsonConfig jsonConfig = new JsonConfig();
-        //这是需要过滤掉的变量名�       jsonConfig.setExcludes(new String[]{});
+        //这是需要过滤掉的变量名jsonConfig.setExcludes(new String[]{});
         jsonConfig.setExcludes(new String[]{"fireAlarm", "rolePtz","ptz"});
         JSONArray ptzJS = JSONArray.fromObject(ptzs, jsonConfig);
         String jsonStr = "{totalProperty:" + ptzs.size() + ",root:" + ptzJS.toString() + "}";
