@@ -145,9 +145,9 @@ public class PTZUtil {
         } else if (ptzAction.equals("infrared_out")) {//热成像镜头焦距变大
             serialPortCommServer.pushCommand(ptzIP, "FF 01 02 00 00 00 03");
         } else if (ptzAction.equals("wiper_on")) {//打开雨刷
-            serialPortCommServer.pushCommand(ptzIP, "FF 01 00 09 00 03 0D");
+            serialPortCommServer.pushCommand(ptzIP, "FF 01 00 09 00 01 0B");
         } else if (ptzAction.equals("wiper_off")) {//关闭雨刷
-            serialPortCommServer.pushCommand(ptzIP, "FF 01 00 0B 00 03 0F");
+            serialPortCommServer.pushCommand(ptzIP, "FF 01 00 0B 00 01 0D");
         }
     }
 
