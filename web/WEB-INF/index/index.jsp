@@ -94,7 +94,7 @@
                 params : {
                     ptz_id: ptz_id,
                     action_type : ptzActionStr,
-                    assignedStep: assignedStep
+                    assigned_step: assignedStep
                 }
             });
         }
