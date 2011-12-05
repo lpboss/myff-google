@@ -15,7 +15,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>报警忽视地区</title>
         <script type="text/javascript">         
-            
+            var editAlarmIgnoreAreasWin;
             //处理锁定状态，
             function lockIgnoreAreasFn(id){              
                 Ext.Ajax.request({                     
@@ -172,12 +172,13 @@
                                             scripts: true
                                         }
                                     });
+                                    editAlarmIgnoreAreasWin.on("destroy",function(){
+                                        alarmIgnoreAreasDS.load();
+                                    });
+                                    editAlarmIgnoreAreasWin.resizable = false;
+                                    editAlarmIgnoreAreasWin.show();
                                 }
-                                editAlarmIgnoreAreasWin.on("destroy",function(){
-                                    alarmIgnoreAreasDS.load();
-                                });
-                                editAlarmIgnoreAreasWin.resizable = false;
-                                editAlarmIgnoreAreasWin.show();
+                            
                             }
                         },'-',{                    
                             text: '删除',
