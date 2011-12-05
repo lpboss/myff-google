@@ -103,6 +103,8 @@ public class PTZUtil {
             serialPortCommServer.getCruiseBreakpoint().remove(ptzIP);
             //允许再次报火警
             serialPortCommServer.getAllowAlarm().put(ptzIP, Boolean.TRUE);
+            //把云台的巡航方向也清了。
+            serialPortCommServer.getCruiseDirection().remove(Long.parseLong(ptzIP));
         } else if (ptzAction.equals("clear_fire_alarm")) {
             //清了火警信息后，只有点巡航按钮后，方可再次对火情发出火警
             System.out.println("已经清空有关火警状态的信息。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
