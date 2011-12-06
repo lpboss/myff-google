@@ -38,31 +38,34 @@
             });
 	
         });
+        
+        getPTZAlarmsInfo = function(){
+            Ext.Ajax.request({
+                url : '<%=basePath%>ptz/getIsAlarmPTZs.htm',
+                success : function (result, request) {
+                    var alarmJSON = result.responseText;
+                    alarmJSON =  Ext.JSON.decode(alarmJSON);
+                    if (alarmJSON.totalProperty > 0){
+                        //alert(alarmJSON.totalProperty);
+                        document.getElementById("map").setAlertMessage("当前状态："+alarmJSON.totalProperty+"处火警！");
+                        alarmSound.play({
+                            onfinish: function() {
+                                loopSound(alarmSound);
+                            }
+                        });
+                    }else{
+                        document.getElementById("map").setAlertMessage("当前状态：0处报警，0处火灾");
+                        alarmSound.stop(alarmSound);
+                    }
+                },
+                failure : function (result, request){
+                },
+                method : 'GET'
+            });
+        }
+            
         Ext.onReady(function() {
-            getPTZAlarmsInfo = function(){
-                Ext.Ajax.request        ({
-                    url : '<%=basePath%>ptz/getIsAlarmPTZs.htm',
-                    success : function (result, request) {
-                        var alarmJSON = result.responseText;
-                        alarmJSON =  Ext.JSON.decode(alarmJSON);
-                        if (alarmJSON.totalProperty > 0){
-                            //alert(alarmJSON.totalProperty);
-                            document.getElementById("map").setAlertMessage("当前状态："+alarmJSON.totalProperty+"处火警！");
-                            alarmSound.play({
-                                onfinish: function() {
-                                    loopSound(alarmSound);
-                                }
-                            });
-                        }else{
-                            document.getElementById("map").setAlertMessage("当前状态：0处报警，0处火灾");
-                            alarmSound.stop(alarmSound);
-                        }
-                    },
-                    failure : function (result, request){
-                    },
-                    method : 'GET'
-                });
-            }
+            
 	
             //定时查询云台报警状态
             var task = {
@@ -83,12 +86,7 @@
                     //turningDirection = ptzActionStr;
                 },
                 failure : function (result, request){
-                    Ext.MessageBox.show({
-                        title: '消息',
-                        msg: "通讯失败，请从新操作",
-                        buttons: Ext.MessageBox.OK,
-                        icon: Ext.MessageBox.WARNING
-                    });
+
                 },
                 method : 'GET',
                 params : {
