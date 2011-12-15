@@ -39,8 +39,7 @@ public class PTZAlertServerHandler implements IDataHandler, IConnectHandler,
         String ip = connection.getRemoteAddress().getHostAddress();
         serialPortCommServer.addConnection(ip, connection);
 
-        System.out.println("热成像传感器报警客户端(" + ip + ":" + connection.getLocalPort()
-                + ")已连接！");
+        System.out.println("热成像传感器报警客户端(" + ip + ":" + connection.getLocalPort() + ")已连接！");
 
         return true;
     }
@@ -54,8 +53,7 @@ public class PTZAlertServerHandler implements IDataHandler, IConnectHandler,
         if (connection != null && connection.isOpen()) {
             String ip = connection.getRemoteAddress().getHostAddress();
             serialPortCommServer.removeConnection(ip);
-            System.out.println("热成像传感器报警(" + ip + ":"
-                    + connection.getLocalPort() + ")已断开！");
+            System.out.println("热成像传感器报警(" + ip + ":" + connection.getLocalPort() + ")已断开！");
         }
         return false;
     }
@@ -75,7 +73,7 @@ public class PTZAlertServerHandler implements IDataHandler, IConnectHandler,
             connection.read(buffer);
             byte[] b = buffer.array();
             String s = serialPortCommServer.byteArray2HexString(b);
-
+            //System.out.println("这是从红外传感器传送出来的信息：" + s);
             //处理回传数据，详见数据格式文档
             if (s.indexOf("7F7F") == 0 && s.lastIndexOf("7F7F") == 24) {
                 //System.out.println("热成像传感器报警信息回传：" +s);
@@ -103,8 +101,7 @@ public class PTZAlertServerHandler implements IDataHandler, IConnectHandler,
             throws IOException {
         if (connection != null && connection.isOpen()) {
             String ip = connection.getRemoteAddress().getHostAddress();
-            System.out.println("热成像传感器报警(" + ip + ":"
-                    + connection.getLocalPort() + ")请求处理超时！");
+            System.out.println("热成像传感器报警(" + ip + ":" + connection.getLocalPort() + ")请求处理超时！");
         }
 
         return false;
@@ -118,8 +115,7 @@ public class PTZAlertServerHandler implements IDataHandler, IConnectHandler,
             throws IOException {
         if (connection != null && connection.isOpen()) {
             String ip = connection.getRemoteAddress().getHostAddress();
-            System.out.println("热成像传感器报警(" + ip + ":"
-                    + connection.getLocalPort() + ")连接超时！");
+            System.out.println("热成像传感器报警(" + ip + ":" + connection.getLocalPort() + ")连接超时！");
         }
 
         return false;

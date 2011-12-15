@@ -13,6 +13,10 @@ import org.xsocket.connection.IDisconnectHandler;
 import org.xsocket.connection.IIdleTimeoutHandler;
 import org.xsocket.connection.INonBlockingConnection;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * 云台控制及角度回传服务器
  *   
@@ -73,7 +77,11 @@ public class PTZControlServerHandler implements IDataHandler, IConnectHandler,
             //接收从云台发送的角度信息
             byte[] b = connection.readBytesByLength(7);
             String s = serialPortCommServer.byteArray2HexString(b);
-
+            Calendar calendar = Calendar.getInstance();
+            long milliseconds = calendar.getTimeInMillis();
+            SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss SSS");
+            Date date = new Date(milliseconds);
+            //System.out.println("这是从云台控制端传送出来的信息：" + s + ",Date:" + timeFormat.format(date));
             //亚安云台算法
             /*
             if (s.indexOf("FF010059") > -1) {//水平角度信息回传

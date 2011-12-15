@@ -46,7 +46,7 @@ public class PTZCruiseTask {
      * 作者：jerry
      * 描述：发送云台角度查询命令，命令的结果会在HeadServerHandler的回调方法onData中进行分析，然后放入serialPortCommServer的angleX，angleY二个类变量中�
      */
-    @Scheduled(fixedDelay = 15)
+    @Scheduled(fixedDelay = 25)
     public synchronized void sendPTZCommand() {
         // 发送云台角度查询命�
         try {
@@ -74,7 +74,7 @@ public class PTZCruiseTask {
     /**
      * 作者：jerry 描述：让所有的云台，按既有模式旋转，比如削苹果皮模式�
      */
-    @Scheduled(fixedDelay = 15)
+    @Scheduled(fixedDelay = 20)
     public synchronized void PTZCruise() {
         if (ptzs != null) {
             for (PTZ ptz : ptzs) {
@@ -330,7 +330,7 @@ public class PTZCruiseTask {
     /**
      * 作者：jerry 描述：根据热值，判断是否为火警�
      */
-    @Scheduled(fixedDelay = 15)
+    @Scheduled(fixedDelay = 20)
     public synchronized void judgeFireAlarm() {
         //double visualAngleX = 20.2;//视角X
         //double visualAngleY = 15.2;//视角Y
@@ -339,8 +339,8 @@ public class PTZCruiseTask {
         if (ptzs != null) {
             for (PTZ ptz : ptzs) {
                 //System.out.println("PTZ:" + ptz);
-                double visualAngleX = ptz.getVisualAngleX();//50;//视角X
-                double visualAngleY = ptz.getVisualAngleY();//38;//视角Y
+                double visualAngleX = ptz.getVisualAngleX();//50;//红外视角X
+                double visualAngleY = ptz.getVisualAngleY();//38;//红外视角Y
 
                 int infraredPixelX = ptz.getInfraredPixelX();//382;//红外像素X数量
                 int infraredPixelY = ptz.getInfraredPixelY();// 288;//红外像素Y数量
@@ -350,12 +350,13 @@ public class PTZCruiseTask {
                 String ptzIP = ptz.getPelcodCommandUrl();//"192.168.254.65";
                 String infraredSetupIP = ptz.getInfraredCircuitUrl();//"192.168.1.50";
 
+                serialPortCommServer.getAngleY(ptzIP);
                 //判断，如果当前没有进行置中操作，则从新判断热
                 int heatMax = serialPortCommServer.getAlertMax(infraredSetupIP);
                 if (serialPortCommServer.getIsMovingCenterForFireAlarm().get(ptzIP) == null && (serialPortCommServer.getAllowAlarm().get(ptzIP) == null || serialPortCommServer.getAllowAlarm().get(ptzIP) == Boolean.TRUE)) {
                     if (heatMax > ptz.getAlarmHeatValue()) {
                         //超过热值后，首先设置云台的报警状态。
-                        ptzService.setIsAlarm(ptz.getId(), heatMax, (float) visualAngleX, (float) visualAngleY);
+                        ptzService.setIsAlarm(ptz.getId(), heatMax, serialPortCommServer.getAngleX(ptzIP), serialPortCommServer.getAngleY(ptzIP));
 
                         int heatPosX = serialPortCommServer.getAlertX(infraredSetupIP);
                         int heatPosY = serialPortCommServer.getAlertY(infraredSetupIP);
