@@ -150,7 +150,11 @@ public class PTZUtil {
             serialPortCommServer.pushCommand(ptzIP, "FF 01 00 0B 00 01 0D");
         }
         //把云台的巡航方向也清了。即，停止后，从新开始时，总是右转。
-        serialPortCommServer.getCruiseDirection().remove(Long.parseLong(ptzIP));
+        if (!serialPortCommServer.getCruiseDirection().get(ptz.getId()).equals("loop")) {
+            serialPortCommServer.getCruiseDirection().put(ptz.getId(), "right");
+        }
+        serialPortCommServer.getCruiseDirection().remove(ptz.getId());
+        logger.info(ptzIP + "，云台的旋转方向信息已经清除。。。。。。。。。。。。。。。。!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!End");
     }
 
     private void setCruiseBreakpoint(String ip) {

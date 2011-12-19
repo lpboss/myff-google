@@ -46,7 +46,7 @@ public class PTZCruiseTask {
      * 作者：jerry
      * 描述：发送云台角度查询命令，命令的结果会在HeadServerHandler的回调方法onData中进行分析，然后放入serialPortCommServer的angleX，angleY二个类变量中�
      */
-    @Scheduled(fixedDelay = 25)
+    @Scheduled(fixedDelay = 30)
     public synchronized void sendPTZCommand() {
         // 发送云台角度查询命�
         try {
@@ -115,6 +115,7 @@ public class PTZCruiseTask {
                     try {
                         //刚开机时，有可能命令运行失败，所以要判断命令执行的结果�
                         commandResult = serialPortCommServer.sendCommand(ptzIP, PTZUtil.getPELCODCommandHexString(1, 0, 0x02, cruiseStep, 0, "right", ptz.getBrandType()));
+                        System.out.println("执行云台右转巡航命令：" + commandResult);
                         if (commandResult) {
                             serialPortCommServer.getAllowCruise().put(ptzIP, Boolean.TRUE);
                         }
@@ -365,7 +366,13 @@ public class PTZCruiseTask {
                         serialPortCommServer.getAllowCruise().put(ptzIP, Boolean.FALSE);
                         //同时不允许此云台再次报告火警
                         serialPortCommServer.getAllowAlarm().put(ptzIP, Boolean.FALSE);
+                        try {
+                            serialPortCommServer.sendCommand(ptzIP, "FF 01 00 00 00 00 01");
+                        } catch (IOException ex) {
+                            Logger.getLogger(PTZCruiseTask.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         serialPortCommServer.pushCommand(ptzIP, "FF 01 00 00 00 00 01");
+
 
                         if (serialPortCommServer.getIsCruising().get(ptzIP) != null && serialPortCommServer.getIsCruising().get(ptzIP) == Boolean.TRUE) {
                             if (serialPortCommServer.getCruiseBreakpoint().get(ptzIP) == null) {
@@ -445,8 +452,22 @@ public class PTZCruiseTask {
                          */
                         String adjustXCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4B, (int) Math.floor(finalPTZAngleX), (int) Math.floor((finalPTZAngleX - Math.floor(finalPTZAngleX)) * 100), "ANGLE_X", ptz.getBrandType());
                         String adjustYCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, (int) Math.floor(finalPTZAngleY), (int) Math.floor((finalPTZAngleY - Math.floor(finalPTZAngleY)) * 100), "ANGLE_Y", ptz.getBrandType());
-                        serialPortCommServer.pushCommand(ptzIP, adjustXCommand);
-                        serialPortCommServer.pushCommand(ptzIP, adjustYCommand);
+                        //在进行命令调整前，先清除所有命令，并停止云台。
+                        serialPortCommServer.getCommandMap().remove(ptzIP);
+                        try {
+                            boolean commandResult = false;
+                            commandResult = serialPortCommServer.sendCommand(ptzIP, "FF 01 00 00 00 00 01");
+                            System.out.println("执行停止命令结果：" + commandResult);
+                            commandResult = serialPortCommServer.sendCommand(ptzIP, "FF 01 00 00 00 00 01");
+                            System.out.println("执行停止命令结果：" + commandResult);
+                            commandResult = serialPortCommServer.sendCommand(ptzIP, adjustXCommand);
+                            System.out.println("执行X角度命令结果：" + commandResult);
+                            commandResult = serialPortCommServer.sendCommand(ptzIP, adjustYCommand);
+                            System.out.println("执行Y角度命令结果：" + commandResult);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
                         //设置正在置中状态位�
                         serialPortCommServer.getIsMovingCenterForFireAlarm().put(ptzIP, Boolean.TRUE);
                         //这里要处理小数位的表达问题，比如32.07，其�7�，这里如果字符串相加要处理为�0
@@ -475,10 +496,15 @@ public class PTZCruiseTask {
                         int heatPosX = serialPortCommServer.getAlertX(infraredSetupIP);
                         int heatPosY = serialPortCommServer.getAlertY(infraredSetupIP);
                         System.out.println("最终调整已经到位后，热值位置：" + heatPosX + "," + heatPosY);
-                    } else if ((Math.abs(currentfloatAngleX - finalAngleX) > 0.03 || Math.abs(currentfloatAngleY - finalAngleY) > 0.03) && new Date().getTime() - finalBeginTime > 2000) {
-                        //只要有一个角度有误差，且时间超过1秒，就继续发送调整命令�
-                        serialPortCommServer.pushCommand(ptzIP, finalMovingInfo.split("\\|")[1]);
-                        serialPortCommServer.pushCommand(ptzIP, finalMovingInfo.split("\\|")[3]);
+                    } else if (new Date().getTime() - finalBeginTime > 2000) {
+                        //只要有一个角度有误差，且时间超过1秒，就继续发送调整命令,不再二个命令同时调整，哪个方向角度不到，就调整哪个方向�
+                        if (Math.abs(currentfloatAngleX - finalAngleX) > 0.03) {
+                            serialPortCommServer.pushCommand(ptzIP, finalMovingInfo.split("\\|")[1]);
+                        }
+                        if (Math.abs(currentfloatAngleY - finalAngleY) > 0.03) {
+                            serialPortCommServer.pushCommand(ptzIP, finalMovingInfo.split("\\|")[3]);
+                        }
+
                         System.out.println("火警发生后，云台调整中，当前的角度：" + currentfloatAngleX + "," + currentfloatAngleY);
                         //设置正在置中状态位�
                         serialPortCommServer.getFinalMovingCenterForFireAlarm().put(ptzIP, finalMovingInfo.split("\\|")[0] + "|" + finalMovingInfo.split("\\|")[1] + "|" + finalMovingInfo.split("\\|")[2] + "|" + finalMovingInfo.split("\\|")[3] + "|" + new Date().getTime());
