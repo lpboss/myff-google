@@ -153,7 +153,6 @@ public class PTZUtil {
         if (!serialPortCommServer.getCruiseDirection().get(ptz.getId()).equals("loop")) {
             serialPortCommServer.getCruiseDirection().put(ptz.getId(), "right");
         }
-        serialPortCommServer.getCruiseDirection().remove(ptz.getId());
         logger.info(ptzIP + "，云台的旋转方向信息已经清除。。。。。。。。。。。。。。。。!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!End");
     }
 
