@@ -42,6 +42,9 @@ public class PTZ {
     private String infraredCircuitUrl; //'红外电路板设备地址',
     private float northMigration; //'云台0角度与正北的偏移。顺时针为正�,
     private String gisMapUrl; //'地图文件存放位置',
+    private String visualUser;//'可见光预览用户'
+    private String visualPassword;//'可见光预览密码'
+    private String playType;//'播放类型',HK或MP
     private float visualAngleX;//'红外视角X'
     private float visualAngleY;//'红外视角Y'
     private Integer infraredPixelX;//'红外摄像机X方向像素'
@@ -345,6 +348,35 @@ public class PTZ {
 
     public void setRolePtz(Set<RolePtz> RolePtz) {
         this.RolePtz = RolePtz;
-    }    
+    }
+
+    @Column(name = "play_type")
+    public String getPlayType() {
+        return playType;
+    }
+
+    public void setPlayType(String playType) {
+        this.playType = playType;
+    }
+
+    @Column(name = "visual_password")
+    public String getVisualPassword() {
+        return visualPassword;
+    }
+
+    public void setVisualPassword(String visualPassword) {
+        this.visualPassword = visualPassword;
+    }
+
+    @Column(name = "visual_user")
+    public String getVisualUser() {
+        return visualUser;
+    }
+
+    public void setVisualUser(String visualUser) {
+        this.visualUser = visualUser;
+    }
+    
+    
     
 }
