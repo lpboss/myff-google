@@ -31,21 +31,37 @@
         var m_iVoice = 0;                                //当前是否打开声音
         var m_iAutoPTZ = 0;                              //当前云台是否正在自转
         var m_iPTZSpeed = 4;                             //云台速度
+        //
+        window.onload = function()
+        { 
+  
+            if(document.getElementById("visiblePlayer").object == null)
+            {
+                alert("请先下载控件并注册！");
+                m_bDVRControl = null;
+            }
+            else
+            {
+                m_bDVRControl = document.getElementById("HIKOBJECT1");
+            }
+        }
         
         function regIPC(deviceIP){
-            //
-            m_bDVRControl = document.getElementById("visiblePlayer");
-            m_iLoginUserId = m_bDVRControl.Login(deviceIP,"8000","admin","12345");
+            m_iLoginUserId = m_bDVRControl.Login(deviceIP,8000,admin,12345);
             if(m_iLoginUserId == -1)
             {
                 alert("注册失败！");
             }
         }
         
-        function showIPC(deviceIP){            
+        function showIPC(deviceIP){
             regIPC(deviceIP);
-            var bRet = m_bDVRControl.StartRealPlay(1,1,1);		
-            
+            var bRet = m_bDVRControl.StartRealPlay(1,1,1);
+					
+            if(bRet)
+            {
+                alert("预览通道成功！");
+            }
         }
         
         function ButtonPress(sKey)
@@ -196,6 +212,7 @@
         //以上为HK的特有变量
         
         
+        
         var ptz_id = 0;	//当前所监控的云台节点ID
         var assignedStep=20;	//云台转动速度，默认步长
         var alarmSound ;
@@ -338,14 +355,13 @@
         }
 
         //切换监控通道
-        function setChannel(id,ptzControlIP,ptzAlertIP,visibleRTSPUrl,infraredRTSPUrl,gisMapUrl,visibleCameraUrl){
+        function setChannel(id,ptzControlIP,ptzAlertIP,visibleRTSPUrl,infraredRTSPUrl,gisMapUrl){
             ptz_id=id;
             document.getElementById("map").setChannel(ptzControlIP,ptzAlertIP,"../images/"+gisMapUrl);
 	
             document.getElementById('infraredPlayer').URL=infraredRTSPUrl;
             document.getElementById('visiblePlayer').URL=visibleRTSPUrl;
-            //以下为适应海康
-            showIPC(visibleCameraUrl);
+	
             /*
             document.getElementById("infraredPlayer").playlist.add(infraredRTSPUrl,infraredRTSPUrl, " :rtsp-caching=500");
             document.getElementById("infraredPlayer").playlist.play();
@@ -540,9 +556,9 @@
                 </object>
             </div>
         </div>
-        <div class="content_right">
-            <object classid="CLSID:CAFCF48D-8E34-4490-8154-026191D73924" id="visiblePlayer" width="1280" height="720" name="visiblePlayer" >                
-            </object>         
+        <div class="content_right">            
+            <object classid="CLSID:CAFCF48D-8E34-4490-8154-026191D73924" id="visiblePlayer" width="400" height="300" name="visiblePlayer" >                
+            </object>
         </div>
     </div>
 
@@ -553,8 +569,8 @@
                 <div class="Cont" id="ISL_Cont_1">      
                     <div class="ScrCont">      
                         <div id="List1_1">
-                            <c:forEach items="${ptzs}" var="ptz"> 
-                                <div class=box><a href="javascript:setChannel(${ptz.id},'${ptz.pelcodCommandUrl}','${ptz.infraredCircuitUrl}','${ptz.visibleRTSPUrl}','${ptz.infraredRTSPUrl}','${ptz.gisMapUrl}','${ptz.visibleCameraUrl}');">${ptz.name}</a></div>
+                            <c:forEach items="${ptzs}" var="ptz">
+                                <div class=box><a href="javascript:showIPC(${ptz.visibleCameraUrl});">${ptz.name}</a></div>
                             </c:forEach>
                             <div class=box><a href="#" target=_blank>洪山坡小区1</a> </div>
                             <div class=box><a href="#" target=_blank>洪山坡小区2</a> </div>
@@ -622,7 +638,8 @@
                     <td><span class="luoxuansaomiao"><a href="javascript:ptzAction('cruise');">螺旋扫描</a></span></td>
                     <td><span class="duijiang"><a id="alarmSwitch" href="javascript:ptzAction('stop_fire_alarm');">关闭报警</a></span></td>
                 </tr>
-            </table></div>
+            </table>
+        </div>
     </div>
 </body>
 </html>

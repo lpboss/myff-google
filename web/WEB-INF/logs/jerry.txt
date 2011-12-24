@@ -18,3 +18,21 @@
 15900276105
 
 李鑫也是上面的分机，邮箱xin88.li@samsung.com
+
+原来的MediaPlayer的播放插件
+<!--<object classid="clsid:6BF52A52-394A-11d3-B153-00C04F79FAA6" id="visiblePlayer">
+                <param name="URL" value=""/>
+                <param name="autoStart" value="true"/>
+                <param name="uiMode" value="none"/>
+                <param name="enableContextMenu" value="false"/>
+                <embed type="application/x-mplayer2"
+                       pluginspage = "http://www.microsoft.com/Windows/MediaPlayer/"
+                       id="ff_visible_player"
+                       name="URL"
+                       value=" "
+                       autostart="false">
+                </embed> 
+            </object>-->
+
+
+                                <!--<div class=box><a href="javascript:setChannel(${ptz.id},'${ptz.pelcodCommandUrl}','${ptz.infraredCircuitUrl}','${ptz.visibleRTSPUrl}','${ptz.infraredRTSPUrl}','${ptz.gisMapUrl}');">${ptz.name}</a></div>-->
