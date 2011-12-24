@@ -541,7 +541,7 @@
             </div>
         </div>
         <div class="content_right">
-            <object classid="CLSID:CAFCF48D-8E34-4490-8154-026191D73924" id="visiblePlayer" width="1280" height="720" name="visiblePlayer" >                
+            <object classid="CLSID:97E289A5-C277-4114-8F3A-DAC14CFB7777" id="visiblePlayer" width="1280" height="720" name="visiblePlayer" >                
             </object>         
         </div>
     </div>
