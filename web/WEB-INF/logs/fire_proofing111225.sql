@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50519
 File Encoding         : 65001
 
-Date: 2011-12-26 09:52:15
+Date: 2011-12-26 11:26:47
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -22,10 +22,12 @@ DROP TABLE IF EXISTS `alarm_ignore_areas`;
 CREATE TABLE `alarm_ignore_areas` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ptz_id` int(11) NOT NULL COMMENT '云台的编号',
-  `ptz_angel_x` smallint(6) DEFAULT '0' COMMENT '火警时云台的水平角度',
-  `ptz_angel_y` smallint(6) DEFAULT NULL COMMENT '火警时云台的Y角度',
+  `ptz_angel_x_from` float(6,0) DEFAULT '0' COMMENT '火警时云台的水平角度',
+  `ptz_angel_x_to` float DEFAULT '0',
+  `ptz_angel_y_from` float(6,0) DEFAULT '0' COMMENT '火警时云台的Y角度',
+  `ptz_angel_y_to` float DEFAULT '0',
   `ccd_area` smallint(6) DEFAULT '0' COMMENT '热成像起火面积值',
-  `heat_max` smallint(6) DEFAULT '0' COMMENT '最大热值',
+  `heat_max` smallint(6) DEFAULT '0' COMMENT '最大热值,如果超出此热值,依然报警',
   `begin_date` datetime DEFAULT NULL COMMENT '火警时间范围',
   `end_date` datetime DEFAULT NULL COMMENT '火警时间范围',
   `is_locked` tinyint(4) DEFAULT '0',
