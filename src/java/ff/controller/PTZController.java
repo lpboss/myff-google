@@ -193,7 +193,7 @@ public class PTZController extends MultiActionController {
             ptz.setShiftStep(Integer.valueOf(request.getParameter("shift_step")));
         }//云台非巡航状态下默认移动步长
         if (!request.getParameter("cruise_angle_y_step").equals("")) {
-            ptz.setCruiseAngleYStep(Integer.valueOf(request.getParameter("cruise_angle_y_step")));
+            ptz.setCruiseAngleYStep(Float.valueOf(request.getParameter("cruise_angle_y_step")));
         }//巡航上扬角度步长
 
         String jsonStr = ptzService.create(ptz);
@@ -289,7 +289,7 @@ public class PTZController extends MultiActionController {
             ptz.setShiftStep(Integer.valueOf(request.getParameter("shiftStep")));
         }//云台非巡航状态下默认移动步长
         if (!request.getParameter("cruiseAngleYStep").equals("")) {
-            ptz.setCruiseAngleYStep(Integer.valueOf(request.getParameter("cruiseAngleYStep")));
+            ptz.setCruiseAngleYStep(Float.valueOf(request.getParameter("cruiseAngleYStep")));
         }//巡航上扬角度步长
 
         //  logger.info(ptzId);

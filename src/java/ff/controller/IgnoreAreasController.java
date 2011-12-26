@@ -55,6 +55,9 @@ public class IgnoreAreasController extends MultiActionController {
     //得到报警忽视地区信息
     public void getAllIgnoreAreases(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("id");
+        System.out.println("12s12s");
+        System.out.println(id);
+        System.out.println("43vb54");
         String jsonStr = ignoreAreasService.getIgnoreAreasJSONById(Integer.parseInt(request.getParameter("id")));
         //   String jsonStr = ignoreAreasService.getIgetIgnoreAreasJSONByIdgnoreAreasList();
         PrintWriter pw;
