@@ -178,6 +178,12 @@
                     anchor: '100%'
                 });
                 
+                var visualUser = Ext.create('Ext.form.field.Text', {
+                    fieldLabel: '可见光预览用户',
+                    name: 'visual_user',
+                    anchor: '100%'
+                });
+                
                 var visualPassword = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '可见光预览密码',
                     name: 'visual_password',
@@ -322,6 +328,11 @@
                                     layout: 'anchor',
                                     xtype: 'container',
                                     items: [infraredCircuitUrl]
+                                }, {
+                                    columnWidth: .2,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [playType]
                                 }]},
                         {
                             layout: 'column',
@@ -450,7 +461,7 @@
                                     columnWidth: .2,
                                     layout: 'anchor',
                                     xtype: 'container',
-                                    items: [playType]
+                                    items: [visualUser]
                                 }, {
                                     columnWidth: .2,
                                     layout: 'anchor',

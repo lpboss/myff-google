@@ -158,6 +158,10 @@
                             dataIndex: 'playType',                          
                             width:70
                         },{
+                            header: '可见光预览用户',
+                            dataIndex: 'visualUser',                          
+                            width:120
+                        },{
                             header: '可见光预览密码',
                             dataIndex: 'visualPassword',                          
                             width:120

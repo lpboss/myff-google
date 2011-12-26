@@ -176,6 +176,12 @@
                     anchor: '100%'
                 });
                 
+                var visualUser = Ext.create('Ext.form.field.Text', {
+                    fieldLabel: '可见光预览用户',
+                    name: 'visualUser',
+                    anchor: '100%'
+                });
+                
                 var visualPassword = Ext.create('Ext.form.field.Text', {
                     fieldLabel: '可见光预览密码',
                     name: 'visualPassword',
@@ -465,7 +471,7 @@
                                     columnWidth: .2,
                                     layout: 'anchor',
                                     xtype: 'container',
-                                    items: [playType]
+                                    items: [visualUser]
                                 }, {
                                     columnWidth: .2,
                                     layout: 'anchor',
