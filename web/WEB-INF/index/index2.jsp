@@ -287,7 +287,9 @@
                         { name: 'isAlarm'},
                         { name: 'cruiseAngleYStep'},
                         { name: 'alarmHeatValue'},
-                        { name: 'cruiseFromTo'}
+                        { name: 'cruiseFromTo'},
+                        { name: 'playType'},
+                        { name: 'visualPassword'}
                     ]
                 });
                 

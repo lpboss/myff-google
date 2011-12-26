@@ -142,6 +142,8 @@ public class PTZController extends MultiActionController {
         ptz.setInfraredCameraUrl(request.getParameter("infrared_camera_url"));//红外摄像机地址
         ptz.setInfraredCircuitUrl(request.getParameter("infrared_circuit_url"));//红外电路板设备地址 
         ptz.setCruiseFromTo(request.getParameter("cruise_from_to"));//巡航有左右边界时的巡航方向
+        ptz.setPlayType(request.getParameter("play_type"));//播放类型
+        ptz.setVisualPassword(request.getParameter("visual_password"));//可见光预览密码
         if (!request.getParameter("north_migration").equals("")) {
             ptz.setNorthMigration(Float.valueOf(request.getParameter("north_migration")));
         }
@@ -234,6 +236,8 @@ public class PTZController extends MultiActionController {
         ptz.setInfraredCameraUrl(request.getParameter("infraredCameraUrl"));//红外摄像机地址
         ptz.setInfraredCircuitUrl(request.getParameter("infraredCircuitUrl"));//红外电路板设备地址 
         ptz.setCruiseFromTo(request.getParameter("cruiseFromTo"));//巡航有左右边界时的巡航方向
+        ptz.setPlayType(request.getParameter("playType"));//播放类型
+        ptz.setVisualPassword(request.getParameter("visualPassword"));//可见光预览密码
         if (!request.getParameter("northMigration").equals("")) {
             ptz.setNorthMigration(Float.valueOf(request.getParameter("northMigration")));
         }

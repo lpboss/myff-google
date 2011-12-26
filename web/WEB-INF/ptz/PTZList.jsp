@@ -153,6 +153,14 @@
                             header: '红外摄像机Y方向像素',
                             dataIndex: 'infraredPixelY',
                             width:120
+                        },{
+                            header: '播放类型',
+                            dataIndex: 'playType',                          
+                            width:70
+                        },{
+                            header: '可见光预览密码',
+                            dataIndex: 'visualPassword',                          
+                            width:120
                         }, {
                             header: '可见光摄像机地址',
                             dataIndex: 'visibleCameraUrl',                          
