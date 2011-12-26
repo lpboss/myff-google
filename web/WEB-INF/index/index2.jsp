@@ -289,7 +289,8 @@
                         { name: 'alarmHeatValue'},
                         { name: 'cruiseFromTo'},
                         { name: 'playType'},
-                        { name: 'visualPassword'}
+                        { name: 'visualPassword'},
+                        { name: 'visualUser'}
                     ]
                 });
                 
