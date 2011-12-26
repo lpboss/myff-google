@@ -329,3 +329,8 @@ ptzBrandArray = [
     ['亚安','YAAN'],
     ['飞越','FY'],
     ]
+    
+playTypeArray = [
+    ['HK','HK'],
+    ['MP','MP'],
+    ]

@@ -60,7 +60,7 @@ public class PTZ {
     private Integer cruiseUpLimit; //巡航时最大仰角�
     private Integer cruiseDownLimit; //巡航时最大俯角�
     private String cruiseFromTo; //巡航方向。�
-    private Integer cruiseAngleYStep;//巡航时抬头步长(巡航上扬角度步长)
+    private float cruiseAngleYStep;//巡航时抬头步长(巡航上扬角度步长)
     private Long isLocked = new Long(0);// 状�'启用，停�,
     private Integer shiftStep; //云台非巡航状态下默认移动步长
 
@@ -317,7 +317,7 @@ public class PTZ {
     }
 
     @Column(name = "cruise_angle_y_step")
-    public Integer getCruiseAngleYStep() {
+    public float getCruiseAngleYStep() {
         return cruiseAngleYStep;
 
     }
@@ -326,7 +326,7 @@ public class PTZ {
         this.fireAlarm = fireAlarm;
     }
 
-    public void setCruiseAngleYStep(Integer cruiseAngleYStep) {
+    public void setCruiseAngleYStep(float cruiseAngleYStep) {
         this.cruiseAngleYStep = cruiseAngleYStep;
 
     }   
