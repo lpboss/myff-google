@@ -1,0 +1,38 @@
+2011-11-09
+1.
+-------------------------------------------------------------------------------------------------------
+2011-11-08
+1.联系熟悉PTZ的人
+2.测试如果右移时带有步长，那再进行角度命令时，这个角度转换命令会不会继续上一次的步长  (测试过，不会。)
+3.什么是自动扫描auto sacn?
+4.用一次0.25度的方式，一点点的水平移动。取代右移命令进行削苹果皮。
+
+飞越厂商电话
+1.高，15069164374
+2.郭，0531-88882705
+
+三星
+13969628208 马小姐
+
+022-23887788转8891董工，三星厂家研发
+15900276105
+
+李鑫也是上面的分机，邮箱xin88.li@samsung.com
+
+原来的MediaPlayer的播放插件
+<!--<object classid="clsid:6BF52A52-394A-11d3-B153-00C04F79FAA6" id="visiblePlayer">
+                <param name="URL" value=""/>
+                <param name="autoStart" value="true"/>
+                <param name="uiMode" value="none"/>
+                <param name="enableContextMenu" value="false"/>
+                <embed type="application/x-mplayer2"
+                       pluginspage = "http://www.microsoft.com/Windows/MediaPlayer/"
+                       id="ff_visible_player"
+                       name="URL"
+                       value=" "
+                       autostart="false">
+                </embed> 
+            </object>-->
+
+
+                                <!--<div class=box><a href="javascript:setChannel(${ptz.id},'${ptz.pelcodCommandUrl}','${ptz.infraredCircuitUrl}','${ptz.visibleRTSPUrl}','${ptz.infraredRTSPUrl}','${ptz.gisMapUrl}');">${ptz.name}</a></div>-->
