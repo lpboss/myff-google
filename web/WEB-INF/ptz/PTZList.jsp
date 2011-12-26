@@ -339,7 +339,7 @@
                     if (item.text=="报警忽视地区"){  
                         newAlarmIgnoreAreasWin = Ext.create('Ext.window.Window', {
                             layout: 'fit',
-                            width: 900,
+                            width: 1190,
                             height: 350,
                             closeAction: 'destroy',
                             plain: true,
