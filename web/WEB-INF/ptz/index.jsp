@@ -39,7 +39,7 @@
             });
         
             var ptzId = 1;
-            var alarmSound ;
+           alarmSound ;
             soundManager.onready(function(oStatus) {
                 if (!oStatus.success) {
                     return false;

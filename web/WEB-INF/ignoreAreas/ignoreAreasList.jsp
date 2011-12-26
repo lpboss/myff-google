@@ -41,7 +41,7 @@
             Ext.onReady(function(){      
                 
                 var userId = <%=request.getParameter("parent_id")%>;
-                
+                console.info(userId);
                 alarmIgnoreAreasDS =  Ext.create('Ext.data.Store', {
                     //autoDestroy : true,
                     model : 'alarmIgnoreAreasList',

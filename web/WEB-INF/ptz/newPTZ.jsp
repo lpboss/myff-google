@@ -29,6 +29,18 @@
                     data : ptzBrandArray
                 });
                 
+                playTypeStore = Ext.create('Ext.data.ArrayStore', {
+                    autoDestroy: true,
+                    storeId: 'playTypeStore',
+                    // reader configs
+                    idIndex: 0,
+                    fields: [
+                        {name: 'text', type: 'string'},
+                        {name: 'value', type: 'string'}
+                    ],
+                    data : playTypeArray
+                });
+                
                 cruiseFromToStore = Ext.create('Ext.data.ArrayStore', {
                     autoDestroy: true,
                     storeId: 'cruiseFromToStore',
@@ -149,6 +161,26 @@
                     //   emptyText:'请选择云台品牌...',
                     readOnly:false,
                     editable:false,
+                    anchor: '100%'
+                });
+                
+                var playType = Ext.create('Ext.form.ComboBox', {
+                    fieldLabel: '播放类型',
+                    store: playTypeStore,
+                    // allowBlank: false,
+                    valueField:'text',
+                    displayField:'text',
+                    typeAhead: true,
+                    mode: 'local',
+                    name:'play_type',
+                    readOnly:false,
+                    editable:false,
+                    anchor: '100%'
+                });
+                
+                var visualPassword = Ext.create('Ext.form.field.Text', {
+                    fieldLabel: '可见光预览密码',
+                    name: 'visual_password',
                     anchor: '100%'
                 });
                 
@@ -414,6 +446,16 @@
                                     layout: 'anchor',
                                     xtype: 'container',
                                     items: [cruiseAngleYStep]
+                                }, {
+                                    columnWidth: .2,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [playType]
+                                }, {
+                                    columnWidth: .2,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [visualPassword]
                                 }]
                         }
                     ],
