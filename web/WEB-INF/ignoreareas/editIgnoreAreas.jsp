@@ -22,8 +22,10 @@
                     fields : [
                         { name: 'id'},
                         { name: 'ptzId',mapping:'ptz.id'},
-                        { name: 'ptzAngelX'},
-                        { name: 'ptzAngelY'},
+                        { name: 'ptzAngelXFrom'},
+                        { name: 'ptzAngelXTo'},
+                        { name: 'ptzAngelYFrom'},
+                        { name: 'ptzAngelYTo'},
                         { name: 'ccdArea'},
                         { name: 'heatMax'},
                         { name: 'beginDate'},
@@ -45,16 +47,29 @@
                     anchor: '95%'
                 });
                 
-                var ptzAngelX2 = Ext.create('Ext.form.field.Number', {
-                    fieldLabel: '火警时云台的水平角度',                 
-                    name: 'ptzAngelX',
+                var ptzAngelXFrom = Ext.create('Ext.form.field.Number', {
+                    fieldLabel: '火警时云台的水平角度(始)',                 
+                    name: 'ptzAngelXFrom',
                     anchor: '95%'
                 });
                 
-                var ptzAngelY = Ext.create('Ext.form.field.Number', {
-                    fieldLabel: '火警时云台的Y角度',
+                var ptzAngelXTo = Ext.create('Ext.form.field.Number', {
+                    fieldLabel: '火警时云台的水平角度(末)',                 
+                    name: 'ptzAngelXTo',
+                    anchor: '95%'
+                });
+                
+                var ptzAngelYFrom = Ext.create('Ext.form.field.Number', {
+                    fieldLabel: '火警时云台的Y角度(始)',
                     lableWidth:100,
-                    name: 'ptzAngelY',
+                    name: 'ptzAngelYFrom',
+                    anchor: '95%'
+                });
+                
+                var ptzAngelYTo = Ext.create('Ext.form.field.Number', {
+                    fieldLabel: '火警时云台的Y角度(末)',
+                    lableWidth:100,
+                    name: 'ptzAngelYTo',
                     anchor: '95%'
                 });
                 
@@ -92,7 +107,7 @@
                 });
                 
                 var alarmIgnoreAreasStore =  Ext.create('Ext.data.Store', {
-                    model : 'Editignoreareas',
+                    model : 'alarmIgnoreAreasList',
                     proxy : {
                         type : 'ajax',
                         //   url : '<%=basePath%>ignoreareas/getAllIgnoreAreases.htm?for_cbb=true',
@@ -114,7 +129,7 @@
                     frame:true,
                     url: '<%=basePath%>ignoreareas/update.htm?id=' + userId,
                     reader: Ext.create('Ext.data.reader.Json',{
-                        model: 'Editignoreareas',
+                        model: 'alarmIgnoreAreasList',
                         root: ''
                     }),
                     bodyStyle:'padding:5px 5px 0',
@@ -127,7 +142,7 @@
                                     columnWidth: .45,
                                     layout: 'anchor',                                  
                                     xtype: 'container',
-                                    items: [ptzId,ptzAngelX2,ptzAngelY,ccdArea]
+                                    items: [ptzId,ptzAngelXFrom,ptzAngelXTo,ptzAngelYFrom,ptzAngelYTo,ccdArea]
                                 }, {
                                     columnWidth: .53,
                                     layout: 'anchor',
