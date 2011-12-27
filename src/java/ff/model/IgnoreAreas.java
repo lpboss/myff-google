@@ -24,8 +24,10 @@ public class IgnoreAreas {
 
     private Integer id;
     private PTZ ptz;   //云台的外键
-    private Integer ptzAngelX; //火警时云台的水平角度
-    private Integer ptzAngelY; //火警时云台的Y角度
+    private Integer ptzAngelXFrom; //火警时云台的水平角度(始)
+    private Integer ptzAngelXTo; //火警时云台的水平角度(末)
+    private Integer ptzAngelYFrom; //火警时云台的Y角度(始)
+    private Integer ptzAngelYTo; //火警时云台的Y角度(末)
     private Integer ccdArea; //热成像起火面积值
     private Integer heatMax; //最大热值
     private Timestamp beginDate;//火警时间范围(开始)
@@ -76,16 +78,6 @@ public class IgnoreAreas {
         return isLocked;
     }
 
-    @Column(name = "ptz_angel_x", length = 6)
-    public Integer getPtzAngelX() {
-        return ptzAngelX;
-    }
-
-    @Column(name = "ptz_angel_y", length = 6)
-    public Integer getPtzAngelY() {
-        return ptzAngelY;
-    }
-
     @Column(name = "updated_at", nullable = false, length = 19)
     public Timestamp getUpdatedAt() {
         return updatedAt;
@@ -115,14 +107,6 @@ public class IgnoreAreas {
         this.isLocked = isLocked;
     }
 
-    public void setPtzAngelX(Integer ptzAngelX) {
-        this.ptzAngelX = ptzAngelX;
-    }
-
-    public void setPtzAngelY(Integer ptzAngelY) {
-        this.ptzAngelY = ptzAngelY;
-    }
-
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
@@ -136,6 +120,42 @@ public class IgnoreAreas {
 
     public void setPtz(PTZ ptz) {
         this.ptz = ptz;
+    }
+
+    @Column(name = "ptz_angel_x_from", length = 6)
+    public Integer getPtzAngelXFrom() {
+        return ptzAngelXFrom;
+    }
+
+    public void setPtzAngelXFrom(Integer ptzAngelXFrom) {
+        this.ptzAngelXFrom = ptzAngelXFrom;
+    }
+
+    @Column(name = "ptz_angel_y_from", length = 6)
+    public Integer getPtzAngelYFrom() {
+        return ptzAngelYFrom;
+    }
+
+    public void setPtzAngelYFrom(Integer ptzAngelYFrom) {
+        this.ptzAngelYFrom = ptzAngelYFrom;
+    }
+
+    @Column(name = "ptz_angel_x_to", length = 6)
+    public Integer getPtzAngelXTo() {
+        return ptzAngelXTo;
+    }
+
+    public void setPtzAngelXTo(Integer ptzAngelXTo) {
+        this.ptzAngelXTo = ptzAngelXTo;
+    }
+
+    @Column(name = "ptz_angel_y_to", length = 6)
+    public Integer getPtzAngelYTo() {
+        return ptzAngelYTo;
+    }
+
+    public void setPtzAngelYTo(Integer ptzAngelYTo) {
+        this.ptzAngelYTo = ptzAngelYTo;
     }
     
     

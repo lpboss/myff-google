@@ -153,6 +153,18 @@
                             header: '红外摄像机Y方向像素',
                             dataIndex: 'infraredPixelY',
                             width:120
+                        },{
+                            header: '播放类型',
+                            dataIndex: 'playType',                          
+                            width:70
+                        },{
+                            header: '可见光预览用户',
+                            dataIndex: 'visualUser',                          
+                            width:120
+                        },{
+                            header: '可见光预览密码',
+                            dataIndex: 'visualPassword',                          
+                            width:120
                         }, {
                             header: '可见光摄像机地址',
                             dataIndex: 'visibleCameraUrl',                          
@@ -299,27 +311,16 @@
                                 }
                             }       
                         }]
-                        
-                        
-                        
                 });
                     
+                //右键菜单跳到--报警忽视地区
                 PTZGrid.on("itemcontextmenu",function(view,record,item,index,e,options){
                     e.preventDefault();
-                    PTZMenu.showAt(e.getXY());
-                    //privilegeRightMenu.show(node.ui.getAnchor());
+                    Menu.showAt(e.getXY());
                     currentNode =  record;
                     nodeId = record.get('id');
-                    //window.status = currentNode.get('id');
-                    //alert(typeof(currentNode.get('id'))==="string");
-                    AlarmIgnoreAreasItem.setDisabled(false);               
-                    if (record.getId() == 0){
-                    } if (record.getId() == 1){
-                        AlarmIgnoreAreasItem.setDisabled(true);
-                    
-                    } if (record.getId() == 2){
-                        AlarmIgnoreAreasItem.setDisabled(true);                                           
-                    }
+                     console.info(nodeId);
+                    AlarmIgnoreAreasItem.setDisabled(false); 
                 },this);
                 //右键菜单
                 var AlarmIgnoreAreasItem = Ext.create('Ext.menu.Item', {
@@ -328,19 +329,17 @@
                     handler: rightMenuPTZFn
                 });
              
-                var PTZMenu = Ext.create('Ext.menu.Menu', {
+                var Menu = Ext.create('Ext.menu.Menu', {
                     //id: 'privilege_right_menu',
                     items: [
                         AlarmIgnoreAreasItem,      
                         '-'                
                     ]});
-                //添加模块（权限）
-                //添加菜单（权限）
                 function rightMenuPTZFn(item,e){
-                    if (item.text=="报警忽视地区"){
+                    if (item.text=="报警忽视地区"){  
                         newAlarmIgnoreAreasWin = Ext.create('Ext.window.Window', {
                             layout: 'fit',
-                            width: 900,
+                            width: 1190,
                             height: 350,
                             closeAction: 'destroy',
                             plain: true,
@@ -349,7 +348,7 @@
                             //modal: true,
                             title: '报警忽视地区',
                             autoLoad: {
-                                url: "<%=basePath%>ignoreareas/ignoreAreasList.htm?parent_id=" + currentNode.get('id'),
+                                url: "<%=basePath%>ignoreareas/ignoreAreasList.htm?parent_id=" + nodeId,
                                 scripts: true
                             }
                         });
@@ -359,159 +358,6 @@
                         });
                         newAlarmIgnoreAreasWin.resizable = false;
                         newAlarmIgnoreAreasWin.show();
-                    }else if (item.text=="编辑模块(权限)"){
-                        editPrivilegeModuleWin = Ext.create('Ext.window.Window', {
-                            layout: 'fit',
-                            width: 350,
-                            height: 190,
-                            closeAction: 'destroy',
-                            plain: true,
-                            modal: true,
-                            constrain:true,
-                            //modal: true,
-                            title: '编辑模块(权限)',
-                            autoLoad: {
-                                url: "<%=basePath%>privilege/editPrivilegeModule.htm?id=" + currentNode.get('id'),
-                                scripts: true
-                            }
-                        });
-                        editPrivilegeModuleWin.on("destroy",function(){
-                            //刷新整个树
-                            PTZDS.load();
-                        });
-                        editPrivilegeModuleWin.resizable = false;
-                        editPrivilegeModuleWin.show();
-                    }else if (item.text=="添加菜单(权限)"){
-                        newPrivilegeMenuWin = Ext.create('Ext.window.Window', {
-                            layout: 'fit',
-                            width: 350,
-                            height: 235,
-                            closeAction: 'destroy',
-                            plain: true,
-                            modal: true,
-                            constrain:true,
-                            //modal: true,
-                            title: '添加菜单(权限)',
-                            autoLoad: {
-                                url: "<%=basePath%>privilege/newPrivilegeMenu.htm?parent_id=" + currentNode.get('id'),
-                                scripts: true
-                            }
-                        });
-                        newPrivilegeMenuWin.on("destroy",function(){
-                            //刷新整个树
-                            PTZDS.load({
-                                node: currentNode.parentNode
-                            });
-                        });
-                        newPrivilegeMenuWin.resizable = false;
-                        newPrivilegeMenuWin.show();
-                    }else if (item.text=="编辑菜单(权限)"){
-                        editPrivilegeMenuWin = Ext.create('Ext.window.Window', {
-                            layout: 'fit',
-                            width: 350,
-                            height: 265,
-                            closeAction: 'destroy',
-                            plain: true,
-                            modal: true,
-                            constrain:true,
-                            //modal: true,
-                            title: '编辑权限',
-                            autoLoad: {
-                                url: "<%=basePath%>privilege/editPrivilegeMenu.htm?id=" + currentNode.get('id'),
-                                scripts: true
-                            }
-                        });
-                        editPrivilegeMenuWin.on("destroy",function(){
-                            //刷新整个树
-                            PTZDS.load({
-                                node: currentNode.parentNode
-                            });
-                        });
-                        editPrivilegeMenuWin.resizable = false;
-                        editPrivilegeMenuWin.show();
-                    }else if (item.text=="刷新"){
-                        if (currentNode.isLeaf()){
-                            PTZDS.load({
-                                node: currentNode.parentNode
-                            });
-                        }else{
-                            //判断是否导入过，就是是否被人点击过，因为这是Ajax的，一但点击，就会导入数据。
-                            if (currentNode.isLoaded()){
-                                //如果导入过，就要刷新后，再expand();
-                                sysPrivilegeTree.loader.dataUrl = "<%=basePath%>privilege/getSysPrivilegeChildrenById.htm?node=" + currentNode.get('id'); //定义子节点的Loader
-                                sysPrivilegeTree.loader.load(currentNode,expandCurrentNode);
-                            }else{
-                                //如果没有导入过，触发expand事件，就可以导入，相当于刷新。
-                                currentNode.expand();
-                            }
-                            //tree.getRootNode().select();
-                            window.state = currentNode.get('id');
-                            //currentNode.load();
-                        }
-                    }else if(item.text == "删除权限"){
-                        Ext.MessageBox.confirm("提示","你确认删除 \""+currentNode.get('text')+"\" 吗？",function(btn){
-                            if(btn=="yes"){                
-                                Ext.Ajax.request({
-                                    url : '<%=basePath%>privilege/destroySysPrivilege.htm',
-                                    method:'GET',
-                                    success:function(response,opts){
-                                        var backInfo = Ext.JSON.decode(response.responseText).info;
-                                        if(backInfo === 'success') {
-                                            PTZDS.load({
-                                                node: currentNode.parentNode
-                                            });
-                                        } else {
-                                            Ext.MessageBox.alert('提示信息', backInfo);
-                                        }
-                                    },
-                                    params: {"id":currentNode.get('id')}
-                                });
-                            }else{
-                                //alert("no");
-                            }
-                        });
-                    }else if (item.text=="上移"){
-                        Ext.Ajax.request({
-                            url : '<%=basePath%>privilege/sortUp.htm',
-                            success : function (result, request) {
-                                PTZDS.load({
-                                    node: currentNode.parentNode
-                                });
-                            },
-                            failure : function (result, request){
-                                Ext.MessageBox.show({
-                                    title: '消息',
-                                    msg: "通讯失败，请从新操作",
-                                    buttons: Ext.MessageBox.OK,
-                                    icon: Ext.MessageBox.WARNING
-                                });
-                            },
-                            method : 'POST',
-                            params : {
-                                id : currentNode.get('id')
-                            }
-                        });
-                    }else if (item.text=="下移"){
-                        Ext.Ajax.request({
-                            url : '<%=basePath%>privilege/sortDown.htm',
-                            success : function (result, request) {
-                                PTZDS.load({
-                                    node: currentNode.parentNode
-                                });
-                            },
-                            failure : function (result, request){
-                                Ext.MessageBox.show({
-                                    title: '消息',
-                                    msg: "通讯失败，请从新操作",
-                                    buttons: Ext.MessageBox.OK,
-                                    icon: Ext.MessageBox.WARNING
-                                });
-                            },
-                            method : 'POST',
-                            params : {
-                                id : currentNode.get('id')
-                            }
-                        });
                     }
                 }
    
@@ -522,6 +368,5 @@
     </head>
     <body>
         <div id="PTZ_list"></div>
-
     </body>
 </html>
