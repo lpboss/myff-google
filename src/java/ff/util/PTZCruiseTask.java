@@ -312,7 +312,7 @@ public class PTZCruiseTask {
         int angleYStepIntPart = (int) ptz.getCruiseAngleYStep();
         int angleY1 = Integer.parseInt(currentAngleY.split("\\.")[0]) + angleYStepIntPart;
         float angleyStepDecimalPart = ptz.getCruiseAngleYStep() - angleYStepIntPart;
-        int angleY2 = Integer.parseInt(currentAngleY.split("\\.")[1]) + (int) (angleyStepDecimalPart * 100);
+        int angleY2 = 0;
         //angleY2 = 0;//呼略小角度。
         //如果将要上仰的角度大于最大上仰角度，但不高于最大上仰角与上仰步长之合时
         //飞越云台不准，经常误差0.2度，所以要作很多处理。
@@ -325,6 +325,8 @@ public class PTZCruiseTask {
             angleY1 = ptz.getCruiseDownLimit();
         } else if (Math.abs(angleY1 - (ptz.getCruiseUpLimit() + ptz.getCruiseAngleYStep())) < 0.3) {
             angleY1 = ptz.getCruiseDownLimit();
+        } else {
+            angleY2 = Integer.parseInt(currentAngleY.split("\\.")[1]) + (int) (angleyStepDecimalPart * 100);
         }
         System.out.println("调整后的Y角度值是：" + (double) (angleY1 + angleY2 / 100d) + " ,.....................................................");
         serialPortCommServer.getIsCruisingPresetAngleY().put(ptzIP, (double) (angleY1 + angleY2 / 100d));
