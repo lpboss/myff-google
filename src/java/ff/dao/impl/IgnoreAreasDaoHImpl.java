@@ -69,4 +69,14 @@ public class IgnoreAreasDaoHImpl extends HibernateDaoSupport implements IgnoreAr
         IgnoreAreas ignoreAreas = (IgnoreAreas) this.getHibernateTemplate().get(IgnoreAreas.class, id);
         return ignoreAreas;
     }
+
+    @Override
+    public boolean inIgnoreAreas(float angelX, float angelY) {
+        List<IgnoreAreas> ignoreAreases = this.getHibernateTemplate().findByNamedParam("from IgnoreAreas where ptz_angel_x_from < :ptz_angel_x AND :ptz_angel_x < ptz_angel_x_to AND ptz_angel_y_from < :ptz_angel_y AND :ptz_angel_y < ptz_angel_y_to AND", new String[]{"ptz_angel_x", "ptz_angel_y"}, new Float[]{angelX, angelY});
+        if (ignoreAreases.size() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

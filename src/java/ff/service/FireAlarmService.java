@@ -25,5 +25,5 @@ public interface FireAlarmService {
 
     FireAlarm getFireAlarmById(Long id);
 
-    public String fireAlarmLock(FireAlarm fireAlarm);
+    String fireAlarmLock(FireAlarm fireAlarm);
 }

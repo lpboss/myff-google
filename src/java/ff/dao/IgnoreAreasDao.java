@@ -24,4 +24,6 @@ public interface IgnoreAreasDao {
     IgnoreAreas getIgnoreAreasByName(String name); //添加
 
     void deleteIgnoreAreas(String id); //删除
+    
+    boolean inIgnoreAreas(float angelX, float angelY);
 }

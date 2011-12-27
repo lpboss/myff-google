@@ -19,12 +19,14 @@ public interface IgnoreAreasService {
     String getIgnoreAreasJSONById(Integer id);
 
     IgnoreAreas getIgnoreAreasById(Integer id);
-    
+
     String getEditIgnoreAreasJSONById(Integer id);
 
     String update(IgnoreAreas ignoreAreas);
 
     String deleteIgnoreAreas(String id); //删除
-    
+
     String ignoreAreasLock(IgnoreAreas ignoreAreas);
+
+    boolean inIgnoreAreas(float angelX, float angelY);
 }
