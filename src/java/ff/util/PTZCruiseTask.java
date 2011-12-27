@@ -308,7 +308,7 @@ public class PTZCruiseTask {
         //判断，如果当前的Y
         String ptzIP = ptz.getPelcodCommandUrl();
         String currentAngleY = serialPortCommServer.getAngleYString(ptzIP);
-        //上扬角度，由参数(float)决定,，默认10�
+        //上扬角度，由参数(float)决定
         int angleYStepIntPart = (int) ptz.getCruiseAngleYStep();
         int angleY1 = Integer.parseInt(currentAngleY.split("\\.")[0]) + angleYStepIntPart;
         float angleyStepDecimalPart = ptz.getCruiseAngleYStep() - angleYStepIntPart;
@@ -316,15 +316,18 @@ public class PTZCruiseTask {
         //angleY2 = 0;//呼略小角度。
         //如果将要上仰的角度大于最大上仰角度，但不高于最大上仰角与上仰步长之合时
         //飞越云台不准，经常误差0.2度，所以要作很多处理。
-        if (angleY1 > ptz.getCruiseUpLimit() && Math.abs(Double.parseDouble(currentAngleY) - ptz.getCruiseUpLimit()) > 0.2) {
+
+        if (Integer.parseInt(currentAngleY.split("\\.")[0]) == ptz.getCruiseUpLimit()) {
+            angleY1 = ptz.getCruiseDownLimit();
+        } else if (angleY1 > ptz.getCruiseUpLimit() && Math.abs(Double.parseDouble(currentAngleY) - ptz.getCruiseUpLimit()) > 0.2) {
             angleY1 = ptz.getCruiseUpLimit();
         } else if (Math.abs(Double.parseDouble(currentAngleY) - ptz.getCruiseUpLimit()) < 0.3) {
             angleY1 = ptz.getCruiseDownLimit();
         } else if (Math.abs(angleY1 - (ptz.getCruiseUpLimit() + ptz.getCruiseAngleYStep())) < 0.3) {
             angleY1 = ptz.getCruiseDownLimit();
         }
-        System.out.println("调整后的Y角度值是：" + (double) (angleY1 + angleY2 / 100) + " ,.....................................................");
-        serialPortCommServer.getIsCruisingPresetAngleY().put(ptzIP, (double) (angleY1 + angleY2 / 100));
+        System.out.println("调整后的Y角度值是：" + (double) (angleY1 + angleY2 / 100d) + " ,.....................................................");
+        serialPortCommServer.getIsCruisingPresetAngleY().put(ptzIP, (double) (angleY1 + angleY2 / 100d));
         try {
             serialPortCommServer.sendCommand(ptzIP, "FF 01 00 00 00 00 01");
         } catch (IOException ex) {
@@ -432,11 +435,7 @@ public class PTZCruiseTask {
                             //超过热值后,首先把中心位置对准,然后以此中心位置,对比数据库中的屏蔽区域.
                             ptzService.setIsAlarm(ptz.getId(), heatMax, serialPortCommServer.getAngleX(ptzIP), serialPortCommServer.getAngleY(ptzIP));
 
-
-
-
-
-                            //如果正在巡航，则在发送其它命令前，先保存断点。并停止巡航�
+                            //如果正在巡航，则在发送其它命令前，先保存断点。并停止巡航
                             serialPortCommServer.getAllowCruise().put(ptzIP, Boolean.FALSE);
                             //同时不允许此云台再次报告火警
                             serialPortCommServer.getAllowAlarm().put(ptzIP, Boolean.FALSE);
