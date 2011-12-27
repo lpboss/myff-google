@@ -41,7 +41,7 @@
             Ext.onReady(function(){      
                 
                 var userId = <%=request.getParameter("parent_id")%>;
-                
+                console.info(userId);
                 alarmIgnoreAreasDS =  Ext.create('Ext.data.Store', {
                     //autoDestroy : true,
                     model : 'alarmIgnoreAreasList',
@@ -70,21 +70,29 @@
                 
                 {
                     store: alarmIgnoreAreasDS,
-                    width: screenWidth-190,
+                    width: screenWidth-170,
                     height: screenHeight-285, 
                     layout:'fit',                     
                     columns : [Ext.create('Ext.grid.RowNumberer'), {
                             header: '云台的编号',
                             dataIndex: 'ptzId',
-                            width:80
+                            width:70
                         }, {
-                            header: '火警时云台的水平角度',
-                            dataIndex: 'ptzAngelX',                         
-                            width:130
+                            header: '火警时云台的水平角度(始)',
+                            dataIndex: 'ptzAngelXFrom',                         
+                            width:140
                         }, {
-                            header: '火警时云台的Y角度',
-                            dataIndex: 'ptzAngelY',
-                            width:110
+                            header: '火警时云台的水平角度(末)',
+                            dataIndex: 'ptzAngelXTo',                         
+                            width:140
+                        }, {
+                            header: '火警时云台的Y角度(始)',
+                            dataIndex: 'ptzAngelYFrom',
+                            width:140
+                        }, {
+                            header: '火警时云台的Y角度(末)',
+                            dataIndex: 'ptzAngelYTo',
+                            width:140
                         }, {
                             header: '热成像起火面积值',
                             dataIndex: 'ccdArea',                          
@@ -92,7 +100,7 @@
                         }, {
                             header: '最大热值',
                             dataIndex: 'heatMax',
-                            width:60                           
+                            width:100                           
                         }, {
                             header: '火警时间范围(开始)',
                             dataIndex: 'beginDate',

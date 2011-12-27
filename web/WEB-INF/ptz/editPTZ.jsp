@@ -29,6 +29,18 @@
                     data : ptzBrandArray
                 });
                 
+                 playTypeStore = Ext.create('Ext.data.ArrayStore', {
+                    autoDestroy: true,
+                    storeId: 'playTypeStore',
+                    // reader configs
+                    idIndex: 0,
+                    fields: [
+                        {name: 'text', type: 'string'},
+                        {name: 'value', type: 'string'}
+                    ],
+                    data : playTypeArray
+                });
+                
                 cruiseFromToStore = Ext.create('Ext.data.ArrayStore', {
                     autoDestroy: true,
                     storeId: 'cruiseFromToStore',
@@ -147,6 +159,32 @@
                     mode: 'local',
                     name:'brandType',
                     editable:false,
+                    anchor: '100%'
+                });
+                
+                var playType = Ext.create('Ext.form.ComboBox', {
+                    fieldLabel: '播放类型',
+                    store: playTypeStore,
+                    // allowBlank: false,
+                    valueField:'text',
+                    displayField:'text',
+                    typeAhead: true,
+                    mode: 'local',
+                    name:'playType',
+                    readOnly:false,
+                    editable:false,
+                    anchor: '100%'
+                });
+                
+                var visualUser = Ext.create('Ext.form.field.Text', {
+                    fieldLabel: '可见光预览用户',
+                    name: 'visualUser',
+                    anchor: '100%'
+                });
+                
+                var visualPassword = Ext.create('Ext.form.field.Text', {
+                    fieldLabel: '可见光预览密码',
+                    name: 'visualPassword',
                     anchor: '100%'
                 });
                 
@@ -430,10 +468,15 @@
                                     xtype: 'container',
                                     items: [cruiseAngleYStep]
                                 }, {
-                                    columnWidth: .4,
+                                    columnWidth: .2,
                                     layout: 'anchor',
                                     xtype: 'container',
-                                    items: []
+                                    items: [visualUser]
+                                }, {
+                                    columnWidth: .2,
+                                    layout: 'anchor',
+                                    xtype: 'container',
+                                    items: [visualPassword]
                                 }]
                         }
                     ],

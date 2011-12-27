@@ -55,6 +55,9 @@ public class IgnoreAreasController extends MultiActionController {
     //得到报警忽视地区信息
     public void getAllIgnoreAreases(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("id");
+        System.out.println("12s12s");
+        System.out.println(id);
+        System.out.println("43vb54");
         String jsonStr = ignoreAreasService.getIgnoreAreasJSONById(Integer.parseInt(request.getParameter("id")));
         //   String jsonStr = ignoreAreasService.getIgetIgnoreAreasJSONByIdgnoreAreasList();
         PrintWriter pw;
@@ -75,11 +78,17 @@ public class IgnoreAreasController extends MultiActionController {
         PTZ ptz = new PTZ();
         ptz.setId(Long.valueOf(request.getParameter("ptz_id"))); //云台ID
         ignoreAreas.setPtz(ptz);
-        if (!request.getParameter("ptz_angel_x").equals("")) {
-            ignoreAreas.setPtzAngelX(Integer.valueOf(request.getParameter("ptz_angel_x"))); //火警时云台的水平角度
+        if (!request.getParameter("ptz_angel_x_from").equals("")) {
+            ignoreAreas.setPtzAngelXFrom(Integer.valueOf(request.getParameter("ptz_angel_x_from"))); //火警时云台的水平角度(始)
         }
-        if (!request.getParameter("ptz_angel_y").equals("")) {
-            ignoreAreas.setPtzAngelY(Integer.valueOf(request.getParameter("ptz_angel_y"))); //火警时云台的Y角度
+        if (!request.getParameter("ptz_angel_x_to").equals("")) {
+            ignoreAreas.setPtzAngelXTo(Integer.valueOf(request.getParameter("ptz_angel_x_to"))); //火警时云台的水平角度(末)
+        }
+        if (!request.getParameter("ptz_angel_y_from").equals("")) {
+            ignoreAreas.setPtzAngelYFrom(Integer.valueOf(request.getParameter("ptz_angel_y_from"))); //火警时云台的Y角度(始)
+        }
+        if (!request.getParameter("ptz_angel_y_to").equals("")) {
+            ignoreAreas.setPtzAngelYTo(Integer.valueOf(request.getParameter("ptz_angel_y_to"))); //火警时云台的Y角度(末)
         }
         if (!request.getParameter("ccd_area").equals("")) {
             ignoreAreas.setCcdArea(Integer.valueOf(request.getParameter("ccd_area"))); //热成像起火面积值
@@ -137,11 +146,17 @@ public class IgnoreAreasController extends MultiActionController {
     public void update(HttpServletRequest request, HttpServletResponse response) {
         Integer id = Integer.valueOf(request.getParameter("id"));
         IgnoreAreas ignoreAreas = ignoreAreasService.getIgnoreAreasById(id);
-        if (!request.getParameter("ptzAngelX").equals("")) {
-            ignoreAreas.setPtzAngelX(Integer.valueOf(request.getParameter("ptzAngelX"))); //火警时云台的水平角度
+        if (!request.getParameter("ptzAngelXFrom").equals("")) {
+            ignoreAreas.setPtzAngelXFrom(Integer.valueOf(request.getParameter("ptzAngelXFrom"))); //火警时云台的水平角度(始)
         }
-        if (!request.getParameter("ptzAngelY").equals("")) {
-            ignoreAreas.setPtzAngelY(Integer.valueOf(request.getParameter("ptzAngelY"))); //火警时云台的Y角度
+        if (!request.getParameter("ptzAngelXTo").equals("")) {
+            ignoreAreas.setPtzAngelXTo(Integer.valueOf(request.getParameter("ptzAngelXTo"))); //火警时云台的水平角度(末)
+        }
+        if (!request.getParameter("ptzAngelYFrom").equals("")) {
+            ignoreAreas.setPtzAngelYFrom(Integer.valueOf(request.getParameter("ptzAngelYFrom"))); //火警时云台的Y角度(始)
+        }
+        if (!request.getParameter("ptzAngelYTo").equals("")) {
+            ignoreAreas.setPtzAngelYTo(Integer.valueOf(request.getParameter("ptzAngelYTo"))); //火警时云台的Y角度(末)
         }
         if (!request.getParameter("ccdArea").equals("")) {
             ignoreAreas.setCcdArea(Integer.valueOf(request.getParameter("ccdArea"))); //热成像起火面积值

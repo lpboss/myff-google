@@ -287,7 +287,10 @@
                         { name: 'isAlarm'},
                         { name: 'cruiseAngleYStep'},
                         { name: 'alarmHeatValue'},
-                        { name: 'cruiseFromTo'}
+                        { name: 'cruiseFromTo'},
+                        { name: 'playType'},
+                        { name: 'visualPassword'},
+                        { name: 'visualUser'}
                     ]
                 });
                 
@@ -332,8 +335,10 @@
                     fields : [
                         { name: 'id'},
                         { name: 'ptzId',mapping:'ptz.id'},
-                        { name: 'ptzAngelX'},
-                        { name: 'ptzAngelY'},
+                        { name: 'ptzAngelXFrom'},
+                        { name: 'ptzAngelXTo'},
+                        { name: 'ptzAngelYFrom'},
+                        { name: 'ptzAngelYTo'},
                         { name: 'ccdArea'},
                         { name: 'heatMax'},
                         { name: 'beginDate'},

@@ -29,16 +29,29 @@
                     anchor: '95%'
                 });
                 
-                var ptzAngelX = Ext.create('Ext.form.field.Number', {
-                    fieldLabel: '火警时云台的水平角度',                 
-                    name: 'ptz_angel_x',
+                var ptzAngelXFrom = Ext.create('Ext.form.field.Number', {
+                    fieldLabel: '火警时云台的水平角度(始)',                 
+                    name: 'ptz_angel_x_from',
                     anchor: '95%'
                 });
                 
-                var ptzAngelY = Ext.create('Ext.form.field.Number', {
-                    fieldLabel: '火警时云台的Y角度',
+                var ptzAngelXTo = Ext.create('Ext.form.field.Number', {
+                    fieldLabel: '火警时云台的水平角度(末)',                 
+                    name: 'ptz_angel_x_to',
+                    anchor: '95%'
+                });
+                
+                var ptzAngelYFrom = Ext.create('Ext.form.field.Number', {
+                    fieldLabel: '火警时云台的Y角度(始)',
                     lableWidth:100,
-                    name: 'ptz_angel_y',
+                    name: 'ptz_angel_y_from',
+                    anchor: '95%'
+                });
+                
+                var ptzAngelYTo = Ext.create('Ext.form.field.Number', {
+                    fieldLabel: '火警时云台的Y角度(末)',
+                    lableWidth:100,
+                    name: 'ptz_angel_y_to',
                     anchor: '95%'
                 });
                 
@@ -92,12 +105,12 @@
                                     columnWidth: .45,
                                     layout: 'anchor',                                  
                                     xtype: 'container',
-                                    items: [ptzId,ptzAngelX,ptzAngelY,ccdArea]
+                                    items: [ptzId,ptzAngelXFrom,ptzAngelXTo,ptzAngelYFrom,ptzAngelYTo]
                                 }, {
                                     columnWidth: .53,
                                     layout: 'anchor',
                                     xtype: 'container',                                  
-                                    items: [beginDate,endDate,isLocked,heatMax]
+                                    items: [beginDate,endDate,isLocked,heatMax,ccdArea]
                                 }]
                         }],
                     buttons: [{
