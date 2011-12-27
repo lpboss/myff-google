@@ -302,10 +302,12 @@ public class PTZCruiseTask {
         //判断，如果当前的Y
         String ptzIP = ptz.getPelcodCommandUrl();
         String currentAngleY = serialPortCommServer.getAngleYString(ptzIP);
-        //上扬角度，由参数决定，默认10�
-        int angleY1 = Integer.parseInt(currentAngleY.split("\\.")[0]) + ptz.getCruiseAngleYStep();
-        int angleY2 = Integer.parseInt(currentAngleY.split("\\.")[1]);
-        angleY2 = 0;//呼略小角度。
+        //上扬角度，由参数(float)决定,，默认10�
+        int angleYStepIntPart = (int) ptz.getCruiseAngleYStep();
+        int angleY1 = Integer.parseInt(currentAngleY.split("\\.")[0]) + angleYStepIntPart;
+        float angleyStepDecimalPart = ptz.getCruiseAngleYStep() - angleYStepIntPart;
+        int angleY2 = Integer.parseInt(currentAngleY.split("\\.")[1]) + (int) (angleyStepDecimalPart * 100);
+        //angleY2 = 0;//呼略小角度。
         //如果将要上仰的角度大于最大上仰角度，但不高于最大上仰角与上仰步长之合时
         //飞越云台不准，经常误差0.2度，所以要作很多处理。
         if (angleY1 > ptz.getCruiseUpLimit() && Math.abs(Double.parseDouble(currentAngleY) - ptz.getCruiseUpLimit()) > 0.2) {
@@ -315,8 +317,8 @@ public class PTZCruiseTask {
         } else if (Math.abs(angleY1 - (ptz.getCruiseUpLimit() + ptz.getCruiseAngleYStep())) < 0.3) {
             angleY1 = ptz.getCruiseDownLimit();
         }
-        System.out.println("调整后的Y角度值是：" + angleY1 + " ,.....................................................");
-        serialPortCommServer.getIsCruisingPresetAngleY().put(ptzIP, angleY1);
+        System.out.println("调整后的Y角度值是：" + (double)(angleY1 + angleY2 / 100) + " ,.....................................................");
+        serialPortCommServer.getIsCruisingPresetAngleY().put(ptzIP, (double)(angleY1 + angleY2 / 100));
         try {
             serialPortCommServer.sendCommand(ptzIP, "FF 01 00 00 00 00 01");
         } catch (IOException ex) {
