@@ -317,8 +317,8 @@ public class PTZCruiseTask {
         } else if (Math.abs(angleY1 - (ptz.getCruiseUpLimit() + ptz.getCruiseAngleYStep())) < 0.3) {
             angleY1 = ptz.getCruiseDownLimit();
         }
-        System.out.println("调整后的Y角度值是：" + (double)(angleY1 + angleY2 / 100) + " ,.....................................................");
-        serialPortCommServer.getIsCruisingPresetAngleY().put(ptzIP, (double)(angleY1 + angleY2 / 100));
+        System.out.println("调整后的Y角度值是：" + (double) (angleY1 + angleY2 / 100) + " ,.....................................................");
+        serialPortCommServer.getIsCruisingPresetAngleY().put(ptzIP, (double) (angleY1 + angleY2 / 100));
         try {
             serialPortCommServer.sendCommand(ptzIP, "FF 01 00 00 00 00 01");
         } catch (IOException ex) {
@@ -358,8 +358,7 @@ public class PTZCruiseTask {
                 int heatMax = serialPortCommServer.getAlertMax(infraredSetupIP);
                 if (serialPortCommServer.getIsMovingCenterForFireAlarm().get(ptzIP) == null && (serialPortCommServer.getAllowAlarm().get(ptzIP) == null || serialPortCommServer.getAllowAlarm().get(ptzIP) == Boolean.TRUE)) {
                     if (heatMax > ptz.getAlarmHeatValue()) {
-                        //超过热值后，首先设置云台的报警状态。
-                        ptzService.setIsAlarm(ptz.getId(), heatMax, serialPortCommServer.getAngleX(ptzIP), serialPortCommServer.getAngleY(ptzIP));
+
 
                         int heatPosX = serialPortCommServer.getAlertX(infraredSetupIP);
                         int heatPosY = serialPortCommServer.getAlertY(infraredSetupIP);
@@ -449,6 +448,12 @@ public class PTZCruiseTask {
                         finalPTZAngleY = Math.round(finalPTZAngleY * 100) / 100d;
                         System.out.println("最终要求水平角度：" + finalPTZAngleX);
                         System.out.println("最终要求垂直角度：" + finalPTZAngleY);
+
+                        //在此判断角度信息是否在屏蔽区域中心位置
+                        //超过热值后，首先设置云台的报警状态。
+                        //超过热值后,首先把中心位置对准,然后以此中心位置,对比数据库中的屏蔽区域.
+                        ptzService.setIsAlarm(ptz.getId(), heatMax, serialPortCommServer.getAngleX(ptzIP), serialPortCommServer.getAngleY(ptzIP));
+
                         /*
                          * 准备好角度以后，进行角度调整命令。在角度调整后，计算�度对于热成像方位值变化的比例。然后进行一次命令调整�
                          */

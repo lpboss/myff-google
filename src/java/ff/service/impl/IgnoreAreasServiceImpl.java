@@ -107,4 +107,9 @@ public class IgnoreAreasServiceImpl implements IgnoreAreasService {
         String jsonStr = "{success:true,info:'" + info + "'}";
         return jsonStr;
     }
+
+    @Override
+    public boolean inIgnoreAreas(float angelX, float angelY) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
