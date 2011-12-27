@@ -19,6 +19,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import ff.server.SerialPortCommServer;
+import ff.service.IgnoreAreasService;
 import ff.service.PTZService;
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class PTZCruiseTask {
 
     static org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(PTZCruiseTask.class.getName());
     private PTZService ptzService;
+    private IgnoreAreasService ignoreAreasService;
     private SerialPortCommServer serialPortCommServer;
     private List<PTZ> ptzs;
 
@@ -40,6 +42,10 @@ public class PTZCruiseTask {
 
     public void setPtzService(PTZService ptzService) {
         this.ptzService = ptzService;
+    }
+
+    public void setIgnoreAreasService(IgnoreAreasService ignoreAreasService) {
+        this.ignoreAreasService = ignoreAreasService;
     }
 
     /**
@@ -359,43 +365,12 @@ public class PTZCruiseTask {
                 if (serialPortCommServer.getIsMovingCenterForFireAlarm().get(ptzIP) == null && (serialPortCommServer.getAllowAlarm().get(ptzIP) == null || serialPortCommServer.getAllowAlarm().get(ptzIP) == Boolean.TRUE)) {
                     if (heatMax > ptz.getAlarmHeatValue()) {
 
-
                         int heatPosX = serialPortCommServer.getAlertX(infraredSetupIP);
                         int heatPosY = serialPortCommServer.getAlertY(infraredSetupIP);
 
-                        //如果正在巡航，则在发送其它命令前，先保存断点。并停止巡航�
-                        serialPortCommServer.getAllowCruise().put(ptzIP, Boolean.FALSE);
-                        //同时不允许此云台再次报告火警
-                        serialPortCommServer.getAllowAlarm().put(ptzIP, Boolean.FALSE);
-                        try {
-                            serialPortCommServer.sendCommand(ptzIP, "FF 01 00 00 00 00 01");
-                        } catch (IOException ex) {
-                            Logger.getLogger(PTZCruiseTask.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        serialPortCommServer.pushCommand(ptzIP, "FF 01 00 00 00 00 01");
-
-
-                        if (serialPortCommServer.getIsCruising().get(ptzIP) != null && serialPortCommServer.getIsCruising().get(ptzIP) == Boolean.TRUE) {
-                            if (serialPortCommServer.getCruiseBreakpoint().get(ptzIP) == null) {
-                                serialPortCommServer.getCruiseBreakpoint().put(ptzIP, serialPortCommServer.getAngleXString(ptzIP) + "|" + serialPortCommServer.getAngleYString(ptzIP));
-                            }
-                            //同时设置当前云台不处于巡航状态�
-                            serialPortCommServer.getIsCruising().put(ptzIP, Boolean.FALSE);
-                        }
-                        /*
-                         * 逐渐让热成像对准中心�
-                         * 4点区域法，左上（151.171），右上�28�71），左下�52�14），右下�28�14），�92�44）为中心点�
-                         * 得到当前的角�
-                         */
                         String currentAngleX = serialPortCommServer.getAngleXString(ptzIP);
                         String currentAngleY = serialPortCommServer.getAngleYString(ptzIP);
-                        int maxHeatValue = serialPortCommServer.getAlertMax(infraredSetupIP);
-                        System.out.println("当前热值：" + maxHeatValue);
-                        System.out.println("热成像X:" + heatPosX + ",当前水平角度" + currentAngleX);
-                        System.out.println("热成像Y:" + heatPosY + ",当前垂直角度" + currentAngleY);
-                        //X|Y|AngleX|AngleY|MaxValue|Time
-                        serialPortCommServer.getSceneFireAlarmInfo().put(ptzIP, heatPosX + "|" + heatPosY + "|" + currentAngleX + "|" + currentAngleY + "|" + maxHeatValue + "|" + new Date().getTime());
-                        //如果水平方向，小�92，水平逆时针转动。否则顺时针
+
                         //X方向最高热值与中心点的像素�
                         int dValueX = 0;
                         //Y方向最高热值与中心点的像素�
@@ -446,39 +421,81 @@ public class PTZCruiseTask {
                         //给角度取2位小数�
                         finalPTZAngleX = Math.round(finalPTZAngleX * 100) / 100d;
                         finalPTZAngleY = Math.round(finalPTZAngleY * 100) / 100d;
-                        System.out.println("最终要求水平角度：" + finalPTZAngleX);
-                        System.out.println("最终要求垂直角度：" + finalPTZAngleY);
 
-                        //在此判断角度信息是否在屏蔽区域中心位置
-                        //超过热值后，首先设置云台的报警状态。
-                        //超过热值后,首先把中心位置对准,然后以此中心位置,对比数据库中的屏蔽区域.
-                        ptzService.setIsAlarm(ptz.getId(), heatMax, serialPortCommServer.getAngleX(ptzIP), serialPortCommServer.getAngleY(ptzIP));
+                        //判断是不是在屏蔽区域
+                        if (!ignoreAreasService.inIgnoreAreas((float) finalPTZAngleX, (float) finalPTZAngleY)) {
+                            System.out.println("最终要求水平角度：" + finalPTZAngleX);
+                            System.out.println("最终要求垂直角度：" + finalPTZAngleY);
 
-                        /*
-                         * 准备好角度以后，进行角度调整命令。在角度调整后，计算�度对于热成像方位值变化的比例。然后进行一次命令调整�
-                         */
-                        String adjustXCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4B, (int) Math.floor(finalPTZAngleX), (int) Math.floor((finalPTZAngleX - Math.floor(finalPTZAngleX)) * 100), "ANGLE_X", ptz.getBrandType());
-                        String adjustYCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, (int) Math.floor(finalPTZAngleY), (int) Math.floor((finalPTZAngleY - Math.floor(finalPTZAngleY)) * 100), "ANGLE_Y", ptz.getBrandType());
-                        //在进行命令调整前，先清除所有命令，并停止云台。
-                        serialPortCommServer.getCommandMap().remove(ptzIP);
-                        try {
-                            boolean commandResult = false;
-                            commandResult = serialPortCommServer.sendCommand(ptzIP, "FF 01 00 00 00 00 01");
-                            System.out.println("执行停止命令结果：" + commandResult);
-                            commandResult = serialPortCommServer.sendCommand(ptzIP, "FF 01 00 00 00 00 01");
-                            System.out.println("执行停止命令结果：" + commandResult);
-                            commandResult = serialPortCommServer.sendCommand(ptzIP, adjustXCommand);
-                            System.out.println("执行X角度命令结果：" + commandResult);
-                            commandResult = serialPortCommServer.sendCommand(ptzIP, adjustYCommand);
-                            System.out.println("执行Y角度命令结果：" + commandResult);
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                            //在此判断角度信息是否在屏蔽区域中心位置
+                            //超过热值后，首先设置云台的报警状态。
+                            //超过热值后,首先把中心位置对准,然后以此中心位置,对比数据库中的屏蔽区域.
+                            ptzService.setIsAlarm(ptz.getId(), heatMax, serialPortCommServer.getAngleX(ptzIP), serialPortCommServer.getAngleY(ptzIP));
+
+
+
+
+
+                            //如果正在巡航，则在发送其它命令前，先保存断点。并停止巡航�
+                            serialPortCommServer.getAllowCruise().put(ptzIP, Boolean.FALSE);
+                            //同时不允许此云台再次报告火警
+                            serialPortCommServer.getAllowAlarm().put(ptzIP, Boolean.FALSE);
+                            try {
+                                serialPortCommServer.sendCommand(ptzIP, "FF 01 00 00 00 00 01");
+                            } catch (IOException ex) {
+                                Logger.getLogger(PTZCruiseTask.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            serialPortCommServer.pushCommand(ptzIP, "FF 01 00 00 00 00 01");
+
+
+                            if (serialPortCommServer.getIsCruising().get(ptzIP) != null && serialPortCommServer.getIsCruising().get(ptzIP) == Boolean.TRUE) {
+                                if (serialPortCommServer.getCruiseBreakpoint().get(ptzIP) == null) {
+                                    serialPortCommServer.getCruiseBreakpoint().put(ptzIP, serialPortCommServer.getAngleXString(ptzIP) + "|" + serialPortCommServer.getAngleYString(ptzIP));
+                                }
+                                //同时设置当前云台不处于巡航状态�
+                                serialPortCommServer.getIsCruising().put(ptzIP, Boolean.FALSE);
+                            }
+                            /*
+                             * 逐渐让热成像对准中心�
+                             * 4点区域法，左上（151.171），右上�28�71），左下�52�14），右下�28�14），�92�44）为中心点�
+                             * 得到当前的角�
+                             */
+
+                            int maxHeatValue = serialPortCommServer.getAlertMax(infraredSetupIP);
+                            System.out.println("当前热值：" + maxHeatValue);
+                            System.out.println("热成像X:" + heatPosX + ",当前水平角度" + currentAngleX);
+                            System.out.println("热成像Y:" + heatPosY + ",当前垂直角度" + currentAngleY);
+                            //X|Y|AngleX|AngleY|MaxValue|Time
+                            serialPortCommServer.getSceneFireAlarmInfo().put(ptzIP, heatPosX + "|" + heatPosY + "|" + currentAngleX + "|" + currentAngleY + "|" + maxHeatValue + "|" + new Date().getTime());
+                            //如果水平方向，小�92，水平逆时针转动。否则顺时针
+
+
+                            /*
+                             * 准备好角度以后，进行角度调整命令。在角度调整后，计算�度对于热成像方位值变化的比例。然后进行一次命令调整�
+                             */
+                            String adjustXCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4B, (int) Math.floor(finalPTZAngleX), (int) Math.floor((finalPTZAngleX - Math.floor(finalPTZAngleX)) * 100), "ANGLE_X", ptz.getBrandType());
+                            String adjustYCommand = PTZUtil.getPELCODCommandHexString(1, 0, 0x4D, (int) Math.floor(finalPTZAngleY), (int) Math.floor((finalPTZAngleY - Math.floor(finalPTZAngleY)) * 100), "ANGLE_Y", ptz.getBrandType());
+                            //在进行命令调整前，先清除所有命令，并停止云台。
+                            serialPortCommServer.getCommandMap().remove(ptzIP);
+                            try {
+                                boolean commandResult = false;
+                                commandResult = serialPortCommServer.sendCommand(ptzIP, "FF 01 00 00 00 00 01");
+                                System.out.println("执行停止命令结果：" + commandResult);
+                                commandResult = serialPortCommServer.sendCommand(ptzIP, "FF 01 00 00 00 00 01");
+                                System.out.println("执行停止命令结果：" + commandResult);
+                                commandResult = serialPortCommServer.sendCommand(ptzIP, adjustXCommand);
+                                System.out.println("执行X角度命令结果：" + commandResult);
+                                commandResult = serialPortCommServer.sendCommand(ptzIP, adjustYCommand);
+                                System.out.println("执行Y角度命令结果：" + commandResult);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            //设置正在置中状态位�
+                            serialPortCommServer.getIsMovingCenterForFireAlarm().put(ptzIP, Boolean.TRUE);
+                            //这里要处理小数位的表达问题，比如32.07，其�7�，这里如果字符串相加要处理为�0
+                            serialPortCommServer.getFinalMovingCenterForFireAlarm().put(ptzIP, finalPTZAngleX + "|" + adjustXCommand + "|" + finalPTZAngleY + "|" + adjustYCommand + "|" + new Date().getTime());
                         }
-
-                        //设置正在置中状态位�
-                        serialPortCommServer.getIsMovingCenterForFireAlarm().put(ptzIP, Boolean.TRUE);
-                        //这里要处理小数位的表达问题，比如32.07，其�7�，这里如果字符串相加要处理为�0
-                        serialPortCommServer.getFinalMovingCenterForFireAlarm().put(ptzIP, finalPTZAngleX + "|" + adjustXCommand + "|" + finalPTZAngleY + "|" + adjustYCommand + "|" + new Date().getTime());
                     }
                 } else if (serialPortCommServer.getIsMovingCenterForFireAlarm().get(ptzIP) == Boolean.TRUE) {
                     //如果当前正在微调。判断微调角度是否到位。如果不到位，继续调整�
