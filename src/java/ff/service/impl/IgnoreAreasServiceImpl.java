@@ -110,6 +110,6 @@ public class IgnoreAreasServiceImpl implements IgnoreAreasService {
 
     @Override
     public boolean inIgnoreAreas(float angelX, float angelY) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return ignoreAreasDao.inIgnoreAreas(angelX, angelY);
     }
 }
